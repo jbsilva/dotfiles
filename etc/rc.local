@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# /etc/rc.local: Local multi-user startup script.
+#
+
+#############################    Ajusta relógio    #############################
+ntpd -qg && hwclock -w & > dev/null

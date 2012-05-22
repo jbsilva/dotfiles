@@ -1,0 +1,86 @@
+!{{{ URXVT
+!--[Geral]--!
+!M=Alt, C=ctrl
+    URxvt*termName:             rxvt-256color
+    URxvt*cursorColor:          #aaaaaa
+    URxvt*colorUL:              #366060
+    URxvt*underlineColor:       #dfaf8f
+    URxvt.secondaryScroll:      true
+    URxvt.perl-lib:             /usr/lib/urxvt/perl
+    !tabbed bagunca com os acentos quando mouse nao esta sobre o terminal
+    URxvt.perl-ext-common:      default,keyboard-select,url-select,clipboard
+
+!keyboard-select, url-select and clipboard.
+!https://github.com/muennich/urxvt-perls
+    URxvt.keysym.M-Escape:      perl:keyboard-select:activate
+    URxvt.keysym.M-s:           perl:keyboard-select:search
+
+    URxvt.keysym.M-u:           perl:url-select:select_next
+    URxvt.urlLauncher:          /usr/bin/chromium
+    URxvt.underlineURLs:        true
+    URxvt.urlButton:            1
+
+    URxvt.keysym.M-c:           perl:clipboard:copy
+    URxvt.keysym.M-v:           perl:clipboard:paste
+    URxvt.keysym.M-C-v:         perl:clipboard:paste_escaped 
+    URxvt.copyCommand:          xsel -ib
+    URxvt.pasteCommand:         xsel -ob
+
+!Teclas Home, End, Ctrl+setas e Alt+setas
+    URxvt*keysym.Home:          \033[1~
+    URxvt*keysym.End:           \033[4~
+    URxvt.keysym.Control-Up:    \033[1;5A
+    URxvt.keysym.Control-Down:  \033[1;5B
+    URxvt.keysym.Control-Left:  \033[1;5D
+    URxvt.keysym.Control-Right: \033[1;5C
+    URxvt.keysym.M-Down:        \033[1;3B
+    URxvt.keysym.M-Up:          \033[1;3A
+    URxvt.keysym.M-Left:        \033[1;3D
+    URxvt.keysym.M-Right:       \033[1;3C
+
+!C--: fonte pequena  ||  C-0: fonte média  ||  C+=: fonte grande
+!710: normal, 711: bold, 712: italic, 713: bold-italic. Vide `man 7 urxvt`
+    URxvt.keysym.Control-minus: command:\033]710;xft:Terminus:pixelsize=15:antialias=false\007\033]711;xft:Terminus:bold:pixelsize=15:antialias=false\007
+    URxvt.keysym.Control-0:     command:\033]710;xft:Terminus:pixelsize=18:antialias=false\007\033]711;xft:Terminus:bold:pixelsize=18:antialias=false\007
+    URxvt.keysym.Control-equal: command:\033]710;xft:Terminus:pixelsize=40:antialias=false\007\033]711;xft:Terminus:bold:pixelsize=40:antialias=false\007
+
+!--[Aparencia]--!
+!A Terminus não tem itálico
+    URxvt.font:                 xft:Terminus:pixelsize=18:antialias=false
+    URxvt.boldFont:             xft:Terminus:bold:pixelsize=18:antialias=false
+    URxvt.boldItalicFont:       xft:Terminus:bold:pixelsize=18:antialias=false
+    URxvt.italicFont:           xft:Bitstream Vera Sans Mono:italic:autohint=true
+
+!Zenburn color-scheme
+    URxvt*background:           #3f3f3f
+    URxvt*foreground:           #dcdccc
+    URxvt*color0:               #1e2320
+    URxvt*color1:               #705050
+    URxvt*color2:               #60b48a
+    URxvt*color3:               #dfaf8f
+    URxvt*color4:               #506070
+    URxvt*color5:               #dc8cc3
+    URxvt*color6:               #8cd0d3
+    URxvt*color7:               #dcdccc
+    URxvt*color8:               #709080
+    URxvt*color9:               #dca3a3
+    URxvt*color10:              #c3bf9f
+    URxvt*color11:              #f0dfaf
+    URxvt*color12:              #94bff3
+    URxvt*color13:              #ec93d3
+    URxvt*color14:              #93e0e3
+    URxvt*color15:              #ffffff
+
+!Zenburn alternativo, trocar cores:
+!    URxvt*color0:               #3f3f3f
+!    URxvt*color1:               #cc9393
+!    URxvt*color2:               #7f9f7f
+!    URxvt*color3:               #d0bf8f
+!    URxvt*color4:               #6ca0a3
+!    URxvt*color6:               #93e0e3
+!    URxvt*color8:               #000000
+!    URxvt*color10:              #bfebbf
+!    URxvt*color12:              #8cd0d3
+!    URxvt*color13:              #dc8cc3
+
+}}}

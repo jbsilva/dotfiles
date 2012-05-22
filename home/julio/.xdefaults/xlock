@@ -1,0 +1,25 @@
+!{{{ XLOCK
+XLock.mode:          blank
+!XLock.mode:         fzort
+!XLock.mode:         atunnels
+!XLock.icongeometry: 256x256
+XLock.username:      Username:
+XLock.password:      Password:
+XLock.foreground:    White
+XLock.background:    Gray20
+XLock.description:   false
+XLock.echokeys:      true
+XLock.echokey:       *
+XLock.info:          
+!XLock.info:         Enter password to unlock \nSelect icon to lock
+XLock.validate:      Validating login...
+XLock.invalid:       Login failed
+XLock.font:          -xos4-terminus-*-*-*-*-*-*-*-*-*-*-*-*
+XLock.planfont:      -xos4-terminus-*-*-*-*-*-*-*-*-*-*-*-*
+XLock.messagefont:   -xos4-terminus-*-*-*-*-*-*-*-*-*-*-*-*
+!XLock.ncolors:      200
+!XLock.dpmsstandby:  600
+!XLock.dpmssuspend:  1200
+!XLock.dpmsoff:      1800
+!}}}
+

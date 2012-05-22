@@ -1,0 +1,35 @@
+# 
+# /etc/fstab: static file system information
+#
+# <file system>                             <dir>           <type>      <options>               <dump>  <pass>
+tmpfs                                       /tmp            tmpfs       nodev,nosuid                0   0
+UUID=0c84e64f-1dc6-4ffe-b953-a5b2c2082127   swap            swap        defaults                    0   0
+UUID=80d88ab2-1c30-49a6-ba64-9b3b010be983   /boot           ext2        defaults                    0   1
+UUID=d4422521-eb52-4c58-a0fa-a116fd873ae6   /               btrfs       defaults                    0   1
+
+# HD interno - Partição do Windows
+UUID=BAA68EFAA68EB683                       /media/windows  ntfs-3g     defaults,noauto             0   0
+
+# HD interno - Partição NTFS de Mídia
+UUID=49145CB02E0B6F69                       /media/midia    ntfs-3g     defaults                    0   0
+
+# HD Externo de 2TB - Partição EXT4
+UUID=9bbe045e-0807-4576-8531-4a44fcb56e69   /media/externo  ext4        defaults                    0   0
+
+# HD Externo de 2TB - Partição NTFS
+UUID=5C001CE3001CC5C4                       /media/ext_ntfs ntfs-3g     defaults,noauto             0   0
+
+# Pendrive
+UUID=2F3B-F48E                              /media/pendrive vfat        defaults,noauto,umask=000   0   0
+
+# Camera
+LABEL=SONYHX1                               /media/camera   vfat        defaults,noauto,umask=000   0   0
+
+# iPod
+UUID=AA66-2536                              /media/iPod     vfat        defaults,noauto,umask=000   0   0
+
+# SAMBA
+#//192.168.0.1/rede                       /media/rede  cifs        noauto,noatime             0   0
+###################################################################################################################
+# Para descobrir o UUID: $ ls -l /dev/disk/by-uuid/
+###################################################################################################################

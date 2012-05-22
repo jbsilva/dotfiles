@@ -1,0 +1,7 @@
+!{{{ XPDF
+xpdf*foreground:     black
+xpdf*background:     white
+xpdf*urlCommand:     /usr/local/bin/firefox %s
+xpdf*antialias:      yes
+xpdf*enableFreetype: yes
+!}}}

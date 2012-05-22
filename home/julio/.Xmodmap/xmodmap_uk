@@ -1,0 +1,3 @@
+keycode  54 = c C c C ccedilla Ccedilla
+!remove Lock = Caps_Lock
+!keysym Caps_Lock = Escape

@@ -1,0 +1,192 @@
+# For the benefit of emacs users: -*- shell-script -*-
+###########################
+# xbindkeys configuration #
+###########################
+#
+# Version: 1.8.3
+#
+# If you edit this file, do not forget to uncomment any lines
+# that you change.
+# The pound(#) symbol may be used anywhere for comments.
+#
+# To specify a key, you can use 'xbindkeys --key' or
+# 'xbindkeys --multikey' and put one of the two lines in this file.
+#
+# The format of a command line is:
+#    "command to start"
+#       associated key
+#
+#
+# A list of keys is in /usr/include/X11/keysym.h and in
+# /usr/include/X11/keysymdef.h
+# The XK_ is not needed.
+#
+# List of modifier:
+#   Release, Control, Shift, Mod1 (Alt), Mod2 (NumLock),
+#   Mod3 (CapsLock), Mod4, Mod5 (Scroll).
+#
+
+# The release modifier is not a standard X modifier, but you can
+# use it if you want to catch release events instead of press events
+
+# By defaults, xbindkeys does not pay attention with the modifiers
+# NumLock, CapsLock and ScrollLock.
+# Uncomment the lines above if you want to pay attention to them.
+
+#keystate_numlock = enable
+#keystate_capslock = enable
+#keystate_scrolllock= enable
+
+# Examples of commands:
+
+#"xbindkeys_show" 
+#  control+shift + q
+
+# set directly keycode (here control + f with my keyboard)
+#"xterm"
+#  c:41 + m:0x4
+
+# specify a mouse button
+#"xterm"
+#  control + b:2
+
+#"xterm -geom 50x20+20+20"
+#   Shift+Mod2+alt + s
+#
+## set directly keycode (here control+alt+mod2 + f with my keyboard)
+#"xterm"
+#  alt + c:0x29 + m:4 + mod2
+#
+## Control+Shift+a  release event starts rxvt
+#"rxvt"
+#  release+control+shift + a
+#
+## Control + mouse button 2 release event starts rxvt
+#"rxvt"
+#  Control + b:2 + Release
+
+# Configura MPD
+    "mpc toggle"
+    XF86AudioPlay
+    "mpc next"
+    XF86AudioNext
+    "mpc prev"
+    XF86AudioPrev
+    "mpc stop"
+    XF86AudioStop
+
+## Para o alsa
+#"amixer -q -c 0 set Master 2dB+"
+#XF86AudioRaiseVolume
+#
+#"amixer -q -c 0 set Master 2dB-"
+#XF86AudioLowerVolume
+#
+#"amixer -q -c 0 set Master toggle"
+#XF86AudioMute
+
+# Para o pulseaudio
+
+# AUMENTAR VOLUME
+#"pacmd set-sink-volume 0 $(printf '0x%x' $(( $(pacmd dump|grep set-sink-volume|cut -f3 -d' ') + 0xf00)) ) 1>/dev/null"
+#"pacmd dump|awk --non-decimal-data '$1~/set-sink-volume/{system ("pacmd "$1" "$2" "$3+1000)}'"
+"amixer -q set Master 1310+"
+XF86AudioRaiseVolume
+
+# Diminuir Volume
+#"pacmd set-sink-volume 0 $(printf '0x%x' $(( $(pacmd dump|grep set-sink-volume|cut -f3 -d' ') - 0xf00)) ) 1>/dev/null"
+#"pacmd dump|awk --non-decimal-data '$1~/set-sink-volume/{system ("pacmd "$1" "$2" "$3-1000)}'"
+"amixer -q set Master 1310-"
+XF86AudioLowerVolume
+
+# Mute e Unmute
+#"pacmd set-sink-mute 0 $(if [ $(pacmd dump |grep set-sink-mute | cut -f 3 -d' ') = 'no' ]; then echo yes; else echo no; fi;) 1>/dev/null"
+#"pacmd dump|awk --non-decimal-data '$1~/set-sink-mute/{system ("pacmd "$1" "$2" "($3=="yes"?"no":"yes"))}'"
+"amixer -q set Master toggle"
+XF86AudioMute
+
+
+###########################
+###########################
+
+# Abre a Calculadora
+"qalculate"
+XF86Calculator
+#c:148
+
+#"firefox"
+#m:0x0 + c:178
+
+#"amsn"
+#m:0x0 + c:236
+
+"xtrlock"
+m:0x41 + c:36
+#Shift+Mod4 + Return
+
+# Tirar Screenshot
+"/home/julio/Scripts/screenshot.sh"
+Print
+#c:107
+
+# Controla cursor pelo teclado
+
+# Move para noroeste (cima-esquerda)
+"xdotool mousemove_relative -- -10 -10"
+KP_Home
+
+# Move para norte (cima)
+"xdotool mousemove_relative 0 -10"
+KP_Up
+
+# Move para nordeste (cima-direita)
+"xdotool mousemove_relative 10 -10"
+KP_Prior
+
+# Move para oeste (esquerda)
+"xdotool mousemove_relative -- -10 0"
+KP_Left
+
+# Move para leste (direita)
+"xdotool mousemove_relative 10 0"
+KP_Right
+
+# Move para sudoeste (baixo-esquerda)
+"xdotool mousemove_relative -- -10 10"
+KP_End
+
+# Move para sul (baixo)
+"xdotool mousemove_relative 0 10"
+KP_Down
+
+# Move para sudeste (baixo-direita)
+"xdotool mousemove_relative 10 10"
+KP_Next
+
+# Clique esquerdo
+"xdotool click 1"
+KP_Insert
+
+# Clique meio
+"xdotool click 2"
+KP_Delete
+
+# Clique direito
+"xdotool click 3"
+KP_Enter
+
+# Scroll para cima
+"xdotool click 4"
+KP_Subtract
+
+# Scroll para baixo
+"xdotool click 5"
+KP_Add
+
+#Ajusta monitores
+"xrandr --output LVDS1 --auto --output HDMI1 --auto --right-of LVDS1"
+control+shift + q
+
+##################################
+# End of xbindkeys configuration #
+##################################

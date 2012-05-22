@@ -1,0 +1,223 @@
+#######################################################
+#               Julio's ~/.rtorrent.rc file
+#
+#       ####   #####   ###   ####   ####   #####  #   #  #####
+#       #   #    #    #   #  #   #  #   #  #      ##  #    #
+#       # ##     #    #   #  # ##   # ##   ####   # # #    #
+#       #   #    #    #   #  #   #  #   #  #      #  ##    #
+#       #   #    #     ###   #   #  #   #  #####  #   #    #
+#
+#                      ( O O )
+#               ====oOO==(_)==OOo=====
+#
+# Licença:
+#           Copyright (c) 2011 Julio B. Silva <julio@juliobs.com>
+#                       All Rights Reserved
+#
+#           This program is free software. It comes without any warranty, to
+#           the extent permitted by applicable law. You can redistribute it
+#           and/or modify it under the terms of the Do What The Fuck You Want
+#           To Public License, Version 2, as published by Sam Hocevar. See
+#           http://sam.zoy.org/wtfpl/COPYING for more details.
+#
+# Created:      2011
+# Last Change:  Sat 12 Nov 2011 00:00
+#
+# Download:
+#       http://www.comp.ufscar.br/~jbsilva/files/dotfiles/.rtorrent.rc
+#       http://casa.juliobs.com/comp/files/dotfiles/.rtorrent.rc
+#       http://www.juliobs.com/www/files/dotfiles/.rtorrent.rc
+#
+# Distro: Arch Linux
+#######################################################
+
+################################
+# Conexão
+################################
+
+# Port range to use for listening.
+port_range = 49164-49164
+
+# Global upload and download rate in KiB. "0" for unlimited.
+download_rate = 0
+upload_rate = 0
+
+# Criptografia
+encryption = allow_incoming,try_outgoing,enable_retry
+
+################################
+# Pastas
+################################
+
+# Default directory to save the downloaded torrents.
+directory = /media/externo/Downloads/Torrents/leeching/Misc
+
+# Default session directory
+session = /media/externo/Downloads/Torrents/rtorrent/sessions
+
+# Vigia pastas por novos torrents
+# load_start:       Pasta a ser vigiada, pois é onde os arquivos .torrent são mantidos
+# set_directory:    Muda a pasta em que o arquivo será baixado
+# set_custom1:      Muda a pasta para a qual o arquivo será movido após concluído
+schedule = watch_directory_1,10,10,"load_start=/media/externo/Downloads/Torrents/rtorrent/watch/Musicas/*.torrent,d.set_directory=/media/externo/Downloads/Torrents/leeching/Musicas/,d.set_custom1=/media/externo/Downloads/Torrents/seeding/Musicas"
+schedule = watch_directory_2,10,10,"load_start=/media/externo/Downloads/Torrents/rtorrent/watch/Filmes/*.torrent,d.set_directory=/media/externo/Downloads/Torrents/leeching/Filmes/,d.set_custom1=/media/externo/Downloads/Torrents/seeding/Filmes"
+schedule = watch_directory_3,10,10,"load_start=/media/externo/Downloads/Torrents/rtorrent/watch/Seriados/*.torrent,d.set_directory=/media/externo/Downloads/Torrents/leeching/Seriados/,d.set_custom1=/media/externo/Downloads/Torrents/seeding/Seriados"
+schedule = watch_directory_4,10,10,"load_start=/media/externo/Downloads/Torrents/rtorrent/watch/Programas/*.torrent,d.set_directory=/media/externo/Downloads/Torrents/leeching/Programas/,d.set_custom1=/media/externo/Downloads/Torrents/seeding/Programas"
+schedule = watch_directory_5,10,10,"load_start=/media/externo/Downloads/Torrents/rtorrent/watch/Misc/*.torrent,d.set_directory=/media/externo/Downloads/Torrents/leeching/Misc/,d.set_custom1=/media/externo/Downloads/Torrents/seeding/Misc"
+schedule = watch_directory_6,10,10,"load_start=/media/externo/Downloads/Torrents/rtorrent/watch/Ebooks/*.torrent,d.set_directory=/media/externo/Downloads/Torrents/leeching/Ebooks/,d.set_custom1=/media/externo/Downloads/Torrents/seeding/Ebooks"
+
+# Move os arquivos concluídos para suas respectivas pastas
+system.method.set_key =event.download.finished,move_complete,"d.set_directory=$d.get_custom1= ;execute=mv,-u,$d.get_base_path=,$d.get_custom1="
+
+# Reinicia torrents que foram copiados de volta
+#schedule = tied_directory,10,10,start_tied=
+
+# Pausa torrents deletados
+#schedule = untied_directory,10,10,close_untied=
+
+# Close torrents when diskspace is low.
+schedule = low_diskspace,5,60,close_low_diskspace=200M
+
+# Para o WTorrent
+scgi_port = localhost:5000
+
+#################################
+## PyroScope SETTINGS
+#################################
+## Set "pyro.extended" to 1 to activate rTorrent-PS features!
+## LEAVE THIS AT 0 IF YOU RUN A VANILLA rTorrent!
+#system.method.insert = pyro.extended, value|const, 0
+#
+## Set "pyro.bin_dir" to the "bin" directory where you installed the pyrocore tools!
+## Make sure you end it with a "/"; if this is left empty, then the shell's path is searched.
+#system.method.insert = pyro.bin_dir, string|const, 
+#
+## Remove the ".default" if you want to change something (else your 
+## changes get over-written on update).
+#system.method.insert = pyro.rtorrent_rc, string|const|private, "$cat=~/.pyroscope/rtorrent-,\"$system.client_version=\",.rc.default"
+#import = $pyro.rtorrent_rc=
+#
+## CURL options
+#branch=pyro.extended=,"network.http.ssl_verify_peer.set=0"
+#branch=pyro.extended=,"network.http.dns_cache_timeout.set=25"
+#
+## UI/VIEW: Sort incomplete by date added
+#view_sort_current = incomplete,greater=d.get_custom=tm_loaded
+#view_filter_on = incomplete,event.download.inserted_new
+#
+## UI/VIEW: Show recently completed top-most in "main"
+#view_sort_current = main,greater=d.get_custom=tm_completed
+#view_filter_on = main,event.download.finished
+
+################################
+# Arquivo original comentado
+################################
+
+# This is an example resource file for rTorrent. Copy to
+# ~/.rtorrent.rc and enable/modify the options as needed. Remember to
+# uncomment the options you wish to enable.
+
+# Maximum and minimum number of peers to connect to per torrent.
+#min_peers = 40
+#max_peers = 100
+
+# Same as above but for seeding completed torrents (-1 = same as downloading)
+#min_peers_seed = 10
+#max_peers_seed = 50
+
+# Maximum number of simultanious uploads per torrent.
+#max_uploads = 15
+
+# Global upload and download rate in KiB. "0" for unlimited.
+#download_rate = 0
+#upload_rate = 0
+
+# Default directory to save the downloaded torrents.
+#directory = ./
+
+# Default session directory. Make sure you don't run multiple instance
+# of rtorrent using the same session directory. Perhaps using a
+# relative path?
+#session = ./session
+
+# Watch a directory for new torrents, and stop those that have been
+# deleted.
+#schedule = watch_directory,5,5,load_start=./watch/*.torrent
+#schedule = untied_directory,5,5,stop_untied=
+
+# Close torrents when diskspace is low.
+#schedule = low_diskspace,5,60,close_low_diskspace=100M
+
+# Stop torrents when reaching upload ratio in percent,
+# when also reaching total upload in bytes, or when
+# reaching final upload ratio in percent.
+# example: stop at ratio 2.0 with at least 200 MB uploaded, or else ratio 20.0
+#schedule = ratio,60,60,"stop_on_ratio=200,200M,2000"
+
+# The ip address reported to the tracker.
+#ip = 127.0.0.1
+#ip = rakshasa.no
+
+# The ip address the listening socket and outgoing connections is
+# bound to.
+#bind = 127.0.0.1
+#bind = rakshasa.no
+
+# Port range to use for listening.
+#port_range = 6890-6999
+
+# Start opening ports at a random position within the port range.
+#port_random = no
+
+# Check hash for finished torrents. Might be usefull until the bug is
+# fixed that causes lack of diskspace not to be properly reported.
+#check_hash = no
+
+# Set whetever the client should try to connect to UDP trackers.
+#use_udp_trackers = yes
+
+# Alternative calls to bind and ip that should handle dynamic ip's.
+#schedule = ip_tick,0,1800,ip=rakshasa
+#schedule = bind_tick,0,1800,bind=rakshasa
+
+# Encryption options, set to none (default) or any combination of the following:
+# allow_incoming, try_outgoing, require, require_RC4, enable_retry, prefer_plaintext
+#
+# The example value allows incoming encrypted connections, starts unencrypted
+# outgoing connections but retries with encryption if they fail, preferring
+# plaintext to RC4 encryption after the encrypted handshake
+#
+# encryption = allow_incoming,enable_retry,prefer_plaintext
+
+# Enable DHT support for trackerless torrents or when all trackers are down.
+# May be set to "disable" (completely disable DHT), "off" (do not start DHT),
+# "auto" (start and stop DHT as needed), or "on" (start DHT immediately).
+# The default is "off". For DHT to work, a session directory must be defined.
+# 
+# dht = auto
+
+# UDP port to use for DHT. 
+# 
+# dht_port = 6881
+
+# Enable peer exchange (for torrents not marked private)
+#
+# peer_exchange = yes
+
+#
+# Do not modify the following parameters unless you know what you're doing.
+#
+
+# Hash read-ahead controls how many MB to request the kernel to read
+# ahead. If the value is too low the disk may not be fully utilized,
+# while if too high the kernel might not be able to keep the read
+# pages in memory thus end up trashing.
+#hash_read_ahead = 10
+
+# Interval between attempts to check the hash, in milliseconds.
+#hash_interval = 100
+
+# Number of attempts to check the hash while using the mincore status,
+# before forcing. Overworked systems might need lower values to get a
+# decent hash checking rate.
+#hash_max_tries = 10

@@ -1,0 +1,8 @@
+!{{{ XCLOCK
+xclock*update:     1
+xclock*Mode:       analog
+xclock*Background: #3F3F3F
+xclock*Border:     #3F3F3F
+xclock*Foreground: #F0DFAF
+xclock*geometry:   120x120+1160+15
+!}}}

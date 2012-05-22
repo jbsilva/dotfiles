@@ -1,0 +1,11 @@
+!{{{ XMAN
+Xman*Background:            #3F3F3F
+Xman*Foreground:            #F0DFAF
+Xman*bothShown:             true
+Xman*topBox:                false
+Xman*manualFontNormal:      -xos4-terminus-*-*-*-*-*-*-*-*-*-*-iso8859-2
+Xman*manualFontBold:        -xos4-terminus-bold-*-*-*-*-*-*-*-*-*-iso8859-2
+Xman*manualFontItalic:      -xos4-terminus-*-*-*-*-*-*-*-*-*-*-iso8859-2
+Xman*directoryFontNormal:   -xos4-terminus-*-*-*-*-*-*-*-*-*-*-iso8859-2
+!}}}
+

@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+# -*-*- encoding: utf-8 -*-*-
+
+"""
+Document here.
+"""
+__author__ = "Julio Batista Silva"
+__copyright__ = ""
+__license__ = "GPL"
+__version__ = "1.0"
+
+import argparse
+
+def main():
+    return 0
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+            description='Descricao do programa.')
+    parser.add_argument('--foo', help='foo help')
+    args = parser.parse_args()
+
+    main()

@@ -1,0 +1,10 @@
+!{{{ XCLIPBOARD
+xclipboard.geometry:	  287x195+993+15
+XClipboard*international: true
+XClipboard*font:          -xos4-terminus-*-*-*-*-*-*-*-*-*-*-iso8859-2
+XClipboard*borderColor:	  #3F3F3F
+XClipboard*cursorColor:	  Gray93
+XClipboard*Foreground:    #F0DFAF
+XClipboard*Background:    #3F3F3F
+XClipboard*form.*.shapeStyle: rectangle
+!}}}
