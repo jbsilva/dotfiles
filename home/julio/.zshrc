@@ -86,7 +86,7 @@
     export VISUAL=/usr/bin/vim
     export EDITOR=/usr/bin/vim
     export PYTHONSTARTUP="/home/julio/.pyrc"
-    export PATH="/media/externo/Documentos/Programacao/Web/django/photologue-trunk/photologue:/home/julio/django_trunk/django/bin:$HOME/.rvm/bin:$PATH"
+    export PATH="$HOME/.rvm/bin:$PATH"
 
     [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
 
