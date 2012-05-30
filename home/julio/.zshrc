@@ -87,6 +87,7 @@
     export EDITOR=/usr/bin/vim
     export PYTHONSTARTUP="/home/julio/.pyrc"
     export PATH="$HOME/.rvm/bin:$PATH"
+    export PATH="$HOME/bin:$PATH"
 
     [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
 
@@ -130,7 +131,7 @@
     alias chrometor='chromium --proxy-server="socks://localhost:9050" & exit'      # Usa chrome com Tor
     alias awesomev='xinit /usr/bin/awesome -- :1 &'
     alias awesomen='Xephyr -ac -screen 800x600 -br -reset -terminate -title Awesome_Xephyr :2 &'
-    alias houaiss='wine /home/julio/.wine/drive_c/Program\ Files\ \(x86\)/Houaiss3/Houaiss3.exe & disown'
+    alias houaiss='wine /home/julio/.wine/drive_c/Program\ Files\ \(x86\)/Houaiss3/Houaiss3.exe & disown && exit'
     alias regua='echo .........1.........2.........3.........4.........5.........6.........7.........8'
     alias uzbl='uzbl-tabbed'
     alias monitores='/home/julio/Scripts/monitores.sh'
