@@ -15,7 +15,7 @@
 #export XIM_MODULE="scim -d"
 #
 #setxkbmap -option terminate:ctrl_alt_bksp
-#setxkbmap -model acer_laptop -layout us -variant intl
+#setxkbmap -model acer_laptop -layout us -variant intl -option caps:swapescape
 setxkbmap -model pc105 -layout gb -variant intl -option caps:swapescape
 
 if [ -f ~/.Xmodmap/xmodmap_uk ]; then
@@ -27,9 +27,6 @@ xbindkeys
 #############################        Musica        #############################
 /home/julio/Scripts/inicia_mpd.sh
 
-### Corrige problema da tela cinza dos programas em Java no Awesome ###
-wmname LG3D
-
 ########################## Desktop Environments / WMs #########################
 #exec xterm
 exec awesome
@@ -37,6 +34,9 @@ exec awesome
 #xmonad
 #xsetrot -cursor_name left_ptr
 #exec startxfce4
+
+### Corrige problema da tela cinza dos programas em Java no Awesome ###
+wmname LG3D
 
 #############################         VNC          #############################
 #x11vnc -localhost -many -display :0 -auth ~/.Xauthority &>/dev/null &
