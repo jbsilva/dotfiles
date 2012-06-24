@@ -42,7 +42,7 @@
 !710: normal, 711: bold, 712: italic, 713: bold-italic. Vide `man 7 urxvt`
     URxvt.keysym.Control-minus: command:\033]710;xft:Terminus:pixelsize=15:antialias=false\007\033]711;xft:Terminus:bold:pixelsize=15:antialias=false\007
     URxvt.keysym.Control-0:     command:\033]710;xft:Terminus:pixelsize=18:antialias=false\007\033]711;xft:Terminus:bold:pixelsize=18:antialias=false\007
-    URxvt.keysym.Control-equal: command:\033]710;xft:Terminus:pixelsize=40:antialias=false\007\033]711;xft:Terminus:bold:pixelsize=40:antialias=false\007
+    URxvt.keysym.Control-equal: command:\033]710;xft:Terminus:pixelsize=30:antialias=false\007\033]711;xft:Terminus:bold:pixelsize=30:antialias=false\007
 
 !--[Aparencia]--!
 !A Terminus não tem itálico
