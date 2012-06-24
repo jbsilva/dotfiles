@@ -11,7 +11,7 @@ UUID=d4422521-eb52-4c58-a0fa-a116fd873ae6   /               btrfs       defaults
 UUID=BAA68EFAA68EB683                       /media/windows  ntfs-3g     defaults,noauto                     0   0
 
 # HD interno - Partição NTFS de Mídia
-UUID=49145CB02E0B6F69                       /media/midia    ntfs-3g     uid=julio,gid=users,fmask=113,dmask=002   0   0
+UUID=49145CB02E0B6F69                       /media/midia    ntfs-3g     uid=julio,gid=users,fmask=133,dmask=002   0   0
 
 # HD Externo de 2TB - Partição EXT4
 UUID=9bbe045e-0807-4576-8531-4a44fcb56e69   /media/externo  ext4        defaults                            0   0
