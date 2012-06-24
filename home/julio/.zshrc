@@ -88,7 +88,7 @@
     export PYTHONSTARTUP="/home/julio/.pyrc"
     export PATH="$HOME/.rvm/bin:$PATH"
     export PATH="$HOME/bin:$PATH"
-
+    
     [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
 
     if [ -n "$DISPLAY" ]
@@ -103,13 +103,12 @@
 # Aliases
 ################################
     # Pastas
-    alias CPP='cd /media/externo/Documentos/Programacao/Cpp'
-    alias PYTHON='cd /media/externo/Documentos/Programacao/Python'
-    alias documentos='cd /media/externo/Documentos'
-    alias imagens='cd /media/externo/Imagens'
+    alias documentos='cd /media/midia/Documentos'
+    alias CPP='cd /media/midia/Documentos/Programacao/Cpp'
+    alias PYTHON='cd /media/midia/Documentos/Programacao/Python'
+    alias imagens='cd /media/midia/Imagens'
+    alias prints='cd /media/midia/Imagens/Prints'
     alias musicas='cd /media/externo/Musicas'
-    alias prints='cd /media/externo/Imagens/Prints'
-    alias filmes='cd /media/externo/Downloads/Torrents/seeding/Filmes'
 
     # Permite usar o sudo com os aliases.
     # Comente aliases com nocorrect na frente em ~/.oh-my-zsh/lib/correction.zsh
@@ -123,12 +122,12 @@
     alias list='du -shc *'
     alias listh='du -shc * | sort -h'
     alias pac='sudo pacman -S'
-    alias back='cd "$OLDPWD"'                                                       # ou back='cd -' para mostrar caminho
+    alias back='cd "$OLDPWD"'           # ou back='cd -' para mostrar caminho
     alias calendario='zenity --calendar'
     alias sx='startx &'
     alias xterm='uxterm'
     alias meuip='curl ifconfig.me'
-    alias chrometor='chromium --proxy-server="socks://localhost:9050" & exit'      # Usa chrome com Tor
+    alias chrometor='chromium --proxy-server="socks://localhost:9050" & exit'   # Usa chrome com Tor
     alias awesomev='xinit /usr/bin/awesome -- :1 &'
     alias awesomen='Xephyr -ac -screen 800x600 -br -reset -terminate -title Awesome_Xephyr :2 &'
     alias houaiss='wine /home/julio/.wine/drive_c/Program\ Files\ \(x86\)/Houaiss3/Houaiss3.exe & disown && exit'
