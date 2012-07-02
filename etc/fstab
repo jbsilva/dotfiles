@@ -20,13 +20,13 @@ UUID=9bbe045e-0807-4576-8531-4a44fcb56e69   /media/externo  ext4        defaults
 UUID=5C001CE3001CC5C4                       /media/ext_ntfs ntfs-3g     defaults,noauto                         0   0
 
 # HD externo de 500GB
-UUID=8A6A873F6A872753                       /media/externo2 ntfs-3g     uid=julio,gid=users,noauto,umask=0022   0   0
+UUID=8A6A873F6A872753                       /media/externo2 ntfs-3g     noauto,uid=julio,gid=users,umask=0022   0   0
 
 # Pendrive
-UUID=2F3B-F48E                              /media/pendrive vfat        uid=julio,gid=users,noauto,umask=0022   0   0
+UUID=2F3B-F48E                              /media/pendrive vfat        noauto,uid=julio,gid=users,umask=0022   0   0
 
 # Camera
-LABEL=SONYHX1                               /media/camera   vfat        defaults,noauto,umask=0022              0   0
+LABEL=SONYHX1                               /media/camera   vfat        noauto,uid=julio,gid=users,fmask=133,dmask=002  0   0
 
 # iPod
 UUID=AA66-2536                              /media/iPod     vfat        defaults,noauto,umask=0022              0   0
