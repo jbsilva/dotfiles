@@ -174,6 +174,7 @@ set incsearch		        " do incremental searching
 set wildmenu                " filesystem surfing - press :e and ^D
 set wildchar=<tab>
 set nofoldenable
+set colorcolumn=80          "colore coluna 80
 
 "------------------------------------------------------------------------------
 " => Evita uso acidental do <F1>
