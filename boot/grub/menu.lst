@@ -35,10 +35,12 @@ color light-blue/black light-cyan/blue
 #
 #-*
 
+# resume=/dev/sdXY deve ser partição swap
+# não esquecer de adicionar *resume* hook em /etc/mkinitcpio.conf
 # (0) Arch Linux
 title  Arch Linux
 root   (hd0,5)
-kernel /vmlinuz-linux root=/dev/sda7 ro
+kernel /vmlinuz-linux root=/dev/sda7 ro resume=/dev/sda5
 initrd /initramfs-linux.img
 
 # (1) Arch Linux
