@@ -134,8 +134,8 @@
     alias regua='echo .........1.........2.........3.........4.........5.........6.........7.........8'
     alias uzbl='uzbl-tabbed'
     alias monitores='/home/julio/Scripts/monitores.sh'
-    
     alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
+    alias okluar='okular'
 
 ################################
 # Edita comando no $EDITOR (vim)
