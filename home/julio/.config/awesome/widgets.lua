@@ -53,8 +53,36 @@ end, 20, {"coretemp.0", "core"})
 bat_icon        = widget({ type = "imagebox" })
 bat_icon.image  = image(beautiful.widget_bat)
 bat_widget      = widget({ type = "textbox" })
-vicious.register(bat_widget, vicious.widgets.bat, "$2%", 61, "BAT0")
 
+bat_toolt = awful.tooltip({ objects = { batwidtext,batwidget },})
+
+vicious.register(bat_widget,vicious.widgets.bat,
+    function(widget, args)
+        if args[1] ~= "-" then
+            btext = 'Pow '
+        else
+            btext = 'Bat '
+        end
+
+        if args[2] == -1 then
+            return btext .. 'full'
+        elseif args[2] < 10 then
+            return btext .. '<span color="#da4939">' .. args[2] .. '</span>%'
+        else
+            return btext .. args[2] .. "%"
+        end
+    end, 30, "BAT0")
+
+batmenu = awful.menu({items = {
+    { "Auto", function() exec("sudo cpufreq-set -r -g ondemand", false) end },
+    { "Ondemand", function() exec("sudo cpufreq-set -r -g ondemand", false) end },
+    { "Powersave", function() exec("sudo cpufreq-set -r -g powersave", false) end },
+    { "Performance", function() exec("sudo cpufreq-set -r -g performance", false) end }
+}})
+
+bat_widget:buttons(awful.util.table.join(
+    awful.button({ }, 1, function() batmenu:toggle() end)
+))
 
 -- Volume
 vol_icon        = widget({ type = "imagebox" })

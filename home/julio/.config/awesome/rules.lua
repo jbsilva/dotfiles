@@ -24,5 +24,11 @@ awful.rules.rules = {
    	properties = { tag = tags [1][9] } },
     { rule = { class = "Thunderbird" },
    	properties = { tag = tags [1][8] } },
+
+    -- Youtube fullscreen
+    { rule = { instance = "exe" },
+   	properties = { floating = true } },
+    { rule = { instance = "plugin-container" },
+   	properties = { floating = true } },
 }
 -- }}}

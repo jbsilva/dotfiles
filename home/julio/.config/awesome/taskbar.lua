@@ -108,24 +108,8 @@ for s = 1, screen.count() do
 
         spacer,
 
-        mem_widget,
-        mem_icon,
-
-        spacer,
-
-        temp_widget,
-        cpu_widget,
-        cpu_icon,
-        spacer,
-
         bat_widget,
         bat_icon,
-        spacer,
-
-        netup_widget,
-        netup_icon,
-        netdown_widget,
-        netdown_icon,
         lside,
 
         s == 1 and mysystray or nil,
@@ -157,6 +141,23 @@ for s = 1, screen.count() do
 
             layout = awful.widget.layout.horizontal.leftright
         },
+        rside,
+        mem_widget,
+        mem_icon,
+
+        spacer,
+
+        temp_widget,
+        cpu_widget,
+        cpu_icon,
+        spacer,
+
+        netup_widget,
+        netup_icon,
+        netdown_widget,
+        netdown_icon,
+        lside,
+
         layout = awful.widget.layout.horizontal.rightleft
     }
 end
