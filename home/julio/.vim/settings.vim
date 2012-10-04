@@ -74,6 +74,8 @@ map Q gq
 inoremap <C-U> <C-G>u<C-U>
 
 " Ativa o mouse, se disponivel
+" Esconde enquanto digita
+set mousehide
 if has('mouse')
   set mouse=a
 endif
@@ -175,6 +177,18 @@ set wildmenu                " filesystem surfing - press :e and ^D
 set wildchar=<tab>
 set nofoldenable
 set colorcolumn=80          "colore coluna 80
+
+"------------------------------------------------------------------------------
+" => Início e fim de linha. Igual terminal e Emacs (conflito com incrementar)
+"------------------------------------------------------------------------------
+"no <C-a> ^
+"no <C-e> $
+
+"------------------------------------------------------------------------------
+" => Fast scroll
+"------------------------------------------------------------------------------
+no <c-j> 6j
+no <c-k> 6k
 
 "------------------------------------------------------------------------------
 " => Evita uso acidental do <F1>
