@@ -66,22 +66,27 @@
 #  Control + b:2 + Release
 
 # Configura MPD
-    "mpc toggle"
+#    "mpc toggle"
+    "ncmpcpp toggle"
     XF86AudioPlay
-    "mpc next"
+
+#    "mpc next"
+    "ncmpcpp next"
     XF86AudioNext
-    "mpc prev"
+
+#    "mpc prev"
+    "ncmpcpp prev"
     XF86AudioPrev
-    "mpc stop"
+
+#    "mpc stop"
+    "ncmpcpp stop"
     XF86AudioStop
 
 ## Para o alsa
 #"amixer -q -c 0 set Master 2dB+"
 #XF86AudioRaiseVolume
-#
 #"amixer -q -c 0 set Master 2dB-"
 #XF86AudioLowerVolume
-#
 #"amixer -q -c 0 set Master toggle"
 #XF86AudioMute
 
@@ -104,7 +109,6 @@ XF86AudioLowerVolume
 #"pacmd dump|awk --non-decimal-data '$1~/set-sink-mute/{system ("pacmd "$1" "$2" "($3=="yes"?"no":"yes"))}'"
 "amixer -q set Master toggle"
 XF86AudioMute
-
 
 ###########################
 ###########################
@@ -162,6 +166,10 @@ KP_Down
 # Move para sudeste (baixo-direita)
 "xdotool mousemove_relative 10 10"
 KP_Next
+
+# Move para canto inferior direito
+"xdotool mousemove_relative 1920 1080"
+KP_Begin
 
 # Clique esquerdo
 "xdotool click 1"
