@@ -85,7 +85,7 @@
     export PROMPT='(%*) %n@%m %{$fg[$user_color]%}%3c%{$reset_color%}%(!.#.>) '
     export VISUAL=/usr/bin/vim
     export EDITOR=/usr/bin/vim
-    export PYTHONSTARTUP="/home/julio/.pyrc"
+    #export PYTHONSTARTUP="/home/julio/.pyrc"
     export PATH="$HOME/.rvm/bin:$PATH"
     export PATH="$HOME/bin:$PATH"
     
@@ -103,12 +103,14 @@
 # Aliases
 ################################
     # Pastas
-    alias documentos='cd /media/midia/Documentos'
-    alias CPP='cd /media/midia/Documentos/Programacao/Cpp'
-    alias PYTHON='cd /media/midia/Documentos/Programacao/Python'
-    alias imagens='cd /media/midia/Imagens'
-    alias prints='cd /media/midia/Imagens/Prints'
+    alias documentos='cd /home/julio/Documentos'
+    alias CPP='cd /home/julio/Documentos/Programacao/Cpp'
+    alias PYTHON='cd /home/julio/Documentos/Programacao/Python'
+    alias imagens='cd /home/julio/Imagens'
+    alias prints='cd /home/julio/Imagens/Prints'
     alias musicas='cd /media/externo/Musicas'
+    alias videos='cd /home/julio/Videos'
+    alias filmes='cd /home/julio/Videos/Filmes'
 
     # Permite usar o sudo com os aliases.
     # Comente aliases com nocorrect na frente em ~/.oh-my-zsh/lib/correction.zsh
@@ -127,6 +129,8 @@
     alias sx='startx &'
     alias xterm='uxterm'
     alias meuip='curl ifconfig.me'
+   # alias g++='g++ -std=c++11 -Wall -Wextra -O2 -lm'
+    alias g++='g++ -Wall -Wextra -O2 -lm'
     alias chrometor='chromium --proxy-server="socks://localhost:9050" & exit'   # Usa chrome com Tor
     alias awesomev='xinit /usr/bin/awesome -- :1 &'
     alias awesomen='Xephyr -ac -screen 800x600 -br -reset -terminate -title Awesome_Xephyr :2 &'
@@ -136,6 +140,7 @@
     alias monitores='/home/julio/Scripts/monitores.sh'
     alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
     alias okluar='okular'
+    alias nocaps='(echo `dumpkeys | grep -i keymaps`; echo keycode 58 = Escape; echo keycode 1 = Caps_Lock) | sudo loadkeys -'
 
 ################################
 # Edita comando no $EDITOR (vim)
