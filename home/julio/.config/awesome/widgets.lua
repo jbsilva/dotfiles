@@ -1,4 +1,4 @@
-require("vicious")
+vicious = require("vicious")
 require("wibox")
 --require("blingbling")
 --require("revelation")
@@ -74,10 +74,10 @@ vicious.register(bat_widget,vicious.widgets.bat,
     end, 30, "BAT0")
 
 batmenu = awful.menu({items = {
-    { "Auto", function() exec("sudo cpufreq-set -r -g ondemand", false) end },
-    { "Ondemand", function() exec("sudo cpufreq-set -r -g ondemand", false) end },
-    { "Powersave", function() exec("sudo cpufreq-set -r -g powersave", false) end },
-    { "Performance", function() exec("sudo cpufreq-set -r -g performance", false) end }
+    { "Auto", function() exec("sudo cpupower frequency-set -r -g ondemand", false) end },
+    { "Ondemand", function() exec("sudo cpupower frequency-set -r -g ondemand", false) end },
+    { "Powersave", function() exec("sudo cpupower frequency-set -r -g powersave", false) end },
+    { "Performance", function() exec("sudo cpupower frequency-set -r -g performance", false) end }
 }})
 
 bat_widget:buttons(awful.util.table.join(
