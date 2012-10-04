@@ -1,0 +1,35 @@
+tasks:
+  ???-tv_xvid_sd:
+    rss: http://.??.com/rss?download;l79;l4;u=123;tp=0123456
+    series:
+      - Breaking Bad:
+          watched: S05E08
+      - Boardwalk Empire:
+          watched: S03E03
+      - Doctor Who:
+          watched: S07E02
+      - Dexter:
+          quality: 720p
+          watched: S07E01
+      - Touch:
+          quality: 720p
+          watched: S06E12
+      - Game of Thrones:
+          quality: 720p
+          watched: S02E02
+    download: /home/julio/Downloads/Torrents/rtorrent/watch/Seriados/
+
+  ???-tv:
+    rss: http://??.com/rss?download;l79;l5;l4;u=123;tp=0123456
+    series:
+      - The Big Bang Theory:
+          watched: S06E01
+      - Revolution:
+          watched: S01E01
+      - The Walking Dead:
+          watched: S02E13
+      - Family Guy:
+          watched: S11E01
+      - Community:
+          watched: S05E03
+    download: /home/julio/Downloads/Torrents/rtorrent/watch/Seriados/
