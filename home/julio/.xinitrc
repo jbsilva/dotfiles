@@ -1,5 +1,12 @@
 #!/bin/sh
-# Última modificação: 27/04/2011 23:30
+# Última modificação: 23/07/2012 20:35
+
+if [ -d /etc/X11/xinit/xinitrc.d ]; then 
+  for f in /etc/X11/xinit/xinitrc.d/*; do 
+    [ -x "$f" ] && . "$f" 
+  done 
+  unset f 
+fi
 
 #############################      Monitores      #############################
 /home/julio/Scripts/monitores.sh &
@@ -28,11 +35,7 @@ xbindkeys
 /home/julio/Scripts/inicia_mpd.sh
 
 ########################## Desktop Environments / WMs #########################
-#exec xterm
 exec awesome
-#exec pekwm
-#xmonad
-#xsetrot -cursor_name left_ptr
 #exec startxfce4
 
 ### Corrige problema da tela cinza dos programas em Java no Awesome ###
