@@ -1,10 +1,9 @@
 ! ----------------------------------------------------------------------------
 ! modified: 11-09-2009
-! vim:enc=utf-8:nu:ai:si:et:ts=4:sw=4:ft=xdefaults:
 ! Deve-se criar um link simbólico para ~/.Xdefaults
 ! ----------------------------------------------------------------------------
 
-# include "/home/julio/.xdefaults/xterm"
+!# include "/home/julio/.xdefaults/xterm"
 # include "/home/julio/.xdefaults/urxvt"
 !# include "/home/julio/.xdefaults/xft"
 !# include "/home/julio/.xdefaults/emacs"

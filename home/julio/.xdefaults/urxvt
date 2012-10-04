@@ -71,6 +71,8 @@
     URxvt*color14:              #93e0e3
     URxvt*color15:              #ffffff
 
+    !! Lembrar de alterar o zenburn.vim:
+    !! hi Search    ctermfg=172   ctermbg=236
 !Zenburn alternativo, trocar cores:
 !    URxvt*color0:               #3f3f3f
 !    URxvt*color1:               #cc9393
