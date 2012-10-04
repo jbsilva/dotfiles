@@ -1,2 +1,3 @@
 #!/bin/bash
-scrot -e 'mv $f /media/externo/Imagens/Prints/ 2>/dev/null'
+#Esse script é chamado pelo xbindkeys. Mantenha cópia em ~/Scripts
+scrot -e 'mv $f /home/julio/Imagens/Prints/ 2>/dev/null'
