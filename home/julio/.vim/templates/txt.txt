@@ -1,1 +1,1 @@
-" vim: syntax=off tw=80
+" vim: syntax=off tw=79
