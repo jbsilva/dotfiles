@@ -9,6 +9,9 @@ Clone este repositório em `~/dotfiles` e no lugar dos arquivos originais crie
 hard links (ou links simbólicos) para os arquivos na pasta clonada. Para os
 arquivos que isso geraria algum problema (permissões, etc) apenas lembre de
 realizar as alterações em ambos os arquivos.
+É melhor usar hard links para a maioria dos dotfiles, porém repare que alguns
+arquivos, como o .gitconfig, são melhores como link simbólico. Também perceba
+que hard links só podem ser criados dentro da mesma particão.
 
 ## TODO
 
