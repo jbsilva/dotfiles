@@ -21,7 +21,7 @@
 #           http://sam.zoy.org/wtfpl/COPYING for more details.
 #
 # Created:      2011
-# Last Change:  Sat 12 Nov 2011 00:00
+# Last Change:  Sat 23 Jul 2012 22:30
 #
 # Download:
 #       https://github.com/jbsilva/dotfiles
@@ -49,21 +49,21 @@ protocol.encryption.set = allow_incoming,try_outgoing,enable_retry
 ################################
 
 # Default directory to save the downloaded torrents.
-directory.default.set = /media/externo/Downloads/Torrents/leeching/Misc
+directory.default.set = /home/julio/Downloads/Torrents/leeching/Misc
 
 # Default session directory
-session.path.set = /media/externo/Downloads/Torrents/rtorrent/sessions
+session.path.set = /home/julio/Downloads/Torrents/rtorrent/sessions
 
 # Vigia pastas por novos torrents
-# load_start:       Pasta a ser vigiada, pois é onde os arquivos .torrent são mantidos
-# set_directory:    Muda a pasta em que o arquivo será baixado
-# set_custom1:      Muda a pasta para a qual o arquivo será movido após concluído
-schedule = watch_directory_1,10,10,"load.start=/media/externo/Downloads/Torrents/rtorrent/watch/Musicas/*.torrent,d.directory.set=/media/externo/Downloads/Torrents/leeching/Musicas/,d.custom1.set=/media/externo/Downloads/Torrents/seeding/Musicas"
-schedule = watch_directory_2,10,10,"load.start=/media/externo/Downloads/Torrents/rtorrent/watch/Filmes/*.torrent,d.directory.set=/media/externo/Downloads/Torrents/leeching/Filmes/,d.custom1.set=/media/externo/Downloads/Torrents/seeding/Filmes"
-schedule = watch_directory_3,10,10,"load.start=/media/externo/Downloads/Torrents/rtorrent/watch/Seriados/*.torrent,d.directory.set=/media/externo/Downloads/Torrents/leeching/Seriados/,d.custom1.set=/media/externo/Downloads/Torrents/seeding/Seriados"
-schedule = watch_directory_4,10,10,"load.start=/media/externo/Downloads/Torrents/rtorrent/watch/Programas/*.torrent,d.directory.set=/media/externo/Downloads/Torrents/leeching/Programas/,d.custom1.set=/media/externo/Downloads/Torrents/seeding/Programas"
-schedule = watch_directory_5,10,10,"load.start=/media/externo/Downloads/Torrents/rtorrent/watch/Misc/*.torrent,d.directory.set=/media/externo/Downloads/Torrents/leeching/Misc/,d.custom1.set=/media/externo/Downloads/Torrents/seeding/Misc"
-schedule = watch_directory_6,10,10,"load.start=/media/externo/Downloads/Torrents/rtorrent/watch/Ebooks/*.torrent,d.directory.set=/media/externo/Downloads/Torrents/leeching/Ebooks/,d.custom1.set=/media/externo/Downloads/Torrents/seeding/Ebooks"
+# load.start:       Pasta a ser vigiada, pois é onde os arquivos .torrent são mantidos
+# directory.set:    Muda a pasta em que o arquivo será baixado (leechig)
+# custom1.set:      Muda a pasta para a qual o arquivo será movido após concluído
+schedule = watch_directory_1,10,10,"load.start=/home/julio/Downloads/Torrents/rtorrent/watch/Musicas/*.torrent,d.directory.set=/home/julio/Downloads/Torrents/leeching/Musicas/,d.custom1.set=/media/externo/Musicas/Torrents"
+schedule = watch_directory_2,10,10,"load.start=/home/julio/Downloads/Torrents/rtorrent/watch/Filmes/*.torrent,d.directory.set=/home/julio/Downloads/Torrents/leeching/Filmes/,d.custom1.set=/home/julio/Downloads/Torrents/seeding/Filmes"
+schedule = watch_directory_3,10,10,"load.start=/home/julio/Downloads/Torrents/rtorrent/watch/Seriados/*.torrent,d.directory.set=/home/julio/Downloads/Torrents/leeching/Seriados/,d.custom1.set=/home/julio/Downloads/Torrents/seeding/Seriados"
+schedule = watch_directory_4,10,10,"load.start=/home/julio/Downloads/Torrents/rtorrent/watch/Programas/*.torrent,d.directory.set=/home/julio/Downloads/Torrents/leeching/Programas/,d.custom1.set=/home/julio/Downloads/Torrents/seeding/Programas"
+schedule = watch_directory_5,10,10,"load.start=/home/julio/Downloads/Torrents/rtorrent/watch/Misc/*.torrent,d.directory.set=/home/julio/Downloads/Torrents/leeching/Misc/,d.custom1.set=/home/julio/Downloads/Torrents/seeding/Misc"
+schedule = watch_directory_6,10,10,"load.start=/home/julio/Downloads/Torrents/rtorrent/watch/Ebooks/*.torrent,d.directory.set=/home/julio/Downloads/Torrents/leeching/Ebooks/,d.custom1.set=/home/julio/Downloads/Torrents/seeding/Ebooks"
 
 # Move os arquivos concluídos para suas respectivas pastas
 method.set_key =event.download.finished,move_complete,"d.directory.set=$d.custom1= ;execute=mv,-u,$d.base_path=,$d.custom1="
@@ -85,32 +85,33 @@ network.scgi.open_port = localhost:5000
 #################################
 # Set "pyro.extended" to 1 to activate rTorrent-PS features!
 # LEAVE THIS AT 0 IF YOU RUN A VANILLA rTorrent!
-method.insert = pyro.extended, value|const, 1
+#method.insert = pyro.extended, value|const, 1
 
-# Set "pyro.bin_dir" to the "bin" directory where you installed the pyrocore tools!
-# Make sure you end it with a "/"; if this is left empty, then the shell's path is searched.
-method.insert = pyro.bin_dir, string|const, 
+# Set "pyro.bin_dir" to the "bin" directory where you installed the pyrocore
+# tools!  Make sure you end it with a "/"; if this is left empty, then the
+# shell's path is searched.
+#method.insert = pyro.bin_dir, string|const, 
 
-# Remove the ".default" if you want to change something (else your 
-# changes get over-written on update).
-method.insert = pyro.rc_dialect, string|const|simple, "execute.capture=bash,-c,\"test $1 = 0.8.6 && echo -n 0.8.6 || echo -n 0.8.9\",dialect,$system.client_version="
-method.insert = pyro.rtorrent_rc, string|const|private, "$cat=~/.pyroscope/rtorrent-,\"$pyro.rc_dialect=\",.rc.default"
-import = $pyro.rtorrent_rc=
+# Remove the ".default" if you want to change something (else your changes get
+# over-written on update).
+#method.insert = pyro.rc_dialect, string|const|simple, "execute.capture=bash,-c,\"test $1 = 0.8.6 && echo -n 0.8.6 || echo -n 0.8.9\",dialect,$system.client_version="
+#method.insert = pyro.rtorrent_rc, string|const|private, "$cat=~/.pyroscope/rtorrent-,\"$pyro.rc_dialect=\",.rc.default"
+#import = $pyro.rtorrent_rc=
 
 # TORQUE: Daemon watchdog schedule
 # Must be activated by touching the "~/.pyroscope/run/pyrotorque" file!
 # Set the second argument to "-v" or "-q" to change log verbosity.
-schedule = pyro_watchdog,30,300,"pyro.watchdog=~/.pyroscope,"
+#schedule = pyro_watchdog,30,300,"pyro.watchdog=~/.pyroscope,"
 
 # Show traffic of the last hour
-network.history.depth.set = 112
-schedule = network_history_sampling,1,32, network.history.sample=
-method.insert = network.history.auto_scale.toggle, simple|private, "branch=network.history.auto_scale=,\"network.history.auto_scale.set=0\",\"network.history.auto_scale.set=1\""
-method.insert = network.history.auto_scale.ui_toggle, simple|private, "network.history.auto_scale.toggle= ;network.history.refresh="
-branch=pyro.extended=,"schedule = bind_auto_scale,0,0,\"ui.bind_key=download_list,=,network.history.auto_scale.ui_toggle=\""
+#network.history.depth.set = 112
+#schedule = network_history_sampling,1,32, network.history.sample=
+#method.insert = network.history.auto_scale.toggle, simple|private, "branch=network.history.auto_scale=,\"network.history.auto_scale.set=0\",\"network.history.auto_scale.set=1\""
+#method.insert = network.history.auto_scale.ui_toggle, simple|private, "network.history.auto_scale.toggle= ;network.history.refresh="
+#branch=pyro.extended=,"schedule = bind_auto_scale,0,0,\"ui.bind_key=download_list,=,network.history.auto_scale.ui_toggle=\""
 
 # VIEW: Show active and incomplete torrents (in view #9) and update every 20 seconds
 #       Items are grouped into complete, incomplete, and queued, in that order.
 #       Within each group, they're sorted by upload and then download speed.
-view_sort_current = active,"compare=----,d.is_open=,d.get_complete=,d.get_up_rate=,d.get_down_rate="
-schedule = filter_active,12,20,"view_filter = active,\"or={d.get_up_rate=,d.get_down_rate=,not=$d.get_complete=}\" ;view_sort=active"
+#view_sort_current = active,"compare=----,d.is_open=,d.get_complete=,d.get_up_rate=,d.get_down_rate="
+#schedule = filter_active,12,20,"view_filter = active,\"or={d.get_up_rate=,d.get_down_rate=,not=$d.get_complete=}\" ;view_sort=active"
