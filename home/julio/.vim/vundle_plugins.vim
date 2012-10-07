@@ -89,10 +89,6 @@ Bundle 'vim-scripts/L9'
 "Ruby on rails
 Bundle 'vim-scripts/rails.vim'
 
-"C and C++
-Bundle 'vim-scripts/c.vim'
-Bundle 'wincent/Command-T'
-
 "vim + gnu screen
 Bundle 'ervandew/screen'
 
@@ -100,3 +96,14 @@ Bundle 'ervandew/screen'
 "Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'git://vim-latex.git.sourceforge.net/gitroot/vim-latex/vim-latex'
 Bundle 'git://gitorious.org/vim-gnupg/vim-gnupg.git'
+
+"C and C++
+Bundle 'wincent/Command-T'
+Bundle 'vim-scripts/c.vim'
+
+"" Edite o plugin c.vim:
+"   -> c-support/templates/Templates: Coloque seus dados
+"   -> c-support/templates/cpp.comments.template: Diminua === para 79 colunas
+"           e adicione alguns includes e `int main(){ return 0}`
+"   -> plugin/c.vim: Mude o formado usado para datas:
+"           s:C_FormatDate = '%d/%b/%Y' e s:C_FormatTime = '%T'
