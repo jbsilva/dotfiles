@@ -116,6 +116,7 @@
     # Comente aliases com nocorrect na frente em ~/.oh-my-zsh/lib/correction.zsh
     # O problema é ter o correct no zsh funcionando em mkdir, touch, etc...
     alias sudo='nocorrect sudo '
+    alias fucking='sudo' # Hehe =]
     alias -s txt=vim    #associa .txt ao vim
     alias -s pdf=okular #associa .pdf o okular
     alias ls='ls --color=auto'
