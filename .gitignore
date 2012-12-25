@@ -1,2 +1,3 @@
-home/julio/.vim/bundle
 *.pyc
+home/julio/.vim/bundle/*
+!home/julio/.vim/bundle/vundle/
