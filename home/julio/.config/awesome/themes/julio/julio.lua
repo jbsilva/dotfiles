@@ -12,8 +12,8 @@ icons_dir                   = theme_dir .. "/icons"
 widgets_dir                 = icons_dir .. "/widgets/blue"
 layouts_dir                 = theme_dir .. "/layouts"
 
-wall_dir                    = "/home/julio/Imagens/Wallpapers/varios/Linux/Arch/"
-wallpaper                   = wall_dir .. "1920x1080/newarchback.jpg"
+wall_dir                    = theme_dir .. "/wallpapers"
+wallpaper                   = wall_dir .. "/wallpaper.jpg"
 theme.wallpaper_cmd         = { "awsetbg " .. wallpaper }
 
 theme.font                  = "sans 8"
