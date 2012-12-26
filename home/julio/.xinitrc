@@ -9,7 +9,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 
 #############################      Monitores      #############################
-/home/julio/Scripts/monitores.sh &
+#/home/julio/Scripts/monitores.sh &
 
 #############################      Wallpaper      #############################
 #/home/julio/Scripts/wallpaper.sh &
@@ -23,11 +23,12 @@ fi
 #
 #setxkbmap -option terminate:ctrl_alt_bksp
 #setxkbmap -model acer_laptop -layout us -variant intl -option caps:swapescape
-setxkbmap -model pc105 -layout gb -variant intl -option caps:swapescape
+#setxkbmap -model pc105 -layout gb -variant intl -option caps:swapescape
+setxkbmap br -option caps:swapescape
 
-if [ -f ~/.Xmodmap/xmodmap_uk ]; then
-    xmodmap ~/.Xmodmap/xmodmap_uk
-fi
+#if [ -f ~/.Xmodmap/xmodmap_uk ]; then
+#    xmodmap ~/.Xmodmap/xmodmap_uk
+#fi
 
 xbindkeys
 
