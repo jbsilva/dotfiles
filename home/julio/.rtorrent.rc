@@ -1,4 +1,4 @@
-#######################################################
+###############################################################################
 #               Julio's ~/.rtorrent.rc file
 #
 #       ####   #####   ###   ####   ####   #####  #   #  #####
@@ -27,12 +27,11 @@
 #       https://github.com/jbsilva/dotfiles/blob/hp/home/julio/.rtorrent.rc
 #
 # Distro: Arch Linux
-#######################################################
+###############################################################################
 
-################################
+###############################################################################
 # Conexão
-################################
-
+###############################################################################
 # Port range to use for listening.
 network.port_range.set = 49164-49164
 
@@ -43,10 +42,9 @@ throttle.global_up.max_rate.set_kb = 0
 # Criptografia
 protocol.encryption.set = allow_incoming,try_outgoing,enable_retry
 
-################################
+###############################################################################
 # Pastas
-################################
-
+###############################################################################
 # Default directory to save the downloaded torrents.
 directory.default.set = /media/hd2/Torrents/leeching/Misc
 
@@ -79,9 +77,9 @@ schedule = low_diskspace,5,60,close_low_diskspace=200M
 # Para o WTorrent
 network.scgi.open_port = localhost:5000
 
-#################################
+###############################################################################
 ## PyroScope SETTINGS
-#################################
+###############################################################################
 # Set "pyro.extended" to 1 to activate rTorrent-PS features!
 # LEAVE THIS AT 0 IF YOU RUN A VANILLA rTorrent!
 method.insert = pyro.extended, value|const, 1
