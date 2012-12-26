@@ -1,4 +1,4 @@
-#######################################################
+##############################################################################
 #               Julio's ~/.rtorrent.rc file
 #
 #       ####   #####   ###   ####   ####   #####  #   #  #####
@@ -21,19 +21,18 @@
 #           http://sam.zoy.org/wtfpl/COPYING for more details.
 #
 # Created:      2011
-# Last Change:  Sat 23 Jul 2012 22:30
+# Last Change:  Sat 26 Dec 2012 02:25
 #
 # Download:
 #       https://github.com/jbsilva/dotfiles
 #       http://www.juliobs.com/www/files/dotfiles/.rtorrent.rc
 #
 # Distro: Arch Linux
-#######################################################
+##############################################################################
 
-################################
+##############################################################################
 # Conexão
-################################
-
+##############################################################################
 # Port range to use for listening.
 network.port_range.set = 49164-49164
 
@@ -44,10 +43,9 @@ throttle.global_up.max_rate.set_kb = 0
 # Criptografia
 protocol.encryption.set = allow_incoming,try_outgoing,enable_retry
 
-################################
+##############################################################################
 # Pastas
-################################
-
+##############################################################################
 # Default directory to save the downloaded torrents.
 directory.default.set = /home/julio/Downloads/Torrents/leeching/Misc
 
@@ -80,38 +78,38 @@ schedule = low_diskspace,5,60,close_low_diskspace=200M
 # Para o WTorrent
 network.scgi.open_port = localhost:5000
 
-#################################
+##############################################################################
 ## PyroScope SETTINGS
-#################################
+##############################################################################
 # Set "pyro.extended" to 1 to activate rTorrent-PS features!
 # LEAVE THIS AT 0 IF YOU RUN A VANILLA rTorrent!
-#method.insert = pyro.extended, value|const, 1
+method.insert = pyro.extended, value|const, 1
 
 # Set "pyro.bin_dir" to the "bin" directory where you installed the pyrocore
 # tools!  Make sure you end it with a "/"; if this is left empty, then the
 # shell's path is searched.
-#method.insert = pyro.bin_dir, string|const, 
+method.insert = pyro.bin_dir, string|const, 
 
 # Remove the ".default" if you want to change something (else your changes get
 # over-written on update).
-#method.insert = pyro.rc_dialect, string|const|simple, "execute.capture=bash,-c,\"test $1 = 0.8.6 && echo -n 0.8.6 || echo -n 0.8.9\",dialect,$system.client_version="
-#method.insert = pyro.rtorrent_rc, string|const|private, "$cat=~/.pyroscope/rtorrent-,\"$pyro.rc_dialect=\",.rc.default"
-#import = $pyro.rtorrent_rc=
+method.insert = pyro.rc_dialect, string|const|simple, "execute.capture=bash,-c,\"test $1 = 0.8.6 && echo -n 0.8.6 || echo -n 0.8.9\",dialect,$system.client_version="
+method.insert = pyro.rtorrent_rc, string|const|private, "$cat=~/.pyroscope/rtorrent-,\"$pyro.rc_dialect=\",.rc.default"
+import = $pyro.rtorrent_rc=
 
 # TORQUE: Daemon watchdog schedule
 # Must be activated by touching the "~/.pyroscope/run/pyrotorque" file!
 # Set the second argument to "-v" or "-q" to change log verbosity.
-#schedule = pyro_watchdog,30,300,"pyro.watchdog=~/.pyroscope,"
+schedule = pyro_watchdog,30,300,"pyro.watchdog=~/.pyroscope,"
 
 # Show traffic of the last hour
-#network.history.depth.set = 112
-#schedule = network_history_sampling,1,32, network.history.sample=
-#method.insert = network.history.auto_scale.toggle, simple|private, "branch=network.history.auto_scale=,\"network.history.auto_scale.set=0\",\"network.history.auto_scale.set=1\""
-#method.insert = network.history.auto_scale.ui_toggle, simple|private, "network.history.auto_scale.toggle= ;network.history.refresh="
-#branch=pyro.extended=,"schedule = bind_auto_scale,0,0,\"ui.bind_key=download_list,=,network.history.auto_scale.ui_toggle=\""
+network.history.depth.set = 112
+schedule = network_history_sampling,1,32, network.history.sample=
+method.insert = network.history.auto_scale.toggle, simple|private, "branch=network.history.auto_scale=,\"network.history.auto_scale.set=0\",\"network.history.auto_scale.set=1\""
+method.insert = network.history.auto_scale.ui_toggle, simple|private, "network.history.auto_scale.toggle= ;network.history.refresh="
+branch=pyro.extended=,"schedule = bind_auto_scale,0,0,\"ui.bind_key=download_list,=,network.history.auto_scale.ui_toggle=\""
 
 # VIEW: Show active and incomplete torrents (in view #9) and update every 20 seconds
 #       Items are grouped into complete, incomplete, and queued, in that order.
 #       Within each group, they're sorted by upload and then download speed.
-#view_sort_current = active,"compare=----,d.is_open=,d.get_complete=,d.get_up_rate=,d.get_down_rate="
-#schedule = filter_active,12,20,"view_filter = active,\"or={d.get_up_rate=,d.get_down_rate=,not=$d.get_complete=}\" ;view_sort=active"
+view_sort_current = active,"compare=----,d.is_open=,d.get_complete=,d.get_up_rate=,d.get_down_rate="
+schedule = filter_active,12,20,"view_filter = active,\"or={d.get_up_rate=,d.get_down_rate=,not=$d.get_complete=}\" ;view_sort=active"
