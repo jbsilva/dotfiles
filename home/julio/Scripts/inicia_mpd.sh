@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # MPD
-mpd /home/julio/.mpd/mpd.conf
+#mpd /home/julio/.mpd/mpd.conf
+systemd --user &
+
 
 # Mpdscribble:
 pidof mpdscribble >& /dev/null
