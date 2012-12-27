@@ -2,7 +2,6 @@
 
 # MPD
 #mpd /home/julio/.mpd/mpd.conf
-systemd --user &
 
 
 # Mpdscribble:
