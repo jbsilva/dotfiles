@@ -22,8 +22,8 @@ fi
 #export XIM_MODULE="scim -d"
 #
 #setxkbmap -option terminate:ctrl_alt_bksp
-#setxkbmap -model acer_laptop -layout us -variant intl -option caps:swapescape
-setxkbmap -model pc105 -layout gb -variant intl -option caps:swapescape
+setxkbmap -model acer_laptop -layout us -variant intl -option caps:swapescape
+#setxkbmap -model pc105 -layout gb -variant intl -option caps:swapescape
 
 if [ -f ~/.Xmodmap/xmodmap_uk ]; then
     xmodmap ~/.Xmodmap/xmodmap_uk
