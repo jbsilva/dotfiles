@@ -1,46 +1,36 @@
 # 
 # /etc/fstab: static file system information
 #
-# <file system>                             <dir>               <type>      <options>                                   <dump>  <pass>
-tmpfs                                       /tmp                tmpfs       nodev,nosuid                                    0   0
-UUID=0c84e64f-1dc6-4ffe-b953-a5b2c2082127   swap                swap        defaults                                        0   0
-UUID=80d88ab2-1c30-49a6-ba64-9b3b010be983   /boot               ext2        defaults                                        0   1
-UUID=d4422521-eb52-4c58-a0fa-a116fd873ae6   /                   btrfs       defaults                                        0   1
+# <file system> <dir>   <type>  <options>   <dump>  <pass>
+# /dev/mapper/vg_arch-root LABEL=root
+UUID=105af731-d489-43f4-a47b-52d81d2e159e   /               btrfs       rw,relatime,space_cache                 0 1
 
-# HD interno - Partição do Windows
-UUID=BAA68EFAA68EB683                       /media/windows      ntfs-3g     defaults,noauto                                 0   0
+# /dev/mapper/vg_arch-var LABEL=home
+UUID=387468d8-bd29-434e-9f12-6fcb8aa84ed4   /var            ext4        rw,relatime,data=ordered                0 2
 
-# HD interno - Partição NTFS de Mídia
-UUID=49145CB02E0B6F69                       /media/midia        ntfs-3g     uid=julio,gid=users,fmask=133,dmask=002         0   0
+# /dev/mapper/vg_arch-home LABEL=home
+UUID=f2e5f523-0452-447f-8e57-33bbc8b870c1   /home           ext4        rw,relatime,data=ordered                0 2
 
-# HD Externo de 2TB - Partição EXT4
-UUID=9bbe045e-0807-4576-8531-4a44fcb56e69   /media/externo      ext4        defaults                                        0   0
+# /dev/sda2 LABEL=boot
+UUID=2ea056a0-a468-4201-9d01-872ac1f3d4bc   /boot           ext2        rw,relatime                             0 2
 
-# HD Externo de 2TB - Partição NTFS
-UUID=5C001CE3001CC5C4                       /media/ext_ntfs     ntfs-3g     defaults,noauto                                 0   0
-
-# HD de Backup de 2TB - Partição EXT4
-UUID=6a69fb80-dbef-40b9-8d78-0ed310739083   /media/backup       ext4        defaults                                        0   0
-
-# HD de Backup de 2TB - Partição NTFS
-UUID=4016989916989210                       /media/backup_ntfs  ntfs-3g     noauto,uid=julio,gid=users,fmask=133,dmask=002  0   0
+# /dev/mapper/vg_arch-swap LABEL=swap
+UUID=e7866806-a771-43a3-9a7f-0a19990fdbf5   none            swap        defaults                                0 0
 
 # HD externo de 500GB
-UUID=8A6A873F6A872753                       /media/externo2     ntfs-3g     noauto,uid=julio,gid=users,umask=0022           0   0
+UUID=8A6A873F6A872753                       /media/externo  ntfs-3g  noauto,uid=julio,gid=users,fmask=133,dmask=002 0 0
 
 # Pendrive
-UUID=2F3B-F48E                              /media/pendrive     vfat        noauto,uid=julio,gid=users,umask=0022           0   0
+UUID=2F3B-F48E                              /media/pendrive vfat     noauto,uid=julio,gid=users,fmask=133,dmask=002 0 0
 
 # Camera
-LABEL=SONYHX1                               /media/camera       vfat        noauto,uid=julio,gid=users,fmask=133,dmask=002  0   0
+LABEL=SONYHX1                               /media/camera   vfat     noauto,uid=julio,gid=users,fmask=133,dmask=002 0 0
 
 # iPod
-UUID=AA66-2536                              /media/iPod         vfat        defaults,noauto,umask=0022                      0   0
+UUID=AA66-2536                              /media/iPod     vfat     defaults,noauto,umask=0022                     0 0
+
+# Celular
+UUID=8A89-1B04                              /media/celular  vfat     noauto,uid=julio,gid=users,fmask=133,dmask=002 0 0
 
 # SAMBA
-#//192.168.0.1/rede                          /media/rede         cifs        noauto,noatime                                  0   0
-###################################################################################################################
-# Para descobrir o UUID: $ ls -l /dev/disk/by-uuid/
-###################################################################################################################
-# Use "gid=users" e "fmask=113,dmask=002" (ou "umask=0022") em partições NTFS para permitir usuários além do root
-# uid=julio,gid=users faz com que o usuário julio seja o dono
+//10.0.0.2/musicas                          /media/rede     cifs     noauto,credentials=/etc/samba/smbcred          0 0
