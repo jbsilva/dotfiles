@@ -108,6 +108,13 @@ vol_icon:buttons(awful.util.table.join(
 ))
 
 -- MPD
+
+-- Variável que faz login automaticamente no MPD
+SENHA = "SuaSenhaAqui"
+HOST = "localhost"
+PORTA = "6600"
+NCMPCPP= "ncmpcpp -h "..SENHA.."@localhost"
+
 mpd_icon        = widget({ type = "imagebox" })
 mpd_icon.image  = image(beautiful.widget_mpd)
 mpd_widget      = widget({ type = "textbox" })
@@ -120,32 +127,32 @@ vicious.register(mpd_widget, vicious.widgets.mpd,
         else 
             return args["{Artist}"]..' - '.. args["{Title}"]
         end
-    end, 8)
+    end, 8, {SENHA, HOST, PORTA})
 
 mpd_icon:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () shell_exec("urxvt -e ncmpcpp", false) end)
+    awful.button({ }, 1, function () shell_exec("urxvt -e " .. NCMPCPP, false) end)
 ))
 
 -- MPD controls
 music_play = awful.widget.launcher({
     image = beautiful.widget_play,
-    command = "ncmpcpp play"})
+    command = NCMPCPP .. " play"})
 
   music_pause = awful.widget.launcher({
     image = beautiful.widget_pause,
-    command = "ncmpcpp pause"})
+    command = NCMPCPP .. " pause"})
 
   music_stop = awful.widget.launcher({
     image = beautiful.widget_stop,
-    command = "ncmpcpp stop"})
+    command = NCMPCPP .. " stop"})
 
   music_prev = awful.widget.launcher({
     image = beautiful.widget_prev,
-    command = "ncmpcpp prev"})
+    command = NCMPCPP .. " prev"})
 
   music_next = awful.widget.launcher({
     image = beautiful.widget_next,
-    command = "ncmpcpp next"})
+    command = NCMPCPP .. " next"})
 
 -- Net Widget
 intrf = "eth0"
