@@ -1,7 +1,9 @@
 # @reboot, @yearly, @annually, @monthly, @weekly, @daily, @midnight, @hourly
 #
-# minuto    hora    Dia do Mes        Mes          Dia da Semana    Comando
-# (0-59)   (0-23)     (1-31)   (1-12 ou Jan-Dec)  (0-6 ou Sun-Sat)
-#    10       7          *             3-12            *           /home/julio/Scripts/despertador.sh
-#    0    1,2,4,6,19     *             *               *           /home/julio/Scripts/controla_torrents.sh -u 0
-*/30        *           *               *               *           /usr/bin/flexget --cron
+#minuto hora    Dia_Mes Mes       Dia_Semana Comando
+#(0-59) (0-23)  (1-31)  (1-12)    (0-6)
+#                       (Jan-Dec) (Sun-Sat)
+#
+#10     7       *       3-12      *          /home/julio/Scripts/despertador.sh
+#0      1,2,4,6 *       *         *          /home/julio/Scripts/controla_torrents.sh -u 0
+ */30   *       *       *         *          /usr/bin/flexget --cron
