@@ -1,46 +1,21 @@
 # 
 # /etc/fstab: static file system information
 #
-# <file system>                             <dir>               <type>      <options>                                   <dump>  <pass>
-tmpfs                                       /tmp                tmpfs       nodev,nosuid                                    0   0
-UUID=0c84e64f-1dc6-4ffe-b953-a5b2c2082127   swap                swap        defaults                                        0   0
-UUID=80d88ab2-1c30-49a6-ba64-9b3b010be983   /boot               ext2        defaults                                        0   1
-UUID=d4422521-eb52-4c58-a0fa-a116fd873ae6   /                   btrfs       defaults                                        0   1
+# <file system>     <dir>       <type>      <options>       <dump>      <pass>
+# /dev/sda7 LABEL=root
+UUID=50965fe4-ecc0-4b60-aa52-d29e83bbe61e   /           ext4        rw,relatime,data=ordered    0 1
 
-# HD interno - Partição do Windows
-UUID=BAA68EFAA68EB683                       /media/windows      ntfs-3g     defaults,noauto                                 0   0
+# /dev/sda6 LABEL=boot
+UUID=2548f87f-e260-47f1-819e-b38ac567ac6f   /boot       ext2        rw,relatime     0 2
 
-# HD interno - Partição NTFS de Mídia
-UUID=49145CB02E0B6F69                       /media/midia        ntfs-3g     uid=julio,gid=users,fmask=133,dmask=002         0   0
+# /dev/sda5 LABEL=swap
+UUID=613548f6-182b-44c5-b96a-5ee5082155b3   none        swap        defaults        0 0
 
-# HD Externo de 2TB - Partição EXT4
-UUID=9bbe045e-0807-4576-8531-4a44fcb56e69   /media/externo      ext4        defaults                                        0   0
+# /dev/sda3
+UUID=9bbe045e-0807-4576-8531-4a44fcb56e69   /media/hd1  ext4        defaults        0 0
 
-# HD Externo de 2TB - Partição NTFS
-UUID=5C001CE3001CC5C4                       /media/ext_ntfs     ntfs-3g     defaults,noauto                                 0   0
+# /dev/sdb1
+UUID=189c139f-d52f-4824-9387-1b1fc95efbf0   /media/hd2  ext4        defaults        0 0
 
-# HD de Backup de 2TB - Partição EXT4
-UUID=6a69fb80-dbef-40b9-8d78-0ed310739083   /media/backup       ext4        defaults                                        0   0
-
-# HD de Backup de 2TB - Partição NTFS
-UUID=4016989916989210                       /media/backup_ntfs  ntfs-3g     noauto,uid=julio,gid=users,fmask=133,dmask=002  0   0
-
-# HD externo de 500GB
-UUID=8A6A873F6A872753                       /media/externo2     ntfs-3g     noauto,uid=julio,gid=users,umask=0022           0   0
-
-# Pendrive
-UUID=2F3B-F48E                              /media/pendrive     vfat        noauto,uid=julio,gid=users,umask=0022           0   0
-
-# Camera
-LABEL=SONYHX1                               /media/camera       vfat        noauto,uid=julio,gid=users,fmask=133,dmask=002  0   0
-
-# iPod
-UUID=AA66-2536                              /media/iPod         vfat        defaults,noauto,umask=0022                      0   0
-
-# SAMBA
-#//192.168.0.1/rede                          /media/rede         cifs        noauto,noatime                                  0   0
-###################################################################################################################
-# Para descobrir o UUID: $ ls -l /dev/disk/by-uuid/
-###################################################################################################################
-# Use "gid=users" e "fmask=113,dmask=002" (ou "umask=0022") em partições NTFS para permitir usuários além do root
-# uid=julio,gid=users faz com que o usuário julio seja o dono
+# /dev/sdg4 - HD externo de 500GB
+UUID=8A6A873F6A872753  /media/externo  ntfs-3g  noauto,uid=julio,gid=users,fmask=133,dmask=002  0 0
