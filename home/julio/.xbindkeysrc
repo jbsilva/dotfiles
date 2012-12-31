@@ -67,19 +67,19 @@
 
 # Configura MPD
 #    "mpc toggle"
-    "ncmpcpp toggle"
+    "ncmpcpp -h SuaSenhaAqui@localhost toggle"
     XF86AudioPlay
 
 #    "mpc next"
-    "ncmpcpp next"
+    "ncmpcpp -h SuaSenhaAqui@localhost next"
     XF86AudioNext
 
 #    "mpc prev"
-    "ncmpcpp prev"
+    "ncmpcpp -h SuaSenhaAqui@localhost prev"
     XF86AudioPrev
 
 #    "mpc stop"
-    "ncmpcpp stop"
+    "ncmpcpp -h SuaSenhaAqui@localhost stop"
     XF86AudioStop
 
 ## Para o alsa
