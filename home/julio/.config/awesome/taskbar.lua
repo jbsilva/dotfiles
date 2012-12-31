@@ -106,11 +106,11 @@ for s = 1, screen.count() do
         date_widget,
         date_icon,
 
-        spacer,
-
-        bat_widget,
-        bat_icon,
-        lside,
+        -- comente se nao tiver bateria
+        --spacer,
+        --bat_widget,
+        --bat_icon,
+        --lside,
 
         s == 1 and mysystray or nil,
         mytasklist[s],
