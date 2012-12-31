@@ -113,7 +113,7 @@ vol_icon:buttons(awful.util.table.join(
 SENHA = "SuaSenhaAqui"
 HOST = "localhost"
 PORTA = "6600"
-NCMPCPP= "ncmpcpp -h "..SENHA.."@localhost"
+NCMPCPP= "ncmpcpp -h "..SENHA.."@"..HOST
 
 mpd_icon        = widget({ type = "imagebox" })
 mpd_icon.image  = image(beautiful.widget_mpd)
