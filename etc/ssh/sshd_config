@@ -122,3 +122,6 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 #	X11Forwarding no
 #	AllowTcpForwarding no
 #	ForceCommand cvs server
+
+# Permite apenas o usuario julio se conectar por ssh
+AllowUsers julio
