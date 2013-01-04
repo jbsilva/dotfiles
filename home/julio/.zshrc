@@ -140,7 +140,6 @@
     alias uzbl='uzbl-tabbed'
     alias monitores='/home/julio/Scripts/monitores.sh'
     alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
-    alias okluar='okular'
     alias nocaps='(echo `dumpkeys | grep -i keymaps`; echo keycode 58 = Escape; echo keycode 1 = Caps_Lock) | sudo loadkeys -'
 
 ################################
