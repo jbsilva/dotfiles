@@ -15,5 +15,4 @@ altkey          = "Mod1"
 modkey          = "Mod4"
 exec            = awful.util.spawn
 shell_exec      = awful.util.spawn_with_shell
-
 -- }}}

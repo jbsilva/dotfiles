@@ -3,13 +3,17 @@
 
 -- {{{ Libraries
 -- Standard awesome library
-require("awful")
+gears = require("gears")
+awful = require("awful")
+awful.rules = require("awful.rules")
 require("awful.autofocus")
-require("awful.rules")
+-- Widget and layout library
+wibox = require("wibox")
 -- Theme handling library
-require("beautiful")
+beautiful = require("beautiful")
 -- Notification library
-require("naughty")
+naughty = require("naughty")
+menubar = require("menubar")
 -- }}}
 
 -- add the current directory to the package path so we can relative require
@@ -19,7 +23,9 @@ package.path = "../?.lua;" .. package.path
 -- {{ require config sections
 require("error_handling")
 require("defaults")
+require("layouts")
 require("tags")
+require("wallpaper")
 require("menu")
 require("taskbar")
 require("mouse_bindings")
