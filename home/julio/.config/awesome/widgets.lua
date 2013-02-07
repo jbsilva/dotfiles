@@ -1,45 +1,44 @@
 vicious = require("vicious")
-require("wibox")
 --require("blingbling")
 --require("revelation")
 
 -- Space
-space       = widget({type = "textbox" })
+space       = wibox.widget.textbox()
 space.width = 10
 
 -- Spacer ][
-spacer       = widget({ type = "imagebox" })
-spacer.image = image(beautiful.widget_spacer)
+spacer       = wibox.widget.imagebox()
+spacer:set_image(beautiful.widget_spacer)
 
 -- Left side
-lside       = widget({ type = "imagebox" })
-lside.image = image(beautiful.widget_left)
+lside       = wibox.widget.imagebox()
+lside:set_image(beautiful.widget_left)
 
 -- Right side
-rside       = widget({ type = "imagebox" })
-rside.image = image(beautiful.widget_right)
+rside       = wibox.widget.imagebox()
+rside:set_image(beautiful.widget_right)
 
 -- Date and time
 date_format     = "%a %d/%m/%Y, <b>%H:%M</b>"
-date_icon       = widget({ type = "imagebox" })
-date_icon.image = image(beautiful.widget_date)
-date_widget     = widget({ type = "textbox" })
+date_icon       = wibox.widget.imagebox()
+date_icon:set_image(beautiful.widget_date)
+date_widget     = wibox.widget.textbox()
 vicious.register(date_widget, vicious.widgets.date, date_format, 61)
 
 -- Memory usage
-mem_icon        = widget({ type = "imagebox" })
-mem_icon.image  = image(beautiful.widget_mem)
-mem_widget      = widget({ type = "textbox"})
+mem_icon        = wibox.widget.imagebox()
+mem_icon:set_image(beautiful.widget_mem)
+mem_widget      = wibox.widget.textbox()
 vicious.register(mem_widget, vicious.widgets.mem, " $1%", 20)
 
 -- CPU usage
-cpu_icon        = widget({ type = "imagebox" })
-cpu_icon.image  = image(beautiful.widget_cpu)
-cpu_widget      = widget({ type = "textbox" })
+cpu_icon        = wibox.widget.imagebox()
+cpu_icon:set_image(beautiful.widget_cpu)
+cpu_widget      = wibox.widget.textbox()
 vicious.register(cpu_widget, vicious.widgets.cpu, "$1%")
 
 -- CPU temperature
-temp_widget = widget({ type= "textbox" })
+temp_widget = wibox.widget.textbox()
 vicious.register(temp_widget, vicious.widgets.thermal,
 function (widget, args)
     if args[1] >= 60 then
@@ -50,9 +49,9 @@ function (widget, args)
 end, 20, {"coretemp.0", "core"})
 
 -- Battery
-bat_icon        = widget({ type = "imagebox" })
-bat_icon.image  = image(beautiful.widget_bat)
-bat_widget      = widget({ type = "textbox" })
+bat_icon        = wibox.widget.imagebox()
+bat_icon:set_image(beautiful.widget_bat)
+bat_widget      = wibox.widget.textbox()
 
 bat_toolt = awful.tooltip({ objects = { batwidtext,batwidget },})
 
@@ -85,17 +84,17 @@ bat_widget:buttons(awful.util.table.join(
 ))
 
 -- Volume
-vol_icon        = widget({ type = "imagebox" })
-vol_icon.image  = image(beautiful.widget_vol)
+vol_icon        = wibox.widget.imagebox()
+vol_icon:set_image(beautiful.widget_vol)
 
-vol_widget      = widget({ type = "textbox" })
+vol_widget      = wibox.widget.textbox()
 vicious.register(vol_widget, vicious.widgets.volume,
     function(widget, args)
         if args[1] < 1 or args[2] == "♩" then
-            vol_icon.image  = image(beautiful.widget_vol0)
+            vol_icon:set_image(beautiful.widget_vol0)
             return "mute"
         else
-            vol_icon.image  = image(beautiful.widget_vol)
+            vol_icon:set_image(beautiful.widget_vol)
             return args[1] .. "%"
         end
     end
@@ -115,9 +114,9 @@ HOST = "localhost"
 PORTA = "6600"
 NCMPCPP= "ncmpcpp -h "..SENHA.."@"..HOST
 
-mpd_icon        = widget({ type = "imagebox" })
-mpd_icon.image  = image(beautiful.widget_mpd)
-mpd_widget      = widget({ type = "textbox" })
+mpd_icon        = wibox.widget.imagebox()
+mpd_icon:set_image(beautiful.widget_mpd)
+mpd_widget      = wibox.widget.textbox()
 vicious.register(mpd_widget, vicious.widgets.mpd,
     function (widget, args)
         if args["{state}"] == "Stop" then 
@@ -156,16 +155,16 @@ music_play = awful.widget.launcher({
 
 -- Net Widget
 intrf = "eth0"
-netdown_icon = widget ({ type = "imagebox" })
-netdown_icon.image = image(beautiful.widget_netdown)
+netdown_icon = wibox.widget.imagebox()
+netdown_icon:set_image(beautiful.widget_netdown)
 netdown_icon.align = "middle"
 
-netdown_widget = widget({ type = "textbox" })
+netdown_widget = wibox.widget.textbox()
 vicious.register(netdown_widget, vicious.widgets.net,"${" .. intrf .. " down_kb}", 3)
 
-netup_icon = widget ({ type = "imagebox" })
-netup_icon.image = image(beautiful.widget_netup)
+netup_icon = wibox.widget.imagebox()
+netup_icon:set_image(beautiful.widget_netup)
 netup_icon.align = "middle"
 
-netup_widget = widget({ type = "textbox" })
+netup_widget = wibox.widget.textbox()
 vicious.register(netup_widget, vicious.widgets.net, "${" .. intrf .. " up_kb}", 3)

@@ -1,0 +1,7 @@
+CONNECTION='ethernet'
+DESCRIPTION='A more versatile static ethernet connection using iproute'
+INTERFACE='eth0'
+IP='static'
+# Any valid iproute command can be placed in this array
+IPCFG=('addr add dev eth0 10.0.0.2/24 brd +' 'route add default via 10.0.0.1') 
+DNS=('8.8.8.8')

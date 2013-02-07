@@ -1,0 +1,4 @@
+CONNECTION='ethernet'
+DESCRIPTION='Tethering com Android via cabo USB'
+INTERFACE='usb0'
+IP='dhcp'
