@@ -3,7 +3,9 @@
 host1=google.com
 host2=wikipedia.org
 curr_date=`date +"%Y_%m_%d-%H:%M"`
-REDE=eth0-static-sanca
+REDE=$2
+
+echo "Rede = $REDE"
 
 UP=`((ping -w5 -c3 $host1 || ping -w5 -c3 $host2) > /dev/null 2>&1) && echo 1 || echo 0`
 
