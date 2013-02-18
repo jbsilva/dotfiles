@@ -10,25 +10,25 @@ tasks:
           watched: S07E02
       - Dexter:
           quality: 720p
-          watched: S07E01
+          watched: S07E12
       - Touch:
           quality: 720p
-          watched: S02E02
+          watched: S02E03
       - Game of Thrones:
           quality: 720p
-          watched: S02E09
+          watched: S02E10
       - The Big Bang Theory:
-          watched: S06E15
+          watched: S06E16
       - Revolution:
           watched: S01E10
       - The Walking Dead:
-          watched: S03E08
+          watched: S03E09
       - Family Guy:
-          watched: S11E01
+          watched: S11E12
       - Community:
-          watched: S04E01
+          watched: S04E02
       - Always Sunny in Philadelphia:
           watched: S08E10
     download: /media/hd2/Torrents/rtorrent/watch/Seriados/
 
-#Atualizado em 09/02/2013
+#Atualizado em 17/fev/2013
