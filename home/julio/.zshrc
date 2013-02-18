@@ -131,7 +131,7 @@
     alias xterm='uxterm'
     alias meuip='curl ifconfig.me'
    # alias g++='g++ -std=c++11 -Wall -Wextra -O2 -lm'
-    alias g++='g++ -Wall -Wextra -O2 -lm'
+    alias g++='g++ -Wall -Wextra -Weffc++ -Werror -Wwrite-strings -O2 -lm'
     alias chrometor='chromium --proxy-server="socks://localhost:9050" & exit'   # Usa chrome com Tor
     alias awesomev='xinit /usr/bin/awesome -- :1 &'
     alias awesomen='Xephyr -ac -screen 800x600 -br -reset -terminate -title Awesome_Xephyr :2 &'
