@@ -1,5 +1,5 @@
 #!/bin/sh
-# Última modificação: 29/12/2012 23:30
+# Última modificação: 22/Fev/2013
 
 if [ -d /etc/X11/xinit/xinitrc.d ]; then 
   for f in /etc/X11/xinit/xinitrc.d/*; do 
@@ -18,22 +18,15 @@ systemd --user &
 #/home/julio/Scripts/wallpaper.sh &
 
 #############################    Keyboard Stuff    #############################
-setxkbmap -model acer_laptop -layout us -variant intl -option caps:swapescape
-#setxkbmap -model pc105 -layout gb -variant intl -option caps:swapescape
-
-#if [ -f ~/.Xmodmap/xmodmap_uk ]; then
-#    xmodmap ~/.Xmodmap/xmodmap_uk
-#fi
-
-xbindkeys
+/home/julio/Scripts/keyboard.sh
 
 #############################        Musica        #############################
-/home/julio/Scripts/inicia_mpd.sh
+/home/julio/Scripts/inicia_mpdscribble.sh
 
 ########################## Desktop Environments / WMs #########################
 exec awesome
 
-### Corrige problema da tela cinza dos programas em Java no Awesome ###
+####### Corrige problema da tela cinza dos programas em Java no Awesome #######
 wmname LG3D
 
 #############################         VNC          #############################
