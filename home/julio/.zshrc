@@ -113,12 +113,9 @@
     alias filmes='cd /home/julio/Videos/Filmes'
 
     # Permite usar o sudo com os aliases.
-    # Comente aliases com nocorrect na frente em ~/.oh-my-zsh/lib/correction.zsh
-    # O problema é ter o correct no zsh funcionando em mkdir, touch, etc...
-    #alias sudo='nocorrect sudo '
-    alias fucking='sudo' # Hehe =]
-    alias -s txt=vim    #associa .txt ao vim
-    alias -s pdf=okular #associa .pdf o okular
+    alias sudo='sudo '
+    alias -s txt=vim                    #associa .txt ao vim
+    alias -s pdf=evince                 #associa .pdf o evince
     alias ls='ls --color=auto'
     alias dir='ls -1'
     alias grep='grep --color=auto'
@@ -126,21 +123,21 @@
     alias listh='du -shc * | sort -h'
     alias pac='sudo pacman -S'
     alias back='cd "$OLDPWD"'           # ou back='cd -' para mostrar caminho
-    alias calendario='zenity --calendar'
-    alias sx='startx &'
-    alias xterm='uxterm'
+
+    alias g++e='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -Werror'   #Warnings = Error
+    alias g++w='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'           #Warnings
+    alias g++p='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -pedantic' #Warnings + Pedantic
+    alias g++d='g++ -O0 -ggdb3 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'    #Debug
+    alias g++11='g++ -O2 -lm -std=c++11 -Wall -Wextra'                        #C++11
+
     alias meuip='curl ifconfig.me'
-   # alias g++='g++ -std=c++11 -Wall -Wextra -O2 -lm'
-    alias g++='g++ -Wall -Wextra -Weffc++ -Werror -Wwrite-strings -O2 -lm'
-    alias chrometor='chromium --proxy-server="socks://localhost:9050" & exit'   # Usa chrome com Tor
-    alias awesomev='xinit /usr/bin/awesome -- :1 &'
-    alias awesomen='Xephyr -ac -screen 800x600 -br -reset -terminate -title Awesome_Xephyr :2 &'
     alias houaiss='wine /home/julio/.wine/drive_c/Program\ Files\ \(x86\)/Houaiss3/Houaiss3.exe & disown && exit'
-    alias regua='echo .........1.........2.........3.........4.........5.........6.........7.........8'
     alias uzbl='uzbl-tabbed'
     alias monitores='/home/julio/Scripts/monitores.sh'
-    alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
     alias nocaps='(echo `dumpkeys | grep -i keymaps`; echo keycode 58 = Escape; echo keycode 1 = Caps_Lock) | sudo loadkeys -'
+
+    alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
+    alias fucking='sudo'                # Hehe =]
 
 ################################
 # Edita comando no $EDITOR (vim)
