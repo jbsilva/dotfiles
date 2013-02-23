@@ -17,11 +17,14 @@ systemd --user &
 #############################      Wallpaper      #############################
 #/home/julio/Scripts/wallpaper.sh &
 
-#############################    Keyboard Stuff    #############################
+#############################    Keyboard Stuff   #############################
 /home/julio/Scripts/keyboard.sh
 
-#############################        Musica        #############################
+#############################       Musica        #############################
 /home/julio/Scripts/inicia_mpdscribble.sh
+
+#############################     Screen Lock     #############################
+xautolock -time 10 -locker slock -nowlocker slock -detectsleep -corners 0+00 -cornerdelay 3 &
 
 ########################## Desktop Environments / WMs #########################
 exec awesome
