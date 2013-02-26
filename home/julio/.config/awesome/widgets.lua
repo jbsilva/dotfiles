@@ -154,7 +154,7 @@ music_play = awful.widget.launcher({
     command = NCMPCPP .. " next"})
 
 -- Net Widget
-intrf = "eth0"
+intrf = "enp2s0"
 netdown_icon = wibox.widget.imagebox()
 netdown_icon:set_image(beautiful.widget_netdown)
 netdown_icon.align = "middle"
