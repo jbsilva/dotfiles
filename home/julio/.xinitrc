@@ -24,7 +24,7 @@ systemd --user &
 /home/julio/Scripts/inicia_mpdscribble.sh
 
 #############################     Screen Lock     #############################
-xautolock -time 10 -locker slock -nowlocker slock -detectsleep -corners 0+00 -cornerdelay 3 &
+xautolock -time 15 -locker slock -nowlocker slock -detectsleep -corners 0+00 -cornerdelay 3 &
 
 ########################## Desktop Environments / WMs #########################
 exec awesome
