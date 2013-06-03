@@ -107,3 +107,6 @@ Bundle 'vim-scripts/c.vim'
 "           e adicione alguns includes e `int main(){ return 0}`
 "   -> plugin/c.vim: Mude o formado usado para datas:
 "           s:C_FormatDate = '%d/%b/%Y' e s:C_FormatTime = '%T'
+
+"YouCompleteMe
+Bundle 'Valloric/YouCompleteMe'
