@@ -1,5 +1,5 @@
 #!/bin/sh
-# Última modificação: 22/Fev/2013
+# Última modificação: 07/Jun/2013
 
 if [ -d /etc/X11/xinit/xinitrc.d ]; then 
   for f in /etc/X11/xinit/xinitrc.d/*; do 
@@ -12,16 +12,13 @@ fi
 systemd --user &
 
 #############################      Monitores      #############################
-#/home/julio/Scripts/monitores.sh &
+/home/julio/Scripts/monitores.sh &
 
 #############################      Wallpaper      #############################
 #/home/julio/Scripts/wallpaper.sh &
 
 #############################    Keyboard Stuff   #############################
 /home/julio/Scripts/keyboard.sh
-
-#############################       Musica        #############################
-/home/julio/Scripts/inicia_mpdscribble.sh
 
 #############################     Screen Lock     #############################
 xautolock -time 15 -locker slock -nowlocker slock -detectsleep -corners 0+00 -cornerdelay 3 &
