@@ -138,6 +138,7 @@
 
     alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
     alias fucking='sudo'                # Hehe =]
+    alias emacs='echo "segmentation fault"' # We use vim around here
 
 ################################
 # Edita comando no $EDITOR (vim)
