@@ -136,6 +136,11 @@
     alias monitores='/home/julio/Scripts/monitores.sh'
     alias nocaps='(echo `dumpkeys | grep -i keymaps`; echo keycode 58 = Escape; echo keycode 1 = Caps_Lock) | sudo loadkeys -'
 
+    ## Mais fácil que abrir o `pavucontrol`.
+    ## Para descobrir os nomes: `pacmd list-cards` e `pacmd list-sinks`
+    alias audio-hdmi='pacmd set-card-profile 0 output:hdmi-stereo+input:analog-stereo'
+    alias audio-laptop='pacmd set-card-profile 0 output:analog-stereo+input:analog-stereo'
+
     alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
     alias fucking='sudo'                # Hehe =]
     alias emacs='echo "segmentation fault"' # We use vim around here
