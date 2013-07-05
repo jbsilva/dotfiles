@@ -13,8 +13,8 @@ widgets_dir                 = icons_dir .. "/widgets/blue"
 layouts_dir                 = theme_dir .. "/layouts"
 
 wall_dir                    = theme_dir .. "/wallpapers"
-wallpaper                   = wall_dir .. "/wallpaper.jpg"
-theme.wallpaper_cmd         = { "awsetbg " .. wallpaper }
+theme.wallpaper                   = wall_dir .. "/wallpaper.jpg"
+--theme.wallpaper_cmd         = { "awsetbg " .. wallpaper }
 
 theme.font                  = "sans 8"
 
