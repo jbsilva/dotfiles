@@ -40,3 +40,7 @@ echo "sucesso!"
 
 # TV com versão ampliada do notebook (1366x768)
 #xrandr --fb 1366x768 --output LVDS1 --auto --output HDMI1 --auto --scale 0.711x0.711
+
+# Tela do notebook com versão ampliada do projetor (800x600)
+#xrandr --fb 800x600 --output LVDS1 --scale 0.586x0.439 --output VGA1 --auto
+#xrandr --fb 800x600 --output LVDS1 --scale 0.586x0.781 --output VGA1 --auto
