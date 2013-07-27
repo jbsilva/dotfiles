@@ -19,8 +19,8 @@
 "           http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 " Download:
-"       http://www.comp.ufscar.br/~jbsilva/files/dotfiles/.vimrc
 "       http://www.juliobs.com/dotfiles/.vimrc
+"       https://github.com/jbsilva/dotfiles/blob/master/home/julio/.vimrc
 "
 " Distro: Arch Linux
 "
