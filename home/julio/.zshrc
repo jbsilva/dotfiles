@@ -141,10 +141,6 @@
     alias audio-hdmi='pacmd set-card-profile 0 output:hdmi-stereo+input:analog-stereo'
     alias audio-laptop='pacmd set-card-profile 0 output:analog-stereo+input:analog-stereo'
 
-    alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
-    alias fucking='sudo'                # Hehe =]
-    alias emacs='echo "segmentation fault"' # We use vim around here
-
 ################################
 # Edita comando no $EDITOR (vim)
 ################################
@@ -166,4 +162,16 @@ man()
 		LESS_TERMCAP_ue=$(printf "\e[0m") \
 		LESS_TERMCAP_us=$(printf "\e[1;32m") \
 			man "$@"
+}
+
+################################
+# FUN
+################################
+alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
+alias fucking='sudo'                # Hehe =]
+alias emacs='echo "segmentation fault"' # We use vim around here
+alias more=less
+
+function caat() {
+  echo "=^.^="
 }
