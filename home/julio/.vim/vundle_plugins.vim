@@ -109,4 +109,4 @@ Bundle 'vim-scripts/c.vim'
 "           s:C_FormatDate = '%d/%b/%Y' e s:C_FormatTime = '%T'
 
 "YouCompleteMe
-Bundle 'Valloric/YouCompleteMe'
+"Bundle 'Valloric/YouCompleteMe'
