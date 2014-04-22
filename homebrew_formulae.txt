@@ -1,0 +1,38 @@
+# Instala pacotes (formulae) usando o Homebrew
+# ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+# Uso: `brew bundle homebrew_formulae.txt`
+# Mais pacotes em http://braumeister.org
+
+# Atualiza Homebrew
+update
+
+# Atualiza formulae
+upgrade
+
+# GNU core utilities. Adicionar `$(brew --prefix coreutils)/libexec/gnubin` ao `$PATH`.
+install coreutils
+install moreutils
+install findutils
+install gnu-sed --default-names
+install bash
+install wget --enable-iri
+
+install ack
+install ffmpeg
+install foremost
+install git
+install imagemagick --with-webp
+install macvim --override-system-vim
+install nmap
+install node
+install p7zip
+install pv
+install python
+install python3
+install rename
+install ssh-copy-id
+install tree
+install zsh
+
+# Remove outdated versions from the cellar
+cleanup
