@@ -21,6 +21,7 @@ install ack
 install ffmpeg
 install foremost
 install git
+install gpg
 install imagemagick --with-webp
 install macvim --override-system-vim
 install nmap
