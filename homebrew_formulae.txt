@@ -35,5 +35,12 @@ install ssh-copy-id
 install tree
 install zsh
 
+# Após instalar o ntfs-3g:
+# `sudo mv /sbin/mount_ntfs /sbin/mount_ntfs.bkp`
+# `sudo ln -s /usr/local/sbin/mount_ntfs /sbin/mount_ntfs`
+# `sudo /bin/cp -RfX /usr/local/Cellar/osxfuse/2.6.4/Library/Filesystems/osxfusefs.fs /Library/Filesystems
+# `sudo chmod +s /Library/Filesystems/osxfusefs.fs/Support/load_osxfusefs`
+install ntfs-3g
+
 # Remove outdated versions from the cellar
 cleanup
