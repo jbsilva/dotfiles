@@ -14,6 +14,7 @@ cask install vlc 2> /dev/null
 cask install silverlight 2> /dev/null
 cask install picasa 2> /dev/null
 cask install calibre 2> /dev/null
+cask install steam 2> /dev/null
 #cask install the-unarchiver 2> /dev/null
 # cask install virtualbox 2> /dev/null
 # cask install torbrowserbundle 2> /dev/null
