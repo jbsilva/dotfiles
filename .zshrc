@@ -36,6 +36,11 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 ################################
+# rbenv
+################################
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+################################
 # Histórico
 ################################
 HISTFILE=~/.zsh_history
