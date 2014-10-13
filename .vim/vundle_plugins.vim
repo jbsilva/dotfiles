@@ -1,18 +1,18 @@
 "------------------------------------------------------------------------------
 " => Vundle - https://github.com/gmarik/vundle
 "    Gerencia plugins melhor que Pathogen. Comandos:
-"       :BundleInstall for main install
-"       :BundleInstall! will install/update all
-"       :Bundle "foo" searches for foo.
-"       :BundleClean will remove deleted bundles
+"       :PluginList       - lists configured plugins
+"       :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+"       :PluginSearch foo - searches for foo; append `!` to refresh local cache
+"       :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 "------------------------------------------------------------------------------
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " let Vundle manage Vundle
-Bundle 'gmarik/vundle'
+Bundle 'gmarik/Vundle.vim'
 
 " original repos on github
 Bundle 'Lokaltog/vim-easymotion'
@@ -83,9 +83,6 @@ Bundle 'vim-scripts/pep8'
 Bundle 'vim-scripts/FuzzyFinder'
 Bundle 'vim-scripts/L9'
 
-"Ruby on rails
-Bundle 'vim-scripts/rails.vim'
-
 "vim + gnu screen
 Bundle 'ervandew/screen'
 
@@ -105,8 +102,15 @@ Bundle 'vim-scripts/c.vim'
 "   -> plugin/c.vim: Mude o formado usado para datas:
 "           s:C_FormatDate = '%d/%b/%Y' e s:C_FormatTime = '%T'
 
+"Ruby on rails
+"Bundle 'vim-scripts/rails.vim'
+
 "YouCompleteMe
 "Bundle 'Valloric/YouCompleteMe'
 
 "Bundle 'sontek/minibufexpl.vim'
 "Bundle 'sontek/rope-vim'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
