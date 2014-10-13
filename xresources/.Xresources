@@ -1,0 +1,18 @@
+! ----------------------------------------------------------------------------
+! modified: 13-Oct-2014
+! ~/.Xresources (crie um link para este arquivo)
+! ----------------------------------------------------------------------------
+
+# include "/home/julio/dotfiles/xresources/urxvt"
+!# include "/home/julio/dotfiles/xresources/emacs"
+!# include "/home/julio/dotfiles/xresources/xcalc"
+!# include "/home/julio/dotfiles/xresources/xclipboard"
+!# include "/home/julio/dotfiles/xresources/xclock"
+!# include "/home/julio/dotfiles/xresources/xdiary"
+!# include "/home/julio/dotfiles/xresources/xfontsel"
+!# include "/home/julio/dotfiles/xresources/xft"
+!# include "/home/julio/dotfiles/xresources/xlock"
+!# include "/home/julio/dotfiles/xresources/xman"
+!# include "/home/julio/dotfiles/xresources/xmessage"
+!# include "/home/julio/dotfiles/xresources/xpdf"
+!# include "/home/julio/dotfiles/xresources/xterm"
