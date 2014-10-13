@@ -5,7 +5,7 @@
 #               ====oOO==(_)==OOo=====
 #
 # Licença:
-#           Copyright (c) 2011 Julio B. Silva <julio@juliobs.com>
+#           Copyright (c) 2011 Julio Batista Silva <julio@juliobs.com>
 #                       All Rights Reserved
 #
 #           This program is free software. It comes without any warranty, to
@@ -15,11 +15,11 @@
 #           http://sam.zoy.org/wtfpl/COPYING for more details.
 #
 # Created:      Fri 12 Aug 2011
-# Last Change:  Sat 19 Apr 2014
+# Last Change:  Sat 13 Oct 2014
 #
 # Download: https://github.com/jbsilva/dotfiles
 #
-# OS: MacBook OS X 10.9.2
+# OS: Arch Linux on MacBook Air
 #######################################################
 
 ################################
@@ -29,7 +29,7 @@
 [[ -z "$PS1" ]] && return
 
 ################################
-# Source Prezto.
+# Source Prezto
 ################################
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
@@ -52,7 +52,7 @@ setopt HIST_IGNORE_ALL_DUPS
 ################################
 # Variáveis
 ################################
-VIM=/usr/local/bin/vim
+VIM=/usr/bin/vim
 export VISUAL=$VIM
 export EDITOR=$VIM
 
@@ -69,6 +69,7 @@ alias g++w='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'           #Warni
 alias g++p='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -pedantic' #Warnings + Pedantic
 alias g++d='g++ -O0 -ggdb3 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'    #Debug
 alias g++11='g++ -O2 -lm -std=c++11 -Wall -Wextra'                        #C++11
+alias pac='sudo pacman -S'
 
 ################################
 # FUN
