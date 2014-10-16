@@ -63,6 +63,7 @@ alias dir='ls -1'
 alias list='du -shc *'
 alias listh='du -shc * | sort -h'
 alias back='cd "$OLDPWD"'
+alias cls='clear; ls'
 alias meuip='curl ifconfig.me'
 alias g++e='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -Werror'   #Warnings = Error
 alias g++w='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'           #Warnings
