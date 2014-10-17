@@ -18,16 +18,20 @@ systemd --user &
 #/home/julio/Scripts/wallpaper.sh &
 
 #############################    Keyboard Stuff   #############################
-#/home/julio/Scripts/keyboard.sh
+setxkbmap -layout de -model macbook79 -option caps:swapescape
+if [ -f ~/.Xmodmap ]; then
+    xmodmap ~/.Xmodmap
+fi
+xbindkeys
 
 ############################      Xresources      #############################
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+
+# URxvt daemon
+urxvtd -q -o -f &
 
 #############################     Screen Lock     #############################
 xautolock -time 15 -locker slock -nowlocker slock -detectsleep -corners 0+00 -cornerdelay 3 &
 
 ########################## Desktop Environments / WMs #########################
 exec awesome
-
-####### Corrige problema da tela cinza dos programas em Java no Awesome #######
-wmname LG3D
