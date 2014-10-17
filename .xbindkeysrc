@@ -1,0 +1,51 @@
+###########################
+# xbindkeys configuration #
+###########################
+
+"ncmpcpp toggle"
+XF86AudioPlay
+
+"ncmpcpp next"
+XF86AudioNext
+
+"ncmpcpp prev"
+XF86AudioPrev
+
+"ncmpcpp stop"
+XF86AudioStop
+
+# Volume +5%
+"amixer -q set Master 5%+"
+XF86AudioRaiseVolume
+
+# Volume -5%
+"amixer -j set Master 5%-"
+XF86AudioLowerVolume
+
+# Mute/Unmute
+"amixer -q set Master toggle"
+XF86AudioMute
+
+# Backlight do monitor -5%
+"xbacklight -dec 5"
+m:0x0 + c:232
+
+# Backlight do monitor +5%
+"xbacklight -inc 5"
+m:0x0 + c:233
+
+# keyboard backlight increase
+"kbdlight up"
+m:0x0 + c:238
+
+# keyboard backlight decrease
+"kbdlight down"
+m:0x0 + c:237
+
+# turn on screen blanking 
+"xset s on +dpms"
+m:0x0 + c:212
+
+# turn off screen blanking
+"xset s off -dpms"
+m:0x0 + c:128
