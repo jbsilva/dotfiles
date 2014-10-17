@@ -4,6 +4,7 @@
 [core]
 	autocrlf = false
 	safecrlf = true
+    editor = vim
 [alias]
     co = checkout
     ci = commit
@@ -12,6 +13,9 @@
     hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
     type = cat-file -t
     dump = cat-file -p
+    amend = commit --amend
+    snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+    snapshots = !git stash list --grep snapshot
 [github]
 	user = jbsilva
 [color]
