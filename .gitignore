@@ -7,3 +7,4 @@
 .config/mpd/sticker.sql
 .ncmpcpp/error.log
 .vim/bundle
+.vim/backups
