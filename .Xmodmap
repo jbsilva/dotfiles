@@ -1,0 +1,5 @@
+keycode  54 = c C c C ccedilla Ccedilla
+keycode  57 = n N n N dead_tilde N dead_tilde
+
+!Natural Scrolling
+pointer = 1 2 3 5 4 7 6 8 9 10 11 12 13 14 15
