@@ -2,28 +2,28 @@
 # xbindkeys configuration #
 ###########################
 
-"ncmpcpp toggle"
+"ncmpcpp toggle || mpc toggle"
 XF86AudioPlay
 
-"ncmpcpp next"
+"ncmpcpp next || mpc next"
 XF86AudioNext
 
-"ncmpcpp prev"
+"ncmpcpp prev || mpc prev"
 XF86AudioPrev
 
-"ncmpcpp stop"
+"ncmpcpp stop || mpc stop"
 XF86AudioStop
 
 # Volume +5%
-"amixer -q set Master 5%+"
+"pamixer --increase 5 || amixer -q set Master 5%+"
 XF86AudioRaiseVolume
 
 # Volume -5%
-"amixer -j set Master 5%-"
+"pamixer --decrease 5 || amixer -q set Master 5%-"
 XF86AudioLowerVolume
 
 # Mute/Unmute
-"amixer -q set Master toggle"
+"pamixer --toggle-mute || amixer -q set Master toggle"
 XF86AudioMute
 
 # Backlight do monitor -5%
@@ -42,10 +42,14 @@ m:0x0 + c:238
 "kbdlight down"
 m:0x0 + c:237
 
-# turn on screen blanking 
-"xset s on +dpms"
+# screenshot (F3)
+"maim -s"
 m:0x0 + c:212
 
-# turn off screen blanking
-"xset s off -dpms"
+# screenshot rectangle (F3)
+"maim ~/$(date +%F-%T).png"
 m:0x0 + c:128
+
+# turn off screen blanking
+#"xset s off -dpms"
+#m:0x0 + c:128
