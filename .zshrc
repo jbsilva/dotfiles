@@ -61,7 +61,7 @@ export EDITOR=$VIM
 ################################
 alias dir='ls -1'
 alias list='du -shc *'
-alias listh='du -shc * | sort -h'
+alias listh='du -shc * | gsort -h'
 alias back='cd "$OLDPWD"'
 alias meuip='curl ifconfig.me'
 alias g++e='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -Werror'   #Warnings = Error
@@ -69,6 +69,11 @@ alias g++w='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'           #Warni
 alias g++p='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -pedantic' #Warnings + Pedantic
 alias g++d='g++ -O0 -ggdb3 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'    #Debug
 alias g++11='g++ -O2 -lm -std=c++11 -Wall -Wextra'                        #C++11
+alias g++p11='g++ -O2 -lm -std=c++11 -Wall -Wextra -Weffc++ -Wwrite-strings -pedantic' #Warnings + Pedantic + C++11
+alias estiliza='astyle --unpad-paren --style=allman --pad-oper --delete-empty-lines --break-blocks --convert-tabs --align-pointer=name --align-reference=name --lineend=linux --pad-header --indent-col1-comments --indent-switches --suffix=none --keep-one-line-statements'
+alias brewu='brew update && brew upgrade && brew cleanup && brew prune && brew doctor'
+alias difff='/usr/bin/diff'
+alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 
 ################################
 # FUN
