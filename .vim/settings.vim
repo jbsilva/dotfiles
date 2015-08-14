@@ -252,7 +252,7 @@ au FileType c,cpp set cindent
 au FileType c,cpp set formatoptions+=ro
 "au FileType c,cpp set foldmethod=syntax
 "au FileType c,cpp set foldlevel=4
-let g:C_Styles = { '*.c,*.h' : 'default', '*.cc,*.cpp,*.hh' : 'CPP' }
+let g:C_Styles = { '*.c,*.h' : 'default', '*.cc,*.cpp,*.hh,*.hpp' : 'CPP' }
 
 "------------------------------------------------------------------------------
 " => Python
