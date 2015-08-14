@@ -35,6 +35,12 @@ install ssh-copy-id
 install tree
 install zsh
 install cmake
+install astyle
+install htop
+
+#brew tap homebrew/science
+install maxima
+install wxmaxima
 
 # Remove outdated versions from the cellar
 cleanup
