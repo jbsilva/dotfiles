@@ -18,12 +18,14 @@ systemd --user &
 #/home/julio/Scripts/wallpaper.sh &
 
 #############################    Keyboard Stuff   #############################
-setxkbmap -layout de -model macbook79 -option caps:swapescape
+setxkbmap -layout de -model macbook79 -option caps:swapescape,altwin:swap_lalt_lwin,compose:rwin
 if [ -f ~/.Xmodmap ]; then
     xmodmap ~/.Xmodmap
 fi
 xbindkeys
-touchegg &
+
+# Desativa Touchpad durante digitação
+syndaemon -t -k -i 2 &
 
 ############################      Xresources      #############################
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
