@@ -1,0 +1,13 @@
+Description='UFSCar'
+Interface=wlp3s0
+Connection=wireless
+Security=wpa-configsection
+IP=dhcp
+WPAConfigSection=(
+    'ssid="WIFI-UFSCAR"'
+    'key_mgmt=WPA-EAP'
+    'eap=TTLS'
+    'identity="$RA"'
+    'password="$SENHA"'
+    'phase2="auth=PAP"'
+)

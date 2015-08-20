@@ -1,0 +1,15 @@
+Description='DC UFSCar'
+Interface=wlp3s0
+Connection=wireless
+Security=wpa-configsection
+ESSID=DC-Grad
+IP=dhcp
+WPAConfigSection=(
+    'ssid="DC-Grad"'
+    'proto=RSN WPA'
+    'key_mgmt=WPA-EAP'
+    'auth_alg=OPEN'
+    'eap=PEAP'
+    'identity="$username"'
+    'password="$password"'
+)
