@@ -57,7 +57,15 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end)
+    awful.key({ modkey }, "p", function() menubar.show() end),
+
+
+    cyclefocus.key({ "Mod1", }, "Tab", 1, {
+        cycle_filters = { cyclefocus.filters.same_screen, cyclefocus.filters.common_tag },
+        keys = {'Tab', 'ISO_Left_Tab'}
+    })
+
+
 )
 
 clientkeys = awful.util.table.join(

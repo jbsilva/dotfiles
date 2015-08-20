@@ -17,7 +17,7 @@ power_menu = {
     { "Reboot", terminal .. " -e systemctl reboot", beautiful.arch_icon },
     { "Suspend", terminal .. " -e systemctl suspend", beautiful.arch_icon },
     { "Hibernate", terminal .. " -e systemctl hibernate", beautiful.arch_icon },
-    { "Lock", "xtrlock", beautiful.arch_icon },
+    { "Lock", "slock", beautiful.arch_icon },
 }
 
 mymainmenu = awful.menu({ items = {

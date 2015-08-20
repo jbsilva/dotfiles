@@ -13,6 +13,7 @@ vicious = require("vicious")
 lain = require("lain")
 naughty = require("naughty")
 menubar = require("menubar")
+cyclefocus = require("cyclefocus")
 ---}}}
 
 -- add current directory to path so we can require other sections of the config

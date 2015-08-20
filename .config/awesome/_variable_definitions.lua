@@ -9,7 +9,7 @@ editor_cmd  = terminal .. " -e " .. editor
 browser     = os.getenv("BROWSER") or "chromium"
 
 -- Theme
-local theme = "julio"
+local theme = "pro-arch"
 beautiful.init(awful.util.getdir("config") .. "/themes/" .. theme .. "/theme.lua")
 
 -- }}}
