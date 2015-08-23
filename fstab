@@ -3,4 +3,4 @@
 #
 # Failure to do so is unsupported and may be destructive.
 #
-LABEL=Elements  /Volumes/Externo    ntfs    rw,auto,nobrowse,fmask=133,dmask=022
+LABEL=Elements  /Volumes/Externo    ntfs rw,noauto,nobrowse,fmask=133,dmask=022
