@@ -76,6 +76,7 @@ alias showAllOn='defaults write com.apple.finder AppleShowAllFiles 1 && killall 
 alias showAllOff='defaults write com.apple.finder AppleShowAllFiles 0 && killall Finder'
 alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
+alias del_lixo="sudo find / -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -name 'desktop.ini' \) -exec echo "{}" \; -exec rm "{}" \;"
 alias d755="find . -type d -exec chmod 755 {} \;"
 alias f644="find . -type f -exec chmod 644 {} \;"
 ################################
