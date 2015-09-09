@@ -4,16 +4,26 @@
 """
 Document here.
 """
-__author__ = "Julio Batista Silva"
-__copyright__ = ""
-__license__ = "GPL"
-__version__ = "1.0"
 
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
 import argparse
 import sys
 
-def main():
+
+__author__ = "Julio Batista Silva"
+__copyright__ = "Copyright 2015, Julio Batista Silva"
+__license__ = "GPL v3"
+__version__ = "1.0"
+__email__ = "julio@juliobs.com"
+
+
+def main(args):
     return 0
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -21,4 +31,4 @@ if __name__ == "__main__":
     parser.add_argument('--foo', help='foo help')
     args = parser.parse_args()
 
-    sys.exit(main())
+    sys.exit(main(args))
