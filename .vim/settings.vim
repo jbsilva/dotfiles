@@ -251,17 +251,23 @@ au FileType lua map <F6> :!lua %<CR>
 au FileType html,xhtml map <F6> :!chromium %<CR>
 
 "------------------------------------------------------------------------------
-" => Text files
+" => Templates
+"   if &filetype =~ '^\(text\|html\|python|ruby\)$'
 "------------------------------------------------------------------------------
-"Cria um template. Tem que ativar modelines para o wrap funcionar
-autocmd bufnewfile *.txt :0r ~/.vim/templates/txt.txt
+autocmd BufNewFile *.html,*.txt,*.py,*.rb :call s:Insere(fnameescape(g:TEMPLATES . '/' . &filetype))
+
 if exists('*strftime')
     au BufNewFile *.txt :call append(1, '# Created: '.strftime('%a, %d %b %Y %T %z'))
+    au BufNewFile *.py :call append(2, '# Created: '.strftime('%a, %d %b %Y %T %z'))
+    au BufNewFile *.rb :call append(2, '# Created: '.strftime('%a, %d %b %Y %T %z'))
+    au BufNewFile *.html :call append(1, '<!-- Created: ' . strftime('%a, %d %b %Y %T %z') . ' -->')
 endif
 
-" For all text files set 'textwidth' to 78 characters.
+"------------------------------------------------------------------------------
+" => Text files
+"------------------------------------------------------------------------------
+" Textos com 78 colunas
 autocmd FileType text setlocal textwidth=78
-
 
 "------------------------------------------------------------------------------
 " => C e C++
@@ -280,12 +286,6 @@ au FileType python set foldlevel=99
 au FileType python set omnifunc=pythoncomplete#Complete
 let g:SuperTabDefaultCompletionType = "context"
 
-"Cria um template. Ler PEP 257
-autocmd bufnewfile *.py :0r ~/.vim/templates/python.txt
-if exists('*strftime')
-    au BufNewFile *.py :call append(2, '# Created: '.strftime('%a, %d %b %Y %T %z'))
-endif
-
 "------------------------------------------------------------------------------
 " => Ruby
 "------------------------------------------------------------------------------
@@ -294,12 +294,6 @@ au FileType ruby,eruby set omnifunc=rubycomplete#Complete
 au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 au FileType ruby,eruby let g:rubycomplete_rails = 1
 au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-
-"Cria um template.
-autocmd bufnewfile *.rb :0r ~/.vim/templates/ruby.txt
-if exists('*strftime')
-    au BufNewFile *.rb :call append(2, '# Created: '.strftime('%a, %d %b %Y %T %z'))
-endif
 
 "------------------------------------------------------------------------------
 " => HTML
