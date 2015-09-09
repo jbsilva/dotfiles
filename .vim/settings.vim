@@ -20,7 +20,8 @@
 " => Esquema de cores (colorscheme)
 "------------------------------------------------------------------------------
 if has("gui_running")
-    colorscheme mayansmoke
+    colorscheme zenburn
+    "colorscheme mayansmoke
 else
     colorscheme zenburn
     "colorscheme morning
