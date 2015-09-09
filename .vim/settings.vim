@@ -6,7 +6,7 @@
 " Description:  Configurações do vim
 " Author:       Julio
 " Created:      2011
-" Last Change:  Tue 22 Apr 2014 16:30
+" Last Change:  Wed 09 Sep 2015 19:30
 "===================================================================
 
 "------------------------------------------------------------------------------
@@ -15,6 +15,19 @@
 "   Isso só é um risco se abrirmos algum documento de alguém mal intencionado
 "------------------------------------------------------------------------------
 "set modelines=0
+
+"------------------------------------------------------------------------------
+" => Constantes
+" Existem varias formas de se definir variaveis:
+"   let user = 'Julio Batista Silva'                    -- String
+"   let user = expand($USER_FULLNAME)                   -- Variavel de ambiente
+"   let user = system('git config -z --get user.name')  -- Shell command
+"------------------------------------------------------------------------------
+let g:DOTFILES = escape(expand('<sfile>:p:h:h'), ' ')  "dotfiles
+let g:VIMFILES = escape(expand('<sfile>:p:h'), ' ')    "dotfiles/.vim/
+let g:VIMSETTINGS = escape(expand('<sfile>:p'), ' ')   "dotfiles/.vim/settings.vim
+let g:VIMCONF = g:DOTFILES . '/.vimrc'                 "dotfiles/.vimrc
+let g:TEMPLATES = g:VIMFILES . '/templates'            "dotfiles/.vim/templates
 
 "------------------------------------------------------------------------------
 " => Esquema de cores (colorscheme)
