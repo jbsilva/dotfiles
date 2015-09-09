@@ -233,11 +233,12 @@ command! -nargs=* -complete=option Set set <args>
 "------------------------------------------------------------------------------
 " => Corrige detecção de filetypes
 "------------------------------------------------------------------------------
-au! BufRead,BufNewFile *.conf setfiletype apache
+au BufNewFile,BufRead .htaccess,httpd.conf set filetype=apache
 au BufNewFile,BufRead *.inc set filetype=php
 au BufNewFile,BufRead *.sys set filetype=php
 au BufNewFile,BufRead grub.conf set filetype=grub
 au BufNewFile,BufRead *.blog set filetype=blog
+au BufNewFile,BufRead *.tex set filetype=tex
 
 "------------------------------------------------------------------------------
 " => Keymappings de compilação e execução
