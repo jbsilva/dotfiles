@@ -76,6 +76,8 @@ alias showAllOn='defaults write com.apple.finder AppleShowAllFiles 1 && killall 
 alias showAllOff='defaults write com.apple.finder AppleShowAllFiles 0 && killall Finder'
 alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
+alias d755="find . -type d -exec chmod 755 {} \;"
+alias f644="find . -type f -exec chmod 644 {} \;"
 ################################
 # FUN
 ################################
