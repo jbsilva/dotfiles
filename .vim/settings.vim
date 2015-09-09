@@ -106,8 +106,7 @@ map Q gq
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
-" Ativa o mouse, se disponivel
-" Esconde enquanto digita
+" Ativa o mouse, se disponivel e esconde-o enquanto digita
 set mousehide
 if has('mouse')
   set mouse=a
@@ -121,44 +120,31 @@ endif
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
+    filetype plugin indent on
+    
+    " Put these in an autocmd group, so that we can delete them easily.
+    augroup vimrcEx
+    au!
+    
+    " When editing a file, always jump to the last known cursor position.
+    " Don't do it when the position is invalid or when inside an event handler
+    " (happens when dropping a file on gvim).
+    " Also don't do it when the mark is in the first line, that is the default
+    " position when opening a file.
+    autocmd BufReadPost *
+        \ if line("'\"") > 1 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif
 
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
-
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  " Also don't do it when the mark is in the first line, that is the default
-  " position when opening a file.
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
-
-  augroup END
-
+    augroup END
 else
-
   set autoindent		" always set autoindenting on
+endif
 
-endif " has("autocmd")
-
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
+" See the changes you made
 if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+    command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+                \ | wincmd p | diffthis
 endif
 
 "------------------------------------------------------------------------------
@@ -210,12 +196,6 @@ set wildmenu                " filesystem surfing - press :e and ^D
 set wildchar=<tab>
 set nofoldenable
 set colorcolumn=80          "colore coluna 80
-
-"------------------------------------------------------------------------------
-" => Início e fim de linha. Igual terminal e Emacs (conflito com incrementar)
-"------------------------------------------------------------------------------
-"no <C-a> ^
-"no <C-e> $
 
 "------------------------------------------------------------------------------
 " => Fast scroll
@@ -277,6 +257,10 @@ autocmd bufnewfile *.txt :0r ~/.vim/templates/txt.txt
 if exists('*strftime')
     au BufNewFile *.txt :call append(1, '# Created: '.strftime('%a, %d %b %Y %T %z'))
 endif
+
+" For all text files set 'textwidth' to 78 characters.
+autocmd FileType text setlocal textwidth=78
+
 
 "------------------------------------------------------------------------------
 " => C e C++
