@@ -30,6 +30,15 @@ let g:VIMCONF = g:DOTFILES . '/.vimrc'                 "dotfiles/.vimrc
 let g:TEMPLATES = g:VIMFILES . '/templates'            "dotfiles/.vim/templates
 
 "------------------------------------------------------------------------------
+" => Funcoes Uteis
+"------------------------------------------------------------------------------
+
+" Insere arquivo com a variável resolvidaa
+fun! s:Insere(file)
+    exe 'silent! 0r ' a:file
+endfun
+
+"------------------------------------------------------------------------------
 " => Esquema de cores (colorscheme)
 "------------------------------------------------------------------------------
 if has("gui_running")
