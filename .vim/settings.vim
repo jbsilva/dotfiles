@@ -55,6 +55,16 @@ endif
 let mapleader=','
 
 "------------------------------------------------------------------------------
+" => Snipmate - TextMate-style snippets for Vim
+"------------------------------------------------------------------------------
+let g:snips_author = expand($USER_FULLNAME)
+let g:author = expand($USER_FULLNAME)
+let g:snips_email = expand($USER_EMAIL)
+let g:email = expand($USER_EMAIL)
+let g:snips_github = expand($USER_GITHUB)
+let g:github = expand($USER_GITHUB)
+
+"------------------------------------------------------------------------------
 " => NERD_tree - Árvore do filesystem
 " http://www.vim.org/scripts/script.php?script_id=1658
 "------------------------------------------------------------------------------
