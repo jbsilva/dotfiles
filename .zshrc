@@ -92,6 +92,7 @@ alias ...='cd ../../../'
 alias ....='cd ../../../../'
 alias meuip='curl ifconfig.me'
 alias brewu='brew update && brew upgrade && brew cleanup && brew cask cleanup && brew prune && brew doctor'
+alias pip_upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --upgrade"
 alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 alias d755="find . -type d -exec chmod 755 {} \;"
