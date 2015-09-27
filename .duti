@@ -1,0 +1,188 @@
+# http://duti.org/ - Set default document and URL handlers
+#
+# Syntax for command line:
+#   `duti settings_path`: Apply settings from files in settings_path.
+#   `duti -d uti`: Display the default handler for uti.
+#   `duti -l uti`: Display all handlers for uti. 
+#   `duti -s bundle_id {uti|url_scheme|ext|MIME_type} role`: set the handler.
+#   `duti -x ext`: Print information about the default handler for extension.
+#
+# Syntax for files:
+#   bundle id             URL scheme
+#   bundle id             UTI/ext/MIME type   role
+#
+# Roles:
+#   all     app handles all roles for the given UTI.
+#   viewer  app handles reading and displaying documents with given UTI.
+#   editor  app can manipulate and save the item. Implies viewer.
+#   shell   app can execute the item.
+#   none    app cannot open the item, but provides an icon for the given UTI.
+#
+# System-Declared Uniform Type Identifiers (UTIs):
+#   https://developer.apple.com/library/mac/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
+
+# Source files: MacVim
+#org.vim.MacVim          public.html                     editor
+org.vim.MacVim          .S                              all
+org.vim.MacVim          .asp                            all
+org.vim.MacVim          .bat                            all
+org.vim.MacVim          .c                              all
+org.vim.MacVim          .cc                             all
+org.vim.MacVim          .cfg                            all
+org.vim.MacVim          .cgi                            all
+org.vim.MacVim          .cpp                            all
+org.vim.MacVim          .cs                             all
+org.vim.MacVim          .css                            all
+org.vim.MacVim          .csv                            all
+org.vim.MacVim          .dat                            all
+org.vim.MacVim          .dtd                            all
+org.vim.MacVim          .duti                           all
+org.vim.MacVim          .erl                            all
+org.vim.MacVim          .gitignore                      editor
+org.vim.MacVim          .h                              all
+org.vim.MacVim          .hrl                            all
+org.vim.MacVim          .htm                            editor
+org.vim.MacVim          .html                           editor
+org.vim.MacVim          .ini                            all
+org.vim.MacVim          .java                           all
+org.vim.MacVim          .js                             all
+org.vim.MacVim          .jsp                            editor
+org.vim.MacVim          .lisp                           all
+org.vim.MacVim          .log                            all
+org.vim.MacVim          .m                              all
+org.vim.MacVim          .md                             all
+org.vim.MacVim          .patch                          all
+org.vim.MacVim          .pch                            all
+org.vim.MacVim          .php                            all
+org.vim.MacVim          .rs                             all
+org.vim.MacVim          .pl                             all
+org.vim.MacVim          .py                             all
+org.vim.MacVim          .rb                             all
+org.vim.MacVim          .recipe                         all
+org.vim.MacVim          .sh                             all
+org.vim.MacVim          .tex                            all
+org.vim.MacVim          .txt                            all
+org.vim.MacVim          .xhtml                          editor
+org.vim.MacVim          .xml                            all
+org.vim.MacVim          Makefile                        all
+org.vim.MacVim          README                          all
+org.vim.MacVim          applescript                     all
+org.vim.MacVim          bib                             all
+org.vim.MacVim          coffee                          editor
+org.vim.MacVim          com.apple.log                   all
+org.vim.MacVim          com.apple.property-list         all
+org.vim.MacVim          com.netscape.javascript-source  all
+org.vim.MacVim          emblem                          editor
+org.vim.MacVim          erb                             editor
+org.vim.MacVim          gemspec                         editor
+org.vim.MacVim          haml                            all
+org.vim.MacVim          hbs                             editor
+org.vim.MacVim          jl                              editor
+org.vim.MacVim          json                            all
+org.vim.MacVim          opf                             all
+org.vim.MacVim          org.vim.css-file                all
+org.vim.MacVim          org.vim.rst-file                all
+org.vim.MacVim          public.csh-script               all
+org.vim.MacVim          public.css                      editor
+org.vim.MacVim          public.data                     all
+org.vim.MacVim          public.item                     all
+org.vim.MacVim          public.json                     all
+org.vim.MacVim          public.ksh-script               all
+org.vim.MacVim          public.patch-file               all
+org.vim.MacVim          public.perl-script              all
+org.vim.MacVim          public.php-script               all
+org.vim.MacVim          public.plain-text               all
+org.vim.MacVim          public.python-script            all
+org.vim.MacVim          public.ruby-script              all
+org.vim.MacVim          public.script                   all
+org.vim.MacVim          public.shell-script             all
+org.vim.MacVim          public.source-code              all
+org.vim.MacVim          public.text                     all
+org.vim.MacVim          public.unix-executable          all
+org.vim.MacVim          public.xhtml                    editor
+org.vim.MacVim          public.xml                      all
+org.vim.MacVim          public.zsh-script               all
+org.vim.MacVim          qslog                           all
+org.vim.MacVim          rif                             all
+org.vim.MacVim          ru                              editor
+org.vim.MacVim          sass                            editor
+org.vim.MacVim          scss                            editor
+org.vim.MacVim          slim                            all
+org.vim.MacVim          snip                            all
+org.vim.MacVim          sql                             all
+org.vim.MacVim          stmpd                           all
+org.vim.MacVim          sty                             all
+org.vim.MacVim          taskpaper                       all
+org.vim.MacVim          yml                             editor
+org.vim.MacVim          zsh                             all
+
+# UTF: MacVim
+org.vim.MacVim          public.utf16-external-plain-text        all
+org.vim.MacVim          public.utf16-plain-text                 all
+org.vim.MacVim          public.utf8-plain-text                  all
+org.vim.MacVim          public.utf8-tab-separated-values-text   all
+
+# Images: Preview
+com.apple.Preview       .ai             all
+com.apple.Preview       .bmp            all
+com.apple.Preview       .jpeg           all
+com.apple.Preview       .jpg            all
+com.apple.Preview       .pdf            all
+com.apple.Preview       .png            all
+com.apple.Preview       .ps             all
+com.apple.Preview       .psd            all
+com.apple.Preview       .tif            all
+com.apple.Preview       .tiff           all
+
+# Office files: Preview
+com.apple.Preview       .ppt            all
+com.apple.Preview       .pptx           all
+com.apple.Preview       .doc            all
+com.apple.Preview       .docx           all
+
+# Video: VLC
+org.videolan.vlc        .3gp            all
+org.videolan.vlc        .asf            all
+org.videolan.vlc        .asx            all
+org.videolan.vlc        .avi            all
+org.videolan.vlc        .flv            all
+org.videolan.vlc        .m4a            all
+org.videolan.vlc        .mkv            all
+org.videolan.vlc        .mov            all
+org.videolan.vlc        .mp4            all
+org.videolan.vlc        .mpg            all
+org.videolan.vlc        .rm             all
+org.videolan.vlc        .swf            all
+org.videolan.vlc        .vob            all
+org.videolan.vlc        .wmv            all
+
+# Audio: VLC
+org.videolan.vlc        .aac            all
+org.videolan.vlc        .aif            all
+org.videolan.vlc        .iff            all
+org.videolan.vlc        .m3u            all
+org.videolan.vlc        .mid            all
+org.videolan.vlc        .mp3            all
+org.videolan.vlc        .mpa            all
+org.videolan.vlc        .ra             all
+org.videolan.vlc        .wav            all
+org.videolan.vlc        .mpa            all
+
+# Archives: The Unarchiver
+cx.c3.theunarchiver     .7z             all
+cx.c3.theunarchiver     .cab            all
+cx.c3.theunarchiver     .gtar           all
+cx.c3.theunarchiver     .gz             all
+cx.c3.theunarchiver     .hqx            all
+cx.c3.theunarchiver     .jar            all
+cx.c3.theunarchiver     .msi            all
+cx.c3.theunarchiver     .rar            all
+cx.c3.theunarchiver     .sit            all
+cx.c3.theunarchiver     .sit            all
+cx.c3.theunarchiver     .tar            all
+cx.c3.theunarchiver     .tar.gz         all
+cx.c3.theunarchiver     .tgz            all
+cx.c3.theunarchiver     .zip            all
+
+# Torrent: transmission
+org.m0k.transmission    .torrent        all
