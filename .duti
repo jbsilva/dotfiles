@@ -155,6 +155,7 @@ org.videolan.vlc        .rm             all
 org.videolan.vlc        .swf            all
 org.videolan.vlc        .vob            all
 org.videolan.vlc        .wmv            all
+org.videolan.vlc        .wma            all
 
 # Audio: VLC
 org.videolan.vlc        .aac            all
