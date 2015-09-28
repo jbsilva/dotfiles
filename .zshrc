@@ -144,6 +144,13 @@ function dir_clone()
     rsync -aruv --delete "$1" "$2"
 }
 
+# Remove empty directories. GNU find
+function rm_empty_dirs()
+{
+    find "$1" -type d -empty -delete
+    #find "$1" -depth -type d -empty -print0 | xargs -0 rmdir
+}
+
 
 ################################
 # FUN
