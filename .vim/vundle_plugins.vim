@@ -125,6 +125,8 @@ Plugin 'rust-lang/rust.vim'
 " Edit gpg encrypted files
 Plugin 'https://github.com/jamessan/vim-gnupg'
 
+" Taglist
+Plugin 'vim-scripts/taglist.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
