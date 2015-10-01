@@ -33,9 +33,23 @@ let g:TEMPLATES = g:VIMFILES . '/templates'            "dotfiles/.vim/templates
 " => Funcoes Uteis
 "------------------------------------------------------------------------------
 
-" Insere arquivo com a variável resolvidaa
+" Copia o conteudo de `file` no inicio do arquivo atual com as variaveis no
+" formato `$VARIAVEL` já resolvidas. Uso para templates.
+" Atencao: O `expand` trata especialmente linhas iniciadas por '%', '#' ou '<'.
+"          Se precisar, inicie com '\' ('\#', por exemplo).
 fun! s:Insere(file)
-    exe 'silent! 0r ' a:file
+    if filereadable(a:file)
+
+        exe 'silent! 0r ' a:file
+
+        for linenum in range(1, line('$'))
+            let line = getline(linenum)
+            if line =~ '\$'
+                call setline(linenum, expand(line))
+            endif
+        endfor
+
+    endif
 endfun
 
 "------------------------------------------------------------------------------
@@ -138,7 +152,7 @@ if has("autocmd")
 
     augroup END
 else
-  set autoindent		" always set autoindenting on
+  set autoindent        " always set autoindenting on
 endif
 
 " See the changes you made
@@ -176,7 +190,7 @@ set incsearch               " increment search
 set smartcase               " upper-case sensitive search
 set history=100             " 100 lines of command line history
 set cmdheight=1             " command line height
-set ruler		            " show the cursor position all the time
+set ruler                   " show the cursor position all the time
 set showmode                " show mode at bottom of screen
 set number                  " show line numbers
 set nowritebackup           " ^
@@ -190,8 +204,8 @@ set wildmenu
 set splitbelow
 set formatoptions+=l
 set selection=inclusive
-set showcmd	        	    " display incomplete commands
-set incsearch		        " do incremental searching
+set showcmd                 " display incomplete commands
+set incsearch               " do incremental searching
 set wildmenu                " filesystem surfing - press :e and ^D
 set wildchar=<tab>
 set nofoldenable
@@ -252,9 +266,9 @@ au FileType html,xhtml map <F6> :!chromium %<CR>
 
 "------------------------------------------------------------------------------
 " => Templates
-"   if &filetype =~ '^\(text\|html\|python|ruby\)$'
+"   if &filetype =~ '^\(text\|html\|python|ruby|rust\)$'
 "------------------------------------------------------------------------------
-autocmd BufNewFile *.html,*.txt,*.py,*.rb :call s:Insere(fnameescape(g:TEMPLATES . '/' . &filetype))
+autocmd BufNewFile *.html,*.txt,*.py,*.rb,*.rs :call s:Insere(fnameescape(g:TEMPLATES . '/' . &filetype))
 
 if exists('*strftime')
     au BufNewFile *.txt :call append(1, '# Created: '.strftime('%a, %d %b %Y %T %z'))
@@ -265,9 +279,14 @@ endif
 
 "------------------------------------------------------------------------------
 " => Text files
+"    Corretor ortográfico
+"       Linguagem default: PT_BR.
+"       Para usar inglês:           `:setlocal spell spelllang=en_us`
+"       Para desativar corretor:    `:setlocal nospell`
+"       Comandos (`:help spell`):   `[s`, `]s`, `z=`, `zg`, `zw`, `:spellr`
+"    Textos com 78 colunas
 "------------------------------------------------------------------------------
-" Textos com 78 colunas
-autocmd FileType text setlocal textwidth=78
+autocmd FileType text setlocal textwidth=78 spell spelllang=pt_br
 
 "------------------------------------------------------------------------------
 " => C e C++
@@ -297,6 +316,7 @@ au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
 "------------------------------------------------------------------------------
 " => HTML
+" Alguns desses snips tambem sao implementados no SnipMate
 "------------------------------------------------------------------------------
 au FileType html,xhtml,php,eruby imap bbb <br />
 au FileType html,xhtml,php,eruby imap aaa <a href=""></a><left><left><left><left><left><left>
@@ -337,6 +357,11 @@ au FileType tex  map! ü \"{u}
 " => Ler documentos do MS Word
 "   Depende do antiword (http://vim.wikia.com/wiki/View_and_diff_MS_Word_files)
 "------------------------------------------------------------------------------
-au BufReadPre *.doc set ro
-au BufReadPre *.doc set hlsearch!
-au BufReadPost *.doc %!antiword "%"
+if executable('antiword')
+    augroup Word
+        au!
+        au BufReadPre *.doc set ro
+        au BufReadPre *.doc set hlsearch!
+        au BufReadPost *.doc %!antiword "%"
+    augroup END
+endif

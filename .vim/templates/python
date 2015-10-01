@@ -14,11 +14,11 @@ import argparse
 import sys
 
 
-__author__ = "Julio Batista Silva"
-__copyright__ = "Copyright 2015, Julio Batista Silva"
+__author__ = "$USER_FULLNAME"
+__copyright__ = "$USER_COPYRIGHT"
 __license__ = "GPL v3"
 __version__ = "1.0"
-__email__ = "julio@juliobs.com"
+__email__ = "$USER_EMAIL"
 
 
 def main(args):
