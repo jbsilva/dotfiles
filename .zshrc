@@ -90,7 +90,10 @@ alias listh='du -shc * | gsort -h'
 alias back='cd "$OLDPWD"'
 alias ...='cd ../../../'
 alias ....='cd ../../../../'
+
 alias meuip='curl ifconfig.me'
+alias my_ip="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
+
 alias brewu='brew update && brew upgrade && brew cleanup && brew cask cleanup && brew prune && brew doctor'
 alias pip_upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --upgrade"
 alias difff='/usr/bin/diff'
@@ -151,7 +154,24 @@ function rm_empty_dirs()
     #find "$1" -depth -type d -empty -print0 | xargs -0 rmdir
 }
 
+# Downloads directories recursively. Mirror remote
+function baixa_dir()
+{
+    UserAgent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'
 
+    wget -e robots=off \
+    --user-agent="${UserAgent}" \
+    --cut-dirs=3 \
+    --no-parent \
+    --recursive \
+    --relative \
+    --level=5 \
+    --no-host-directories \
+    #--no-directories \
+    --no-check-certificate \
+    --reject="index.html*" \
+    "$1"
+}
 ################################
 # FUN
 ################################
