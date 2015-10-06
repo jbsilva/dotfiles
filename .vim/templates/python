@@ -28,7 +28,14 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
             description='Descricao do programa.')
-    parser.add_argument('--foo', help='foo help')
+    parser.add_argument('-b', '--bar', dest="bar", help='bar help')
+    parser.add_argument('-n', '--num', type=int, help="integer")
+    parser.add_argument('-f', '--force', action='store_true',
+            default=False, dest='force', help='force')
+    parser.add_argument("-v", "--verbosity", action="count", default=0,
+            help="increase output verbosity")
+    parser.add_argument('--version', action='version',
+            version='%(prog)s v' + __version__)
     args = parser.parse_args()
 
     sys.exit(main(args))
