@@ -16,6 +16,9 @@ tap 'homebrew/fuse'
 # osxfuse deve ser instalado antes de ntfs-3g
 cask 'osxfuse'
 
+# xquartz
+cask 'xquartz'
+
 # GNU Core Utilities. Adicionar `$(brew --prefix coreutils)/libexec/gnubin` ao `$PATH`.
 brew 'coreutils'
 brew 'binutils'
@@ -110,14 +113,12 @@ cask 'steam'
 cask 'the-unarchiver'
 cask 'transmission'
 cask 'vlc'
+cask 'wireshark'
 cask 'xtrafinder'
 cask 'calibre'
 #brew 'ffmpeg'
 #brew 'gpg'
-#brew 'rsync'
-#brew 'unzip'
 #cask 'audacity'
-#cask 'firefox'
 #cask 'flash-player'
 #cask 'poedit'
 #cask 'silverlight'
