@@ -41,6 +41,7 @@ fi
 ################################
 # Variáveis
 ################################
+export PATH="/usr/local/sbin:$PATH"
 local VIM=/usr/local/bin/vim
 export VISUAL=$VIM
 export EDITOR=$VIM
@@ -103,10 +104,14 @@ alias f644="find . -type f -exec chmod 644 {} \;"
 alias now='date +"%T"'
 alias nowdate='date +"%d-%m-%Y"'
 alias sha1='openssl sha1'
+alias sha256='shasum -a 256'
 alias wget='wget -c'    # Resume wget by default
 
 alias showAllOn='defaults write com.apple.finder AppleShowAllFiles 1 && killall Finder'  # Show all files in Finder
 alias showAllOff='defaults write com.apple.finder AppleShowAllFiles 0 && killall Finder'
+alias hide_Desktop='defaults write com.apple.finder CreateDesktop -bool FALSE; killall Finder'
+alias show_Desktop='defaults write com.apple.finder CreateDesktop TRUE; killall Finder'
+
 alias paste2vim='pbpaste | vim -'             # Paste clipboard in new vim file
 
 alias g++e='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -Werror'    # Warnings = Error
