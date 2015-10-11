@@ -159,24 +159,25 @@ function rm_empty_dirs()
     #find "$1" -depth -type d -empty -print0 | xargs -0 rmdir
 }
 
-# Downloads directories recursively. Mirror remote
+# Downloads directories recursively. Mirror remote.
+# `baixa_dir $cut_dirs $level $url`
 function baixa_dir()
 {
     UserAgent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'
 
     wget -e robots=off \
     --user-agent="${UserAgent}" \
-    --cut-dirs=3 \
+    --cut-dirs="${2:-0}" \
     --no-parent \
     --recursive \
     --relative \
-    --level=5 \
+    --level="${3:-5}" \
     --no-host-directories \
-    #--no-directories \
     --no-check-certificate \
     --reject="index.html*" \
     "$1"
 }
+
 ################################
 # FUN
 ################################
