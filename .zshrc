@@ -42,7 +42,7 @@ fi
 # Variáveis
 ################################
 export PATH="/usr/local/sbin:$PATH"
-local VIM=/usr/local/bin/vim
+local VIM=vim
 export VISUAL=$VIM
 export EDITOR=$VIM
 export OS="$(uname -s)"
@@ -58,10 +58,10 @@ export USER_COPYRIGHT='Copyright (c) 2015, Julio Batista Silva'
 case $(uname -s) in
     Darwin)
         export OSX_VERSION="$(sw_vers -productVersion)"
-#        source $HOME/.zsh/osx.zshrc
+        source $HOME/.zsh/zshrc_osx
         ;;
     Linux)
-#        source $HOME/.zsh/linux.zshrc
+        source $HOME/.zsh/zshrc_linux
         ;;
 esac
 
