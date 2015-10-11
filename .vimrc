@@ -5,11 +5,11 @@
 "
 " File:         ~/.vimrc
 " Description:  Arquivo de configuração do VIM
-" Author:       Julio
+" Author:       Julio Batista Silva
 " Created:      2008
-" Last Change:  Tue 22 Apr 2014 16:30
+" Last Change:  Sun 11 Oct 2015 15:00
 " Licence:
-"           Copyright (c) 2008-2011 Julio B. Silva <julio@juliobs.com>
+"           Copyright (c) 2008-2011 Julio Batista Silva <julio@juliobs.com>
 "                       All Rights Reserved
 "
 "           This program is free software. It comes without any warranty, to
@@ -21,7 +21,7 @@
 " Download:
 "       https://github.com/jbsilva/dotfiles
 "
-" OS: MacBook OS X 10.9.2
+" OS: OS X 10.11 and Linux 4.x
 "
 " Inspirações:
 "   http://www.hermann-uwe.de/files/vimrc
