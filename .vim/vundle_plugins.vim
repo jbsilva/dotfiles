@@ -42,12 +42,15 @@ Plugin 'rstacruz/sparkup'
 "Explore filesystem
 Plugin 'scrooloose/nerdtree'
 
+"Vim plugin for intensely orgasmic commenting
+Plugin 'scrooloose/nerdcommenter'
+
 "Visualize your Vim undo tree.
 ":GundoToggle || <leader>g
 Plugin 'sjl/gundo.vim'
 
 "Comment multiple lines --> gc{motion}, gcc
-Plugin 'tomtom/tcomment_vim'
+" Plugin 'tomtom/tcomment_vim'
 
 "Git wrapper. --> :Gedit :Gsplit :Gstatus :Gbrowse :Gblame :Gdiff, etc
 Plugin 'tpope/vim-fugitive'
