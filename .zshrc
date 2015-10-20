@@ -41,7 +41,11 @@ fi
 ################################
 # Variáveis
 ################################
-export PATH="/usr/local/sbin:$PATH"
+case ":$PATH:" in
+  *:/usr/local/sbin:*) ;;
+  *) export PATH=/usr/local/sbin:$PATH ;;
+esac
+
 local VIM=vim
 export VISUAL=$VIM
 export EDITOR=$VIM
@@ -65,6 +69,14 @@ case $(uname -s) in
         ;;
 esac
 
+################################
+# Outras funcoes
+################################
+source $HOME/.zsh/baixa_dir.sh
+source $HOME/.zsh/cleand.sh
+source $HOME/.zsh/clone_dir.sh
+source $HOME/.zsh/my_ip.sh
+source $HOME/.zsh/rm_empty_dirs.sh
 
 ################################
 # rbenv
@@ -93,7 +105,6 @@ alias ...='cd ../../../'
 alias ....='cd ../../../../'
 
 alias meuip='curl ifconfig.me'
-alias my_ip="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
 
 alias brewu='brew update && brew upgrade && brew cleanup && brew cask cleanup && brew prune && brew doctor'
 alias pip_upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --upgrade"
@@ -133,49 +144,6 @@ function python_server()
     local port="${1:-8000}"
     open "http://localhost:${port}/"
     python -m SimpleHTTPServer "$port"
-}
-
-# Cleanup
-function cleand()
-{
-    if [[ "$(uname)" == "Darwin" ]]; then
-        dot_clean -m --keep=mostrecent "$1"
-    fi
-    
-    find "$1" -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -name 'desktop.ini' \) -exec echo "{}" \; -exec rm "{}" \;
-}
-
-# Clone directories
-function dir_clone()
-{
-    cleand "$1"
-    rsync -aruv --delete "$1" "$2"
-}
-
-# Remove empty directories. GNU find
-function rm_empty_dirs()
-{
-    find "$1" -type d -empty -delete
-    #find "$1" -depth -type d -empty -print0 | xargs -0 rmdir
-}
-
-# Downloads directories recursively. Mirror remote.
-# `baixa_dir $cut_dirs $level $url`
-function baixa_dir()
-{
-    UserAgent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'
-
-    wget -e robots=off \
-    --user-agent="${UserAgent}" \
-    --cut-dirs="${2:-0}" \
-    --no-parent \
-    --recursive \
-    --relative \
-    --level="${3:-5}" \
-    --no-host-directories \
-    --no-check-certificate \
-    --reject="index.html*" \
-    "$1"
 }
 
 ################################

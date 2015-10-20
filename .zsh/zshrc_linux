@@ -1,0 +1,4 @@
+# Linux only
+if [[ "$OSTYPE" != linux* ]]; then
+    return 1
+fi

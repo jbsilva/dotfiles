@@ -1,0 +1,4 @@
+# OS X only
+if [[ "$OSTYPE" != darwin* ]]; then
+    return 1
+fi
