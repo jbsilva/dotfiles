@@ -12,12 +12,19 @@ tap 'caskroom/fonts'
 tap 'homebrew/bundle'
 tap 'homebrew/dupes'
 tap 'homebrew/fuse'
+tap 'homebrew/science'
+tap 'homebrew/x11'
+tap 'neovim/neovim'
+tap 'homebrew/php'
+
 
 # osxfuse deve ser instalado antes de ntfs-3g
 cask 'osxfuse'
 
+
 # xquartz
 cask 'xquartz'
+
 
 # GNU Core Utilities. Adicionar `$(brew --prefix coreutils)/libexec/gnubin` ao `$PATH`.
 brew 'coreutils'
@@ -39,27 +46,81 @@ brew 'homebrew/dupes/screen'
 brew 'homebrew/dupes/unzip'
 brew 'homebrew/fuse/ntfs-3g'
 
-brew 'ack'
+
+# Fonts
+brew 'freetype'
+brew 'fontconfig'
+cask 'font-inconsolata'
+cask 'font-terminus'
+
+
+# C
+brew 'gcc'
 brew 'astyle'
 brew 'autoconf'
-brew 'xz'
 brew 'automake'
+brew 'cmake'
+brew 'ctags'
+brew 'icu4c'
+
+
+# python
+brew 'python'
+brew 'python3'
+brew 'pypy'
+brew 'pypy3'
+
+
+# Java
+brew 'java'
+
+
+# VCS
+brew 'git'
+brew 'git-extras'
+brew 'git-cal'
+brew 'git-flow'
+brew 'mercurial'
+brew 'meld'
+
+
+# Network
+brew 'aircrack-ng'
+brew 'arp-scan'
+brew 'b43-fwcutter'
+brew 'nmap'
+brew 'reaver'       # brute force WPA/WPA2
+brew 'subnetcalc'
+brew 'ettercap'     # sniffer, MITM
+cask 'wireshark'
+
+
+# postgres
+brew 'pgbadger'
+brew 'pgbouncer'
+brew 'pgcli'
+brew 'pgformatter'
+brew 'postgis'
+brew 'postgresql'
+cask 'pgadmin3'
+
+
+brew 'thefuck'
+brew 'autojump'
+brew 'ack'
+brew 'xz'
 brew 'readline'
 brew 'bash'
-brew 'cmake'
 brew 'gmp'
 brew 'cscope'
-brew 'ctags'
 brew 'docbook'
 brew 'docbook-xsl'
 brew 'duti'
 brew 'figlet'
 brew 'libpng'
-brew 'freetype'
 brew 'gdbm'
 brew 'gettext'
 brew 'pcre'
-brew 'git'
 brew 'pkg-config'
 brew 'libtasn1'
 brew 'nettle'
@@ -73,8 +134,6 @@ brew 'libyaml'
 brew 'sqlite'
 brew 'makedepend'
 brew 'openssl'
-brew 'python'
-brew 'python3'
 brew 'macvim', args: ['with-custom-icons', 'with-override-system-vim']
 brew 'nmap'
 brew 'p7zip'
@@ -91,17 +150,16 @@ brew 'wdiff', args: ['with-gettext']
 brew 'wget', args: ['with-iri']
 brew 'youtube-dl', args: ['HEAD']
 brew 'zsh'
+brew 'zsh-completions'
+
 brew 'caskroom/cask/brew-cask'
 cask 'android-file-transfer'
 cask 'dropbox'
 cask 'firefox'
-cask 'font-inconsolata'
-cask 'font-terminus'
 cask 'gimp'
 cask 'google-chrome'
 cask 'insomniax'
 cask 'iterm2'
-cask 'java'
 cask 'kid3'
 cask 'libreoffice'
 cask 'picasa'
@@ -113,12 +171,14 @@ cask 'steam'
 cask 'the-unarchiver'
 cask 'transmission'
 cask 'vlc'
-cask 'wireshark'
 cask 'xtrafinder'
 cask 'calibre'
 cask 'mactex'
-tap 'neovim/neovim'
 brew 'neovim/neovim/neovim', args: ['HEAD']
+
+
+
+
 #brew 'libidn'
 #brew 'pandoc'
 #cask 'icefloor'
