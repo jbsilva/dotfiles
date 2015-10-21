@@ -11,4 +11,4 @@ computer, I've created a branch for each one of them:
 
 To save space, clone only the branch you need. Eg.:
 
-    git clone --recursive -b macbook_osx --single-branch git@github.com:jbsilva/dotfiles.git
+    git clone --recursive -b macbook_osx --single-branch https://github.com/jbsilva/dotfiles.git
