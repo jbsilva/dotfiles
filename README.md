@@ -12,3 +12,7 @@ computer, I've created a branch for each one of them:
 To save space, clone only the branch you need. Eg.:
 
     git clone --recursive -b macbook_osx --single-branch https://github.com/jbsilva/dotfiles.git
+
+If the history is not required:
+
+    git clone --recursive -b macbook_osx --depth 1 https://github.com/jbsilva/dotfiles.git
