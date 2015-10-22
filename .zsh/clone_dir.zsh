@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+
 # Clone directories
 function clone_dir()
 {
@@ -12,9 +13,25 @@ Clona diretório atual em DESTINO: $0 DESTINO
 EOF
     )"
 
+
     if (( ! $+commands[rsync] )); then
         return 1
     fi
+
+
+    args=()
+    args+=(--progress)
+    args+=(--verbose)
+    args+=(--recursive)
+    args+=(--links)
+    args+=(--perms)
+    args+=(--owner)
+    args+=(--group)
+    args+=(--times)
+    args+=(--devices)
+    args+=(--specials)
+    args+=(--update)
+    args+=(--delete)
 
 
     if (( $# == 1 )); then
@@ -23,23 +40,18 @@ EOF
     elif (( $# == 2 )); then
         local ORIGEM="${1}"
         local DESTINO="${2}"
+    elif (( $# == 3 )); then
+        local ORIGEM="${1}"
+        local DESTINO="${2}"
+        args+=(--exclude-from="${3}")
     else
       print "$usage" >&2
       return 1
     fi
 
+
     cleand $ORIGEM
 
-    rsync --progress \
-        --verbose \
-        --recursive \
-        --links \
-        --perms \
-        --owner \
-        --group \
-        --times \
-        --devices \
-        --specials \
-        --update \
-        --delete "$ORIGEM" "$DESTINO"
+
+    rsync ${args[*]} "$ORIGEM" "$DESTINO"
 }
