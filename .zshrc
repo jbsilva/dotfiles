@@ -72,11 +72,11 @@ esac
 ################################
 # Outras funcoes
 ################################
-source $HOME/.zsh/baixa_dir.sh
-source $HOME/.zsh/cleand.sh
-source $HOME/.zsh/clone_dir.sh
-source $HOME/.zsh/my_ip.sh
-source $HOME/.zsh/rm_empty_dirs.sh
+source $HOME/.zsh/baixa_dir.zsh
+source $HOME/.zsh/cleand.zsh
+source $HOME/.zsh/clone_dir.zsh
+source $HOME/.zsh/my_ip.zsh
+source $HOME/.zsh/rm_empty_dirs.zsh
 
 ################################
 # rbenv
