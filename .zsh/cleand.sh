@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # Removes .DS_Store, Thumbs.db and desktop.ini from all tree
 function cleand()
 {

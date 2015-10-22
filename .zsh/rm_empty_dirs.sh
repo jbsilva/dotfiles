@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # Remove empty directories.
 # Requires GNU find
 function rm_empty_dirs()

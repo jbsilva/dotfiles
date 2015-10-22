@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # Gets IP
 function my_ip()
 {

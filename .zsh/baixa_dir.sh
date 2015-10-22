@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # Downloads directories recursively. Mirror remote.
 # `baixa_dir $url $cut_dirs $level`
 # Example with login: http://my_username:my_password@files.juliobs.com/Images/

@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # Clone directories
 function clone_dir()
 {
