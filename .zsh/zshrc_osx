@@ -2,3 +2,6 @@
 if [[ "$OSTYPE" != darwin* ]]; then
     return 1
 fi
+
+# List directories first. GNU coreutils
+alias lsd='/usr/local/bin/gls --color -h --group-directories-first'
