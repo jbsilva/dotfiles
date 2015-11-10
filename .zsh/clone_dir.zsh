@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 # Clone directories
+# clone_dir ~/My_Dir julio@juliobs.com:~/www/files/
 function clone_dir()
 {
 
@@ -30,7 +31,7 @@ EOF
     args+=(--times)
     args+=(--devices)
     args+=(--specials)
-    args+=(--update)
+#    args+=(--update)
     args+=(--delete)
 
 
