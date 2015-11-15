@@ -5,3 +5,4 @@ fi
 
 # List directories first. GNU coreutils
 alias lsd='/usr/local/bin/gls --color -h --group-directories-first'
+alias lsdl='lsd | less'
