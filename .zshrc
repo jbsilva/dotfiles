@@ -99,7 +99,6 @@ setopt HIST_IGNORE_ALL_DUPS
 ################################
 alias dir='ls -1'
 alias list='du -shc *'
-alias listh='du -shc * | gsort -h'
 alias back='cd "$OLDPWD"'
 alias ...='cd ../../../'
 alias ....='cd ../../../../'

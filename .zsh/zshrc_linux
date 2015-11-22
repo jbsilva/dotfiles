@@ -2,3 +2,7 @@
 if [[ "$OSTYPE" != linux* ]]; then
     return 1
 fi
+
+
+# List files and directories sorted by size.
+alias listh='du -shc * | sort -h'

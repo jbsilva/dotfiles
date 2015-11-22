@@ -6,3 +6,6 @@ fi
 # List directories first. GNU coreutils
 alias lsd='/usr/local/bin/gls --color -h --group-directories-first'
 alias lsdl='lsd | less'
+
+# List files and directories sorted by size. GNU coreutils
+alias listh='du -shc * | gsort -h'
