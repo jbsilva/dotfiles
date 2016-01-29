@@ -4,7 +4,7 @@
 #                      ( O O )
 #               ====oOO==(_)==OOo=====
 #
-# Licença:
+# License:
 #           Copyright (c) 2011 Julio Batista Silva <julio@juliobs.com>
 #                       All Rights Reserved
 #
@@ -98,6 +98,7 @@ setopt HIST_IGNORE_ALL_DUPS
 # Aliases
 ################################
 alias dir='ls -1'
+alias lsa='ls -alh'
 alias list='du -shc *'
 alias back='cd "$OLDPWD"'
 alias ...='cd ../../../'
@@ -105,8 +106,8 @@ alias ....='cd ../../../../'
 
 alias meuip='curl ifconfig.me'
 
-alias brewu='brew update && brew upgrade && brew cleanup && brew cask cleanup && brew prune && brew doctor'
 alias pip_upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --upgrade"
+alias pip3_upgrade="pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install --upgrade"
 alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 alias d755="find . -type d -exec chmod 755 {} \;"
@@ -121,6 +122,8 @@ alias showAllOn='defaults write com.apple.finder AppleShowAllFiles 1 && killall 
 alias showAllOff='defaults write com.apple.finder AppleShowAllFiles 0 && killall Finder'
 alias hide_Desktop='defaults write com.apple.finder CreateDesktop -bool FALSE; killall Finder'
 alias show_Desktop='defaults write com.apple.finder CreateDesktop TRUE; killall Finder'
+
+alias unzipall="unzip '*.zip'"
 
 alias paste2vim='pbpaste | vim -'             # Paste clipboard in new vim file
 
