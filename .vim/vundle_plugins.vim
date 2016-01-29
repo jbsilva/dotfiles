@@ -14,123 +14,213 @@ filetype off                   " required!
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" let Vundle manage Vundle, required
+"------------------------------------------------------------------------------
+" => Vundle
+"    let Vundle manage Vundle, required
+"------------------------------------------------------------------------------
 Plugin 'VundleVim/Vundle.vim'
 
-" original repos on github
+"------------------------------------------------------------------------------
+" => Easymotion
+"------------------------------------------------------------------------------
 Plugin 'Lokaltog/vim-easymotion'
+
+"------------------------------------------------------------------------------
+" => Pytest
+"------------------------------------------------------------------------------
 Plugin 'alfredodeza/pytest.vim'
 
-"Tab autocompletion
+"------------------------------------------------------------------------------
+" => Tab autocompletion
+"------------------------------------------------------------------------------
 "Plugin 'ervandew/supertab'
 
-"Python Documentation (ctrl+k)
+"------------------------------------------------------------------------------
+" => Python Documentation
+"    <C-k>
+"------------------------------------------------------------------------------
 Plugin 'fs111/pydoc.vim'
 
-"betterthangrep.com
+"------------------------------------------------------------------------------
+" => ACK - betterthangrep.com
+"------------------------------------------------------------------------------
 Plugin 'mileszs/ack.vim'
 
-"Check Python code on the fly
+"------------------------------------------------------------------------------
+" => Check Python code on the fly
+"------------------------------------------------------------------------------
 Plugin 'mitechie/pyflakes-pathogen'
 
-"TextMate snippets
+"------------------------------------------------------------------------------
+" => Snipmate - TextMate-style snippets for Vim
+"------------------------------------------------------------------------------
 Plugin 'msanders/snipmate.vim'
+let g:snips_author = expand($USER_FULLNAME)
+let g:author = expand($USER_FULLNAME)
+let g:snips_email = expand($USER_EMAIL)
+let g:email = expand($USER_EMAIL)
+let g:snips_github = expand($USER_GITHUB)
+let g:github = expand($USER_GITHUB)
 
-"Write HTML in CSS-like syntax
+"------------------------------------------------------------------------------
+" => Write HTML in CSS-like syntax
+"------------------------------------------------------------------------------
 Plugin 'rstacruz/sparkup'
 
-"Explore filesystem
+"------------------------------------------------------------------------------
+" => Explore the filesystem.
+"    :NERDTree
+"------------------------------------------------------------------------------
 Plugin 'scrooloose/nerdtree'
+nnoremap <leader>d :NERDTreeToggle<CR>
 
-"Vim plugin for intensely orgasmic commenting
+"------------------------------------------------------------------------------
+" => Nerdcommenter - Vim plugin for intensely orgasmic commenting
+"<leader>cc: comment
+"<leader>cu: uncomment
+"------------------------------------------------------------------------------
 Plugin 'scrooloose/nerdcommenter'
 
-"Visualize your Vim undo tree.
-":GundoToggle || <leader>g
+"------------------------------------------------------------------------------
+" => Gundu - Visualize your Vim undo tree and display diffs
+"    :GundoToggle
+"------------------------------------------------------------------------------
 Plugin 'sjl/gundo.vim'
+nnoremap <leader>g :GundoToggle<CR>
 
-"Comment multiple lines --> gc{motion}, gcc
-" Plugin 'tomtom/tcomment_vim'
-
-"Git wrapper. --> :Gedit :Gsplit :Gstatus :Gbrowse :Gblame :Gdiff, etc
+"------------------------------------------------------------------------------
+" => Fugitive - Git wrapper
+"    :Gedit :Gsplit :Gstatus :Gbrowse :Gblame :Gdiff, etc
+"------------------------------------------------------------------------------
 Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-git'
 
-" Enable repeating supported plugin maps with "."
+"------------------------------------------------------------------------------
+" => Vim-Repeat - Enable repeating supported plugin maps with "."
+"------------------------------------------------------------------------------
 Plugin 'tpope/vim-repeat'
 
-"CTRL-A/CTRL-X increment dates, times, and more
+"------------------------------------------------------------------------------
+" => Vim-Speeddating - CTRL-A/CTRL-X increment dates, times, and more
+"------------------------------------------------------------------------------
 Plugin 'tpope/vim-speeddating'
 
-"Manipulate surroundings. (*) denotes the cursor position:
-"Doc: https://github.com/tpope/vim-surround/blob/master/doc/surround.txt
-"  Old text                  Command     New text
-"  "Hello *world!"           ds"         Hello world!
-"  [123+4*56]/2              cs])        (123+456)/2
-"  <div>Yo!*</div>           cst<p>      <p>Yo!</p>
-"  if *x>3 {                 ysW(        if ( x>3 ) {
-"  my $str = *whee!;         vllllS'     my $str = 'whee!';
+"------------------------------------------------------------------------------
+" => Vim-Surround - Manipulate surroundings
+"       (*) denotes the cursor position:
+"       Old text                  Command     New text
+"       "Hello *world!"           ds"         Hello world!
+"       [123+4*56]/2              cs])        (123+456)/2
+"       <div>Yo!*</div>           cst<p>      <p>Yo!</p>
+"       if *x>3 {                 ysW(        if ( x>3 ) {
+"       my $str = *whee!;         vllllS'     my $str = 'whee!';
+"------------------------------------------------------------------------------
 Plugin 'tpope/vim-surround'
 
-"List FIXME, TODO and XXX. <leader>tl
+"------------------------------------------------------------------------------
+" => TaskList - List FIXME, TODO and XXX
+"    <leader>tl
+"------------------------------------------------------------------------------
 Plugin 'vim-scripts/TaskList.vim'
 
-":colorscheme zenburn
+"------------------------------------------------------------------------------
+" => Zenburn
+"    :colorscheme zenburn
+"------------------------------------------------------------------------------
 Plugin 'jnurmine/Zenburn'
 
-"Defines text objects based on indent levels. Useful in Python
-"  Key Mapping   Description
-"  <count>ai     (A)n (I)ndentation level and line above.
-"  <count>ii     (I)nner (I)ndentation level (no line above).
-"  <count>aI     (A)n (I)ndentation level and lines above/below.
-"  <count>iI     (I)nner (I)ndentation level (no lines above/below).
+"------------------------------------------------------------------------------
+" => Indent Object
+"    Defines text objects based on indent levels. Useful in Python
+"    Key Mapping   Description
+"    <count>ai     (A)n (I)ndentation level and line above.
+"    <count>ii     (I)nner (I)ndentation level (no line above).
+"    <count>aI     (A)n (I)ndentation level and lines above/below.
+"    <count>iI     (I)nner (I)ndentation level (no lines above/below).
+"------------------------------------------------------------------------------
 Plugin 'michaeljsmith/vim-indent-object'
 
-"Instalar antes: `pip install pep8`
-"http://www.python.org/dev/peps/pep-0008/
+"------------------------------------------------------------------------------
+" => PEP8 - Python style guide checker
+"   Install before: `pip install pep8`
+"   http://www.python.org/dev/peps/pep-0008/
+"------------------------------------------------------------------------------
 Plugin 'vim-scripts/pep8'
 
-"Finds buffers/files/commands/bookmarks/tags fast
-":FufFile || :FufBuffer
+"------------------------------------------------------------------------------
+" => FuzzyFinder - Finds buffers/files/commands/bookmarks/tags fast
+"    :FufFile :FufBuffer
+"------------------------------------------------------------------------------
 Plugin 'vim-scripts/FuzzyFinder'
+nmap ,f :FufFile<CR>
+nmap ,e :FufCoverageFile<CR>
+nmap ,u :FufTaggedFile<CR>
+nmap ,c :FufFileWithCurrentBufferDir<CR>
+nmap ,b :FufBuffer<CR>
+nmap ,l :FufLine<CR>
+
+"------------------------------------------------------------------------------
+" => L9
+"------------------------------------------------------------------------------
 Plugin 'vim-scripts/L9'
 
-"Ruby on rails
-Plugin 'vim-scripts/rails.vim'
-
-"vim + gnu screen
-Plugin 'ervandew/screen'
-
-" non github repos
-"Plugin 'git://git.wincent.com/command-t.git'
+"------------------------------------------------------------------------------
+" => LaTeX
+"------------------------------------------------------------------------------
 Plugin 'git://vim-latex.git.sourceforge.net/gitroot/vim-latex/vim-latex'
 
-"C and C++
-Plugin 'wincent/Command-T'
-Plugin 'vim-scripts/c.vim'
-
-"" Edite o plugin c.vim:
+"------------------------------------------------------------------------------
+" => "C and C++
+" Edite o plugin c.vim:
 "   -> c-support/templates/Templates: Coloque seus dados
 "   -> c-support/templates/cpp.comments.template: Diminua === para 79 colunas
 "           e adicione alguns includes e `int main(){ return 0}`
 "   -> plugin/c.vim: Mude o formado usado para datas:
 "           s:C_FormatDate = '%d/%b/%Y' e s:C_FormatTime = '%T'
+"------------------------------------------------------------------------------
+Plugin 'wincent/Command-T'
+Plugin 'vim-scripts/c.vim'
 
-" Rust language
-Plugin 'rust-lang/rust.vim'
-
-"YouCompleteMe
+"------------------------------------------------------------------------------
+" => YouCompleteMe
+"------------------------------------------------------------------------------
 "Plugin 'Valloric/YouCompleteMe'
 
-"Plugin 'sontek/minibufexpl.vim'
+"------------------------------------------------------------------------------
+" => MiniBufExpl - List open buffers as tabs
+"------------------------------------------------------------------------------
+Plugin 'fholgado/minibufexpl.vim'
+
+"------------------------------------------------------------------------------
+" => Rope
+"------------------------------------------------------------------------------
 "Plugin 'sontek/rope-vim'
 
-" Edit gpg encrypted files
+"------------------------------------------------------------------------------
+" => Edit gpg encrypted files
+"------------------------------------------------------------------------------
 Plugin 'https://github.com/jamessan/vim-gnupg'
 
-" Taglist
+"------------------------------------------------------------------------------
+" => Taglist
+"    Requires 'exuberant ctags'
+"------------------------------------------------------------------------------
 Plugin 'vim-scripts/taglist.vim'
 
+"------------------------------------------------------------------------------
+" => Vim-autoformat - Easy code formatting in Vim
+"    :Autoformat
+"------------------------------------------------------------------------------
+Plugin 'Chiel92/vim-autoformat'
+let g:formatdef_rustfmt = '"rustfmt"'
+let g:formatters_rust = ['rustfmt']
+
+"------------------------------------------------------------------------------
+" => Rust language
+"------------------------------------------------------------------------------
+Plugin 'rust-lang/rust.vim'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required

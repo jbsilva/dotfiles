@@ -60,44 +60,8 @@ if has("gui_running")
     "colorscheme mayansmoke
 else
     colorscheme zenburn
-    "colorscheme morning
 endif
 
-"------------------------------------------------------------------------------
-" => Define o caractere equivalente a <leader>
-"------------------------------------------------------------------------------
-let mapleader=','
-
-"------------------------------------------------------------------------------
-" => Snipmate - TextMate-style snippets for Vim
-"------------------------------------------------------------------------------
-let g:snips_author = expand($USER_FULLNAME)
-let g:author = expand($USER_FULLNAME)
-let g:snips_email = expand($USER_EMAIL)
-let g:email = expand($USER_EMAIL)
-let g:snips_github = expand($USER_GITHUB)
-let g:github = expand($USER_GITHUB)
-
-"------------------------------------------------------------------------------
-" => NERD_tree - Árvore do filesystem
-" http://www.vim.org/scripts/script.php?script_id=1658
-"------------------------------------------------------------------------------
-map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
-
-"------------------------------------------------------------------------------
-" => Gundu - plugin que mostra diffs de cada vez que o arquivo foi salvo
-"------------------------------------------------------------------------------
-map <leader>g :GundoToggle<CR>
-
-"------------------------------------------------------------------------------
-" => FuzzyFinder
-"------------------------------------------------------------------------------
-nmap ,f :FufFile<CR>
-nmap ,e :FufCoverageFile<CR>
-nmap ,u :FufTaggedFile<CR>
-nmap ,c :FufFileWithCurrentBufferDir<CR>
-nmap ,b :FufBuffer<CR>
-nmap ,l :FufLine<CR>
 
 "------------------------------------------------------------------------------
 " => Check Html5
