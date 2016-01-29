@@ -41,8 +41,8 @@ org.vim.MacVim          .erl                            all
 org.vim.MacVim          .gitignore                      editor
 org.vim.MacVim          .h                              all
 org.vim.MacVim          .hrl                            all
-org.vim.MacVim          .htm                            editor
-org.vim.MacVim          .html                           editor
+#org.vim.MacVim          .htm                            editor
+#org.vim.MacVim          .html                           editor
 org.vim.MacVim          .ini                            all
 org.vim.MacVim          .java                           all
 org.vim.MacVim          .js                             all
@@ -156,6 +156,7 @@ org.videolan.vlc        .swf            all
 org.videolan.vlc        .vob            all
 org.videolan.vlc        .wmv            all
 org.videolan.vlc        .wma            all
+org.videolan.vlc        .webm           all
 
 # Audio: VLC
 org.videolan.vlc        .aac            all
