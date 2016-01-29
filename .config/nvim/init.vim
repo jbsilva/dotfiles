@@ -3,13 +3,13 @@
 "                      ( O O )
 "               ====oOO==(_)==OOo=====
 "
-" File:         ~/.vimrc
-" Description:  Arquivo de configuração do VIM
+" File:         init.vim
+" Description:  Arquivo de configuração do Nvim
 " Author:       Julio Batista Silva
 " Created:      2008
-" Last Change:  Sun 11 Oct 2015 15:00
+" Last Change:  29 Jan 2016
 " Licence:
-"           Copyright (c) 2008-2011 Julio Batista Silva <julio@juliobs.com>
+"           Copyright (c) 2008-2016 Julio Batista Silva <julio@juliobs.com>
 "                       All Rights Reserved
 "
 "           This program is free software. It comes without any warranty, to
@@ -45,9 +45,9 @@ let mapleader=','
 "------------------------------------------------------------------------------
 " => Carrega os plugins do Vundle
 "------------------------------------------------------------------------------
-source $HOME/.vim/vundle_plugins.vim
+source $XDG_CONFIG_HOME/nvim/vundle_plugins.vim
 
 "------------------------------------------------------------------------------
 " => Carrega o restante das configurações
 "------------------------------------------------------------------------------
-source $HOME/.vim/settings.vim
+source $XDG_CONFIG_HOME/nvim/settings.vim
