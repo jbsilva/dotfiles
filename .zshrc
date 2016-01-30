@@ -1,11 +1,11 @@
-#######################################################
+###############################################################################
 #               Julio's ~/.zshrc file
 #
 #                      ( O O )
 #               ====oOO==(_)==OOo=====
 #
 # License:
-#           Copyright (c) 2011 Julio Batista Silva <julio@juliobs.com>
+#           Copyright (c) 2011-2016, Julio Batista Silva <julio@juliobs.com>
 #                       All Rights Reserved
 #
 #           This program is free software. It comes without any warranty, to
@@ -14,51 +14,51 @@
 #           To Public License, Version 2, as published by Sam Hocevar. See
 #           http://sam.zoy.org/wtfpl/COPYING for more details.
 #
-# Created:      Fri 12 Aug 2011
-# Last Change:  Wed 09 Sep 2015
+# Created:      12 Aug 2011
+# Last Change:  29 Jan 2016
 #
 # Download: https://github.com/jbsilva/dotfiles
-#
-# OS: MacBook OS X 10.11
-#######################################################
+###############################################################################
 
 
-################################
+###############################################################################
 # Teste de segurança
-################################
+###############################################################################
 # Don't do anything for non-interactive shells
 [[ -z "$PS1" ]] && return
 
 
-################################
+###############################################################################
 # Source Prezto.
-################################
+###############################################################################
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 
-################################
+###############################################################################
 # Variáveis
-################################
+###############################################################################
 case ":$PATH:" in
   *:/usr/local/sbin:*) ;;
   *) export PATH=/usr/local/sbin:$PATH ;;
 esac
 
-local VIM=vim
-export VISUAL=$VIM
-export EDITOR=$VIM
+export XDG_CONFIG_HOME=$HOME/.config
+
+local NVIM=nvim
+export VISUAL=$NVIM
+export EDITOR=$NVIM
 export OS="$(uname -s)"
 export USER='Julio'
 export USER_FULLNAME='Julio Batista Silva'
 export USER_EMAIL='julio@juliobs.com'
 export USER_GITHUB='jbsilva'
-export USER_COPYRIGHT='Copyright (c) 2015, Julio Batista Silva'
+export USER_COPYRIGHT="Copyright (c) $(date +%Y), $USER_FULLNAME"
 
-################################
+###############################################################################
 # Coisas específicas de cada SO
-################################
+###############################################################################
 case $(uname -s) in
     Darwin)
         export OSX_VERSION="$(sw_vers -productVersion)"
@@ -69,24 +69,15 @@ case $(uname -s) in
         ;;
 esac
 
-################################
-# Outras funcoes
-################################
-source $HOME/.zsh/baixa_dir.zsh
-source $HOME/.zsh/cleand.zsh
-source $HOME/.zsh/clone_dir.zsh
-source $HOME/.zsh/my_ip.zsh
-source $HOME/.zsh/rm_empty_dirs.zsh
-
-################################
+###############################################################################
 # rbenv
-################################
+###############################################################################
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 
-################################
+###############################################################################
 # Histórico
-################################
+###############################################################################
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
 SAVEHIST=10000
@@ -94,9 +85,9 @@ setopt sharehistory
 setopt HIST_IGNORE_ALL_DUPS
 
 
-################################
+###############################################################################
 # Aliases
-################################
+###############################################################################
 alias dir='ls -1'
 alias lsa='ls -alh'
 alias list='du -shc *'
@@ -136,9 +127,14 @@ alias g++p11='g++ -O2 -lm -std=c++11 -Wall -Wextra -Weffc++ -Wwrite-strings -ped
 alias estiliza='astyle --unpad-paren --style=allman --pad-oper --delete-empty-lines --break-blocks --convert-tabs --align-pointer=name --align-reference=name --lineend=linux --pad-header --indent-col1-comments --indent-switches --suffix=none --keep-one-line-statements'
 
 
-################################
+###############################################################################
 # Functions
-################################
+###############################################################################
+source $HOME/.zsh/baixa_dir.zsh
+source $HOME/.zsh/cleand.zsh
+source $HOME/.zsh/clone_dir.zsh
+source $HOME/.zsh/my_ip.zsh
+source $HOME/.zsh/rm_empty_dirs.zsh
 
 # Python server
 function python_server()
@@ -148,9 +144,9 @@ function python_server()
     python -m SimpleHTTPServer "$port"
 }
 
-################################
+###############################################################################
 # FUN
-################################
+###############################################################################
 alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
 alias fucking='sudo'
 alias emacs='echo "segmentation fault"'
