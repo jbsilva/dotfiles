@@ -57,7 +57,6 @@ endfun
 "------------------------------------------------------------------------------
 if has("gui_running")
     colorscheme zenburn
-    "colorscheme mayansmoke
 else
     colorscheme zenburn
 endif
@@ -173,13 +172,19 @@ set incsearch               " do incremental searching
 set wildmenu                " filesystem surfing - press :e and ^D
 set wildchar=<tab>
 set nofoldenable
-set colorcolumn=80          "colore coluna 80
 
 "------------------------------------------------------------------------------
-" => Fast scroll
+" => Colore a coluna 80
 "------------------------------------------------------------------------------
-no <c-j> 6j
-no <c-k> 6k
+set colorcolumn=80
+
+"------------------------------------------------------------------------------
+" => Scroll rapido usando as setas do teclado
+"------------------------------------------------------------------------------
+noremap <Left> 5h
+noremap <Down> 5j
+noremap <Up> 5k
+noremap <Right> 5l
 
 "------------------------------------------------------------------------------
 " => Evita uso acidental do <F1>
@@ -280,7 +285,7 @@ au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
 "------------------------------------------------------------------------------
 " => HTML
-" Alguns desses snips tambem sao implementados no SnipMate
+"   Alguns desses snips tambem sao implementados no SnipMate
 "------------------------------------------------------------------------------
 au FileType html,xhtml,php,eruby imap bbb <br />
 au FileType html,xhtml,php,eruby imap aaa <a href=""></a><left><left><left><left><left><left>
