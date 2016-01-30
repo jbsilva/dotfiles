@@ -6,3 +6,6 @@ fi
 
 # List files and directories sorted by size.
 alias listh='du -shc * | sort -h'
+
+# Arch Linux
+alias pac='sudo pacman -S'
