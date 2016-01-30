@@ -63,16 +63,18 @@ let g:snips_github = expand($USER_GITHUB)
 let g:github = expand($USER_GITHUB)
 
 "------------------------------------------------------------------------------
-" => Write HTML in CSS-like syntax
+" => Sparkup - Write HTML in CSS-like syntax
 "------------------------------------------------------------------------------
 Plugin 'rstacruz/sparkup'
 
 "------------------------------------------------------------------------------
-" => Explore the filesystem.
+" => NERDTree - Explore the filesystem.
 "    :NERDTree
 "------------------------------------------------------------------------------
 Plugin 'scrooloose/nerdtree'
 nnoremap <leader>d :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
+let NERDTreeIgnore=['.git$[[dir]]', '.DS_STORE$[[file]]', '*.swp$[[file]]', 'tmp[[dir]]', '*.pyc$[[file]]', '\.hg','\.svn','\.bzr']
 
 "------------------------------------------------------------------------------
 " => Nerdcommenter - Vim plugin for intensely orgasmic commenting
