@@ -79,6 +79,7 @@ let NERDTreeIgnore=['.git$[[dir]]', '.DS_STORE$[[file]]', '*.swp$[[file]]', 'tmp
 "------------------------------------------------------------------------------
 " => Nerdcommenter - Vim plugin for intensely orgasmic commenting
 "<leader>cc: comment
+"<leader>cl: aligned comment
 "<leader>cu: uncomment
 "------------------------------------------------------------------------------
 Plugin 'scrooloose/nerdcommenter'
