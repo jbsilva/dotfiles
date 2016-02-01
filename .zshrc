@@ -95,7 +95,8 @@ alias back='cd "$OLDPWD"'
 alias ...='cd ../../../'
 alias ....='cd ../../../../'
 
-alias meuip='curl ifconfig.me'
+WWWDUMP='lynx -dump -nolist -width=300 -accept_all_cookies -display_charset=UTF-8'
+alias meuip="curl -s -m 1 ifconfig.me || curl -s -m 1 icanhazip.com || $WWWDUMP http://www.getip.com | sed -n 's/^Current IP: //p'"
 
 alias pip_upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --upgrade"
 alias pip3_upgrade="pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install --upgrade"
