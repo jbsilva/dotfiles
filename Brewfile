@@ -16,6 +16,7 @@ tap 'homebrew/science'
 tap 'homebrew/x11'
 tap 'neovim/neovim'
 tap 'homebrew/php'
+tap 'homebrew/python'
 
 
 # osxfuse deve ser instalado antes de ntfs-3g
@@ -59,6 +60,7 @@ brew 'gcc'
 brew 'astyle'
 brew 'autoconf'
 brew 'automake'
+brew 'boost'
 brew 'cmake'
 brew 'ctags'
 brew 'icu4c'
@@ -72,7 +74,7 @@ brew 'pypy3'
 
 
 # Java
-brew 'java'
+cask 'java'
 
 
 # VCS
@@ -81,7 +83,7 @@ brew 'git-extras'
 brew 'git-cal'
 brew 'git-flow'
 brew 'mercurial'
-brew 'meld'
+brew 'meld'             # diff
 
 
 # Network
@@ -89,9 +91,9 @@ brew 'aircrack-ng'
 brew 'arp-scan'
 brew 'b43-fwcutter'
 brew 'nmap'
-brew 'reaver'       # brute force WPA/WPA2
+brew 'reaver'           # brute force WPA/WPA2
 brew 'subnetcalc'
-brew 'ettercap'     # sniffer, MITM
+brew 'ettercap'         # sniffer, MITM
 cask 'wireshark'
 
 
@@ -105,6 +107,7 @@ brew 'postgresql'
 cask 'pgadmin3'
 
 
+brew 'ffmpeg'
 brew 'thefuck'
 brew 'autojump'
 brew 'ack'
@@ -124,6 +127,7 @@ brew 'pcre'
 brew 'pkg-config'
 brew 'libtasn1'
 brew 'nettle'
+brew 'neovim/neovim/neovim', args: ['HEAD']
 brew 'libtool'
 brew 'htop-osx'
 brew 'jpeg'
@@ -134,7 +138,6 @@ brew 'libyaml'
 brew 'sqlite'
 brew 'makedepend'
 brew 'openssl'
-brew 'macvim', args: ['with-custom-icons', 'with-override-system-vim']
 brew 'nmap'
 brew 'p7zip'
 brew 'rename'
@@ -151,19 +154,26 @@ brew 'wget', args: ['with-iri']
 brew 'youtube-dl', args: ['HEAD']
 brew 'zsh'
 brew 'zsh-completions'
+brew 'tmux'
+brew 'byobu'
+brew 'mcrypt'
+brew 'media-info'
+brew 'multirust'
+brew 'mysql'
+brew 'nmap'
+
+
 
 brew 'caskroom/cask/brew-cask'
 cask 'android-file-transfer'
+cask 'calibre'
 cask 'dropbox'
 cask 'firefox'
-cask 'gimp'
 cask 'google-chrome'
 cask 'insomniax'
 cask 'iterm2'
-cask 'kid3'
-cask 'libreoffice'
+cask 'mactex'
 cask 'picasa'
-cask 'private-internet-access'
 cask 'rust'
 cask 'seil'
 cask 'spotify'
@@ -171,23 +181,36 @@ cask 'steam'
 cask 'the-unarchiver'
 cask 'transmission'
 cask 'vlc'
-cask 'xtrafinder'
-cask 'calibre'
-cask 'mactex'
-brew 'neovim/neovim/neovim', args: ['HEAD']
 
 
-
-
-#brew 'libidn'
-#brew 'pandoc'
-#cask 'icefloor'
-#brew 'ffmpeg'
+cask 'inkscape'
+cask 'jabref'
+brew 'zsh-completions'
+cask 'bettertouchtool'
+cask 'bibdesk'
+cask 'flux'
+cask 'licecap'
+cask 'postgres'
+cask 'rust'
+cask 'skim'             # PDF reader
+cask 'telegram'
+cask 'texmaker'
+cask 'tunnelblick'      # VPN
 #brew 'gpg'
+#brew 'homebrew/x11/meld
+#brew 'lame'
+#brew 'libidn'
+#brew 'macvim', args: ['with-custom-icons', 'with-override-system-vim']
+#brew 'pandoc'
 #cask 'audacity'
 #cask 'flash-player'
+#cask 'gimp'
+#cask 'haroopad'
+#cask 'icefloor'
+#cask 'kid3'
+#cask 'libreoffice'
 #cask 'poedit'
+#cask 'private-internet-access'
 #cask 'silverlight'
 #cask 'torbrowserbundle'
 #cask 'virtualbox'
-#cask 'haroopad'
