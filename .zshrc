@@ -44,7 +44,9 @@ case ":$PATH:" in
   *) export PATH=/usr/local/sbin:$PATH ;;
 esac
 
-export XDG_CONFIG_HOME=$HOME/.config
+if [[ -z "$XDG_CONFIG_HOME" ]]; then
+    export XDG_CONFIG_HOME=$HOME/.config
+fi
 
 local NVIM=nvim
 export VISUAL=$NVIM
