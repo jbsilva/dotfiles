@@ -97,11 +97,17 @@ alias back='cd "$OLDPWD"'
 alias ...='cd ../../../'
 alias ....='cd ../../../../'
 
-WWWDUMP='lynx -dump -nolist -width=300 -accept_all_cookies -display_charset=UTF-8'
-alias meuip="curl -s -m 1 ifconfig.me || curl -s -m 1 icanhazip.com || $WWWDUMP http://www.getip.com | sed -n 's/^Current IP: //p'"
+# Needs lynx
+if (( $+commands[lynx] )); then
+    WWWDUMP='lynx -dump -nolist -width=300 -accept_all_cookies -display_charset=UTF-8'
+    alias meuip="curl -s -m 2 ifconfig.me || curl -s -m 2 icanhazip.com || $WWWDUMP http://www.getip.com | sed -n 's/^Current IP: //p'"
+else
+    alias meuip="curl -s -m 2 ifconfig.me || curl -s -m 2 icanhazip.com"
+fi
 
-alias pip_upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --upgrade"
-alias pip3_upgrade="pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install --upgrade"
+
+alias pip_upgrade="pip install --upgrade pip && pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --upgrade"
+alias pip3_upgrade="pip3 install --upgrade pip && pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install --upgrade"
 alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 alias d755="find . -type d -exec chmod 755 {} \;"
