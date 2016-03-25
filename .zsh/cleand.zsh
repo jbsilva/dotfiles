@@ -6,6 +6,7 @@ function cleand()
 
     if [[ "$OSTYPE" == darwin* ]]; then
         dot_clean -m --keep=mostrecent $DIR
+        #xattr -rc $DIR
     fi
     
     find $DIR -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -name 'desktop.ini' \) -exec echo "{}" \; -exec rm "{}" \;

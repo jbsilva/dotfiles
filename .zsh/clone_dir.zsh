@@ -18,7 +18,9 @@ Options:
         -c, --clean                         Clean directory before cloning
 
 Examples:
-        $0 -nc ~/My_Dir julio@juliobs.com:~/www/files/
+        $0 -c ~/My_Dir julio@juliobs.com:~/www/files/
+        $0 -c ~/Docs/ ~/nfs/ ~/Docs/rsync_exclude.txt
+        $0 ~/Docs 10.0.0.1::backup ~/Docs/rsync_exclude.txt
 
 Report bugs to <julio@juliobs.com>.
 EOF
@@ -42,8 +44,11 @@ EOF
     args+=(--times)
     args+=(--devices)
     args+=(--specials)
-#    args+=(--update)
     args+=(--delete)
+#    args+=(--compress)
+#    args+=(--update)
+#    args+=(--inplace)
+#    args+=(--partial)
 
 
     clean=0

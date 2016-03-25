@@ -15,7 +15,7 @@ tap 'homebrew/fuse'
 tap 'homebrew/science'
 tap 'homebrew/x11'
 tap 'neovim/neovim'
-tap 'homebrew/php'
+#tap 'homebrew/php'
 tap 'homebrew/python'
 
 
@@ -83,28 +83,28 @@ brew 'git-extras'
 brew 'git-cal'
 brew 'git-flow'
 brew 'mercurial'
-brew 'meld'             # diff
+#brew 'meld'             # diff
 
 
 # Network
-brew 'aircrack-ng'
-brew 'arp-scan'
-brew 'b43-fwcutter'
+#brew 'aircrack-ng'
+#brew 'arp-scan'
+#brew 'b43-fwcutter'
 brew 'nmap'
-brew 'reaver'           # brute force WPA/WPA2
-brew 'subnetcalc'
-brew 'ettercap'         # sniffer, MITM
-cask 'wireshark'
+#brew 'reaver'           # brute force WPA/WPA2
+#brew 'subnetcalc'
+#brew 'ettercap'         # sniffer, MITM
+#cask 'wireshark'
 
 
 # postgres
-brew 'pgbadger'
-brew 'pgbouncer'
-brew 'pgcli'
-brew 'pgformatter'
-brew 'postgis'
-brew 'postgresql'
-cask 'pgadmin3'
+#brew 'pgbadger'
+#brew 'pgbouncer'
+#brew 'pgcli'
+#brew 'pgformatter'
+#brew 'postgis'
+#brew 'postgresql'
+#cask 'pgadmin3'
 
 
 brew 'ffmpeg'
@@ -138,7 +138,6 @@ brew 'libyaml'
 brew 'sqlite'
 brew 'makedepend'
 brew 'openssl'
-brew 'nmap'
 brew 'p7zip'
 brew 'rename'
 brew 'renameutils'
@@ -159,12 +158,10 @@ brew 'byobu'
 brew 'mcrypt'
 brew 'media-info'
 brew 'multirust'
-brew 'mysql'
+#brew 'mysql'
 brew 'nmap'
 
 
-
-brew 'caskroom/cask/brew-cask'
 cask 'android-file-transfer'
 cask 'calibre'
 cask 'dropbox'
@@ -174,7 +171,6 @@ cask 'insomniax'
 cask 'iterm2'
 cask 'mactex'
 cask 'picasa'
-cask 'rust'
 cask 'seil'
 cask 'spotify'
 cask 'steam'
@@ -183,19 +179,14 @@ cask 'transmission'
 cask 'vlc'
 
 
-cask 'inkscape'
+#cask 'inkscape'
 cask 'jabref'
-brew 'zsh-completions'
-cask 'bettertouchtool'
 cask 'bibdesk'
 cask 'flux'
 cask 'licecap'
-cask 'postgres'
-cask 'rust'
-cask 'skim'             # PDF reader
 cask 'telegram'
 cask 'texmaker'
-cask 'tunnelblick'      # VPN
+#cask 'tunnelblick'      # VPN
 #brew 'gpg'
 #brew 'homebrew/x11/meld
 #brew 'lame'
@@ -210,7 +201,7 @@ cask 'tunnelblick'      # VPN
 #cask 'kid3'
 #cask 'libreoffice'
 #cask 'poedit'
-#cask 'private-internet-access'
+cask 'private-internet-access'
 #cask 'silverlight'
 #cask 'torbrowserbundle'
 #cask 'virtualbox'
