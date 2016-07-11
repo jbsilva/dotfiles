@@ -148,6 +148,7 @@ Plugin 'michaeljsmith/vim-indent-object'
 "   http://www.python.org/dev/peps/pep-0008/
 "------------------------------------------------------------------------------
 Plugin 'vim-scripts/pep8'
+let g:pep8_map = '<leader>8'
 
 "------------------------------------------------------------------------------
 " => FuzzyFinder - Finds buffers/files/commands/bookmarks/tags fast
@@ -169,7 +170,7 @@ Plugin 'vim-scripts/L9'
 "------------------------------------------------------------------------------
 " => LaTeX
 "------------------------------------------------------------------------------
-Plugin 'git://vim-latex.git.sourceforge.net/gitroot/vim-latex/vim-latex'
+Plugin 'lervag/vimtex'
 
 "------------------------------------------------------------------------------
 " => "C and C++
@@ -221,6 +222,23 @@ let g:formatters_rust = ['rustfmt']
 " => Rust language
 "------------------------------------------------------------------------------
 Plugin 'rust-lang/rust.vim'
+
+"------------------------------------------------------------------------------
+" => Database
+" let g:dbext_default_profile_mySQL = 'type=MYSQL:user=root:passwd=pass:dbname=mysql'
+"------------------------------------------------------------------------------
+Plugin 'vim-scripts/dbext.vim'
+
+"------------------------------------------------------------------------------
+" => SQL
+"------------------------------------------------------------------------------
+Plugin 'vim-scripts/Align'
+Plugin 'vim-scripts/SQLUtilities'
+vmap <silent>sf         <Plug>SQLU_Formatter<CR>
+nmap <silent>scl        <Plug>SQLU_CreateColumnList<CR>
+nmap <silent>scd        <Plug>SQLU_GetColumnDef<CR>
+nmap <silent>scdt       <Plug>SQLU_GetColumnDataType<CR>
+nmap <silent>scp        <Plug>SQLU_CreateProcedure<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
