@@ -64,6 +64,9 @@ export USER_EMAIL='julio@juliobs.com'
 export USER_GITHUB='jbsilva'
 export USER_COPYRIGHT="Copyright (c) $(date +%Y), $USER_FULLNAME"
 
+export LANG="en_US"
+export LC_ALL=$LANG.UTF-8
+
 ###############################################################################
 # Coisas específicas de cada SO
 ###############################################################################
@@ -106,13 +109,13 @@ alias ....='cd ../../../../'
 # Needs lynx
 if (( $+commands[lynx] )); then
     WWWDUMP='lynx -dump -nolist -width=300 -accept_all_cookies -display_charset=UTF-8'
-    alias meuip="curl -s -m 2 ifconfig.me || curl -s -m 2 icanhazip.com || $WWWDUMP http://www.getip.com | sed -n 's/^Current IP: //p'"
+    alias meuip="curl -s -m 4 ifconfig.me || curl -s -m 5 icanhazip.com || $WWWDUMP http://www.getip.com | sed -n 's/^Current IP: //p'"
 else
-    alias meuip="curl -s -m 2 ifconfig.me || curl -s -m 2 icanhazip.com"
+    alias meuip="curl -s -m 4 ifconfig.me || curl -s -m 5 icanhazip.com"
 fi
 
 
-alias pip_upgrade="pip install --upgrade pip && pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --upgrade"
+alias pip2_upgrade="pip2 install --upgrade pip && pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --upgrade"
 alias pip3_upgrade="pip3 install --upgrade pip && pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install --upgrade"
 alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
@@ -141,6 +144,10 @@ alias g++11='g++ -O2 -lm -std=c++11 -Wall -Wextra'                         # C++
 alias g++p11='g++ -O2 -lm -std=c++11 -Wall -Wextra -Weffc++ -Wwrite-strings -pedantic'  # Warnings + Pedantic + C++11
 alias estiliza='astyle --unpad-paren --style=allman --pad-oper --delete-empty-lines --break-blocks --convert-tabs --align-pointer=name --align-reference=name --lineend=linux --pad-header --indent-col1-comments --indent-switches --suffix=none --keep-one-line-statements'
 
+alias recc='rename -X -c --rews --camelcase --nows'
+alias qmvv='qmv --format=dc --options=spaces,width=40,autowidth'
+alias qmvo='qmv --format=destination-only'
+
 
 ###############################################################################
 # Functions
@@ -150,6 +157,11 @@ source $HOME/.zsh/cleand.zsh
 source $HOME/.zsh/clone_dir.zsh
 source $HOME/.zsh/my_ip.zsh
 source $HOME/.zsh/rm_empty_dirs.zsh
+
+# OS X only
+if [[ "$OSTYPE" == darwin* ]]; then
+    source $HOME/.zsh/getuti.zsh
+fi
 
 # Python server
 function python_server()
