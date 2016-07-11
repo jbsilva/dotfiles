@@ -3,8 +3,10 @@
 #    - Homebrew: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 #    - Command Line Tools for Xcodecode: `xcode-select --install`
 #    - Brew Bundle: `brew tap Homebrew/bundle`
-# Usage: `brew bundle`
-# Mais pacotes em http://braumeister.org
+# Usage: `brew bundle`.
+# Diff this file: $ brew bundle dump && grep -Fvxf dotfiles/Brewfile Brewfile > diff
+# Update casks: brew cask install --force $(brew cask list)
+# More brews: http://braumeister.org
 
 # Taps
 tap 'caskroom/cask'
@@ -75,6 +77,9 @@ brew 'pypy3'
 
 # Java
 cask 'java'
+brew 'android-sdk'
+
+
 
 
 # VCS
@@ -91,10 +96,10 @@ brew 'mercurial'
 #brew 'arp-scan'
 #brew 'b43-fwcutter'
 brew 'nmap'
-#brew 'reaver'           # brute force WPA/WPA2
+#brew 'reaver'               # brute force WPA/WPA2
 #brew 'subnetcalc'
-#brew 'ettercap'         # sniffer, MITM
-#cask 'wireshark'
+#brew 'ettercap'             # sniffer, MITM
+#cask 'wireshark'            # Packet analyzer
 
 
 # postgres
@@ -158,7 +163,7 @@ brew 'byobu'
 brew 'mcrypt'
 brew 'media-info'
 brew 'multirust'
-#brew 'mysql'
+brew 'mysql'
 brew 'nmap'
 
 
@@ -169,7 +174,6 @@ cask 'firefox'
 cask 'google-chrome'
 cask 'insomniax'
 cask 'iterm2'
-cask 'mactex'
 cask 'picasa'
 cask 'seil'
 cask 'spotify'
@@ -177,31 +181,51 @@ cask 'steam'
 cask 'the-unarchiver'
 cask 'transmission'
 cask 'vlc'
-
+cask 'ukelele' # Modify Keyboard Layouts
 
 #cask 'inkscape'
+#cask 'gimp'
+
 cask 'jabref'
 cask 'bibdesk'
+
 cask 'flux'
 cask 'licecap'
+
 cask 'telegram'
-cask 'texmaker'
-#cask 'tunnelblick'      # VPN
+#brew 'libidn'
+
 #brew 'gpg'
 #brew 'homebrew/x11/meld
 #brew 'lame'
-#brew 'libidn'
-#brew 'macvim', args: ['with-custom-icons', 'with-override-system-vim']
-#brew 'pandoc'
 #cask 'audacity'
 #cask 'flash-player'
-#cask 'gimp'
-#cask 'haroopad'
 #cask 'icefloor'
-#cask 'kid3'
-#cask 'libreoffice'
+#cask 'kid3'                            # Tag editor for MP3, OGG, FLAC...
+cask 'xld'                              # Decode/convert/play lossless audio
 #cask 'poedit'
-cask 'private-internet-access'
+
+cask 'private-internet-access'          # VPN
+#cask 'tunnelblick'                     # VPN
+
 #cask 'silverlight'
 #cask 'torbrowserbundle'
-#cask 'virtualbox'
+#cask 'google-drive'
+cask 'android-studio'
+cask 'djview'
+cask 'pandoc'                           # Document converter
+
+cask 'mactex'
+cask 'texmaker'
+
+#cask 'haroopad'                        # Markdown editor
+cask 'macdown'                          # Markdown editor
+
+cask 'mysqlworkbench'                   # MySQL GUI
+#cask 'ukelele'                         # Unicode Keyboard Layout Editor
+
+cask 'virtualbox'                       # VM
+cask 'virtualbox-extension-pack'        # VM tools
+
+cask 'wacom-bamboo-tablet'              # Tablet drivers
+cask 'ichm'                             # Open Microsoft Compiled HTML Help files
