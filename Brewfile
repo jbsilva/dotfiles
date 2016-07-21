@@ -73,6 +73,8 @@ brew 'python'
 brew 'python3'
 brew 'pypy'
 brew 'pypy3'
+brew 'pyenv'                    # Python versions
+brew 'pyenv-virtualenv'         # Python Virtual Environments
 
 
 # Java
@@ -229,3 +231,5 @@ cask 'virtualbox-extension-pack'        # VM tools
 
 cask 'wacom-bamboo-tablet'              # Tablet drivers
 cask 'ichm'                             # Open Microsoft Compiled HTML Help files
+cask 'gpgtools'                         # PGP. Cryptography
+cask 'keybase'                          # Cryptography. https://keybase.io
