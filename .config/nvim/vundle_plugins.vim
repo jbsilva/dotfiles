@@ -47,15 +47,17 @@ Plugin 'mileszs/ack.vim'
 Plugin 'mitechie/pyflakes-pathogen'
 
 "------------------------------------------------------------------------------
-" => Snipmate - TextMate-style snippets for Vim
+" => UltiSnips - The ultimate snippet solution for Vim
+"    Better than Snipmate. Needs python; check with :echo has("python")
 "------------------------------------------------------------------------------
-Plugin 'msanders/snipmate.vim'
-let g:snips_author = expand($USER_FULLNAME)
-let g:author = expand($USER_FULLNAME)
-let g:snips_email = expand($USER_EMAIL)
-let g:email = expand($USER_EMAIL)
-let g:snips_github = expand($USER_GITHUB)
-let g:github = expand($USER_GITHUB)
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 "------------------------------------------------------------------------------
 " => Sparkup - Write HTML in CSS-like syntax
