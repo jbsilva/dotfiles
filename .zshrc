@@ -57,6 +57,7 @@ fi
 local NVIM=nvim
 export VISUAL=$NVIM
 export EDITOR=$NVIM
+export NVIM_PYTHON_LOG_FILE_PATH=~/.config/nvim/nvimlog
 export OS="$(uname -s)"
 export USER='Julio'
 export USER_FULLNAME='Julio Batista Silva'
