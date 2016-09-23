@@ -182,9 +182,19 @@ Plugin 'wincent/Command-T'
 Plugin 'vim-scripts/c.vim'
 
 "------------------------------------------------------------------------------
-" => YouCompleteMe
+" => Vim-javascript - JavaScript syntax highlighting and improved indentation.
 "------------------------------------------------------------------------------
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'pangloss/vim-javascript'
+let g:javascript_plugin_jsdoc = 1
+
+"------------------------------------------------------------------------------
+" => YouCompleteMe - A code-completion engine for Vim
+" cd ~/.vim/bundle/YouCompleteMe
+" ./install.py --all    OR    ./install.py --tern-completer    OR    ...
+"------------------------------------------------------------------------------
+Plugin 'Valloric/YouCompleteMe'
+"let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+
 "------------------------------------------------------------------------------
 " => Syntastic - Syntax checking hacks for vim
 "    runs file through external syntax checker and displays resulting errors
