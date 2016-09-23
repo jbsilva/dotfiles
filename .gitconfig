@@ -31,4 +31,6 @@
 [color]
     ui = true
 [credential]
-    helper = cache --timeout=3600
+    helper = osxkeychain
+[commit]
+    template = /Users/julio/.stCommitMsg
