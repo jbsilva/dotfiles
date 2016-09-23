@@ -1,4 +1,4 @@
-# Homebrew formulae - OS X El Capitan
+# Homebrew formulae
 # Requirements:
 #    - Homebrew: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 #    - Command Line Tools for Xcodecode: `xcode-select --install`
@@ -11,17 +11,18 @@
 # Taps
 tap 'caskroom/cask'
 tap 'caskroom/fonts'
+tap 'caskroom/versions'
+tap 'homebrew/binary'
 tap 'homebrew/bundle'
 tap 'homebrew/dupes'
 tap 'homebrew/fuse'
 tap 'homebrew/science'
 tap 'homebrew/x11'
 tap 'neovim/neovim'
-#tap 'homebrew/php'
 tap 'homebrew/python'
+tap 'acrogenesis/macchanger'
 
 
-# osxfuse deve ser instalado antes de ntfs-3g
 cask 'osxfuse'
 
 
@@ -39,14 +40,12 @@ brew 'gnu-indent', args: ['with-default-names']
 brew 'gnu-sed', args: ['with-default-names']
 brew 'gnu-tar', args: ['with-default-names']
 brew 'gnu-which', args: ['with-default-names']
-brew 'gnupg'
 brew 'gnutls'
 brew 'homebrew/dupes/grep', args: ['with-default-names']
 brew 'homebrew/dupes/gzip'
+brew 'glib'
 
 brew 'homebrew/dupes/rsync'
-brew 'homebrew/dupes/screen'
-brew 'homebrew/dupes/unzip'
 brew 'homebrew/fuse/ntfs-3g'
 
 
@@ -57,7 +56,9 @@ cask 'font-inconsolata'
 cask 'font-terminus'
 
 
-# C
+# Programming
+
+## C
 brew 'gcc'
 brew 'astyle'
 brew 'autoconf'
@@ -68,20 +69,39 @@ brew 'ctags'
 brew 'icu4c'
 
 
-# python
+# Objective-C
+brew 'cocoapods'
+
+
+## Python
+# --with-brewed-openssl
 brew 'python'
 brew 'python3'
 brew 'pypy'
 brew 'pypy3'
-brew 'pyenv'                    # Python versions
-brew 'pyenv-virtualenv'         # Python Virtual Environments
+brew 'homebrew/python/pygame'
+brew 'homebrew/python/numpy'
+
+## Python Virtual Environments
+brew 'pyenv'               
+brew 'pyenv-virtualenv'
 
 
-# Java
+## Lua
+brew 'lua'
+
+
+# Rust
+brew 'multirust'
+
+
+## Javascript
+brew 'node'
+
+
+## Java
 cask 'java'
 brew 'android-sdk'
-
-
 
 
 # VCS
@@ -90,7 +110,14 @@ brew 'git-extras'
 brew 'git-cal'
 brew 'git-flow'
 brew 'mercurial'
-#brew 'meld'             # diff
+brew 'gtksourceview3'
+
+# diff
+#brew 'meld'
+
+
+# Generate documentation for several programming languages
+brew 'doxygen'
 
 
 # Network
@@ -98,13 +125,170 @@ brew 'mercurial'
 #brew 'arp-scan'
 #brew 'b43-fwcutter'
 brew 'nmap'
-#brew 'reaver'               # brute force WPA/WPA2
+
+## brute force WPA/WPA2
+#brew 'reaver'              
+
 #brew 'subnetcalc'
-#brew 'ettercap'             # sniffer, MITM
-#cask 'wireshark'            # Packet analyzer
+
+## sniffer, MITM
+#brew 'ettercap'            
+
+## Packet analyzer
+cask 'wireshark'       
+
+# Correct mistyped console commands
+brew 'thefuck'
+
+# Jump to frequently used directories
+brew 'autojump'
+
+# Data compression with high compression ratio
+brew 'xz'
+
+brew 'ack'
+
+brew 'readline'
+
+# Tool for browsing source code
+brew 'cscope'
+
+# Select default apps for documents and URL schemes on OS X
+brew 'duti'
+
+# Prints strings as ASCII art
+brew 'figlet'
+
+brew 'gdbm'
+brew 'gettext'
+brew 'pcre'
+brew 'pkg-config'
+brew 'libtasn1'
+brew 'nettle'
+brew 'libtool'
+brew 'htop-osx'
+brew 'libtiff'
+brew 'webp'
+brew 'imagemagick', args: ['with-webp']
+brew 'libyaml'
+brew 'makedepend'
+brew 'rename'
+brew 'renameutils'
+brew 'tree'
+brew 'unoconv', args: ['HEAD']
+brew 'watch'
+brew 'wdiff', args: ['with-gettext']
+brew 'wget', args: ['with-iri']
+brew 'tmux'
+brew 'byobu'
+brew 'media-info'
 
 
-# postgres
+# Editor
+brew 'neovim/neovim/neovim', args: ['HEAD']
+
+
+# Shell
+brew 'bash'
+brew 'zsh'
+brew 'zsh-completions'
+
+
+# Ruby
+brew 'ruby'
+
+
+# Archive
+brew 'unrar'
+brew 'homebrew/binary/rar'
+brew 'p7zip'
+cask 'the-unarchiver'
+brew 'homebrew/dupes/unzip'
+
+
+
+cask 'android-file-transfer'
+cask 'calibre'
+cask 'dropbox'
+
+# Browser
+cask 'firefox'
+cask 'google-chrome'
+
+cask 'insomniax'
+cask 'iterm2'
+cask 'seil'
+
+# Game
+cask 'steam'
+
+
+# Downloader
+cask 'transmission'
+
+# Image Editor
+#cask 'inkscape'
+#cask 'gimp'
+cask 'picasa'
+
+cask 'flux'
+
+# Screen Capture
+cask 'licecap'
+
+
+# VCS
+cask 'sourcetree-beta'
+
+
+# Multimedia
+brew 'libpng'
+brew 'ffmpeg'
+brew 'flac'
+cask 'spotify'
+cask 'vlc'
+brew 'youtube-dl'
+brew 'jpeg'
+#brew 'lame'
+#cask 'audacity'
+#cask 'flash-player'
+
+## Decode/convert/play lossless audio
+cask 'xld'
+
+## Tag editor for MP3, OGG, FLAC...
+#cask 'kid3'                       
+
+## PF firewall frontend
+#cask 'icefloor'
+
+
+
+
+
+# VPN
+brew 'openconnect'
+cask 'private-internet-access'
+#cask 'tunnelblick'
+
+
+# TOR
+#cask 'torbrowserbundle'
+
+# Cloud Storage
+cask 'google-drive'
+
+
+# IDE
+cask 'android-studio'
+cask 'appcode'
+
+
+# SQL
+
+brew 'sqlmap'
+
+## Postgres
 #brew 'pgbadger'
 #brew 'pgbouncer'
 #brew 'pgcli'
@@ -114,122 +298,78 @@ brew 'nmap'
 #cask 'pgadmin3'
 
 
-brew 'ffmpeg'
-brew 'thefuck'
-brew 'autojump'
-brew 'ack'
-brew 'xz'
-brew 'readline'
-brew 'bash'
-brew 'gmp'
-brew 'cscope'
-brew 'docbook'
-brew 'docbook-xsl'
-brew 'duti'
-brew 'figlet'
-brew 'libpng'
-brew 'gdbm'
-brew 'gettext'
-brew 'pcre'
-brew 'pkg-config'
-brew 'libtasn1'
-brew 'nettle'
-brew 'neovim/neovim/neovim', args: ['HEAD']
-brew 'libtool'
-brew 'htop-osx'
-brew 'jpeg'
-brew 'libtiff'
-brew 'webp'
-brew 'imagemagick', args: ['with-webp']
-brew 'libyaml'
-brew 'sqlite'
-brew 'makedepend'
-brew 'openssl'
-brew 'p7zip'
-brew 'rename'
-brew 'renameutils'
-brew 'ruby'
-brew 'sqlmap'
-brew 'ssh-copy-id'
-brew 'tree'
-brew 'unoconv', args: ['HEAD']
-brew 'unrar'
-brew 'watch'
-brew 'wdiff', args: ['with-gettext']
-brew 'wget', args: ['with-iri']
-brew 'youtube-dl', args: ['HEAD']
-brew 'zsh'
-brew 'zsh-completions'
-brew 'tmux'
-brew 'byobu'
-brew 'mcrypt'
-brew 'media-info'
-brew 'multirust'
+## Mysql
 brew 'mysql'
-brew 'nmap'
+
+### MySQL GUI
+cask 'mysqlworkbench'              
+
+## SQLite
+brew 'sqlite', args: ['with-functions']
+cask 'sqlitebrowser'
 
 
-cask 'android-file-transfer'
-cask 'calibre'
-cask 'dropbox'
-cask 'firefox'
-cask 'google-chrome'
-cask 'insomniax'
-cask 'iterm2'
-cask 'picasa'
-cask 'seil'
-cask 'spotify'
-cask 'steam'
-cask 'the-unarchiver'
-cask 'transmission'
-cask 'vlc'
-cask 'ukelele' # Modify Keyboard Layouts
-
-#cask 'inkscape'
-#cask 'gimp'
-
-cask 'jabref'
-cask 'bibdesk'
-
-cask 'flux'
-cask 'licecap'
-
+# Message
+brew 'irssi'
+cask 'skype'
 cask 'telegram'
 #brew 'libidn'
 
-#brew 'gpg'
-#brew 'homebrew/x11/meld
-#brew 'lame'
-#cask 'audacity'
-#cask 'flash-player'
-#cask 'icefloor'
-#cask 'kid3'                            # Tag editor for MP3, OGG, FLAC...
-cask 'xld'                              # Decode/convert/play lossless audio
+
+# DjVu viewer
+cask 'djview'
+
+
+# Document converter
+cask 'pandoc'                      
+
+
+# Gettext Translations Editor
 #cask 'poedit'
 
-cask 'private-internet-access'          # VPN
-#cask 'tunnelblick'                     # VPN
 
-#cask 'silverlight'
-#cask 'torbrowserbundle'
-#cask 'google-drive'
-cask 'android-studio'
-cask 'djview'
-cask 'pandoc'                           # Document converter
-
+# LaTeX
+brew 'homebrew/tex/latex-mk'
 cask 'mactex'
 cask 'texmaker'
 
-#cask 'haroopad'                        # Markdown editor
-cask 'macdown'                          # Markdown editor
 
-cask 'mysqlworkbench'                   # MySQL GUI
-#cask 'ukelele'                         # Unicode Keyboard Layout Editor
+# Bibliography reference
+cask 'jabref'
+cask 'bibdesk'
 
-cask 'virtualbox'                       # VM
-cask 'virtualbox-extension-pack'        # VM tools
 
-cask 'wacom-bamboo-tablet'              # Tablet drivers
-cask 'ichm'                             # Open Microsoft Compiled HTML Help files
-cask 'gpgtools'                         # PGP. Cryptography
-cask 'keybase'                          # Cryptography. https://keybase.io
+# Markdown editor
+cask 'macdown'                     
+#cask 'haroopad'
+
+## Interpreter for PostScript and PDF
+brew 'ghostscript'
+
+
+# Unicode Keyboard Layout Editor
+#cask 'ukelele'                    
+
+
+# VM
+cask 'virtualbox'                  
+cask 'virtualbox-extension-pack'
+
+
+# Tablet drivers
+cask 'wacom-bamboo-tablet'
+
+
+# Open Microsoft Compiled HTML Help files
+cask 'ichm'
+
+
+# Cryptography
+brew 'ssh-copy-id'
+brew 'openssl'
+brew 'mcrypt'
+brew 'gpg'
+cask 'gpgtools'
+cask 'keybase'
+brew 'gpg-agent'
+brew 'gnupg2'
