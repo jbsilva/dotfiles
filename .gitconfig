@@ -5,6 +5,7 @@
     autocrlf = false
     safecrlf = true
     editor = nvim
+    excludesfile = /Users/julio/.gitignore_global
 [alias]
     co = checkout
     ci = commit
