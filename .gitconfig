@@ -32,5 +32,20 @@
     ui = true
 [credential]
     helper = osxkeychain
+[merge]
+    tool = appcode
+[mergetool "appcode"]
+    cmd = /Applications/AppCode.app/Contents/MacOS/appcode merge $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE") $(cd $(dirname "$BASE") && pwd)/$(basename "$BASE") $(cd $(dirname "$MERGED") && pwd)/$(basename "$MERGED")
+    trustExitCode = true
+[diff]
+    tool = appcode
+[difftool "appcode"]
+    cmd = /Applications/AppCode.app/Contents/MacOS/appcode diff $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE")
+[difftool "sourcetree"]
+    cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+    path = 
+[mergetool "sourcetree"]
+    cmd = /Applications/SourceTree Beta.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+    trustExitCode = true
 [commit]
     template = /Users/julio/.stCommitMsg
