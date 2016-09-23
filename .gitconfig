@@ -7,16 +7,25 @@
     editor = nvim
     excludesfile = /Users/julio/.gitignore_global
 [alias]
+    alias = "!f(){ git config -l | grep alias; };f"
     co = checkout
     ci = commit
+    cp = cherry-pick
     st = status -s
     br = branch
     hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
     type = cat-file -t
     dump = cat-file -p
     amend = commit --amend
+    snap = !git stash save "snapshot: $(date)"
+    apply0 = !git stash apply "stash@{0}"
+    drop0 = !git stash drop "stash@{0}"
+    unstash = stash pop
     snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
     snapshots = !git stash list --grep snapshot
+    sll = "!f() { for s in `git stash list --pretty=format:%gd`; do git stash show -p $s; done; };f"
+    accept-ours = "!f() { git checkout --ours -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+    accept-theirs = "!f() { git checkout --theirs -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
 [github]
     user = jbsilva
 [color]
