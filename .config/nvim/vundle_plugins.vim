@@ -205,9 +205,18 @@ let g:syntastic_check_on_wq = 0
 Plugin 'fholgado/minibufexpl.vim'
 
 "------------------------------------------------------------------------------
-" => Rope
+" => Tern - Tern-based JavaScript editing support
+"   Installation: cd ~/.vim/bundle/tern_for_vim && npm install
+"                 Create a .tern-project file
+"   TernDef: Jump to the definition of the thing under the cursor.
+"   TernDoc: Look up the documentation of something.
+"   TernType: Find the type of the thing under the cursor.
+"   TernRefs: Show all references to the variable or property under the cursor.
+"   TernRename: Rename the variable under the cursor.
 "------------------------------------------------------------------------------
-"Plugin 'sontek/rope-vim'
+Plugin 'ternjs/tern_for_vim'
+let g:tern_map_keys=1                       "enable keyboard shortcuts
+let g:tern_show_argument_hints='on_hold'    "show argument hints
 
 "------------------------------------------------------------------------------
 " => Edit gpg encrypted files
