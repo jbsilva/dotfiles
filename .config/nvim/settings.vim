@@ -233,9 +233,9 @@ au FileType html,xhtml map <F6> :!chromium %<CR>
 
 "------------------------------------------------------------------------------
 " => Templates
-"   if &filetype =~ '^\(text\|html\|python|ruby|rust\)$'
+"   if &filetype =~ '^\(html|text|python|ruby|rust|lua|javascript\)$'
 "------------------------------------------------------------------------------
-autocmd BufNewFile *.html,*.txt,*.py,*.rb,*.rs :call s:Insere(fnameescape(g:TEMPLATES . '/' . &filetype))
+autocmd BufNewFile *.html,*.txt,*.py,*.rb,*.rs,*.lua,*.js :call s:Insere(fnameescape(g:TEMPLATES . '/' . &filetype))
 
 if exists('*strftime')
     au BufNewFile *.txt :call append(1, '# Created: '.strftime('%a, %d %b %Y %T %z'))
