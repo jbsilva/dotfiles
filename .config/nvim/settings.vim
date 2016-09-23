@@ -185,7 +185,7 @@ map <C-P> :bp<cr>
 map <C-N> :bn<cr>
 
 "------------------------------------------------------------------------------
-" => Scroll rapido usando as setas do teclado
+" => Fast scroll using arrow keys
 "------------------------------------------------------------------------------
 noremap <Left> 5h
 noremap <Down> 5j
@@ -193,7 +193,7 @@ noremap <Up> 5k
 noremap <Right> 5l
 
 "------------------------------------------------------------------------------
-" => Evita uso acidental do <F1>
+" => Avoids accidental use of <F1>
 "------------------------------------------------------------------------------
 inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
@@ -212,7 +212,7 @@ command! -nargs=* -complete=file CD cd <args>
 command! -nargs=* -complete=option Set set <args>
 
 "------------------------------------------------------------------------------
-" => Corrige detecção de filetypes
+" => Fix filetype detection
 "------------------------------------------------------------------------------
 au BufNewFile,BufRead .htaccess,httpd.conf set filetype=apache
 au BufNewFile,BufRead *.inc set filetype=php
@@ -222,7 +222,7 @@ au BufNewFile,BufRead *.blog set filetype=blog
 au BufNewFile,BufRead *.tex set filetype=tex
 
 "------------------------------------------------------------------------------
-" => Keymappings de compilação e execução
+" => Keymappings for compilation and execution
 "------------------------------------------------------------------------------
 au FileType php map <F6> :!php &<CR>
 au FileType python map <F6> :!python %<CR>
@@ -283,7 +283,7 @@ au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
 "------------------------------------------------------------------------------
 " => HTML
-"   Alguns desses snips tambem sao implementados no SnipMate
+"   Some of these snipets are implemented by another plugin
 "------------------------------------------------------------------------------
 au FileType html,xhtml,php,eruby imap bbb <br />
 au FileType html,xhtml,php,eruby imap aaa <a href=""></a><left><left><left><left><left><left>
