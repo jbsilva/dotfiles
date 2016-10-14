@@ -1,2 +1,5 @@
 *.pyc
 .config/nvim/spell
+.config/configstore/
+.config/git/
+.config/wireshark/
