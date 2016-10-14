@@ -26,4 +26,13 @@ echo "
 0.0.0.0	wip3.adobe.com
 0.0.0.0	wwis-dubc1-vip60.adobe.com
 #</Adobe>
+###############################################################################
+#<Spotify>
+0.0.0.0 pubads.g.doubleclick.net
+0.0.0.0 securepubads.g.doubleclick.net
+0.0.0.0 www.googletagservices.com
+0.0.0.0 gads.pubmatic.com
+0.0.0.0 ads.pubmatic.com
+0.0.0.0 spclient.wg.spotify.com
+#</Spotify>
 ###############################################################################" >> /etc/hosts
