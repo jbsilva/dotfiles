@@ -20,6 +20,7 @@ tap 'homebrew/science'
 tap 'homebrew/x11'
 tap 'neovim/neovim'
 tap 'homebrew/python'
+tap 'homebrew/tex'
 tap 'acrogenesis/macchanger'
 
 
@@ -59,14 +60,12 @@ cask 'font-terminus'
 # Programming
 
 ## C
-brew 'gcc'
+#brew 'gcc'
 brew 'astyle'
 brew 'autoconf'
 brew 'automake'
-brew 'boost'
 brew 'cmake'
 brew 'ctags'
-brew 'icu4c'
 
 
 # Objective-C
@@ -75,16 +74,16 @@ brew 'cocoapods'
 
 ## Python
 # --with-brewed-openssl
-brew 'python'
-brew 'python3'
-brew 'pypy'
-brew 'pypy3'
-brew 'homebrew/python/pygame'
-brew 'homebrew/python/numpy'
+#brew 'python'
+#brew 'python3'
+#brew 'pypy'
+#brew 'pypy3'
+#brew 'homebrew/python/pygame'
+#brew 'homebrew/python/numpy'
 
 ## Python Virtual Environments
 brew 'pyenv'               
-brew 'pyenv-virtualenv'
+#brew 'pyenv-virtualenv'
 
 
 ## Lua
@@ -110,7 +109,7 @@ brew 'git-extras'
 brew 'git-cal'
 brew 'git-flow'
 brew 'mercurial'
-brew 'gtksourceview3'
+cask 'sourcetree-beta'
 
 # diff
 #brew 'meld'
@@ -129,8 +128,6 @@ brew 'nmap'
 ## brute force WPA/WPA2
 #brew 'reaver'              
 
-#brew 'subnetcalc'
-
 ## sniffer, MITM
 #brew 'ettercap'            
 
@@ -138,40 +135,43 @@ brew 'nmap'
 cask 'wireshark'       
 
 # Correct mistyped console commands
-brew 'thefuck'
+#brew 'thefuck'
 
 # Jump to frequently used directories
-brew 'autojump'
+#brew 'autojump'
 
 # Data compression with high compression ratio
-brew 'xz'
+#brew 'xz'
 
 brew 'ack'
 
 brew 'readline'
 
 # Tool for browsing source code
-brew 'cscope'
+#brew 'cscope'
 
 # Select default apps for documents and URL schemes on OS X
 brew 'duti'
 
 # Prints strings as ASCII art
-brew 'figlet'
+#brew 'figlet'
 
+# GNU database manager
 brew 'gdbm'
+
 brew 'gettext'
+
 brew 'pcre'
 brew 'pkg-config'
 brew 'libtasn1'
-brew 'nettle'
+
 brew 'libtool'
+
 brew 'htop-osx'
+
 brew 'libtiff'
 brew 'webp'
-brew 'imagemagick', args: ['with-webp']
 brew 'libyaml'
-brew 'makedepend'
 brew 'rename'
 brew 'renameutils'
 brew 'tree'
@@ -179,7 +179,6 @@ brew 'unoconv', args: ['HEAD']
 brew 'watch'
 brew 'wdiff', args: ['with-gettext']
 brew 'wget', args: ['with-iri']
-brew 'tmux'
 brew 'byobu'
 brew 'media-info'
 
@@ -217,7 +216,6 @@ cask 'google-chrome'
 
 cask 'insomniax'
 cask 'iterm2'
-cask 'seil'
 
 # Game
 cask 'steam'
@@ -237,12 +235,9 @@ cask 'flux'
 cask 'licecap'
 
 
-# VCS
-cask 'sourcetree-beta'
-
-
 # Multimedia
 brew 'libpng'
+brew 'imagemagick', args: ['with-webp']
 brew 'ffmpeg'
 brew 'flac'
 cask 'spotify'
@@ -264,24 +259,27 @@ cask 'xld'
 
 
 
-
-
 # VPN
 brew 'openconnect'
-cask 'private-internet-access'
+#cask 'private-internet-access'
 #cask 'tunnelblick'
+
 
 
 # TOR
 #cask 'torbrowserbundle'
 
+
+
 # Cloud Storage
 cask 'google-drive'
+
 
 
 # IDE
 cask 'android-studio'
 cask 'appcode'
+
 
 
 # SQL
@@ -301,12 +299,17 @@ brew 'sqlmap'
 ## Mysql
 brew 'mysql'
 
+
 ### MySQL GUI
 cask 'mysqlworkbench'              
+
 
 ## SQLite
 brew 'sqlite', args: ['with-functions']
 cask 'sqlitebrowser'
+
+## MongoDB
+cask 'mongodb'
 
 
 # Message
@@ -320,18 +323,14 @@ cask 'telegram'
 cask 'djview'
 
 
-# Document converter
-cask 'pandoc'                      
-
-
 # Gettext Translations Editor
 #cask 'poedit'
 
 
 # LaTeX
-brew 'homebrew/tex/latex-mk'
 cask 'mactex'
 cask 'texmaker'
+brew 'homebrew/tex/latex-mk'
 
 
 # Bibliography reference
@@ -343,6 +342,7 @@ cask 'bibdesk'
 cask 'macdown'                     
 #cask 'haroopad'
 
+
 ## Interpreter for PostScript and PDF
 brew 'ghostscript'
 
@@ -352,12 +352,12 @@ brew 'ghostscript'
 
 
 # VM
-cask 'virtualbox'                  
-cask 'virtualbox-extension-pack'
+# cask 'virtualbox'                  
+# cask 'virtualbox-extension-pack'
 
 
 # Tablet drivers
-cask 'wacom-bamboo-tablet'
+#cask 'wacom-bamboo-tablet'
 
 
 # Open Microsoft Compiled HTML Help files
@@ -373,3 +373,6 @@ cask 'gpgtools'
 cask 'keybase'
 brew 'gpg-agent'
 brew 'gnupg2'
+
+## Low-level cryptographic library
+#brew 'nettle'
