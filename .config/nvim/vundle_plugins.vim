@@ -69,10 +69,19 @@ Plugin 'rstacruz/sparkup'
 "    :NERDTree
 "------------------------------------------------------------------------------
 Plugin 'scrooloose/nerdtree'
-nnoremap <leader>d :NERDTreeToggle<CR>
-let NERDTreeShowHidden=1
+"nnoremap <leader>d :NERDTreeToggle<CR>
+let NERDTreeShowHidden = 1
 let NERDTreeIgnore=['.git$[[dir]]', '.DS_STORE$[[file]]', '*.swp$[[file]]', 'tmp[[dir]]', '*.pyc$[[file]]', '\.hg','\.svn','\.bzr']
 
+"------------------------------------------------------------------------------
+" => NERDTree-Tabs - NERDTree and tabs together in Vim, painlessly
+"------------------------------------------------------------------------------
+Plugin 'jistr/vim-nerdtree-tabs'
+map <Leader>n <plug>NERDTreeTabsToggle<CR>
+
+" Start Vim with NERDTreeTabs open
+let g:nerdtree_tabs_open_on_gui_startup = 1
+let g:nerdtree_tabs_open_on_console_startup = 1
 "------------------------------------------------------------------------------
 " => Nerdcommenter - Vim plugin for intensely orgasmic commenting
 "<leader>cc: comment
