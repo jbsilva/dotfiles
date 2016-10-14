@@ -48,7 +48,7 @@ Plugin 'mitechie/pyflakes-pathogen'
 
 "------------------------------------------------------------------------------
 " => UltiSnips - The ultimate snippet solution for Vim
-"    Better than Snipmate. Needs python; check with :echo has("python")
+"    Needs python; run `pip install neovim` and check with :echo has("python")
 "------------------------------------------------------------------------------
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
