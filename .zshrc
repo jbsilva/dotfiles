@@ -84,6 +84,7 @@ esac
 
 ###############################################################################
 # Pyenv and pyenv-virtualenv
+# pyenv install 2.7-dev && pyenv rehash && pyenv global 2.7-dev
 ###############################################################################
 if (( $+commands[pyenv] )); then eval "$(pyenv init -)"; fi
 if (( $+commands[pyenv-virtualenv-init] )); then eval "$(pyenv virtualenv-init -)"; fi
