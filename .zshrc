@@ -157,6 +157,7 @@ alias estiliza='astyle --unpad-paren --style=allman --pad-oper --delete-empty-li
 alias recc='rename -X -c --rews --camelcase --nows'
 alias qmvv='qmv --format=dc --options=spaces,width=40,autowidth'
 alias qmvo='qmv --format=destination-only'
+alias qmvor='qmv -R --format=destination-only'
 
 
 ###############################################################################
