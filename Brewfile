@@ -109,7 +109,7 @@ brew 'git-extras'
 brew 'git-cal'
 brew 'git-flow'
 brew 'mercurial'
-cask 'sourcetree-beta'
+cask 'sourcetree'
 
 # diff
 #brew 'meld'
