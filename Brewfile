@@ -183,10 +183,6 @@ brew 'byobu'
 brew 'media-info'
 
 
-# Editor
-brew 'neovim/neovim/neovim', args: ['HEAD']
-
-
 # Shell
 brew 'bash'
 brew 'zsh'
@@ -376,3 +372,7 @@ brew 'gnupg2'
 
 ## Low-level cryptographic library
 #brew 'nettle'
+
+
+# Editor
+brew 'neovim/neovim/neovim', args: ['HEAD']
