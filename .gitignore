@@ -3,3 +3,4 @@
 .config/configstore/
 .config/git/
 .config/wireshark/
+nvimlog
