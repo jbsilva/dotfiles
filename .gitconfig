@@ -5,7 +5,7 @@
     autocrlf = false
     safecrlf = true
     editor = nvim
-    excludesfile = /Users/julio/.gitignore_global
+	excludesfile = /Users/julio/.gitignore_global
 [alias]
     alias = "!f(){ git config -l | grep alias; };f"
     co = checkout
@@ -42,10 +42,10 @@
 [difftool "appcode"]
     cmd = /Applications/AppCode.app/Contents/MacOS/appcode diff $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE")
 [difftool "sourcetree"]
-    cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-    path = 
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
 [mergetool "sourcetree"]
-    cmd = /Applications/SourceTree Beta.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-    trustExitCode = true
+	cmd = /Applications/SourceTree-Beta.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
 [commit]
     template = /Users/julio/.stCommitMsg
