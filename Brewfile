@@ -194,7 +194,7 @@ brew 'ruby'
 
 
 # Archive
-brew 'unrar'
+#brew 'unrar'
 brew 'homebrew/binary/rar'
 brew 'p7zip'
 cask 'the-unarchiver'
