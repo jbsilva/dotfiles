@@ -25,6 +25,9 @@ echo "
 0.0.0.0	practivate.adobe.com
 0.0.0.0	wip3.adobe.com
 0.0.0.0	wwis-dubc1-vip60.adobe.com
+0.0.0.0 lmlicenses.wip4.adobe.com
+0.0.0.0 lm.licenses.adobe.com
+0.0.0.0 hlrcv.stage.adobe.com
 #</Adobe>
 ###############################################################################
 #<Spotify>
