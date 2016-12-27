@@ -373,6 +373,9 @@ brew 'gnupg2'
 ## Low-level cryptographic library
 #brew 'nettle'
 
+# Jing - Record videos
+cask 'jing'
+
 
 # Editor
 brew 'neovim/neovim/neovim', args: ['HEAD']
