@@ -379,3 +379,4 @@ cask 'jing'
 
 # Editor
 brew 'neovim/neovim/neovim', args: ['HEAD']
+cask 'vimr'
