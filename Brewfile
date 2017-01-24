@@ -377,6 +377,10 @@ brew 'gnupg2'
 cask 'jing'
 
 
+# Swap ESC and CapsLock
+karabiner-elements
+
+
 # Editor
-brew 'neovim/neovim/neovim', args: ['HEAD']
+#brew 'neovim/neovim/neovim', args: ['HEAD']
 cask 'vimr'

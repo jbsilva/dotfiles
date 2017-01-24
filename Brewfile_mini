@@ -194,6 +194,10 @@ cask 'gpgtools'
 brew 'gpg-agent'
 
 
+# Swap ESC and CapsLock
+karabiner-elements
+
+
 # Editor
 brew 'neovim/neovim/neovim', args: ['HEAD']
 cask 'vimr'
