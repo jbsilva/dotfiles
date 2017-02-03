@@ -308,10 +308,11 @@ cask 'sqlitebrowser'
 cask 'mongodb'
 
 
-# Message
+# Message / Chat
 brew 'irssi'
 cask 'skype'
 cask 'telegram'
+cask 'rocket-chat'
 #brew 'libidn'
 
 
