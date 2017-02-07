@@ -361,6 +361,10 @@ brew 'ghostscript'
 cask 'ichm'
 
 
+# Convert MS Word to text
+brew 'docx2txt'
+
+
 # Cryptography
 brew 'ssh-copy-id'
 brew 'openssl'
@@ -370,6 +374,9 @@ cask 'gpgtools'
 cask 'keybase'
 brew 'gpg-agent'
 brew 'gnupg2'
+
+## Generate wordlist
+brew 'crunch'
 
 ## Low-level cryptographic library
 #brew 'nettle'
