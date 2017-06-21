@@ -202,7 +202,10 @@ let g:javascript_plugin_jsdoc = 1
 " ./install.py --all    OR    ./install.py --tern-completer    OR    ...
 "------------------------------------------------------------------------------
 Plugin 'Valloric/YouCompleteMe'
-"let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+let g:ycm_path_to_python_interpreter = '/Users/julio/.pyenv/shims/python3'
+let g:ycm_seed_identifiers_with_syntax = 1
+"let g:ycm_server_keep_logfiles = 1
+"let g:ycm_server_log_level = 'debug'
 
 "------------------------------------------------------------------------------
 " => Syntastic - Syntax checking hacks for vim
