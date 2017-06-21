@@ -11,4 +11,4 @@ alias lsdl='lsd | less'
 alias listh='du -shc * | gsort -h'
 
 # Updates with Homebrew. Do a `sudo chown -R $(whoami):admin /usr/local` first.
-alias brewu='brew update && brew upgrade && brew cleanup && brew cask cleanup && brew prune && brew doctor'
+alias brewu='brew update && brew upgrade && brew cleanup && brew cask cleanup && brew prune && brew doctor && brew cask outdated | xargs brew cask reinstall'
