@@ -180,6 +180,7 @@ cask 'mongodb'
 # Message
 cask 'skype'
 cask 'telegram'
+cask 'rocket-chat'
 
 
 # DjVu viewer
