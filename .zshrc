@@ -170,6 +170,7 @@ source $HOME/.zsh/clone_dir.zsh
 source $HOME/.zsh/my_ip.zsh
 source $HOME/.zsh/rm_empty_dirs.zsh
 source $HOME/.zsh/rm_empty_files.zsh
+source $HOME/.zsh/rm_regex.zsh
 
 # OS X only
 if [[ "$OSTYPE" == darwin* ]]; then
