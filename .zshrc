@@ -54,6 +54,8 @@ if [[ -z "$XDG_CONFIG_HOME" ]]; then
     export XDG_CONFIG_HOME=$HOME/.config
 fi
 
+fpath=(/usr/local/share/zsh-completions $fpath)
+
 local NVIM=nvim
 export VISUAL=$NVIM
 export EDITOR=$NVIM
