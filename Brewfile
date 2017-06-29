@@ -277,6 +277,9 @@ cask 'android-studio'
 cask 'appcode'
 
 
+# Static site generator
+brew 'hugo'
+
 
 # SQL
 
