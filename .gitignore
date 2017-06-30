@@ -4,3 +4,5 @@
 .config/git/
 .config/wireshark/
 nvimlog
+.config/inkscape
+.config/xm1
