@@ -11,7 +11,8 @@ alias lsdl='lsd | less'
 alias listh='du -shc * | gsort -h'
 
 # Updates with Homebrew. Do a `sudo chown -R $(whoami):admin /usr/local` first.
-alias brewu='brew update && brew upgrade && brew cleanup && brew cask cleanup && brew prune && brew cask outdated | xargs brew cask reinstall && brew doctor '
+alias brewu='brew update && brew upgrade && brew cask outdated | xargs brew cask reinstall && brew cleanup && brew cask cleanup && brew prune && brew doctor '
+alias brewu_greedy='brew update && brew upgrade && brew cask outdated --greedy | xargs brew cask reinstall && brew cleanup && brew cask cleanup && brew prune && brew doctor '
 
 # Reset Xcode
 alias reset_xcode='defaults delete com.apple.dt.Xcode && rm -rf ~/Library/Developer/Xcode/DerivedData/*'
