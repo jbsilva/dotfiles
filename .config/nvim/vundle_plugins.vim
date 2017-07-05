@@ -21,6 +21,12 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 "------------------------------------------------------------------------------
+" => Devicons - Add filetype glyphs (icons)
+"    Install yanoasis/nerd-fonts first
+"------------------------------------------------------------------------------
+Plugin 'ryanoasis/vim-devicons'
+
+"------------------------------------------------------------------------------
 " => Easymotion
 "------------------------------------------------------------------------------
 Plugin 'Lokaltog/vim-easymotion'
