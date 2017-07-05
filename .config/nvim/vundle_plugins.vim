@@ -203,15 +203,35 @@ Plugin 'pangloss/vim-javascript'
 let g:javascript_plugin_jsdoc = 1
 
 "------------------------------------------------------------------------------
-" => YouCompleteMe - A code-completion engine for Vim
-" cd ~/.vim/bundle/YouCompleteMe
-" ./install.py --all    OR    ./install.py --tern-completer    OR    ...
+" => Deoplete - Asynchronous completion for neovim
+"    Replaces YouCompleteMe
 "------------------------------------------------------------------------------
-Plugin 'Valloric/YouCompleteMe'
-let g:ycm_path_to_python_interpreter = '/Users/julio/.pyenv/shims/python3'
-let g:ycm_seed_identifiers_with_syntax = 1
-"let g:ycm_server_keep_logfiles = 1
-"let g:ycm_server_log_level = 'debug'
+Plugin 'Shougo/deoplete'
+if has('nvim')
+  " Enable deoplete.
+  let g:deoplete#enable_at_startup = 1
+
+  if !exists('g:deoplete#omni#input_patterns')
+    let g:deoplete#omni#input_patterns = {}
+  endif
+
+  augroup omnifuncs
+    autocmd!
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=tern#Complete
+  augroup end
+
+  let g:tern_request_timeout = 1
+  let g:tern_show_argument_hints = 'on_hold'
+  let g:tern_show_signature_in_pum = 0
+
+  " Automatically close preview window after autocompletion
+  autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
+endif
+
 "------------------------------------------------------------------------------
 " => Vim expand region
 "    Visually select larger regions of text using the same key combination
