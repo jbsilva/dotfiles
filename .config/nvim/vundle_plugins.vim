@@ -281,6 +281,15 @@ nmap <silent>scd        <Plug>SQLU_GetColumnDef<CR>
 nmap <silent>scdt       <Plug>SQLU_GetColumnDataType<CR>
 nmap <silent>scp        <Plug>SQLU_CreateProcedure<CR>
 
+"------------------------------------------------------------------------------
+" => Instant Markdown previews
+"    Install first: `npm -g install instant-markdown-d`
+"------------------------------------------------------------------------------
+Plugin 'suan/vim-instant-markdown'
+let g:instant_markdown_slow = 1
+"let g:instant_markdown_autostart = 0
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " All of your Plugins must be added before the following line
