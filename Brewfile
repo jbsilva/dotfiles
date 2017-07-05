@@ -56,6 +56,7 @@ brew "freetype"
 brew "fontconfig"
 cask "font-inconsolata"
 cask "font-terminus"
+cask "font-hack-nerd-font"
 
 
 # Programming
