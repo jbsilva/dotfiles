@@ -3,10 +3,10 @@
 "               ====oOO==(_)==OOo=====
 "
 " File:         ~/.vim/settings.vim
-" Description:  Configurações do vim
-" Author:       Julio
+" Description:  Vim configuration
+" Author:       Julio Batista Silva
 " Created:      2011
-" Last Change:  Wed 09 Sep 2015 19:30
+" Last Change:  Wed 05 Jul 2017 18:00
 "===================================================================
 
 "------------------------------------------------------------------------------
@@ -17,8 +17,8 @@
 "set modelines=0
 
 "------------------------------------------------------------------------------
-" => Constantes
-" Existem varias formas de se definir variaveis:
+" => Constants
+" Different ways to define a variable:
 "   let user = 'Julio Batista Silva'                    -- String
 "   let user = expand($USER_FULLNAME)                   -- Variavel de ambiente
 "   let user = system('git config -z --get user.name')  -- Shell command
@@ -30,7 +30,7 @@ let g:VIMCONF = g:DOTFILES . '/.vimrc'                 "dotfiles/.vimrc
 let g:TEMPLATES = g:VIMFILES . '/templates'            "dotfiles/.vim/templates
 
 "------------------------------------------------------------------------------
-" => Funcoes Uteis
+" => Utilities
 "------------------------------------------------------------------------------
 
 " Copia o conteudo de `file` no inicio do arquivo atual com as variaveis no
@@ -53,7 +53,7 @@ fun! s:Insere(file)
 endfun
 
 "------------------------------------------------------------------------------
-" => Esquema de cores (colorscheme)
+" => Colorscheme
 "------------------------------------------------------------------------------
 if has("gui_running")
     colorscheme zenburn
@@ -69,7 +69,7 @@ endif
 map ,h5 :!html5check.py %<CR>
 
 "------------------------------------------------------------------------------
-" => Geral
+" => General stuff
 "------------------------------------------------------------------------------
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
@@ -83,13 +83,13 @@ map Q gq
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
-" Ativa o mouse, se disponivel e esconde-o enquanto digita
+" Enable mouse if available
 set mousehide
 if has('mouse')
   set mouse=a
 endif
 
-" Ativa highlighting na sintaxe e nas buscas
+" Enable highlighting
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
@@ -125,12 +125,11 @@ if !exists(":DiffOrig")
 endif
 
 "------------------------------------------------------------------------------
-" => Standard stuff.
+" => Standard stuff
 "------------------------------------------------------------------------------
 filetype plugin on
 
 ru macros/matchit.vim       " Enabled extended % matching
-set spelllang=pt            " Muda a linguagem do dicionario para portugues
 set hi=100                  " Only store past 100 commands
 set ul=200                  " Only undo up to 200 times
 set lz                      " Don't redraw screen during macros
@@ -174,7 +173,7 @@ set wildchar=<tab>
 set nofoldenable
 
 "------------------------------------------------------------------------------
-" => Colore a coluna 80
+" => Color column 80
 "------------------------------------------------------------------------------
 set colorcolumn=80
 
@@ -200,7 +199,7 @@ nnoremap <F1> <ESC>
 vnoremap <F1> <ESC>
 
 "------------------------------------------------------------------------------
-" => Por que meus teclados não têm aviso de CapsLock?
+" => Correct commands written with CapsLock on
 "------------------------------------------------------------------------------
 command! -nargs=* -complete=file Q q <args>
 command! -nargs=* -complete=file W w <args>
@@ -246,11 +245,11 @@ endif
 
 "------------------------------------------------------------------------------
 " => Text files
-"    Corretor ortográfico
-"       Linguagem default: PT_BR.
-"       Para usar inglês:           `:setlocal spell spelllang=en_us`
-"       Para desativar corretor:    `:setlocal nospell`
-"       Comandos (`:help spell`):   `[s`, `]s`, `z=`, `zg`, `zw`, `:spellr`
+"    Spell checker
+"       Default language: PT_BR.
+"       For english:                `:setlocal spell spelllang=en_us`
+"       Deactivate correction:      `:setlocal nospell`
+"       Commands (`:help spell`):   `[s`, `]s`, `z=`, `zg`, `zw`, `:spellr`
 "    Textos com 78 colunas
 "------------------------------------------------------------------------------
 autocmd FileType text setlocal textwidth=78 spell spelllang=pt_br
@@ -291,7 +290,7 @@ au FileType html,xhtml,php,eruby imap iii <img src="" /><left><left><left><left>
 au FileType html,xhtml,php,eruby imap ddd <div id=""></div><left><left><left><left><left><left><left><left>
 
 "------------------------------------------------------------------------------
-" => TeX e LaTeX
+" => TeX and LaTeX
 "------------------------------------------------------------------------------
 au FileType tex  map! Ç \c{C}
 au FileType tex  map! ç \c{c}
@@ -321,8 +320,8 @@ au FileType tex  map! Ü \"{U}
 au FileType tex  map! ü \"{u}
 
 "------------------------------------------------------------------------------
-" => Ler documentos do MS Word
-"   Depende do antiword (http://vim.wikia.com/wiki/View_and_diff_MS_Word_files)
+" => Read MS Word documents
+"    Requires antiword (http://vim.wikia.com/wiki/View_and_diff_MS_Word_files)
 "------------------------------------------------------------------------------
 if executable('antiword')
     augroup Word
