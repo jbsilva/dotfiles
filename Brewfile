@@ -95,6 +95,9 @@ brew "node"
 cask "java"
 brew "android-sdk"
 
+## Swift
+brew 'swiftlint'
+
 
 # VCS
 brew "git"
