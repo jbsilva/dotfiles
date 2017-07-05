@@ -212,6 +212,11 @@ let g:ycm_path_to_python_interpreter = '/Users/julio/.pyenv/shims/python3'
 let g:ycm_seed_identifiers_with_syntax = 1
 "let g:ycm_server_keep_logfiles = 1
 "let g:ycm_server_log_level = 'debug'
+"------------------------------------------------------------------------------
+" => Vim expand region
+"    Visually select larger regions of text using the same key combination
+"------------------------------------------------------------------------------
+Plugin 'terryma/vim-expand-region'
 
 "------------------------------------------------------------------------------
 " => Syntastic - Syntax checking hacks for vim
