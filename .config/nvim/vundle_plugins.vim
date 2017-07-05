@@ -226,6 +226,13 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+"------------------------------------------------------------------------------
+" => Vim-airline - Lean & mean status/tabline for vim that's light as air
+"------------------------------------------------------------------------------
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+let g:airline#extensions#branch#displayed_head_limit = 10
+let g:airline_powerline_fonts = 1
 
 "------------------------------------------------------------------------------
 " => MiniBufExpl - List open buffers as tabs
