@@ -219,18 +219,11 @@ let g:ycm_seed_identifiers_with_syntax = 1
 Plugin 'terryma/vim-expand-region'
 
 "------------------------------------------------------------------------------
-" => Syntastic - Syntax checking hacks for vim
-"    runs file through external syntax checker and displays resulting errors
+" => ALE - Asynchronous Lint Engine
+"    Plugin for providing linting in NeoVim. Replaces Syntastic
 "------------------------------------------------------------------------------
-Plugin 'scrooloose/syntastic'
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+Plugin 'w0rp/ale'
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 "------------------------------------------------------------------------------
 " => Vim-airline - Lean & mean status/tabline for vim that's light as air
 "------------------------------------------------------------------------------
