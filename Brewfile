@@ -107,8 +107,9 @@ brew "git-flow"
 brew "mercurial"
 cask "sourcetree"
 
-# diff
+# Diff
 #brew "meld"
+brew "diff-so-fancy"
 
 
 # Generate documentation for several programming languages
