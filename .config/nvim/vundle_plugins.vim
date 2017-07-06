@@ -163,18 +163,6 @@ Plugin 'vim-scripts/pep8'
 let g:pep8_map = '<leader>8'
 
 "------------------------------------------------------------------------------
-" => FuzzyFinder - Finds buffers/files/commands/bookmarks/tags fast
-"    :FufFile :FufBuffer
-"------------------------------------------------------------------------------
-Plugin 'vim-scripts/FuzzyFinder'
-nmap ,f :FufFile<CR>
-nmap ,e :FufCoverageFile<CR>
-nmap ,u :FufTaggedFile<CR>
-nmap ,c :FufFileWithCurrentBufferDir<CR>
-nmap ,b :FufBuffer<CR>
-nmap ,l :FufLine<CR>
-
-"------------------------------------------------------------------------------
 " => L9
 "------------------------------------------------------------------------------
 Plugin 'vim-scripts/L9'
@@ -277,6 +265,23 @@ let g:tern_show_argument_hints='on_hold'    "show argument hints
 " => Edit gpg encrypted files
 "------------------------------------------------------------------------------
 Plugin 'https://github.com/jamessan/vim-gnupg'
+
+"------------------------------------------------------------------------------
+" => Fuzzy Finder
+"------------------------------------------------------------------------------
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
+
+"------------------------------------------------------------------------------
+" => FuzzyFinder - Finds buffers/files/commands/bookmarks/tags fast
+"    :FufFile :FufBuffer
+"------------------------------------------------------------------------------
+Plugin 'vim-scripts/FuzzyFinder'
+nmap ,f :FufFile<CR>
+nmap ,e :FufCoverageFile<CR>
+nmap ,u :FufTaggedFile<CR>
+nmap ,c :FufFileWithCurrentBufferDir<CR>
+nmap ,b :FufBuffer<CR>
+nmap ,l :FufLine<CR>
 
 "------------------------------------------------------------------------------
 " => Taglist

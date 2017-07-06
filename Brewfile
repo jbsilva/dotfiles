@@ -186,6 +186,9 @@ brew "zsh"
 brew "zsh-completions"
 brew "shellcheck"
 
+# Fuzzy Finder
+brew "fzf"
+
 
 # Ruby
 brew "ruby"
