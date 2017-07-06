@@ -184,6 +184,7 @@ brew "media-info"
 brew "bash"
 brew "zsh"
 brew "zsh-completions"
+brew "shellcheck"
 
 
 # Ruby
