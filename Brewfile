@@ -252,22 +252,18 @@ cask "xld"
 #cask "icefloor"
 
 
-
 # VPN
 brew "openconnect"
 #cask "private-internet-access"
 #cask "tunnelblick"
 
 
-
 # TOR
 #cask "torbrowserbundle"
 
 
-
 # Cloud Storage
 cask "google-drive"
-
 
 
 # IDE
@@ -280,7 +276,6 @@ brew 'hugo'
 
 
 # SQL
-
 brew "sqlmap"
 
 ## Postgres
@@ -304,6 +299,7 @@ cask "mysqlworkbench"
 ## SQLite
 brew "sqlite", args: ["with-functions"]
 cask "sqlitebrowser"
+
 
 ## MongoDB
 cask "mongodb"
@@ -337,7 +333,7 @@ cask "bibdesk"
 
 
 # Markdown editor
-cask "macdown"                     
+#cask "macdown"                     
 #cask "haroopad"
 
 
