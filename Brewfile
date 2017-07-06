@@ -100,12 +100,13 @@ brew 'swiftlint'
 
 
 # VCS
+brew "mercurial"
 brew "git"
 brew "git-extras"
 brew "git-cal"
 brew "git-flow"
-brew "mercurial"
 cask "sourcetree"
+
 
 # Diff
 #brew "meld"
@@ -186,6 +187,17 @@ brew "zsh"
 brew "zsh-completions"
 brew "shellcheck"
 
+# Zsh Plugin Manager
+brew "zplug"
+
+# Tmux
+brew "tmux"
+brew "tmuxinator-completion"
+
+# Terminal
+cask "iterm2"
+
+
 # Fuzzy Finder
 brew "fzf"
 
@@ -201,32 +213,38 @@ brew "p7zip"
 cask "the-unarchiver"
 brew "homebrew/dupes/unzip"
 
-
-
 cask "android-file-transfer"
 cask "calibre"
-cask "dropbox"
 
 # Browser
 cask "firefox"
 cask "google-chrome"
 
-cask "insomniax"
-cask "iterm2"
+# Command line HTTP client - https://httpie.org/doc
+brew "httpie"
 
-# Game
+
+# Games
 cask "steam"
 
 
 # Downloader
 cask "transmission"
 
+
 # Image Editor
 #cask "inkscape"
 #cask "gimp"
 cask "picasa"
 
+
+# Disable lid/idle sleep
+cask "insomniax"
+
+
+# Filter the bright blue colors
 cask "flux"
+
 
 # Screen Capture
 cask "licecap"
@@ -268,6 +286,7 @@ brew "openconnect"
 
 # Cloud Storage
 cask "google-drive"
+cask "dropbox"
 
 
 # IDE
@@ -345,10 +364,6 @@ cask "bibdesk"
 brew "ghostscript"
 
 
-# Unicode Keyboard Layout Editor
-#cask "ukelele"                    
-
-
 # VM
 # cask "virtualbox"                  
 # cask "virtualbox-extension-pack"
@@ -376,20 +391,25 @@ cask "keybase"
 brew "gpg-agent"
 brew "gnupg2"
 
+
+# Crack passwords
 brew "john-jumbo"
+
 
 ## Generate wordlist
 brew "crunch"
 
-## Low-level cryptographic library
-#brew "nettle"
 
 # Jing - Record videos
 cask "jing"
 
 
-# Swap ESC and CapsLock
+# Remap keyboard (swap ESC with CapsLock)
 cask "karabiner-elements"
+
+# Unicode Keyboard Layout Editor
+#cask "ukelele"                    
+
 
 # Screen resolution
 cask "switchresx"

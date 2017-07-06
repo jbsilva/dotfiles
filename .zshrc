@@ -27,24 +27,95 @@ if [[ -s "$HOME/.zprofile" ]]; then
     source "$HOME/.zprofile"
 fi
 
+
 ###############################################################################
-# Teste de segurança
+# Security test
 ###############################################################################
 # Don't do anything for non-interactive shells
 [[ -z "$PS1" ]] && return
 
 
 ###############################################################################
-# Source Prezto.
+# Zplug - Plugin manager for zsh
+# Install with homebrew
 ###############################################################################
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
+zplug "sorin-ionescu/prezto", \
+    use:init.zsh, hook-build:"ln -s $ZPLUG_HOME/repos/sorin-ionescu/prezto ~/.zprezto"
+
+zplug "lukechilds/zsh-nvm"
+
+zplug "junegunn/fzf-bin", from:gh-r, \
+    as:command, rename-to:fzf, use:"*linux*amd64*"
+
+zplug "stedolan/jq", from:gh-r, \
+    as:command, rename-to:jq
+
+zplug "zplug/zplug"
+zplug "hkupty/ssh-agent"
+zplug "jreese/zsh-titles"
+zplug "modules/completion", from:prezto
+zplug "modules/directory", from:prezto
+zplug "modules/editor", from:prezto
+zplug "modules/environment", from:prezto
+zplug "modules/git", from:prezto
+zplug "modules/gpg", from:prezto
+zplug "modules/history", from:prezto
+zplug "modules/homebrew", from:prezto
+zplug "modules/node", from:prezto
+zplug "modules/osx", from:prezto
+zplug "modules/prompt", from:prezto
+zplug "modules/ruby", from:prezto
+zplug "modules/spectrum", from:prezto
+zplug "modules/terminal", from:prezto
+zplug "modules/tmux", from:prezto
+zplug "modules/utility", from:prezto
+
+zplug "psprint/history-search-multi-word"
+zplug "psprint/zsh-select"
+zplug "zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-syntax-highlighting"
+
+zstyle ':prezto:module:utility:ls' color 'yes'
+zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+
+
+# Theme
+zplug "jbsilva/prompt_jbs", use:prompt_jbs_setup, from:github, as:theme
+
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
 fi
+
+# Then, source plugins and add commands to $PATH
+# To debug: zplug load --verbose
+zplug load --verbose
+
+
+###############################################################################
+# Source Prezto
+###############################################################################
+#if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+#    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+#fi
+
 
 ###############################################################################
 # FZF - Command-line fuzzy finder
+# zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
 ###############################################################################
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 
 ###############################################################################
 # Variáveis
