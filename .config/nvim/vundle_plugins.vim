@@ -241,6 +241,8 @@ Plugin 'terryma/vim-expand-region'
 "------------------------------------------------------------------------------
 " => ALE - Asynchronous Lint Engine
 "    Plugin for providing linting in NeoVim. Replaces Syntastic
+"    Python: pip install pycodestyle pyflakes flake8 vim-vint proselint yamllint
+"    Shell: shellcheck
 "------------------------------------------------------------------------------
 Plugin 'w0rp/ale'
 
