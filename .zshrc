@@ -15,9 +15,10 @@
 #           http://sam.zoy.org/wtfpl/COPYING for more details.
 #
 # Created:      12 Aug 2011
-# Last Change:  29 Jan 2016
+# Last Change:  08 Jul 2017
 #
 # Download: https://github.com/jbsilva/dotfiles
+# compaudit | xargs chmod g-w
 ###############################################################################
 
 ###############################################################################
@@ -34,80 +35,10 @@ fi
 # Don't do anything for non-interactive shells
 [[ -z "$PS1" ]] && return
 
-
-###############################################################################
-# Zplug - Plugin manager for zsh
-# Install with homebrew
-###############################################################################
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
-
-zplug "sorin-ionescu/prezto", \
-    use:init.zsh, hook-build:"ln -s $ZPLUG_HOME/repos/sorin-ionescu/prezto ~/.zprezto"
-
-zplug "lukechilds/zsh-nvm"
-
-zplug "junegunn/fzf-bin", from:gh-r, \
-    as:command, rename-to:fzf, use:"*linux*amd64*"
-
-zplug "stedolan/jq", from:gh-r, \
-    as:command, rename-to:jq
-
-zplug "zplug/zplug"
-zplug "hkupty/ssh-agent"
-zplug "jreese/zsh-titles"
-zplug "modules/completion", from:prezto
-zplug "modules/directory", from:prezto
-zplug "modules/editor", from:prezto
-zplug "modules/environment", from:prezto
-zplug "modules/git", from:prezto
-zplug "modules/gpg", from:prezto
-zplug "modules/history", from:prezto
-zplug "modules/homebrew", from:prezto
-zplug "modules/node", from:prezto
-zplug "modules/osx", from:prezto
-zplug "modules/prompt", from:prezto
-zplug "modules/ruby", from:prezto
-zplug "modules/spectrum", from:prezto
-zplug "modules/terminal", from:prezto
-zplug "modules/tmux", from:prezto
-zplug "modules/utility", from:prezto
-
-zplug "psprint/history-search-multi-word"
-zplug "psprint/zsh-select"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-history-substring-search"
-zplug "zsh-users/zsh-syntax-highlighting"
-
-zstyle ':prezto:module:utility:ls' color 'yes'
-zplug "zsh-users/zsh-history-substring-search"
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-
-
-# Theme
-zplug "jbsilva/prompt_jbs", use:prompt_jbs_setup, from:github, as:theme
-
-
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
+# Return if zsh is called from Vim
+if [[ -n $VIMRUNTIME ]]; then
+    return 0
 fi
-
-# Then, source plugins and add commands to $PATH
-# To debug: zplug load --verbose
-zplug load --verbose
-
-
-###############################################################################
-# Source Prezto
-###############################################################################
-#if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-#    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-#fi
 
 
 ###############################################################################
@@ -118,7 +49,7 @@ zplug load --verbose
 
 
 ###############################################################################
-# Variáveis
+# Vars
 ###############################################################################
 case ":$PATH:" in
   *:/usr/local/sbin:*) ;;
@@ -142,26 +73,59 @@ export USER_EMAIL='julio@juliobs.com'
 export USER_GITHUB='jbsilva'
 export USER_COPYRIGHT="Copyright (c) $(date +%Y), $USER_FULLNAME"
 
-export LANG="en_US"
-export LC_ALL=$LANG.UTF-8
+# Language
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
 
 
 ###############################################################################
-# Coisas específicas de cada SO
+# Functions
 ###############################################################################
-case $(uname -s) in
-    Darwin)
-        export OSX_VERSION="$(sw_vers -productVersion)"
-        source $HOME/.zsh/zshrc_osx
-        ;;
-    Linux)
-        source $HOME/.zsh/zshrc_linux
-        ;;
-esac
+
+# Colorful messages
+function iHeader()     { echo -e "\033[1m$@\033[0m";  }
+function iStep()       { echo -e "  \033[1;33m➜\033[0m $@"; }
+function iFinishStep() { echo -e "  \033[1;32m✔\033[0m $@"; }
+function iGood()       { echo -e "    \033[1;32m✔\033[0m $@"; }
+function iBad()        { echo -e "    \033[1;31m✖\033[0m $@"; }
+
+# More functions
+[[ -f "$HOME/.zsh/baixa_dir.zsh" ]] && source "$HOME/.zsh/baixa_dir.zsh"
+[[ -f "$HOME/.zsh/cleand.zsh" ]] && source "$HOME/.zsh/cleand.zsh"
+[[ -f "$HOME/.zsh/clone_dir.zsh" ]] && source "$HOME/.zsh/clone_dir.zsh"
+[[ -f "$HOME/.zsh/my_ip.zsh" ]] && source "$HOME/.zsh/my_ip.zsh"
+[[ -f "$HOME/.zsh/python_server.zsh" ]] && source "$HOME/.zsh/python_server.zsh"
+[[ -f "$HOME/.zsh/rm_empty_dirs.zsh" ]] && source "$HOME/.zsh/rm_empty_dirs.zsh"
+[[ -f "$HOME/.zsh/rm_empty_files.zsh" ]] && source "$HOME/.zsh/rm_empty_files.zsh"
+[[ -f "$HOME/.zsh/rm_regex.zsh" ]] && source "$HOME/.zsh/rm_regex.zsh"
+
+
+###############################################################################
+# Zplug - Plugin manager for zsh (https://github.com/zplug/zplug)
+# Do not install with homebrew
+###############################################################################
+
+# Install zplug if necessary and start it
+export ZPLUG_HOME="${ZDOTDIR:-$HOME}/.zplug"
+test -e $ZPLUG_HOME || git clone https://github.com/zplug/zplug $ZPLUG_HOME
+export ZPLUG_LOADFILE="$HOME/.zsh/zplug.zsh"
+source "${ZPLUG_HOME}/init.zsh"
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
+
 
 ###############################################################################
 # Pyenv and pyenv-virtualenv
-# pyenv install 2.7-dev && pyenv rehash && pyenv global 2.7-dev
+# pyenv install 2.7 && pyenv install 3.7 && pyenv rehash && pyenv global 2.7 3.7
 ###############################################################################
 if (( $+commands[pyenv] )); then eval "$(pyenv init -)"; fi
 if (( $+commands[pyenv-virtualenv-init] )); then eval "$(pyenv virtualenv-init -)"; fi
@@ -174,7 +138,7 @@ if (( $+commands[rbenv] )); then eval "$(rbenv init -)"; fi
 
 
 ###############################################################################
-# Histórico
+# History
 ###############################################################################
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
@@ -184,14 +148,39 @@ setopt HIST_IGNORE_ALL_DUPS
 
 
 ###############################################################################
+# OS specific stuff
+###############################################################################
+case $OS in
+    Darwin)
+        export OSX_VERSION="$(sw_vers -productVersion)"
+        [[ -f "$HOME/.zsh/zshrc_osx" ]] && source "$HOME/.zsh/zshrc_osx"
+        ;;
+    Linux)
+        [[ -f "$HOME/.zsh/zshrc_linux" ]] && source "$HOME/.zsh/zshrc_linux"
+        ;;
+esac
+
+
+###############################################################################
 # Aliases
 ###############################################################################
-alias dir='ls -1'
-alias lsa='ls -alh'
 alias list='du -shc *'
 alias back='cd "$OLDPWD"'
+alias ..='cd ../'
 alias ...='cd ../../../'
 alias ....='cd ../../../../'
+
+alias dir='ls -1'           # Show one entry per line
+alias ld='ls -ld'           # Show info about the directory
+alias lla='ls -lAFh'        # Show hidden all files
+alias ll='ls -lF'           # Show long file information
+alias la='ls -AF'           # Show hidden files
+alias lx='ls -lXB'          # Sort by extension
+alias lk='ls -lSr'          # Sort by size, biggest last
+alias lc='ls -ltcr'         # Sort by and show change time, most recent last
+alias lu='ls -ltur'         # Sort by and show access time, most recent last
+alias lt='ls -ltr'          # Sort by date, most recent last
+alias lr='ls -lR'           # Recursive ls
 
 # Needs lynx
 if (( $+commands[lynx] )); then
@@ -212,17 +201,14 @@ alias now='date +"%T"'
 alias nowdate='date +"%d-%m-%Y"'
 alias sha1='openssl sha1'
 alias sha256='shasum -a 256'
-alias wget='wget -c'    # Resume wget by default
-
-alias showAllOn='defaults write com.apple.finder AppleShowAllFiles 1 && killall Finder'  # Show all files in Finder
-alias showAllOff='defaults write com.apple.finder AppleShowAllFiles 0 && killall Finder'
-alias hide_Desktop='defaults write com.apple.finder CreateDesktop -bool FALSE; killall Finder'
-alias show_Desktop='defaults write com.apple.finder CreateDesktop TRUE; killall Finder'
+alias wget='wget -c'        # Resume wget by default
 
 alias unzipall="unzip '*.zip'"
 
-alias paste2vim='pbpaste | vim -'             # Paste clipboard in new vim file
+# Paste clipboard in new vim file
+alias paste2vim='pbpaste | nvim -'
 
+# C/C++/Objective-C
 alias g++e='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -Werror'    # Warnings = Error
 alias g++w='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'            # Warnings
 alias g++p='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -pedantic'  # Warnings + Pedantic
@@ -232,6 +218,7 @@ alias g++p11='g++ -O2 -lm -std=c++11 -Wall -Wextra -Weffc++ -Wwrite-strings -ped
 alias estiliza='astyle --unpad-paren --style=allman --pad-oper --pad-comma --delete-empty-lines --break-blocks --convert-tabs --align-pointer=name --align-reference=name --lineend=linux --pad-header --indent-col1-comments --indent-switches --suffix=none --keep-one-line-statements'
 alias estiliza_objc='astyle --unpad-paren --style=attach --pad-oper --pad-comma --delete-empty-lines --break-blocks --convert-tabs --align-pointer=name --align-reference=name --lineend=linux --pad-header --indent-switches --suffix=none --keep-one-line-statements --pad-method-prefix --unpad-return-type --unpad-param-type --align-method-colon --pad-method-colon=none'
 
+# Renamers
 alias recc='rename -X -c --rews --camelcase --nows'
 alias qmvv='qmv --format=dc --options=spaces,width=40,autowidth'
 alias qmvo='qmv --format=destination-only'
@@ -239,34 +226,10 @@ alias qmvor='qmv -R --format=destination-only'
 
 
 ###############################################################################
-# Functions
-###############################################################################
-source $HOME/.zsh/baixa_dir.zsh
-source $HOME/.zsh/cleand.zsh
-source $HOME/.zsh/clone_dir.zsh
-source $HOME/.zsh/my_ip.zsh
-source $HOME/.zsh/rm_empty_dirs.zsh
-source $HOME/.zsh/rm_empty_files.zsh
-source $HOME/.zsh/rm_regex.zsh
-
-# OS X only
-if [[ "$OSTYPE" == darwin* ]]; then
-    source $HOME/.zsh/getuti.zsh
-fi
-
-# Python server
-function python_server()
-{
-    local port="${1:-8000}"
-    open "http://localhost:${port}/"
-    python -m SimpleHTTPServer "$port"
-}
-
-###############################################################################
 # FUN
 ###############################################################################
 alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
 alias fucking='sudo'
 alias emacs='echo "segmentation fault"'
-alias more=less
+alias more='less'
 alias CAT='echo "=^.^=\n"'

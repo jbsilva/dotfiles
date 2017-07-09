@@ -3,6 +3,22 @@ if [[ "$OSTYPE" != darwin* ]]; then
     return 1
 fi
 
+# Install Homebrew.
+if [[ ! -x "$(command -v brew)" ]]; then
+    iStep "Installing Homebrew"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
+# Aliases
+
+# Show/hide all files in Finder
+alias showAllOn='defaults write com.apple.finder AppleShowAllFiles 1 && killall Finder'
+alias showAllOff='defaults write com.apple.finder AppleShowAllFiles 0 && killall Finder'
+
+# Show/hide desktop
+alias hide_Desktop='defaults write com.apple.finder CreateDesktop -bool FALSE; killall Finder'
+alias show_Desktop='defaults write com.apple.finder CreateDesktop TRUE; killall Finder'
+
 # List directories first. GNU coreutils
 alias lsd='/usr/local/bin/gls --color -h --group-directories-first'
 alias lsdl='lsd | less'
@@ -16,3 +32,6 @@ alias brewu_greedy='brew update && brew upgrade && brew cask outdated --greedy |
 
 # Reset Xcode
 alias reset_xcode='defaults delete com.apple.dt.Xcode && rm -rf ~/Library/Developer/Xcode/DerivedData/*'
+
+# UTI
+source $HOME/.zsh/getuti.zsh
