@@ -43,7 +43,7 @@ fi
 
 ###############################################################################
 # FZF - Command-line fuzzy finder
-# zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
+# Run `/usr/local/opt/fzf/install` after instalation through Homebrew
 ###############################################################################
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -120,7 +120,7 @@ if ! zplug check --verbose; then
 fi
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+zplug load
 
 
 ###############################################################################

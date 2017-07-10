@@ -268,8 +268,10 @@ Plugin 'https://github.com/jamessan/vim-gnupg'
 
 "------------------------------------------------------------------------------
 " => Fuzzy Finder
+" :FZF. Installed with homebrew.
 "------------------------------------------------------------------------------
-Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
+"Plugin 'junegunn/fzf'
+set rtp+=/usr/local/opt/fzf
 
 "------------------------------------------------------------------------------
 " => FuzzyFinder - Finds buffers/files/commands/bookmarks/tags fast
