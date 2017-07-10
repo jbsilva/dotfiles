@@ -201,6 +201,8 @@ cask "iterm2"
 # Fuzzy Finder
 brew "fzf"
 
+# Emojify - Emoji on the command line
+brew "emojify"
 
 # Ruby
 brew "ruby"
