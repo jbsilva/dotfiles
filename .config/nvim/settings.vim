@@ -290,36 +290,6 @@ au FileType html,xhtml,php,eruby imap iii <img src="" /><left><left><left><left>
 au FileType html,xhtml,php,eruby imap ddd <div id=""></div><left><left><left><left><left><left><left><left>
 
 "------------------------------------------------------------------------------
-" => TeX and LaTeX
-"------------------------------------------------------------------------------
-au FileType tex  map! Ç \c{C}
-au FileType tex  map! ç \c{c}
-au FileType tex  map! Á \'{A}
-au FileType tex  map! À \`{A}
-au FileType tex  map! Â \^{A}
-au FileType tex  map! ã \~{a}
-au FileType tex  map! á \'{a}
-au FileType tex  map! â \^{a}
-au FileType tex  map! ã \~{a}
-au FileType tex  map! à \`{a}
-au FileType tex  map! É \'{E}
-au FileType tex  map! Ê \^{E}
-au FileType tex  map! é \'{e}
-au FileType tex  map! ê \^{e}
-au FileType tex  map! Í \'{I}
-au FileType tex  map! í \'{i}
-au FileType tex  map! Ó \'{O}
-au FileType tex  map! ó \'{o}
-au FileType tex  map! Ô \^{O}
-au FileType tex  map! ô \^{o}
-au FileType tex  map! Õ \~{O}
-au FileType tex  map! õ \~{o}
-au FileType tex  map! Ú \'{U}
-au FileType tex  map! ú \'{u}
-au FileType tex  map! Ü \"{U}
-au FileType tex  map! ü \"{u}
-
-"------------------------------------------------------------------------------
 " => Read MS Word documents
 "    Requires antiword (http://vim.wikia.com/wiki/View_and_diff_MS_Word_files)
 "------------------------------------------------------------------------------
