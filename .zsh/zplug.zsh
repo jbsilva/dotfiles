@@ -32,7 +32,9 @@ zplug "modules/homebrew", from:prezto
 zplug "modules/osx", from:prezto
 zplug "modules/prompt", from:prezto
 #zplug "mollifier/anyframe"
-zplug "psprint/history-search-multi-word"
+
+# source ~/.zplug/repos/zdharma/history-search-multi-word/history-search-multi-word.plugin.zsh
+zplug "zdharma/history-search-multi-word"
 
 # Color output
 zstyle ':prezto:*:*' color 'yes'
