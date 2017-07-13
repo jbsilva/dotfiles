@@ -1,13 +1,62 @@
+###############################################################################
+# Let zplug manage zplug
+###############################################################################
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-history-substring-search"
-zplug "zsh-users/zsh-syntax-highlighting"
 
+###############################################################################
+# Prezto
+###############################################################################
+zplug "sorin-ionescu/prezto", use:init.zsh, hook-build:"ln -s $ZPLUG_ROOT/repos/sorin-ionescu/prezto ${ZDOTDIR:-$HOME}/.zprezto"
+
+# Color output
+zstyle ':prezto:*:*' color 'yes'
+
+# Set the Prezto modules to load (browse modules). The order matters.
+zstyle ':prezto:load' pmodule \
+  'environment' \
+  'terminal' \
+  'editor' \
+  'history' \
+  'directory' \
+  'spectrum' \
+  'utility' \
+  'completion' \
+  'fasd' \
+  'homebrew' \
+  'git' \
+  'tmux' \
+  'gpg' \
+  'osx' \
+  'archive' \
+  'autosuggestions' \
+  'syntax-highlighting' \
+  'history-substring-search' \
+  'prompt'
+
+# Set the key mapping style to 'emacs' or 'vi'.
+zstyle ':prezto:module:editor' key-bindings 'vi'
+
+# Set the query found color.
+zstyle ':prezto:module:history-substring-search:color' found ''
+
+# Set the query not found color.
+zstyle ':prezto:module:history-substring-search:color' not-found ''
+
+# Set the search globbing flags.
+zstyle ':prezto:module:history-substring-search' globbing-flags ''
+
+# Theme
+zstyle ':prezto:module:prompt' theme 'sorin'
+
+###############################################################################
+# Emoji-cli
 # To insert emoji, type ctrl-s. Dependencies: jq fzf peco
+###############################################################################
 zplug "b4b4r07/emoji-cli"
 
+###############################################################################
 # Calculator
+###############################################################################
 zplug "arzzen/calc.plugin.zsh"
 
 #zplug "b4b4r07/enhancd"
@@ -15,33 +64,6 @@ zplug "arzzen/calc.plugin.zsh"
 #zplug "hchbaw/auto-fu.zsh", at:pu
 #zplug "hkupty/ssh-agent"
 #zplug "jimmijj/zsh-syntax-highlighting"
-zplug "jreese/zsh-titles"
-zplug "modules/environment", from:prezto
-zplug "modules/terminal", from:prezto
-zplug "modules/tmux", from:prezto
-zplug "modules/editor", from:prezto
-zplug "modules/history", from:prezto
-zplug "modules/directory", from:prezto
-zplug "modules/spectrum", from:prezto
-zplug "modules/utility", from:prezto
-zplug "modules/completion", from:prezto
-zplug "modules/git", from:prezto
-zplug "modules/gpg", from:prezto
-zplug "modules/node", from:prezto
-zplug "modules/homebrew", from:prezto
-zplug "modules/osx", from:prezto
-zplug "modules/prompt", from:prezto
+#zplug "jreese/zsh-titles"
 #zplug "mollifier/anyframe"
-
-# source ~/.zplug/repos/zdharma/history-search-multi-word/history-search-multi-word.plugin.zsh
-zplug "zdharma/history-search-multi-word"
-
-# Color output
-zstyle ':prezto:*:*' color 'yes'
-
-# Set the key mapping style to 'emacs' or 'vi'.
-zstyle ':prezto:module:editor' key-bindings 'vi'
-
-# Theme
-zplug "jbsilva/prompt_jbs", use:prompt_jbs_setup, from:github, as:theme
-zstyle ':prezto:module:prompt' theme 'sorin'
+#zplug "zdharma/history-search-multi-word"
