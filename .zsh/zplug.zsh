@@ -48,6 +48,9 @@ zstyle ':prezto:module:history-substring-search' globbing-flags ''
 # Theme
 zstyle ':prezto:module:prompt' theme 'sorin'
 
+# Auto-title
+zstyle ':prezto:module:terminal' auto-title 'yes'
+
 ###############################################################################
 # Emoji-cli
 # Dependencies: jq fzf peco
@@ -67,10 +70,33 @@ zplug "arzzen/calc.plugin.zsh"
 zplug "zdharma/history-search-multi-word"
 
 ###############################################################################
-#zplug "b4b4r07/enhancd"
-#zplug "djui/alias-tips"
-#zplug "hchbaw/auto-fu.zsh", at:pu
-#zplug "hkupty/ssh-agent"
-#zplug "jimmijj/zsh-syntax-highlighting"
+# Enhancd - A next-generation cd command with an interactive filter
+###############################################################################
+zplug "b4b4r07/enhancd", use:init.sh
+
+###############################################################################
+# Alias-tips - Help remembering those shell aliases and Git aliases you once defined
+###############################################################################
+zplug "djui/alias-tips"
+#zplug "/molovo/tipz"
+#zplug "MichaelAquilina/zsh-you-should-use"
+
+###############################################################################
+# Git-extra-commands - Extra git helper scripts packaged as a plugin.
+###############################################################################
+zplug "unixorn/git-extra-commands"
+
+###############################################################################
+# Zsh-vim-mode - Sane bindings for zsh's vi mode so it behaves more vim like
+###############################################################################
+zplug "sharat87/zsh-vim-mode"
+
+###############################################################################
+# Plugin-OSX - Add some common OS X related aliases and functions
+###############################################################################
+zplug "mwilliammyers/plugin-osx"
+
+###############################################################################
+# Zsh-titles - Automatic terminal and tmux titles based on current location and task
+###############################################################################
 #zplug "jreese/zsh-titles"
-#zplug "mollifier/anyframe"
