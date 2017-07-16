@@ -194,7 +194,7 @@ let g:javascript_plugin_jsdoc = 1
 " => Deoplete - Asynchronous completion for neovim
 "    Replaces YouCompleteMe
 "------------------------------------------------------------------------------
-Plugin 'Shougo/deoplete'
+Plugin 'Shougo/deoplete.nvim'
 if has('nvim')
   " Enable deoplete.
   let g:deoplete#enable_at_startup = 1
