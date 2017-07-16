@@ -122,6 +122,19 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load
 
+###############################################################################
+# Keybindings
+# bindkey -l will give you a list of existing keymap names.
+# bindkey -M <keymap> will list all the bindings in a given keymap.
+###############################################################################
+for keymap in 'emacs' 'viins' 'vicmd'; do
+    # Requires zdharma/history-search-multi-word plugin
+    bindkey -M $keymap '^r' history-search-multi-word
+done
+unset keymap
+
+# Requires b4b4r07/emoji-cli plugin
+bindkey -M viins '^s' emoji::cli
 
 ###############################################################################
 # Pyenv and pyenv-virtualenv

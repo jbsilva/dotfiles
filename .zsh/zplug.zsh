@@ -50,7 +50,8 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 
 ###############################################################################
 # Emoji-cli
-# To insert emoji, type ctrl-s. Dependencies: jq fzf peco
+# Dependencies: jq fzf peco
+# Ctrl-s: bindkey -M viins '^s' emoji::cli
 ###############################################################################
 zplug "b4b4r07/emoji-cli"
 
@@ -59,6 +60,13 @@ zplug "b4b4r07/emoji-cli"
 ###############################################################################
 zplug "arzzen/calc.plugin.zsh"
 
+###############################################################################
+# History Search Multi Word
+# Ctrl-r: bindkey "^r" history-search-multi-word
+###############################################################################
+zplug "zdharma/history-search-multi-word"
+
+###############################################################################
 #zplug "b4b4r07/enhancd"
 #zplug "djui/alias-tips"
 #zplug "hchbaw/auto-fu.zsh", at:pu
@@ -66,4 +74,3 @@ zplug "arzzen/calc.plugin.zsh"
 #zplug "jimmijj/zsh-syntax-highlighting"
 #zplug "jreese/zsh-titles"
 #zplug "mollifier/anyframe"
-#zplug "zdharma/history-search-multi-word"
