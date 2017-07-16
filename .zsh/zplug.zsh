@@ -72,7 +72,7 @@ zplug "zdharma/history-search-multi-word"
 ###############################################################################
 # Enhancd - A next-generation cd command with an interactive filter
 ###############################################################################
-zplug "b4b4r07/enhancd", use:init.sh
+zplug "b4b4r07/enhancd", use:init.sh, hook-load:"ENHANCD_DISABLE_HOME=1"
 
 ###############################################################################
 # Alias-tips - Help remembering those shell aliases and Git aliases you once defined
