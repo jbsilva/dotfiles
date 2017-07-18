@@ -77,6 +77,11 @@ export USER_COPYRIGHT="Copyright (c) $(date +%Y), $USER_FULLNAME"
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
+# Byobu
+if [ -e /usr/local/bin/byobu ]; then
+    export BYOBU_PREFIX="$(brew --prefix)"
+fi
+
 
 ###############################################################################
 # Functions
