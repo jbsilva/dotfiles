@@ -223,6 +223,8 @@ alias wget='wget -c'        # Resume wget by default
 
 alias unzipall="unzip '*.zip'"
 
+alias gst='git status'
+
 # Paste clipboard in new vim file
 alias paste2vim='pbpaste | nvim -'
 
