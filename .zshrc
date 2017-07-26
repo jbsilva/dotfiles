@@ -131,6 +131,7 @@ zplug load
 # Keybindings
 # bindkey -l will give you a list of existing keymap names.
 # bindkey -M <keymap> will list all the bindings in a given keymap.
+# zle -al lists all registered zle commands
 ###############################################################################
 for keymap in 'emacs' 'viins' 'vicmd'; do
     # Requires zdharma/history-search-multi-word plugin
