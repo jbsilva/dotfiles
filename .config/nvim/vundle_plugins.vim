@@ -324,6 +324,7 @@ nmap <silent>scp        <Plug>SQLU_CreateProcedure<CR>
 "------------------------------------------------------------------------------
 " => Instant Markdown previews
 "    Install first: `npm -g install instant-markdown-d`
+"    If autostart=0, run with :InstantMarkdownPreview
 "------------------------------------------------------------------------------
 Plugin 'suan/vim-instant-markdown'
 let g:instant_markdown_slow = 1
