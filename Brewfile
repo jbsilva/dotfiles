@@ -106,6 +106,7 @@ brew "git-extras"
 brew "git-cal"
 brew "git-flow"
 cask "sourcetree"
+brew "mergepbx" # A tool for merging Xcode project files in git
 
 
 # Diff
