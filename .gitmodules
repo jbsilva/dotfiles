@@ -1,6 +1,3 @@
-[submodule ".zprezto"]
-	path = .zprezto
-	url = https://github.com/jbsilva/prezto.git
 [submodule ".config/nvim/bundle/Vundle.vim"]
 	path = .config/nvim/bundle/Vundle.vim
 	url = https://github.com/VundleVim/Vundle.vim.git
