@@ -332,10 +332,10 @@ cask "mongodb"
 
 
 # Message / Chat
-brew "irssi"
+#brew "irssi"
 cask "skype"
 cask "telegram"
-cask "rocket-chat"
+#cask "rocket-chat"
 #brew "libidn"
 
 
@@ -404,7 +404,7 @@ brew "crunch"
 
 
 # Jing - Record videos
-cask "jing"
+#cask "jing"
 
 
 # Remap keyboard (swap ESC with CapsLock)
