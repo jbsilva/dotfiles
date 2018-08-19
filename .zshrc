@@ -56,6 +56,9 @@ case ":$PATH:" in
   *) export PATH=/usr/local/sbin:$PATH ;;
 esac
 
+# Anaconda
+export PATH=/usr/local/anaconda3/bin:"$PATH"
+
 if [[ -z "$XDG_CONFIG_HOME" ]]; then
     export XDG_CONFIG_HOME=$HOME/.config
 fi
@@ -142,12 +145,13 @@ unset keymap
 # Requires b4b4r07/emoji-cli plugin
 bindkey -M viins '^s' emoji::cli
 
+
 ###############################################################################
 # Pyenv and pyenv-virtualenv
 # pyenv install 2.7 && pyenv install 3.7 && pyenv rehash && pyenv global 2.7 3.7
 ###############################################################################
-if (( $+commands[pyenv] )); then eval "$(pyenv init -)"; fi
-if (( $+commands[pyenv-virtualenv-init] )); then eval "$(pyenv virtualenv-init -)"; fi
+#if (( $+commands[pyenv] )); then eval "$(pyenv init -)"; fi
+#if (( $+commands[pyenv-virtualenv-init] )); then eval "$(pyenv virtualenv-init -)"; fi
 
 
 ###############################################################################
