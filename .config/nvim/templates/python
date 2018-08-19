@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*-*- encoding: utf-8 -*-*-
 
 """
@@ -10,8 +10,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
-import argparse
+import os
 import sys
+import argparse
+import logging
 
 
 __author__ = "$USER_FULLNAME"
@@ -21,21 +23,46 @@ __version__ = "1.0"
 __email__ = "$USER_EMAIL"
 
 
-def main(args):
+SCRIPT_DIR = os.path.dirname(__file__)
+SCRIPT_NAME = os.path.basename(__file__)
+
+
+def main():
+    '''Função principal'''
+
     return 0
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-            description='Descricao do programa.')
-    parser.add_argument('-b', '--bar', dest="bar", help='bar help')
-    parser.add_argument('-n', '--num', type=int, help="integer")
-    parser.add_argument('-f', '--force', action='store_true',
-            default=False, dest='force', help='force')
-    parser.add_argument("-v", "--verbosity", action="count", default=0,
-            help="increase output verbosity")
-    parser.add_argument('--version', action='version',
-            version='%(prog)s v' + __version__)
-    args = parser.parse_args()
+    PARSER = argparse.ArgumentParser(
+        description='Este programa...')
+    PARSER.add_argument('-b', '--bar', dest="bar",
+        help='bar help')
+    PARSER.add_argument('-n', '--num', type=int,
+        help="integer")
+    PARSER.add_argument('-f', '--force', action='store_true',
+        default=False, dest='force',
+        help='force')
+    PARSER.add_argument("-v", "--verbosity", action="count", default=0,
+        help="increase output verbosity")
+    PARSER.add_argument('--version', action='version',
+        version='%(prog)s v' + __version__)
+    ARGS = PARSER.parse_args()
 
-    sys.exit(main(args))
+    logging.basicConfig(
+        filename=os.path.join(SCRIPT_DIR, SCRIPT_NAME + '.log'),
+        format='%(asctime)s %(levelname)-8s %(message)s',
+        level=logging.INFO,
+        datefmt='%Y-%m-%d %H:%M:%S')
+
+    logging.debug("===================Iniciou o script===================")
+
+    try:
+        sys.exit(main())
+    except KeyboardInterrupt:
+        logging.debug("=====================Interrompido=====================")
+        sys.exit(0)
+    except SystemExit:
+        logging.debug("==================Finalizou o script==================")
+    except BaseException:
+        logging.exception('Ocorreu um erro')
