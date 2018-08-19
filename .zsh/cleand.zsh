@@ -9,5 +9,5 @@ function cleand()
         #xattr -rc $DIR
     fi
     
-    find $DIR -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -iname 'desktop.ini' \) -exec echo "{}" \; -exec rm "{}" \;
+    find $DIR -type f \( -name '.DS_Store' -o -name 'Thumbs.db' -o -iname 'desktop.ini' -o -name 'Icon?' \) -exec echo "{}" \; -exec rm "{}" \;
 }
