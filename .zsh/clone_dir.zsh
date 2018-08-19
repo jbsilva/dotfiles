@@ -79,5 +79,11 @@ EOF
     fi
 
     print "rsync ${args[*]} \"$ORIGEM\" \"$DESTINO\"" >&2
-    rsync ${args[*]} "$ORIGEM" "$DESTINO"
+
+    # Uses environment variable $SSHPASS for auth if it is set
+    if [[ -v SSHPASS ]]; then
+        sshpass -e rsync ${args[*]} "$ORIGEM" "$DESTINO"
+    else
+        rsync ${args[*]} "$ORIGEM" "$DESTINO"
+    fi
 }
