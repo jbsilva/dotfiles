@@ -34,22 +34,30 @@ EOF
 
 
     args=()
-    args+=(--progress)
-    args+=(--verbose)
-    args+=(--recursive)
-    args+=(--links)
-    args+=(--perms)
-    args+=(--owner)
-    args+=(--group)
-    args+=(--times)
-    args+=(--devices)
-    args+=(--specials)
-    args+=(--delete)
-#    args+=(--compress)
-#    args+=(--update)
-#    args+=(--inplace)
-#    args+=(--partial)
-
+    args+=(--recursive)         # Copy directories recursively
+    args+=(--links)             # Copy symlinks as symlinks
+    args+=(--perms)             # Preserve permissions
+    args+=(--owner)             # Preserve owner
+    args+=(--group)             # Preserve group
+    args+=(--times)             # Transfer/update modification times
+    args+=(--devices)           # Transfer character and block device files
+    args+=(--specials)          # Transfer special files such as named sockets and fifos
+    args+=(--delete)            # Delete files not SRC
+    args+=(--whole-file)        # Don't use delta-xfer algorithm
+    args+=(--compress-level=0)  # No compression
+    args+=(--no-inc-recursive)  # Disable incremental recursion for better estimate (uses more memory)
+    args+=(--info=progress2)    # Show total progress
+    args+=(--human-readable)    # Output numbers in a more human-readable format
+    #args+=(--size-only)         # Don't compare change date
+    #args+=(--preallocate)       # Allocate dest files before writing
+    #args+=(--progress)          # Show progress during transfer
+    #args+=(--verbose)           # Increase verbosity
+    #args+=(--compress)          # Compression
+    #args+=(--update)            # Update
+    #args+=(--inplace)           # Inplace
+    #args+=(--partial)           # Partial
+    #args+=(--dry-run)           # Dry-run
+    #args+=(--rsh="ssh -T -c arcfour -o Compression=no -x") # No SSH compression
 
     clean=0
     if [[ "$1" == "-c" || "$1" == "--clean" ]]; then
@@ -85,5 +93,7 @@ EOF
         sshpass -e rsync ${args[*]} "$ORIGEM" "$DESTINO"
     else
         rsync ${args[*]} "$ORIGEM" "$DESTINO"
+        #find ${ORIGEM} -type f > /tmp/backup.txt
+        #cat /tmp/backup.txt | parallel -j 8 rsync ${args[*]} {} "$DESTINO"
     fi
 }
