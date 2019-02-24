@@ -9,8 +9,8 @@
 # More brews: http://braumeister.org
 
 # Taps
-tap "caskroom/cask"
-tap "caskroom/fonts"
+#tap "caskroom/cask"
+#tap "caskroom/fonts"
 tap "caskroom/versions"
 tap "homebrew/binary"
 tap "homebrew/bundle"
@@ -25,7 +25,9 @@ tap "homebrew/core"
 tap "acrogenesis/macchanger"
 
 
+# Filesystem
 cask "osxfuse"
+#brew "ext4fuse"
 
 
 # xquartz
@@ -34,7 +36,7 @@ cask "xquartz"
 
 # GNU Core Utilities. Adicionar `$(brew --prefix coreutils)/libexec/gnubin` ao `$PATH`.
 brew "coreutils"
-brew "binutils"
+brew "binutils", link: true
 brew "findutils", args: ["with-default-names"]
 brew "moreutils"
 brew "gawk"
@@ -42,18 +44,24 @@ brew "gnu-indent", args: ["with-default-names"]
 brew "gnu-sed", args: ["with-default-names"]
 brew "gnu-tar", args: ["with-default-names"]
 brew "gnu-which", args: ["with-default-names"]
-brew "gnutls"
+#brew "gnutls"
 brew "grep", args: ["with-default-names"]
 brew "gzip"
-brew "glib"
+#brew "glib"
 
 brew "rsync"
 brew "ntfs-3g"
 
+# math
+brew "gnu-plot"
+
+# Flashcards
+# cask "anki"
+
 
 # Fonts
-brew "freetype"
-brew "fontconfig"
+#brew "freetype"
+#brew "fontconfig"
 cask "font-inconsolata"
 cask "font-terminus"
 cask "font-hack-nerd-font"
@@ -76,7 +84,18 @@ brew "cocoapods"
 
 ## Python
 ## Python Virtual Environments
-brew "pyenv"               
+#brew "pyenv"               
+#cask "anaconda"
+cask "pycharm"
+
+
+# R
+cask "r-app"
+cask "rstudio"
+
+
+cask "silverlight"
+cask "timer"
 
 
 ## Lua
@@ -84,19 +103,23 @@ brew "lua"
 
 
 # Rust
-brew "multirust"
+#brew "multirust"
 
 
 ## Javascript
 brew "node"
 
+# Json processor
+#brew "jq"
+
 
 ## Java
 cask "java"
-brew "android-sdk"
+#brew "jenv"
+#brew "android-sdk"
 
 ## Swift
-brew 'swiftlint'
+#brew 'swiftlint'
 
 
 # VCS
@@ -106,7 +129,7 @@ brew "git-extras"
 brew "git-cal"
 brew "git-flow"
 cask "sourcetree"
-brew "mergepbx" # A tool for merging Xcode project files in git
+#brew "mergepbx" # A tool for merging Xcode project files in git
 
 
 # Diff
@@ -131,7 +154,7 @@ brew "nmap"
 #brew "ettercap"            
 
 ## Packet analyzer
-cask "wireshark"       
+#cask "wireshark"       
 
 # Correct mistyped console commands
 #brew "thefuck"
@@ -144,7 +167,7 @@ cask "wireshark"
 
 brew "ack"
 
-brew "readline"
+#brew "readline"
 
 # Tool for browsing source code
 #brew "cscope"
@@ -156,44 +179,46 @@ brew "duti"
 #brew "figlet"
 
 # GNU database manager
-brew "gdbm"
+#brew "gdbm"
 
 brew "gettext"
 
 brew "pcre"
 brew "pkg-config"
-brew "libtasn1"
+#brew "libtasn1"
 
 brew "libtool"
 
-brew "htop-osx"
+# Task manager
+brew "htop"
 
-brew "libtiff"
-brew "webp"
+#brew "libtiff"
+#brew "webp"
 brew "libyaml"
 brew "rename"
 brew "renameutils"
 brew "tree"
 brew "unoconv", args: ["HEAD"]
 brew "watch"
-brew "wdiff", args: ["with-gettext"]
-brew "wget", args: ["with-iri"]
+brew "wdiff"
+brew "wget"
 brew "byobu"
 brew "media-info"
+brew "pv"
 
 
 # Shell
 brew "bash"
 brew "zsh"
 brew "zsh-completions"
-brew "shellcheck"
+#brew "shellcheck"
 
 # Zsh Plugin Manager
 brew "zplug"
 
 # Tmux
-brew "tmux"
-brew "tmuxinator-completion"
+#brew "tmux"
+#brew "tmuxinator-completion"
 
 # Terminal
 cask "iterm2"
@@ -206,15 +231,16 @@ brew "fzf"
 brew "emojify"
 
 # Ruby
-brew "ruby"
+brew "ruby", link: true
 
 
 # Archive
-#brew "unrar"
-brew "homebrew/binary/rar"
+brew "unrar"
+brew "unzip"
+#brew "homebrew/binary/rar"
 brew "p7zip"
 cask "the-unarchiver"
-brew "homebrew/dupes/unzip"
+#brew "homebrew/dupes/unzip"
 
 cask "android-file-transfer"
 cask "calibre"
@@ -224,7 +250,7 @@ cask "firefox"
 cask "google-chrome"
 
 # Command line HTTP client - https://httpie.org/doc
-brew "httpie"
+#brew "httpie"
 
 
 # Games
@@ -238,11 +264,15 @@ cask "transmission"
 # Image Editor
 #cask "inkscape"
 #cask "gimp"
-cask "picasa"
+#cask "picasa"
+
+# OpenCV
+# brew "opencv"
 
 
 # Disable lid/idle sleep
 cask "insomniax"
+#cask "keepingyouawake"
 
 
 # Filter the bright blue colors
@@ -253,19 +283,28 @@ cask "flux"
 cask "licecap"
 
 
+# Jing - Record videos
+#cask "jing"
+
+
 # Multimedia
-brew "libpng"
-brew "imagemagick", args: ["with-webp"]
+#brew "libpng"
+brew "imagemagick"
 brew "ffmpeg"
 brew "flac"
 cask "spotify"
 cask "vlc"
 brew "youtube-dl"
-brew "jpeg"
+#brew "jpeg"
 brew "exiv2"
+brew "exempi"
+brew "exiftool"
 #brew "lame"
 #cask "audacity"
 #cask "flash-player"
+
+# SVG
+#cask "inkscape"
 
 ## Decode/convert/play lossless audio
 cask "xld"
@@ -287,18 +326,28 @@ brew "openconnect"
 #cask "torbrowserbundle"
 
 
+# AWS
+brew "awscli"
+
+
 # Cloud Storage
 cask "google-drive"
 cask "dropbox"
 
 
 # IDE
-cask "android-studio"
-cask "appcode"
+#cask "appcode"
+
+# Android
+#cask "android-studio"
+#cask "android-platform-tools"
+
+# Arduino
+#cask "arduino"
 
 
 # Static site generator
-brew 'hugo'
+brew "hugo"
 
 
 # SQL
@@ -319,12 +368,13 @@ brew "mysql"
 
 
 ### MySQL GUI
-cask "mysqlworkbench"              
+#cask "mysqlworkbench"              
 
 
 ## SQLite
-brew "sqlite", args: ["with-functions"]
+#brew "sqlite", args: ["with-functions"]
 cask "sqlitebrowser"
+#cask "db-browser-for-sqlite"
 
 
 ## MongoDB
@@ -350,17 +400,22 @@ cask "djview"
 # LaTeX
 cask "mactex"
 cask "texmaker"
-brew "homebrew/tex/latex-mk"
+#brew "homebrew/tex/latex-mk"
 
 
 # Bibliography reference
 cask "jabref"
 cask "bibdesk"
+brew "bib-tool"
 
 
 # Markdown editor
 #cask "macdown"                     
 #cask "haroopad"
+
+
+# Regular expressions library
+#brew "pcre"
 
 
 ## Interpreter for PostScript and PDF
@@ -386,14 +441,20 @@ brew "docx2txt"
 
 # Cryptography
 brew "ssh-copy-id"
-brew "openssl"
+#brew "openssl"
 brew "mcrypt"
-brew "gpg"
+#brew "gpg"
 cask "gpgtools-beta"
 cask "keybase"
+cask "veracrypt"
 brew "gpg-agent"
-brew "gnupg2"
+#brew "gnupg2"
+#brew "mhash"
+#brew "nettle"
+brew "oath-toolkit"
 
+brew "sshfs"
+brew "sshpass"
 
 # Crack passwords
 brew "john-jumbo"
@@ -401,10 +462,6 @@ brew "john-jumbo"
 
 ## Generate wordlist
 brew "crunch"
-
-
-# Jing - Record videos
-#cask "jing"
 
 
 # Remap keyboard (swap ESC with CapsLock)
@@ -419,5 +476,7 @@ cask "switchresx"
 
 
 # Editor
-#brew "neovim/neovim/neovim", args: ["HEAD"]
-cask "vimr"
+brew "neovim"
+#cask "vimr"
+
+#cask "wine-devel"
