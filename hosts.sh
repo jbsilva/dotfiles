@@ -62,4 +62,13 @@ echo "
 0.0.0.0 stats.hamrick.com
 0.0.0.0 104.131.17.148 
 #</VueScan>
+###############################################################################
+#<RosettaStone>
+0.0.0.0 16.217.0.0 
+0.0.0.0 rosettastone.com 
+0.0.0.0 launch.rosettastone.com 
+0.0.0.0 amp.rosettastone.com 
+0.0.0.0 resources.rosettastone.com 
+0.0.0.0 updates.rosettastone.com 
+#</RosettaStone>
 ###############################################################################" >> /etc/hosts
