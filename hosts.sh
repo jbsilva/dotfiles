@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run as root
-curl --output /etc/hosts --url "http://someonewhocares.org/hosts/zero/hosts"
+curl --output /etc/hosts --url "https://someonewhocares.org/hosts/zero/hosts"
 
 echo "
 ###############################################################################
