@@ -9,8 +9,12 @@ if [[ ! -x "$(command -v brew)" ]]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-# Coreutils PATH
+# Binutils, coreutils, findutils, sed, grep, etc
+export PATH="/usr/local/opt/binutils/bin:$PATH"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
 
 # Aliases
 
