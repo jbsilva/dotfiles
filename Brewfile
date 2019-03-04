@@ -26,12 +26,11 @@ tap "acrogenesis/macchanger"
 
 
 # Filesystem
-cask "osxfuse"
+#cask "osxfuse"
 #brew "ext4fuse"
+#brew "ntfs-3g"
 
-
-# xquartz
-cask "xquartz"
+brew "rsync"
 
 
 # GNU Core Utilities. Adicionar `$(brew --prefix coreutils)/libexec/gnubin` ao `$PATH`.
@@ -49,11 +48,13 @@ brew "grep", args: ["with-default-names"]
 brew "gzip"
 #brew "glib"
 
-brew "rsync"
-brew "ntfs-3g"
+
+# xquartz
+cask "xquartz"
+
 
 # math
-brew "gnu-plot"
+#brew "gnu-plot"
 
 # Flashcards
 # cask "anki"
@@ -62,8 +63,8 @@ brew "gnu-plot"
 # Fonts
 #brew "freetype"
 #brew "fontconfig"
-cask "font-inconsolata"
-cask "font-terminus"
+#cask "font-inconsolata"
+#cask "font-terminus"
 cask "font-hack-nerd-font"
 
 
@@ -71,15 +72,15 @@ cask "font-hack-nerd-font"
 
 ## C
 #brew "gcc"
-brew "astyle"
-brew "autoconf"
-brew "automake"
+#brew "astyle"
+#brew "autoconf"
+#brew "automake"
 brew "cmake"
 brew "ctags"
 
 
 # Objective-C
-brew "cocoapods"
+#brew "cocoapods"
 
 
 ## Python
@@ -95,7 +96,7 @@ cask "rstudio"
 
 
 cask "silverlight"
-cask "timer"
+#cask "timer"
 
 
 ## Lua
@@ -107,7 +108,7 @@ brew "lua"
 
 
 ## Javascript
-brew "node"
+#brew "node"
 
 # Json processor
 #brew "jq"
@@ -123,7 +124,7 @@ cask "java"
 
 
 # VCS
-brew "mercurial"
+#brew "mercurial"
 brew "git"
 brew "git-extras"
 brew "git-cal"
@@ -227,8 +228,10 @@ cask "iterm2"
 # Fuzzy Finder
 brew "fzf"
 
+
 # Emojify - Emoji on the command line
 brew "emojify"
+
 
 # Ruby
 brew "ruby", link: true
@@ -242,7 +245,6 @@ brew "p7zip"
 cask "the-unarchiver"
 #brew "homebrew/dupes/unzip"
 
-cask "android-file-transfer"
 cask "calibre"
 
 # Browser
@@ -276,11 +278,11 @@ cask "insomniax"
 
 
 # Filter the bright blue colors
-cask "flux"
+#cask "flux"
 
 
 # Screen Capture
-cask "licecap"
+#cask "licecap"
 
 
 # Jing - Record videos
@@ -307,7 +309,7 @@ brew "exiftool"
 #cask "inkscape"
 
 ## Decode/convert/play lossless audio
-cask "xld"
+#cask "xld"
 
 ## Tag editor for MP3, OGG, FLAC...
 #cask "kid3"                       
@@ -341,6 +343,8 @@ cask "dropbox"
 # Android
 #cask "android-studio"
 #cask "android-platform-tools"
+#cask "android-file-transfer"
+
 
 # Arduino
 #cask "arduino"
@@ -373,7 +377,7 @@ brew "mysql"
 
 ## SQLite
 #brew "sqlite", args: ["with-functions"]
-cask "sqlitebrowser"
+#cask "sqlitebrowser"
 #cask "db-browser-for-sqlite"
 
 
@@ -398,15 +402,15 @@ cask "djview"
 
 
 # LaTeX
-cask "mactex"
-cask "texmaker"
+#cask "mactex"
+#cask "texmaker"
 #brew "homebrew/tex/latex-mk"
 
 
 # Bibliography reference
-cask "jabref"
-cask "bibdesk"
-brew "bib-tool"
+#cask "jabref"
+#cask "bibdesk"
+#brew "bib-tool"
 
 
 # Markdown editor
@@ -432,21 +436,21 @@ brew "ghostscript"
 
 
 # Open Microsoft Compiled HTML Help files
-cask "ichm"
+#cask "ichm"
 
 
 # Convert MS Word to text
-brew "docx2txt"
+#brew "docx2txt"
 
 
 # Cryptography
+cask "veracrypt"
 brew "ssh-copy-id"
 #brew "openssl"
 brew "mcrypt"
 #brew "gpg"
 cask "gpgtools-beta"
 cask "keybase"
-cask "veracrypt"
 brew "gpg-agent"
 #brew "gnupg2"
 #brew "mhash"
@@ -457,11 +461,11 @@ brew "sshfs"
 brew "sshpass"
 
 # Crack passwords
-brew "john-jumbo"
+#brew "john-jumbo"
 
 
 ## Generate wordlist
-brew "crunch"
+#brew "crunch"
 
 
 # Remap keyboard (swap ESC with CapsLock)
