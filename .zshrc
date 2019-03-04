@@ -85,6 +85,10 @@ if [ -e /usr/local/bin/byobu ]; then
     export BYOBU_PREFIX="$(brew --prefix)"
 fi
 
+# Powerlevel9k ZSH theme
+# Add zstyle ':prezto:module:prompt' theme 'powerlevel9k' in zplug.zsh
+export POWERLEVEL9K_MODE='nerdfont-complete'
+
 
 ###############################################################################
 # Functions
