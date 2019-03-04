@@ -236,6 +236,7 @@ Plugin 'w0rp/ale'
 
 "------------------------------------------------------------------------------
 " => Vim-airline - Lean & mean status/tabline for vim that's light as air
+" Works better when the terminal font is set to Powerline (or Hack Nerd Font)
 "------------------------------------------------------------------------------
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
