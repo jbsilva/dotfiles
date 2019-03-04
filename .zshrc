@@ -5,7 +5,7 @@
 #               ====oOO==(_)==OOo=====
 #
 # License:
-#           Copyright (c) 2011-2016, Julio Batista Silva <julio@juliobs.com>
+#           Copyright (c) 2011-2019, Julio Batista Silva <julio@juliobs.com>
 #                       All Rights Reserved
 #
 #           This program is free software. It comes without any warranty, to
@@ -15,7 +15,7 @@
 #           http://sam.zoy.org/wtfpl/COPYING for more details.
 #
 # Created:      12 Aug 2011
-# Last Change:  08 Jul 2017
+# Last Change:  03 Mar 2019
 #
 # Download: https://github.com/jbsilva/dotfiles
 # compaudit | xargs chmod g-w
@@ -57,7 +57,7 @@ case ":$PATH:" in
 esac
 
 # Anaconda
-export PATH=/usr/local/anaconda3/bin:"$PATH"
+#export PATH=/usr/local/anaconda3/bin:"$PATH"
 
 if [[ -z "$XDG_CONFIG_HOME" ]]; then
     export XDG_CONFIG_HOME=$HOME/.config
