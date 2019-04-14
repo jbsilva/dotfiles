@@ -53,7 +53,6 @@ echo "
 0.0.0.0 www.googletagservices.com
 0.0.0.0 gads.pubmatic.com
 0.0.0.0 ads.pubmatic.com
-0.0.0.0 spclient.wg.spotify.com
 #</Spotify>
 ###############################################################################
 #<VueScan>
