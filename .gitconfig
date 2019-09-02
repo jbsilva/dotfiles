@@ -5,8 +5,6 @@
     autocrlf = false
     safecrlf = true
     editor = nvim
-	excludesfile = /Users/julio/.gitignore_global
-	pager = diff-so-fancy | less --tabs=4 -RFX
 [alias]
     # List of aliases
     alias = "!f(){ git config -l | grep alias; };f"
@@ -23,10 +21,10 @@
     k = !gitk
 
     sm = submodule
-	sup = submodule update
+    sup = submodule update
 
     rmbranch = "!f(){ git branch -d ${1} && git push origin --delete ${1}; };f"
-	mkbranch = "!f(){ git checkout -b ${1} && git push origin -u ${1}; };f"
+    mkbranch = "!f(){ git checkout -b ${1} && git push origin -u ${1}; };f"
 
     snap = !git stash save "snapshot: $(date)"
     snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
@@ -38,6 +36,8 @@
 
     type = cat-file -t
     dump = cat-file -p
+
+    shove = push --force-with-lease
 
     # Pretty log
     hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
@@ -86,47 +86,10 @@
     # What commit a file was added
     whatadded = log --follow --diff-filter=A --find-renames=40%
 
-[color]
-	ui = always
-[color "diff"]
-	meta = yellow bold
-	commit = green bold
-	frag = magenta bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
-[color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = "red bold 52"
-	newNormal = "green bold"
-	newHighlight = "green bold 22"
-[color "branch"]
-	current = yellow reverse
-	local = yellow
-	remote = green
-[color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
-
-[github]
-    user = jbsilva
-[credential]
-    helper = osxkeychain
-[merge]
-    tool = pycharm
-[mergetool "pycharm"]
-    cmd = /Applications/PyCharm.app/Contents/MacOS/pycharm merge $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE") $(cd $(dirname "$BASE") && pwd)/$(basename "$BASE") $(cd $(dirname "$MERGED") && pwd)/$(basename "$MERGED")
-    trustExitCode = true
-[diff]
-    tool = pycharm
-[difftool "pycharm"]
-    cmd = /Applications/PyCharm.app/Contents/MacOS/pycharm diff $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE")
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
-[commit]
-	template = /Users/julio/.stCommitMsg
+# Include platform specific configuration
+[includeIf "gitdir/i:c:/"]
+    path = ~/.gitconfig.windows
+[includeIf "gitdir/i:/users/"]
+    path = ~/.gitconfig.mac
+[includeIf "gitdir/i:/home/"]
+    path = ~/.gitconfig.linux
