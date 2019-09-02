@@ -167,8 +167,8 @@ if (( $+commands[rbenv] )); then eval "$(rbenv init -)"; fi
 ###############################################################################
 # jenv
 ###############################################################################
-export PATH="$HOME/.jenv/bin:$PATH"
-if which jenv > /dev/null; then eval "$(jenv init -)"; fi
+#export PATH="$HOME/.jenv/bin:$PATH"
+if (( $+commands[jenv] )); then eval "$(jenv init -)"; fi
 
 
 ###############################################################################
@@ -201,8 +201,8 @@ esac
 alias list='du -shc *'
 alias back='cd "$OLDPWD"'
 alias ..='cd ../'
-alias ...='cd ../../../'
-alias ....='cd ../../../../'
+alias ...='cd ../../'
+alias ....='cd ../../../'
 
 alias dir='ls -1'           # Show one entry per line
 alias ld='ls -ld'           # Show info about the directory
