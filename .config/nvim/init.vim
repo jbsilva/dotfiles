@@ -45,7 +45,12 @@ let mapleader=','
 "------------------------------------------------------------------------------
 " => Carrega os plugins do Vundle
 "------------------------------------------------------------------------------
-source $XDG_CONFIG_HOME/nvim/vundle_plugins.vim
+"source $XDG_CONFIG_HOME/nvim/vundle_plugins.vim
+
+"------------------------------------------------------------------------------
+" => Carrega os plugins do Vim-PLug
+"------------------------------------------------------------------------------
+source $XDG_CONFIG_HOME/nvim/vimplug_plugins.vim
 
 "------------------------------------------------------------------------------
 " => Carrega o restante das configurações

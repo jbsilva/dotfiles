@@ -6,7 +6,7 @@
 " Description:  Vim configuration
 " Author:       Julio Batista Silva
 " Created:      2011
-" Last Change:  Wed 05 Jul 2017 18:00
+" Last Change:  Sun 01 Sep 2019 23:00
 "===================================================================
 
 "------------------------------------------------------------------------------
@@ -18,45 +18,47 @@
 
 "------------------------------------------------------------------------------
 " => Constants
-" Different ways to define a variable:
+" Different ways to define a variable. Eg.:
 "   let user = 'Julio Batista Silva'                    -- String
 "   let user = expand($USER_FULLNAME)                   -- Variavel de ambiente
 "   let user = system('git config -z --get user.name')  -- Shell command
 "------------------------------------------------------------------------------
-let g:DOTFILES = escape(expand('<sfile>:p:h:h'), ' ')  "dotfiles
-let g:VIMFILES = escape(expand('<sfile>:p:h'), ' ')    "dotfiles/.vim/
-let g:VIMSETTINGS = escape(expand('<sfile>:p'), ' ')   "dotfiles/.vim/settings.vim
-let g:VIMCONF = g:DOTFILES . '/.vimrc'                 "dotfiles/.vimrc
-let g:TEMPLATES = g:VIMFILES . '/templates'            "dotfiles/.vim/templates
+let g:DOTFILES = escape(expand('<sfile>:p:h:h'), ' ') "dotfiles
+let g:VIMFILES = escape(expand('<sfile>:p:h'), ' ')   "dotfiles/.config/nvim
+let g:VIMSETTINGS = escape(expand('<sfile>:p'), ' ')  "dotfiles/.config/nvim/settings.vim
+let g:VIMCONF = g:DOTFILES . '/.init.vim'             "dotfiles/.config/nvim/.init.vim
+let g:TEMPLATES = g:VIMFILES . '/templates'           "dotfiles/.config/nvim/templates
 
 "------------------------------------------------------------------------------
 " => Utilities
 "------------------------------------------------------------------------------
-
-" Copia o conteudo de `file` no inicio do arquivo atual com as variaveis no
-" formato `$VARIAVEL` já resolvidas. Uso para templates.
-" Atencao: O `expand` trata especialmente linhas iniciadas por '%', '#' ou '<'.
-"          Se precisar, inicie com '\' ('\#', por exemplo).
+" For templates: copy `file` content to the beginning of current file with
+" expanded variables.
+" Attention: escape '%', '#' and '<' with '\' in the beginning of line.
 fun! s:Insere(file)
     if filereadable(a:file)
-
         exe 'silent! 0r ' a:file
-
         for linenum in range(1, line('$'))
             let line = getline(linenum)
             if line =~ '\$'
                 call setline(linenum, expand(line))
             endif
         endfor
-
     endif
 endfun
+
+"------------------------------------------------------------------------------
+" => Encoding
+"------------------------------------------------------------------------------
+set encoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8
 
 "------------------------------------------------------------------------------
 " => Colorscheme
 "------------------------------------------------------------------------------
 if has("gui_running")
-    colorscheme zenburn
+    colorscheme molokai
 else
     colorscheme zenburn
 endif
@@ -64,7 +66,7 @@ endif
 
 "------------------------------------------------------------------------------
 " => Check Html5
-" http://about.validator.nu/html5check.py
+"    http://about.validator.nu/html5check.py
 "------------------------------------------------------------------------------
 map ,h5 :!html5check.py %<CR>
 
@@ -74,6 +76,13 @@ map ,h5 :!html5check.py %<CR>
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
   finish
+endif
+
+" Shell
+if exists('$SHELL')
+    set shell=$SHELL
+else
+    set shell=/bin/sh
 endif
 
 " Don't use Ex mode, use Q for formatting
@@ -94,6 +103,21 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
 endif
+
+" Visual
+if has("gui_running")
+  if has("gui_mac") || has("gui_macvim")
+    set guifont=Menlo:h12
+    set transparency=7
+  endif
+else
+  let g:CSApprox_loaded = 1
+  let g:indentLine_enabled = 1
+  let g:indentLine_concealcursor = 0
+  let g:indentLine_char = '┆'
+  let g:indentLine_faster = 1
+endif
+
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -130,47 +154,62 @@ endif
 filetype plugin on
 
 ru macros/matchit.vim       " Enabled extended % matching
-set hi=100                  " Only store past 100 commands
-set ul=200                  " Only undo up to 200 times
-set lz                      " Don't redraw screen during macros
-set tf                      " Improves redrawing for newer computers
-set sc                      " Show incomplete command at bottom right
 set bs=2                    " Allow backspacing over anything
-set ic scs                  " Only be case sensitive when search contains uppercase
-set sb                      " Open new split windows below current
-set hid                     " Allow hidden buffers
-set tm=500                  " Lower timeout for mappings
+set cmdheight=1             " Command line height
 set cot=menu                " Don't show extra info on completions
-set report=0                " Always report when lines are changed
-set t_vb=                   " ^
-set scrolloff=4             " min. number of lines above/below cursor
-set expandtab               " insert spaces instead of tab chars
-set tabstop=4               " a n-space tab width
-set shiftwidth=4            " allows the use of < and > for VISUAL indenting
-set softtabstop=4           " counts n spaces when DELETE or BCKSPCE is used
-set incsearch               " increment search
-set smartcase               " upper-case sensitive search
-set history=100             " 100 lines of command line history
-set cmdheight=1             " command line height
-set ruler                   " show the cursor position all the time
-set showmode                " show mode at bottom of screen
-set number                  " show line numbers
-set nowritebackup           " ^
-set nobackup                " disable backup
-set noswapfile              " disable swapfiles
-set showmatch               " show matching brackets (),{},[]
-set whichwrap=h,l,<,>,[,]
-set showcmd
-set modeline
-set wildmenu
-set splitbelow
+set expandtab               " Insert spaces instead of tab chars
 set formatoptions+=l
-set selection=inclusive
-set showcmd                 " display incomplete commands
-set incsearch               " do incremental searching
-set wildmenu                " filesystem surfing - press :e and ^D
-set wildchar=<tab>
+set hidden                  " Allow hidden buffers
+set history=100             " 100 lines of command line history
+set ic scs                  " Only be case sensitive when search contains uppercase
+set lz                      " Don't redraw screen during macros
+set modeline                " Modeline. Warning: possibly insecure
+set nobackup                " Disable backup
 set nofoldenable
+set noswapfile              " Disable swapfiles
+set nowritebackup           " ^
+set number                  " Show line numbers
+set report=0                " Always report when lines are changed
+set ruler                   " Show the cursor position all the time
+set sb                      " Open new split windows below current
+set sc                      " Show incomplete command at bottom right
+set scrolloff=4             " Min. number of lines above/below cursor
+set selection=inclusive
+set shiftwidth=4            " Allows the use of < and > for VISUAL indenting
+set showcmd                 " Display incomplete commands
+set showmatch               " Show matching brackets (),{},[]
+set showmode                " Show mode at bottom of screen
+set softtabstop=4           " Counts n spaces when DELETE or BCKSPCE is used
+set splitbelow
+set t_vb=                   " ^
+set tabstop=4               " A n-space tab width
+set tf                      " Improves redrawing for newer computers
+set tm=500                  " Lower timeout for mappings
+set ul=200                  " Only undo up to 200 times
+set whichwrap=h,l,<,>,[,]
+set wildchar=<tab>
+set wildmenu                " Filesystem surfing - press :e and ^D
+
+"" Searching
+set hlsearch
+set incsearch               " Increment search
+set ignorecase
+set smartcase               " Upper-case sensitive search
+
+set title
+set titleold="Terminal"
+set titlestring=%F
+
+set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
+
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+if exists("*fugitive#statusline")
+  set statusline+=%{fugitive#statusline()}
+endif
 
 "------------------------------------------------------------------------------
 " => Color column 80
@@ -209,6 +248,17 @@ command! -nargs=* -complete=file E e <args>
 command! -nargs=* -complete=file Cd cd <args>
 command! -nargs=* -complete=file CD cd <args>
 command! -nargs=* -complete=option Set set <args>
+
+cnoreabbrev W! w!
+cnoreabbrev Q! q!
+cnoreabbrev Qall! qall!
+cnoreabbrev Wq wq
+cnoreabbrev Wa wa
+cnoreabbrev wQ wq
+cnoreabbrev WQ wq
+cnoreabbrev W w
+cnoreabbrev Q q
+cnoreabbrev Qall qall
 
 "------------------------------------------------------------------------------
 " => Fix filetype detection
@@ -271,6 +321,14 @@ au FileType python set foldlevel=99
 au FileType python set omnifunc=pythoncomplete#Complete
 let g:SuperTabDefaultCompletionType = "context"
 
+" vim-python
+augroup vimrc-python
+  autocmd!
+  autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79
+      \ formatoptions+=croq softtabstop=4
+      \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+augroup END
+
 "------------------------------------------------------------------------------
 " => Ruby
 "------------------------------------------------------------------------------
@@ -288,6 +346,12 @@ au FileType html,xhtml,php,eruby imap bbb <br />
 au FileType html,xhtml,php,eruby imap aaa <a href=""></a><left><left><left><left><left><left>
 au FileType html,xhtml,php,eruby imap iii <img src="" /><left><left><left><left>
 au FileType html,xhtml,php,eruby imap ddd <div id=""></div><left><left><left><left><left><left><left><left>
+autocmd Filetype html setlocal ts=2 sw=2 expandtab " for html files, 2 spaces
+
+"------------------------------------------------------------------------------
+" => Javascript
+"------------------------------------------------------------------------------
+let g:javascript_enable_domhtmlcss = 1
 
 "------------------------------------------------------------------------------
 " => Read MS Word documents
@@ -301,3 +365,66 @@ if executable('antiword')
         au BufReadPost *.doc %!antiword "%"
     augroup END
 endif
+
+
+" terminal emulation
+nnoremap <silent> <leader>sh :terminal<CR>
+
+"------------------------------------------------------------------------------
+" => Remove trailing whitespaces
+"------------------------------------------------------------------------------
+command! FixWhitespace :%s/\s\+$//e
+
+" Tagbar
+nmap <silent> <F4> :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
+
+" Disable visualbell
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
+
+"" Copy/Paste/Cut
+if has('unnamedplus')
+  set clipboard=unnamed,unnamedplus
+endif
+
+noremap YY "+y<CR>
+noremap <leader>p "+gP<CR>
+noremap XX "+x<CR>
+
+if has('macunix')
+  " pbcopy for OSX copy/paste
+  vmap <C-x> :!pbcopy<CR>
+  vmap <C-c> :w !pbcopy<CR><CR>
+endif
+
+"" Buffer nav
+noremap <leader>z :bp<CR>
+noremap <leader>q :bp<CR>
+noremap <leader>x :bn<CR>
+noremap <leader>w :bn<CR>
+
+"" Close buffer
+noremap <leader>c :bd<CR>
+
+"" Clean search (highlight)
+nnoremap <silent> <leader><space> :noh<cr>
+
+"" Switching windows
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+noremap <C-h> <C-w>h
+
+"" Vmap for maintain Visual Mode after shifting > and <
+vmap < <gv
+vmap > >gv
+
+"" Move visual block
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+"" Open current line on GitHub
+nnoremap <Leader>o :.Gbrowse<CR>
