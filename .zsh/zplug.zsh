@@ -47,8 +47,7 @@ zstyle ':prezto:module:history-substring-search' globbing-flags ''
 
 # Theme
 # For Powerlevel9k, remember to export POWERLEVEL9K_MODE='nerdfont-complete'
-#zstyle ':prezto:module:prompt' theme 'sorin'
-zstyle ':prezto:module:prompt' theme 'powerlevel9k'
+zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 
 # Auto-title
 zstyle ':prezto:module:terminal' auto-title 'yes'
