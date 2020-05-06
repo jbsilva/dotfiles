@@ -1,0 +1,7 @@
+{
+    "vim.neovimPath": "/usr/bin/nvim",
+    "keyboard.dispatch": "keyCode",
+    "vim.enableNeovim": true,
+    "terminal.external.linuxExec": "kitty",
+    "terminal.integrated.fontFamily": "Hack Nerd Font"
+}
