@@ -1,20 +1,22 @@
 *.pyc
-.config/GitExtensions/
+.config/Code - OSS/*
+!.config/Code - OSS/User/
+.config/Code - OSS/User/*
+!.config/Code - OSS/User/settings.json
+.config/GitExtensions
+.config/VeraCrypt
+.config/bleachbit
 .config/byobu
 .config/chromium
-.config/configstore/
+.config/configstore
+.config/dconf/user
 .config/git/
 .config/inkscape
 .config/karabiner/automatic_backups
+.config/ncmpcpp/error.log
 .config/nvim/plugged
 .config/nvim/spell
-.config/wireshark/
-.config/xm1
-exercism.json
-nvimlog
-.config/Code - OSS
-.config/bleachbit
-.config/dconf/user
-.config/ncmpcpp/error.log
 .config/pulse
-.config/VeraCrypt/Configuration.xml
+.config/wireshark
+.config/xm1
+nvimlog
