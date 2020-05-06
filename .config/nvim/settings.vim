@@ -30,6 +30,11 @@ let g:VIMCONF = g:DOTFILES . '/.init.vim'             "dotfiles/.config/nvim/.in
 let g:TEMPLATES = g:VIMFILES . '/templates'           "dotfiles/.config/nvim/templates
 
 "------------------------------------------------------------------------------
+" => Don't show session save message
+"------------------------------------------------------------------------------
+let g:session_autosave = 'no'
+
+"------------------------------------------------------------------------------
 " => Utilities
 "------------------------------------------------------------------------------
 " For templates: copy `file` content to the beginning of current file with
