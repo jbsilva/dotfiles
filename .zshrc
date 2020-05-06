@@ -56,9 +56,6 @@ case ":$PATH:" in
   *) export PATH=/usr/local/sbin:$PATH ;;
 esac
 
-# Anaconda
-#export PATH=/usr/local/anaconda3/bin:"$PATH"
-
 if [[ -z "$XDG_CONFIG_HOME" ]]; then
     export XDG_CONFIG_HOME=$HOME/.config
 fi
@@ -84,11 +81,6 @@ export LC_ALL='en_US.UTF-8'
 if [ -e /usr/local/bin/byobu ]; then
     export BYOBU_PREFIX="$(brew --prefix)"
 fi
-
-# Powerlevel9k ZSH theme
-# Add zstyle ':prezto:module:prompt' theme 'powerlevel9k' in zplug.zsh
-export POWERLEVEL9K_MODE='nerdfont-complete'
-
 
 ###############################################################################
 # Functions
@@ -225,8 +217,8 @@ else
 fi
 
 
-alias pip2_upgrade="pip2 install --upgrade pip && pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --upgrade"
-alias pip3_upgrade="pip3 install --upgrade pip && pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install --upgrade"
+# alias pip2_upgrade="pip2 install --upgrade pip && pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --upgrade"
+#alias pip3_upgrade="pip3 install --upgrade pip && pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install --upgrade"
 alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 alias d755="find . -type d -exec chmod 755 {} \;"
@@ -269,3 +261,22 @@ alias fucking='sudo'
 alias emacs='echo "segmentation fault"'
 alias more='less'
 alias CAT='echo "=^.^=\n"'
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/julio/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/julio/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/julio/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/julio/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
