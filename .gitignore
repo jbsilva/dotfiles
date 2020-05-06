@@ -12,3 +12,9 @@
 .config/xm1
 exercism.json
 nvimlog
+.config/Code - OSS
+.config/bleachbit
+.config/dconf/user
+.config/ncmpcpp/error.log
+.config/pulse
+.config/VeraCrypt/Configuration.xml
