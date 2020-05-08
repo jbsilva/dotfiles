@@ -13,7 +13,7 @@
 
 #############################      Monitores      #############################
 #/home/julio/Scripts/monitores.sh &
-xrandr --output LVDS1 --primary --auto --output HDMI1 --auto --same-as LVDS1
+#xrandr --output LVDS1 --primary --auto --output HDMI1 --auto --same-as LVDS1
 #############################      Wallpaper      #############################
 #/home/julio/Scripts/wallpaper.sh &
 
@@ -23,6 +23,9 @@ setxkbmap br -option caps:swapescape
 
 #############################     Screen Lock     #############################
 #xautolock -time 15 -locker slock -nowlocker slock -detectsleep -corners 0+00 -cornerdelay 3 &
+
+###################################### QT #####################################
+#export QT_QPA_PLATFORMTHEME="qt5ct"
 
 ########################## Desktop Environments / WMs #########################
 exec awesome
