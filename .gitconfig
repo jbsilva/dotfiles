@@ -93,3 +93,5 @@
     path = ~/.gitconfig.mac
 [includeIf "gitdir/i:/home/"]
     path = ~/.gitconfig.linux
+[credential]
+	helper = store
