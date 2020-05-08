@@ -3,5 +3,24 @@
     "keyboard.dispatch": "keyCode",
     "vim.enableNeovim": true,
     "terminal.external.linuxExec": "kitty",
-    "terminal.integrated.fontFamily": "Hack Nerd Font"
+    "terminal.integrated.fontFamily": "Hack Nerd Font",
+    "telemetry.enableCrashReporter": false,
+    "telemetry.enableTelemetry": false,
+    "gitlens.advanced.telemetry.enabled": false,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "-l 79"
+    ],
+    "python.linting.banditEnabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.prospectorEnabled": true,
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pydocstyleEnabled": true,
+    "python.linting.pylamaEnabled": true,
+    "python.linting.pylintArgs": [
+        "--good-names=i,j,k,ex,Run,_,df"
+    ],
+    "python.linting.pylintUseMinimalCheckers": false,
+    "python.condaPath": "/home/julio/miniconda3/bin/conda"
 }
