@@ -14,9 +14,12 @@
 .config/inkscape
 .config/karabiner/automatic_backups
 .config/ncmpcpp/error.log
+.config/nvim/.netrwhist
+.config/nvim/autoload
 .config/nvim/plugged
 .config/nvim/spell
 .config/pulse
+.config/spotify
 .config/wireshark
 .config/xm1
 nvimlog
