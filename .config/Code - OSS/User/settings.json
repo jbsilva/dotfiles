@@ -12,9 +12,7 @@
         "-l 79"
     ],
     "python.linting.banditEnabled": true,
-    "python.linting.flake8Enabled": true,
     "python.linting.mypyEnabled": true,
-    "python.linting.prospectorEnabled": true,
     "python.linting.pycodestyleEnabled": true,
     "python.linting.pydocstyleEnabled": true,
     "python.linting.pylamaEnabled": true,
@@ -22,5 +20,7 @@
         "--good-names=i,j,k,ex,Run,_,df"
     ],
     "python.linting.pylintUseMinimalCheckers": false,
-    "python.condaPath": "/home/julio/miniconda3/bin/conda"
+    "python.condaPath": "/home/julio/miniconda3/bin/conda",
+    "terminal.integrated.inheritEnv": false,
+    "git.autofetch": true
 }
