@@ -11,6 +11,14 @@
 ########################## Roda systemd como usuário ##########################
 #systemd --user &
 
+################################ Gnome Keyring ################################
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
+
+############################### source xprofile ###############################
+[ -f /etc/xprofile ] && . /etc/xprofile
+[ -f ~/.xprofile ] && . ~/.xprofile
+
 #############################      Monitores      #############################
 #/home/julio/Scripts/monitores.sh &
 #xrandr --output LVDS1 --primary --auto --output HDMI1 --auto --same-as LVDS1
@@ -23,9 +31,6 @@ setxkbmap br -option caps:swapescape
 
 #############################     Screen Lock     #############################
 #xautolock -time 15 -locker slock -nowlocker slock -detectsleep -corners 0+00 -cornerdelay 3 &
-
-###################################### QT #####################################
-#export QT_QPA_PLATFORMTHEME="qt5ct"
 
 ########################## Desktop Environments / WMs #########################
 exec awesome
