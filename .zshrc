@@ -15,10 +15,9 @@
 #           http://sam.zoy.org/wtfpl/COPYING for more details.
 #
 # Created:      12 Aug 2011
-# Last Change:  03 Mar 2019
+# Last Change:  10 May 2020
 #
 # Download: https://github.com/jbsilva/dotfiles
-# compaudit | xargs chmod g-w
 ###############################################################################
 
 ###############################################################################
@@ -50,6 +49,7 @@ fi
 
 ###############################################################################
 # Vars
+# Some will be in ~/.xprofile
 ###############################################################################
 case ":$PATH:" in
   *:/usr/local/sbin:*) ;;
@@ -73,12 +73,26 @@ export USER_EMAIL='julio@juliobs.com'
 export USER_GITHUB='jbsilva'
 export USER_COPYRIGHT="Copyright (c) $(date +%Y), $USER_FULLNAME"
 
+# Colors
+export DEFAULT_FOREGROUND=006 DEFAULT_BACKGROUND=235
+export DEFAULT_COLOR=$DEFAULT_FOREGROUND
+
 # Language
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
 
+# Terminal Emulator
+export term_emulator=$(ps -h -o comm -p $PPID)
+
+if [[ $term_emulator == *"kitty"* ]]; then
+	export TERM="xterm-kitty"
+else
+	export TERM="xterm-256color"
 fi
+
+# Airflow
+export VAULT_ADDR='http://127.0.0.1:8200'
 
 ###############################################################################
 # Functions
@@ -162,14 +176,28 @@ if (( $+commands[jenv] )); then eval "$(jenv init -)"; fi
 
 
 ###############################################################################
+# Options
+###############################################################################
+setopt autocd                   # Allow changing directories without `cd`
+setopt pushd_ignore_dups        # Dont push copies of the same dir on stack.
+setopt pushd_minus              # Reference stack entries with "-".
+setopt extended_glob
+
+###############################################################################
 # History
 ###############################################################################
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
 SAVEHIST=10000
-setopt sharehistory
-setopt HIST_IGNORE_ALL_DUPS
-
+setopt append_history           # Dont overwrite history
+setopt extended_history         # Also record time and duration of commands.
+setopt share_history            # Share history between multiple shells
+setopt hist_expire_dups_first   # Clear duplicates when trimming internal hist.
+setopt hist_find_no_dups        # Dont display duplicates during searches.
+setopt hist_ignore_dups         # Ignore consecutive duplicates.
+setopt hist_ignore_all_dups     # Remember only one unique copy of the command.
+setopt hist_reduce_blanks       # Remove superfluous blanks.
+setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
 
 ###############################################################################
 # OS specific stuff
@@ -205,6 +233,20 @@ alias lc='ls -ltcr'         # Sort by and show change time, most recent last
 alias lu='ls -ltur'         # Sort by and show access time, most recent last
 alias lt='ls -ltr'          # Sort by date, most recent last
 alias lr='ls -lR'           # Recursive ls
+
+alias cls="clear"
+
+# Download mp3 from Youtube
+if (( $+commands[youtube-dl] )); then
+    alias ytmp3="youtube-dl --extract-audio --audio-format mp3"
+fi
+
+# Set editor preference to nvim if available.
+if which nvim &>/dev/null; then
+	alias vim='() { $(whence -p nvim) $@ }'
+else
+	alias vim='() { $(whence -p vim) $@ }'
+fi
 
 # Needs lynx
 if (( $+commands[lynx] )); then
@@ -278,3 +320,21 @@ unset __conda_setup
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+
+###############################################################################
+#                                   Neofetch
+###############################################################################
+if [[ $term_emulator == *"kitty"* ]]; then
+	# kitty
+	neofetch --backend 'kitty'
+
+elif [[  $term_emulator == *"tmux"*  ]] || [[ $term_emulator == "login" ]]; then
+	# tmux
+	neofetch --backend 'w3m' --ascii_distro 'arch_small' 
+
+else
+	# xterm and rxvt
+	neofetch --backend 'w3m' --xoffset 20 --yoffset 20 --gap 0
+fi
+
