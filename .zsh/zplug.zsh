@@ -93,11 +93,58 @@ zplug "unixorn/git-extra-commands"
 zplug "sharat87/zsh-vim-mode"
 
 ###############################################################################
-# Plugin-OSX - Add some common OS X related aliases and functions
-###############################################################################
-zplug "mwilliammyers/plugin-osx"
-
-###############################################################################
 # Zsh-titles - Automatic terminal and tmux titles based on current location and task
 ###############################################################################
 #zplug "jreese/zsh-titles"
+
+###############################################################################
+# OS specific: Archlinux and MacOS
+###############################################################################
+if [[ $OSTYPE = (linux)* ]]; then
+	zplug "plugins/archlinux", from:oh-my-zsh, if:"which pacman"
+	# zplug "plugins/dnf",       from:oh-my-zsh, if:"which dnf"
+fi
+
+if [[ $OSTYPE = (darwin)* ]]; then
+	zplug "plugins/osx",      from:oh-my-zsh
+	zplug "plugins/brew",     from:oh-my-zsh, if:"which brew"
+	zplug "plugins/macports", from:oh-my-zsh, if:"which port"
+    zplug "mwilliammyers/plugin-osx"
+fi
+
+
+###############################################################################
+# Directory colors
+###############################################################################
+zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
+
+if zplug check "seebi/dircolors-solarized"; then
+  if which gdircolors &> /dev/null; then
+	alias dircolors='() { $(whence -p gdircolors) }'
+  fi
+  if which dircolors &> /dev/null; then
+    scheme="dircolors.ansi-universal"
+    eval $(dircolors ~/.zplug/repos/seebi/dircolors-solarized/$scheme)
+  fi
+fi
+
+###############################################################################
+# Enhanced dir list with git features
+###############################################################################
+zplug "supercrabtree/k"
+
+###############################################################################
+# Auto-close and delete matching delimiters
+###############################################################################
+zplug "hlissner/zsh-autopair", defer:2
+
+###############################################################################
+# Docker completion
+###############################################################################
+zplug "felixr/docker-zsh-completion"
+
+###############################################################################
+# Jump back to parent directory
+###############################################################################
+zplug "tarrasch/zsh-bd"
+
