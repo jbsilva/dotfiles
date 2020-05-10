@@ -23,3 +23,8 @@
 .config/wireshark
 .config/xm1
 nvimlog
+.config/QtProject.conf
+.config/dolphinrc
+.config/trashrc
+.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
+.config/qt5ct/qt5ct.conf
