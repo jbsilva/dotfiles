@@ -9,3 +9,6 @@ alias listh='du -shc * | sort -h'
 
 # Arch Linux
 alias pac='sudo pacman -S'
+
+# Update all
+alias upd="sudo pacman -Syu --noconfirm && yay -Syu --removemake --noconfirm"
