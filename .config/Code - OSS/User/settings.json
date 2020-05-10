@@ -22,5 +22,6 @@
     "python.linting.pylintUseMinimalCheckers": false,
     "python.condaPath": "/home/julio/miniconda3/bin/conda",
     "terminal.integrated.inheritEnv": false,
-    "git.autofetch": true
+    "git.autofetch": true,
+    "diffEditor.renderSideBySide": true
 }
