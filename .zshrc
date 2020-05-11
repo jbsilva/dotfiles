@@ -317,10 +317,11 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-
+# Powerlevel10k
+case $(tty) in 
+  (/dev/tty[1-9]) [[ -f ~/.p10k_console.zsh ]] && source ~/.p10k_console.zsh;;
+              (*) [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh;; 
+          esac
 
 ###############################################################################
 #                                   Neofetch
