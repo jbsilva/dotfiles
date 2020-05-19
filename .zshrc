@@ -339,3 +339,8 @@ else
 	neofetch --backend 'w3m' --xoffset 20 --yoffset 20 --gap 0
 fi
 
+###############################################################################
+#                               Hashicorp Vault
+###############################################################################
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/vault vault
