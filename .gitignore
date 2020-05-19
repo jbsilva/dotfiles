@@ -1,16 +1,19 @@
 *.pyc
+.config/bleachbit
+.config/byobu
+.config/chromium
 .config/Code - OSS/*
 !.config/Code - OSS/User/
 .config/Code - OSS/User/*
 !.config/Code - OSS/User/settings.json
-.config/GitExtensions
-.config/VeraCrypt
-.config/bleachbit
-.config/byobu
-.config/chromium
 .config/configstore
+.config/copyq
 .config/dconf/user
+.config/dolphinrc
+.config/GIMP
 .config/git/
+.config/GitExtensions
+.config/GitKraken
 .config/inkscape
 .config/karabiner/automatic_backups
 .config/ncmpcpp/error.log
@@ -19,12 +22,12 @@
 .config/nvim/plugged
 .config/nvim/spell
 .config/pulse
+.config/qt5ct/qt5ct.conf
+.config/QtProject.conf
 .config/spotify
+.config/trashrc
+.config/VeraCrypt
 .config/wireshark
+.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
 .config/xm1
 nvimlog
-.config/QtProject.conf
-.config/dolphinrc
-.config/trashrc
-.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
-.config/qt5ct/qt5ct.conf
