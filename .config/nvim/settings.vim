@@ -28,6 +28,19 @@ let g:VIMFILES = escape(expand('<sfile>:p:h'), ' ')   "dotfiles/.config/nvim
 let g:VIMSETTINGS = escape(expand('<sfile>:p'), ' ')  "dotfiles/.config/nvim/settings.vim
 let g:VIMCONF = g:DOTFILES . '/.init.vim'             "dotfiles/.config/nvim/.init.vim
 let g:TEMPLATES = g:VIMFILES . '/templates'           "dotfiles/.config/nvim/templates
+let os = substitute(system('uname'), "\n", "", "")    "Operating System
+
+" Python path
+if has('mac') || has('macunix') || has('gui_macvim')
+    let g:python_host_prog = '/usr/bin/python2'
+    let g:python3_host_prog = '/usr/bin/python3'
+elseif has("unix")
+    let g:python_host_prog = '/usr/bin/python2'
+    let g:python3_host_prog = '/usr/bin/python3'
+"elseif has('win32') || has('win64')
+"    let g:python_host_prog = '/usr/bin/python2'
+"    let g:python3_host_prog = '/usr/bin/python3'
+endif
 
 "------------------------------------------------------------------------------
 " => Don't show session save message
