@@ -416,7 +416,9 @@ nmap ,b :FufBuffer<CR>
 nmap ,l :FufLine<CR>
 
 "------------------------------------------------------------------------------
-" => Taglist
+" => Taglist - Source code browser. Provides an overview of the structure of
+" source code files and allows you to efficiently browse through source code
+" files in different programming languages.
 "    Requires 'exuberant ctags'
 "------------------------------------------------------------------------------
 Plug 'vim-scripts/taglist.vim'
