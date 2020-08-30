@@ -35,6 +35,10 @@ export SSH_AUTH_SOCK
 #/home/julio/Scripts/keyboard.sh
 setxkbmap br -option caps:swapescape
 
+#############################      Touchpad       #############################
+# Desativa touchpad por 0,5 segundos depois de usar o teclado
+syndaemon -i 0.5 -K -t -R -d
+
 #############################     Screen Lock     #############################
 #xautolock -time 15 -locker slock -nowlocker slock -detectsleep -corners 0+00 -cornerdelay 3 &
 
