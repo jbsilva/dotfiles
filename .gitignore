@@ -6,16 +6,22 @@
 !.config/Code - OSS/User/
 .config/Code - OSS/User/*
 !.config/Code - OSS/User/settings.json
+.config/.mono
+.config/GIMP
+.config/GitExtensions
+.config/GitKraken
+.config/JetBrains
+.config/Postman
+.config/QtProject.conf
+.config/VeraCrypt
 .config/configstore
 .config/copyq
 .config/dconf/user
 .config/dolphinrc
-.config/GIMP
 .config/git/
-.config/GitExtensions
-.config/GitKraken
 .config/inkscape
 .config/karabiner/automatic_backups
+.config/libreoffice
 .config/ncmpcpp/error.log
 .config/nvim/.netrwhist
 .config/nvim/autoload
@@ -23,11 +29,10 @@
 .config/nvim/spell
 .config/pulse
 .config/qt5ct/qt5ct.conf
-.config/QtProject.conf
 .config/spotify
 .config/trashrc
-.config/VeraCrypt
 .config/wireshark
+.config/xfce4
 .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
 .config/xm1
 nvimlog
