@@ -342,5 +342,5 @@ fi
 ###############################################################################
 #                               Hashicorp Vault
 ###############################################################################
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/bin/vault vault
+#autoload -U +X bashcompinit && bashcompinit
+#complete -o nospace -C /usr/bin/vault vault
