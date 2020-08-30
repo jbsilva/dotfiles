@@ -36,6 +36,7 @@ setxkbmap br -option caps:swapescape
 #xautolock -time 15 -locker slock -nowlocker slock -detectsleep -corners 0+00 -cornerdelay 3 &
 
 ########################## Desktop Environments / WMs #########################
+#exec startxfce4
 exec awesome
 
 ####### Corrige problema da tela cinza dos programas em Java no Awesome #######
