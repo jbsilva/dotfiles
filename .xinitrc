@@ -25,6 +25,9 @@ export SSH_AUTH_SOCK
 #############################      Monitores      #############################
 #/home/julio/Scripts/monitores.sh &
 #xrandr --output LVDS1 --primary --auto --output HDMI1 --auto --same-as LVDS1
+#xrandr --output eDP1 --mode 1366x768 --output HDMI1 --mode 1920x1080 --right-of eDP1
+#xrandr --output eDP1 --off --output HDMI1 --mode 1920x1080 --primary
+
 #############################      Wallpaper      #############################
 #/home/julio/Scripts/wallpaper.sh &
 
