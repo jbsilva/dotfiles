@@ -23,5 +23,8 @@
     "python.condaPath": "/home/julio/miniconda3/bin/conda",
     "terminal.integrated.inheritEnv": false,
     "git.autofetch": true,
-    "diffEditor.renderSideBySide": true
+    "diffEditor.renderSideBySide": true,
+    "editor.renderControlCharacters": true,
+    "editor.renderWhitespace": "all",
+    "window.zoomLevel": 0
 }
