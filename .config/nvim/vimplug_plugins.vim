@@ -1,4 +1,4 @@
-"------------------------------------------------------------------------------
+
 "   => Vim-PLug - https://github.com/junegunn/vim-plug/
 "
 "   Gerencia plugins do Vim.
@@ -220,6 +220,7 @@ Plug 'vim-scripts/L9'
 " => LaTeX
 "------------------------------------------------------------------------------
 Plug 'lervag/vimtex'
+let g:tex_flavor = 'latex'
 
 "------------------------------------------------------------------------------
 " => Command-T - Fast file navigation for VIM
@@ -246,6 +247,7 @@ let g:javascript_plugin_jsdoc = 1
 "------------------------------------------------------------------------------
 " => Deoplete - Asynchronous completion for neovim
 "    Replaces YouCompleteMe
+"    Run :UpdateRemotePlugins first
 "------------------------------------------------------------------------------
 Plug 'Shougo/deoplete.nvim'
 if has('nvim')
