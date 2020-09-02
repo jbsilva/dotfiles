@@ -48,7 +48,7 @@ fi
 
 
 ###############################################################################
-# Vars
+#                                     Vars
 # Some will be in ~/.xprofile
 ###############################################################################
 case ":$PATH:" in
@@ -91,8 +91,6 @@ else
 	export TERM="xterm-256color"
 fi
 
-# Airflow
-export VAULT_ADDR='http://127.0.0.1:8200'
 
 ###############################################################################
 # Functions
@@ -117,10 +115,10 @@ function iBad()        { echo -e "    \033[1;31m✖\033[0m $@"; }
 
 
 ###############################################################################
-# Zplug - Plugin manager for zsh (https://github.com/zplug/zplug)
+#                                    Zplug
+# Plugin manager for zsh (https://github.com/zplug/zplug)
 # Do not install with homebrew
 ###############################################################################
-
 # Install zplug if necessary and start it
 export ZPLUG_HOME="${ZDOTDIR:-$HOME}/.zplug"
 test -e $ZPLUG_HOME || git clone https://github.com/zplug/zplug $ZPLUG_HOME
@@ -138,8 +136,9 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load
 
+
 ###############################################################################
-# Keybindings
+#                                 Keybindings
 # bindkey -l will give you a list of existing keymap names.
 # bindkey -M <keymap> will list all the bindings in a given keymap.
 # zle -al lists all registered zle commands
@@ -155,7 +154,7 @@ bindkey -M viins '^s' emoji::cli
 
 
 ###############################################################################
-# Pyenv and pyenv-virtualenv
+#                          Pyenv and pyenv-virtualenv
 # pyenv install 2.7 && pyenv install 3.7 && pyenv rehash && pyenv global 2.7 3.7
 ###############################################################################
 #if (( $+commands[pyenv] )); then eval "$(pyenv init -)"; fi
@@ -163,13 +162,38 @@ bindkey -M viins '^s' emoji::cli
 
 
 ###############################################################################
-# rbenv
+#                                    Conda
+###############################################################################
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/julio/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/julio/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/julio/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/julio/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+###############################################################################
+#                                    rbenv
 ###############################################################################
 if (( $+commands[rbenv] )); then eval "$(rbenv init -)"; fi
 
 
 ###############################################################################
-# jenv
+#                             Ruby Version Manager
+###############################################################################
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+
+###############################################################################
+#                                     jenv
 ###############################################################################
 #export PATH="$HOME/.jenv/bin:$PATH"
 if (( $+commands[jenv] )); then eval "$(jenv init -)"; fi
@@ -182,6 +206,7 @@ setopt autocd                   # Allow changing directories without `cd`
 setopt pushd_ignore_dups        # Dont push copies of the same dir on stack.
 setopt pushd_minus              # Reference stack entries with "-".
 setopt extended_glob
+
 
 ###############################################################################
 # History
@@ -198,6 +223,7 @@ setopt hist_ignore_dups         # Ignore consecutive duplicates.
 setopt hist_ignore_all_dups     # Remember only one unique copy of the command.
 setopt hist_reduce_blanks       # Remove superfluous blanks.
 setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
+
 
 ###############################################################################
 # OS specific stuff
@@ -248,15 +274,6 @@ else
 	alias vim='() { $(whence -p vim) $@ }'
 fi
 
-# Needs lynx
-if (( $+commands[lynx] )); then
-    WWWDUMP='lynx -dump -nolist -width=300 -accept_all_cookies -display_charset=UTF-8'
-    alias meuip="curl -s -m 8 eth0.me || curl -s -m 5 ifconfig.me || curl -s -m 5 icanhazip.com || $WWWDUMP http://www.getip.com | sed -n 's/^Current IP: //p'"
-else
-    alias meuip="curl -s -m 8 eth0.me || curl -s -m 5 ifconfig.me || curl -s -m 5 icanhazip.com"
-fi
-
-
 # alias pip2_upgrade="pip2 install --upgrade pip && pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --upgrade"
 #alias pip3_upgrade="pip3 install --upgrade pip && pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install --upgrade"
 alias difff='/usr/bin/diff'
@@ -297,34 +314,24 @@ alias qmvor='qmv -R --format=destination-only'
 
 
 ###############################################################################
-# FUN
+#                                     FUN
 ###############################################################################
 alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
 alias fucking='sudo'
+alias please='sudo'
 alias emacs='echo "segmentation fault"'
 alias more='less'
 alias CAT='echo "=^.^=\n"'
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/julio/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/julio/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/julio/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/julio/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
-# Powerlevel10k
+###############################################################################
+#                                Powerlevel10k
+###############################################################################
 case $(tty) in 
   (/dev/tty[1-9]) [[ -f ~/.p10k_console.zsh ]] && source ~/.p10k_console.zsh;;
               (*) [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh;; 
           esac
+
 
 ###############################################################################
 #                                   Neofetch
@@ -332,18 +339,18 @@ case $(tty) in
 if [[ $term_emulator == *"kitty"* ]]; then
 	# kitty
 	neofetch --backend 'kitty'
-
 elif [[  $term_emulator == *"tmux"*  ]] || [[ $term_emulator == "login" ]]; then
 	# tmux
 	neofetch --backend 'w3m' --ascii_distro 'arch_small' 
-
 else
 	# xterm and rxvt
 	neofetch --backend 'w3m' --xoffset 20 --yoffset 20 --gap 0
 fi
+
 
 ###############################################################################
 #                               Hashicorp Vault
 ###############################################################################
 #autoload -U +X bashcompinit && bashcompinit
 #complete -o nospace -C /usr/bin/vault vault
+
