@@ -95,3 +95,5 @@
     path = ~/.gitconfig.linux
 [credential]
 	helper = store
+[pull]
+	rebase = true
