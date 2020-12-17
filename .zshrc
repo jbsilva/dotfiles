@@ -96,6 +96,22 @@ fi
 # Functions
 ###############################################################################
 
+# Add to beginning of PATH
+function addToPathStart {
+  case ":$PATH:" in
+    *":$1:"*) :;; # already there
+    *) PATH="$1:$PATH";;
+  esac
+}
+
+# Add to end of PATH
+function addToPathEnd {
+  case ":$PATH:" in
+    *":$1:"*) :;; # already there
+    *) PATH="$PATH:$1";;
+  esac
+}
+
 # Colorful messages
 function iHeader()     { echo -e "\033[1m$@\033[0m";  }
 function iStep()       { echo -e "  \033[1;33m➜\033[0m $@"; }
@@ -189,8 +205,9 @@ if (( $+commands[rbenv] )); then eval "$(rbenv init -)"; fi
 #                             Ruby Version Manager
 ###############################################################################
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+addToPathEnd $HOME/.rvm/bin
 
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 ###############################################################################
 #                                     jenv
