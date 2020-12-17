@@ -85,6 +85,7 @@
 
     # What commit a file was added
     whatadded = log --follow --diff-filter=A --find-renames=40%
+	permission-reset = !git diff -p -R --no-ext-diff --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
 
 # Include platform specific configuration
 [includeIf "gitdir/i:c:/"]
