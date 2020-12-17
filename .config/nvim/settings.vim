@@ -2,11 +2,11 @@
 "                      ( O O )
 "               ====oOO==(_)==OOo=====
 "
-" File:         ~/.vim/settings.vim
-" Description:  Vim configuration
+" File:         ~/.config/nvim/settings.vim
+" Description:  Neovim configuration
 " Author:       Julio Batista Silva
 " Created:      2011
-" Last Change:  Sun 01 Sep 2019 23:00
+" Last Change:  Mon 19 Oct 2020 19:30
 "===================================================================
 
 "------------------------------------------------------------------------------
@@ -392,6 +392,13 @@ nnoremap <silent> <leader>sh :terminal<CR>
 " => Remove trailing whitespaces
 "------------------------------------------------------------------------------
 command! FixWhitespace :%s/\s\+$//e
+
+"------------------------------------------------------------------------------
+" => Execute selection
+"------------------------------------------------------------------------------
+vnoremap <Leader>es :<c-u>exec join(getline("'<","'>"),"\n")<CR>
+
+
 
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
