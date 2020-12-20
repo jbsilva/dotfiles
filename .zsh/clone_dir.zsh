@@ -45,8 +45,9 @@ EOF
     args+=(--delete)            # Delete files not SRC
     #args+=(--whole-file)        # Don't use delta-xfer algorithm
     args+=(--compress-level=0)  # No compression
-    args+=(--no-inc-recursive)  # Disable incremental recursion for better estimate (uses more memory)
-    args+=(--info=progress2)    # Show total progress
+    #args+=(--no-inc-recursive)  # Disable incremental recursion for better estimate (uses more memory)
+    args+=(--info=flist2,name,progress) # Show total progress
+    #args+=(--info=progress2)    # Show total progress
     args+=(--human-readable)    # Output numbers in a more human-readable format
     #args+=(--ignore-existing)   # Ignore existing
     #args+=(--size-only)         # Don't compare change date
