@@ -33,6 +33,10 @@ zstyle ':prezto:load' pmodule \
   'history-substring-search' \
   'prompt'
 
+# Disable hosts completion
+zstyle ':prezto:module:completion:*:hosts' etc-host-ignores \
+      '0.0.0.0' '127.0.0.1'
+
 # Set the key mapping style to 'emacs' or 'vi'.
 zstyle ':prezto:module:editor' key-bindings 'vi'
 
