@@ -105,7 +105,9 @@ zplug "sharat87/zsh-vim-mode"
 # OS specific: Archlinux and MacOS
 ###############################################################################
 if [[ $OSTYPE = (linux)* ]]; then
-	zplug "plugins/archlinux", from:oh-my-zsh, if:"which pacman"
+    if (( $+commands[pacman] )); then
+        zplug "plugins/archlinux", from:oh-my-zsh, if:"which pacman"
+    fi
 	# zplug "plugins/dnf",       from:oh-my-zsh, if:"which dnf"
 fi
 
