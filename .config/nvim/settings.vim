@@ -16,6 +16,7 @@
 "------------------------------------------------------------------------------
 "set modelines=0
 
+
 "------------------------------------------------------------------------------
 " => Constants
 " Different ways to define a variable. Eg.:
@@ -42,10 +43,12 @@ elseif has("unix")
 "    let g:python3_host_prog = '/usr/bin/python3'
 endif
 
+
 "------------------------------------------------------------------------------
 " => Don't show session save message
 "------------------------------------------------------------------------------
 let g:session_autosave = 'no'
+
 
 "------------------------------------------------------------------------------
 " => Utilities
@@ -65,12 +68,14 @@ fun! s:Insere(file)
     endif
 endfun
 
+
 "------------------------------------------------------------------------------
 " => Encoding
 "------------------------------------------------------------------------------
 set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
+
 
 "------------------------------------------------------------------------------
 " => Colorscheme
@@ -87,6 +92,7 @@ endif
 "    http://about.validator.nu/html5check.py
 "------------------------------------------------------------------------------
 map ,h5 :!html5check.py %<CR>
+
 
 "------------------------------------------------------------------------------
 " => General stuff
@@ -106,7 +112,7 @@ endif
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
@@ -165,6 +171,7 @@ if !exists(":DiffOrig")
     command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
                 \ | wincmd p | diffthis
 endif
+
 
 "------------------------------------------------------------------------------
 " => Standard stuff
@@ -247,6 +254,7 @@ noremap <Left> 5h
 noremap <Down> 5j
 noremap <Up> 5k
 noremap <Right> 5l
+
 
 "------------------------------------------------------------------------------
 " => Avoids accidental use of <F1>
@@ -331,6 +339,7 @@ au FileType c,cpp set formatoptions+=ro
 "au FileType c,cpp set foldlevel=4
 let g:C_Styles = { '*.c,*.h' : 'default', '*.cc,*.cpp,*.hh,*.hpp' : 'CPP' }
 
+
 "------------------------------------------------------------------------------
 " => Python
 "------------------------------------------------------------------------------
@@ -347,6 +356,7 @@ augroup vimrc-python
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
+
 "------------------------------------------------------------------------------
 " => Ruby
 "------------------------------------------------------------------------------
@@ -355,6 +365,7 @@ au FileType ruby,eruby set omnifunc=rubycomplete#Complete
 au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 au FileType ruby,eruby let g:rubycomplete_rails = 1
 au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+
 
 "------------------------------------------------------------------------------
 " => HTML
@@ -366,10 +377,12 @@ au FileType html,xhtml,php,eruby imap iii <img src="" /><left><left><left><left>
 au FileType html,xhtml,php,eruby imap ddd <div id=""></div><left><left><left><left><left><left><left><left>
 autocmd Filetype html setlocal ts=2 sw=2 expandtab " for html files, 2 spaces
 
+
 "------------------------------------------------------------------------------
 " => Javascript
 "------------------------------------------------------------------------------
 let g:javascript_enable_domhtmlcss = 1
+
 
 "------------------------------------------------------------------------------
 " => Read MS Word documents
@@ -385,8 +398,11 @@ if executable('antiword')
 endif
 
 
-" terminal emulation
+"------------------------------------------------------------------------------
+" => Terminal emulation
+"------------------------------------------------------------------------------
 nnoremap <silent> <leader>sh :terminal<CR>
+
 
 "------------------------------------------------------------------------------
 " => Remove trailing whitespaces
@@ -452,4 +468,5 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 "" Open current line on GitHub
-nnoremap <Leader>o :.Gbrowse<CR>
+"nnoremap <Leader>o :.Gbrowse<CR>
+
