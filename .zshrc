@@ -48,13 +48,32 @@ fi
 
 
 ###############################################################################
+# Path Functions
+###############################################################################
+
+# Add to beginning of PATH
+function addToPathStart {
+  case ":$PATH:" in
+    *":$1:"*) :;; # already there
+    *) PATH="$1:$PATH";;
+  esac
+}
+
+# Add to end of PATH
+function addToPathEnd {
+  case ":$PATH:" in
+    *":$1:"*) :;; # already there
+    *) PATH="$PATH:$1";;
+  esac
+}
+
+###############################################################################
 #                                     Vars
 # Some will be in ~/.xprofile
 ###############################################################################
-case ":$PATH:" in
-  *:/usr/local/sbin:*) ;;
-  *) export PATH=/usr/local/sbin:$PATH ;;
-esac
+
+addToPathStart /usr/local/sbin
+addToPathStart $HOME/bin
 
 if [[ -z "$XDG_CONFIG_HOME" ]]; then
     export XDG_CONFIG_HOME=$HOME/.config
@@ -91,26 +110,9 @@ else
 	export TERM="xterm-256color"
 fi
 
-
 ###############################################################################
-# Functions
+# More Functions
 ###############################################################################
-
-# Add to beginning of PATH
-function addToPathStart {
-  case ":$PATH:" in
-    *":$1:"*) :;; # already there
-    *) PATH="$1:$PATH";;
-  esac
-}
-
-# Add to end of PATH
-function addToPathEnd {
-  case ":$PATH:" in
-    *":$1:"*) :;; # already there
-    *) PATH="$PATH:$1";;
-  esac
-}
 
 # Colorful messages
 function iHeader()     { echo -e "\033[1m$@\033[0m";  }
