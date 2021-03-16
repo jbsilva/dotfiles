@@ -278,6 +278,7 @@ alias lc='ls -ltcr'         # Sort by and show change time, most recent last
 alias lu='ls -ltur'         # Sort by and show access time, most recent last
 alias lt='ls -ltr'          # Sort by date, most recent last
 alias lr='ls -lR'           # Recursive ls
+alias lsr='find . -mindepth 2 -maxdepth 2 -type d -exec ls -ld "{}" \;' # ls dirs with depth 2
 
 alias cls="clear"
 
@@ -299,6 +300,7 @@ alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 alias d755="find . -type d -exec chmod 755 {} \;"
 alias f644="find . -type f -exec chmod 644 {} \;"
+alias f640="find . -type f -exec chmod 640 {} \;"
 alias now='date +"%T"'
 alias nowdate='date +"%d-%m-%Y"'
 alias sha1='openssl sha1'
