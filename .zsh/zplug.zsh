@@ -147,7 +147,9 @@ zplug "hlissner/zsh-autopair", defer:2
 ###############################################################################
 # Docker completion
 ###############################################################################
-zplug "felixr/docker-zsh-completion"
+zplug "plugins/docker",         from:oh-my-zsh, if:'[[ $commands[docker] ]]'
+zplug "plugins/docker-compose", from:oh-my-zsh, if:'[[ $commands[docker-compose] ]]'
+zplug "webyneter/docker-aliases", use:docker-aliases.plugin.zsh
 
 ###############################################################################
 # Jump back to parent directory
