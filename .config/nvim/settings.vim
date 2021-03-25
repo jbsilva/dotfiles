@@ -74,7 +74,7 @@ set fileencodings=ucs-bom,utf-8,default,latin1
 if has("gui_running")
     colorscheme molokai
 else
-    colorscheme zenburn
+    colorscheme gruvbox
 endif
 
 
