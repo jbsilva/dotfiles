@@ -27,7 +27,7 @@
 let g:DOTFILES = escape(expand('<sfile>:p:h:h'), ' ') "dotfiles
 let g:VIMFILES = escape(expand('<sfile>:p:h'), ' ')   "dotfiles/.config/nvim
 let g:VIMSETTINGS = escape(expand('<sfile>:p'), ' ')  "dotfiles/.config/nvim/settings.vim
-let g:VIMCONF = g:DOTFILES . '/.init.vim'             "dotfiles/.config/nvim/.init.vim
+let g:VIMCONF = g:DOTFILES . '/init.vim'              "dotfiles/.config/nvim/init.vim
 let g:TEMPLATES = g:VIMFILES . '/templates'           "dotfiles/.config/nvim/templates
 let os = substitute(system('uname'), "\n", "", "")    "Operating System
 
