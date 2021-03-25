@@ -334,6 +334,13 @@ alias qmvv='qmv --format=dc --options=spaces,width=40,autowidth'
 alias qmvo='qmv --format=destination-only'
 alias qmvor='qmv -R --format=destination-only'
 
+# Docker
+alias dnorestart='docker update --restart=no $* $(docker ps -q)'
+
+# Kitty terminal
+alias icat='kitty +kitten icat'
+alias kssh='kitty +kitten ssh'
+
 
 ###############################################################################
 #                                     FUN
@@ -368,11 +375,4 @@ else
 	# xterm and rxvt
 	neofetch --backend 'w3m' --xoffset 20 --yoffset 20 --gap 0
 fi
-
-
-###############################################################################
-#                               Hashicorp Vault
-###############################################################################
-#autoload -U +X bashcompinit && bashcompinit
-#complete -o nospace -C /usr/bin/vault vault
 
