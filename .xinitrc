@@ -15,8 +15,8 @@
 copyq&
 
 ################################ Gnome Keyring ################################
-eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
-export SSH_AUTH_SOCK
+#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+#export SSH_AUTH_SOCK
 
 ############################### source xprofile ###############################
 [ -f /etc/xprofile ] && . /etc/xprofile
@@ -43,8 +43,9 @@ syndaemon -i 0.5 -K -t -R -d
 #xautolock -time 15 -locker slock -nowlocker slock -detectsleep -corners 0+00 -cornerdelay 3 &
 
 ########################## Desktop Environments / WMs #########################
+exec startlxde
 #exec startxfce4
-exec awesome
+#exec awesome
 
 ####### Corrige problema da tela cinza dos programas em Java no Awesome #######
 #wmname LG3D
