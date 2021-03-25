@@ -26,5 +26,6 @@
     "diffEditor.renderSideBySide": true,
     "editor.renderControlCharacters": true,
     "editor.renderWhitespace": "all",
-    "window.zoomLevel": 0
+    "window.zoomLevel": 0,
+    "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
 }
