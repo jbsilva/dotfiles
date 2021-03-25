@@ -10,14 +10,6 @@
 "===================================================================
 
 "------------------------------------------------------------------------------
-" => Desativa modelines por segurança [http://www.guninski.com/vim1.html]
-"   A primeira linha de um documento executa comandos se iniciada por 'vim:'
-"   Isso só é um risco se abrirmos algum documento de alguém mal intencionado
-"------------------------------------------------------------------------------
-"set modelines=0
-
-
-"------------------------------------------------------------------------------
 " => Constants
 " Different ways to define a variable. Eg.:
 "   let user = 'Julio Batista Silva'                    -- String
