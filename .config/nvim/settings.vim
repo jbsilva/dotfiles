@@ -67,6 +67,15 @@ set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,default,latin1
 
+"------------------------------------------------------------------------------
+" => True Color
+"    Working in Tmux
+"------------------------------------------------------------------------------
+if has("termguicolors")
+  let &t_8f = "[38;2;%lu;%lu;%lum"
+  let &t_8b = "[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 
 "------------------------------------------------------------------------------
 " => Colorscheme
