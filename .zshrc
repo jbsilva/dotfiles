@@ -269,6 +269,7 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 
 alias dir='ls -1'           # Show one entry per line
+alias lah='ls -alh'         # Show all human-readable
 alias ld='ls -ld'           # Show info about the directory
 alias lla='ls -lAFh'        # Show hidden all files
 alias ll='ls -lF'           # Show long file information
