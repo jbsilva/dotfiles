@@ -52,3 +52,13 @@ nvimlog
 .config/openbox/
 .config/pcmanfm/
 .config/transmission-remote-gtk/
+.config/gtk-3.0/servers
+.config/Microsoft/
+.config/calibre/
+.config/monitors.xml
+.config/monitors.xml~
+.config/nautilus/
+.config/obs-studio/
+.config/teams/
+.config/totem/
+.config/vlc/
