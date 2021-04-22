@@ -135,7 +135,7 @@ if zplug check "seebi/dircolors-solarized"; then
 fi
 
 ###############################################################################
-# Enhanced dir list with git features
+# Enhanced dir list with git features. Command: `k`
 ###############################################################################
 zplug "supercrabtree/k"
 
@@ -153,6 +153,7 @@ zplug "webyneter/docker-aliases", use:docker-aliases.plugin.zsh
 
 ###############################################################################
 # Jump back to parent directory
+# Quickly go back to a specific parent directory. Command: `bd dir_name`
 ###############################################################################
 zplug "tarrasch/zsh-bd"
 
