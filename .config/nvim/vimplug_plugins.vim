@@ -130,6 +130,10 @@ Plug 'preservim/nerdcommenter'
 
 "------------------------------------------------------------------------------
 " => Nvim-lspconfig - Configs for Neovim's built-in language server client
+"
+"    Install a language server:
+"       https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#pyright
+"
 "    :LspInfo
 "------------------------------------------------------------------------------
 Plug 'neovim/nvim-lspconfig'
@@ -152,6 +156,7 @@ Plug 'simrat39/symbols-outline.nvim'
 
 "------------------------------------------------------------------------------
 " => Tree-sitter - A parser generator tool and an incremental parsing library
+"    :TSInstallInfo
 "------------------------------------------------------------------------------
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
@@ -645,3 +650,25 @@ let g:neoformat_enabled_python = ['black', 'autopep8', 'yapf', 'docformatter']
 
 "------------------------------------------------------------------------------
 call plug#end()
+
+
+"------------------------------------------------------------------------------
+" => Tree-sitter config
+"    This has to stay after `call plug#end()`
+"------------------------------------------------------------------------------
+lua <<EOF
+require 'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained",
+  highlight = {enable = true},
+  indent = {enable = true},
+}
+EOF
+
+"------------------------------------------------------------------------------
+" => Nvim-lspconfig config
+"    This has to stay after `call plug#end()`
+"------------------------------------------------------------------------------
+lua << EOF
+require'lspconfig'.pyright.setup{}
+EOF
+
