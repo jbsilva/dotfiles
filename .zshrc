@@ -340,7 +340,7 @@ alias dnorestart='docker update --restart=no $* $(docker ps -q)'
 
 # Kitty terminal
 alias icat='kitty +kitten icat'
-alias kssh='kitty +kitten ssh'
+alias kssh='kitty +kitten ssh'  # alias ssh='TERM="xterm-256color" ssh'
 
 
 ###############################################################################
