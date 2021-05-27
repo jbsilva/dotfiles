@@ -1,7 +1,7 @@
-
+"------------------------------------------------------------------------------
 "   => Vim-PLug - https://github.com/junegunn/vim-plug/
 "
-"   Gerencia plugins do Vim.
+"   A minimalist Vim plugin manager.
 "
 "   Commands:
 "       :PlugInstall [name ...] [#threads]  - Install plugins
@@ -54,58 +54,58 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 "*****************************************************************************
 
 "------------------------------------------------------------------------------
-" => Devicons - Add filetype glyphs (icons)
-"    Install yanoasis/nerd-fonts first
+" => Devicons - Add icons to plugins
+"    Install a Nerd Font (ryanoasis/nerd-fonts) first
 "------------------------------------------------------------------------------
 Plug 'ryanoasis/vim-devicons'
 
 "------------------------------------------------------------------------------
-" => Easymotion
+" => Easymotion - Simpler way to use some motions in vim
+"    Instead of <number>w, type <Leader><Leader>w and then a highlighted letter
 "------------------------------------------------------------------------------
-Plug 'Lokaltog/vim-easymotion'
+Plug 'easymotion/vim-easymotion'
+
+" Replace the default search
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
+" Avoid repetitive use of the h j k and l keys
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
 "------------------------------------------------------------------------------
-" => Pytest
+" => Telescope - Highly extendable fuzzy finder over lists
 "------------------------------------------------------------------------------
-Plug 'alfredodeza/pytest.vim'
+" dependencies
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+" telescope
+Plug 'nvim-telescope/telescope.nvim'
 
 "------------------------------------------------------------------------------
-" => Python Documentation
-"    <C-k>
+" => Vim-airline - Lean & mean status/tabline for vim that's light as air
+"    Works better when the terminal font is set to Powerline or Hack Nerd Font
 "------------------------------------------------------------------------------
-Plug 'fs111/pydoc.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'powerlineish'
+let g:airline_skip_empty_sections = 1
+let g:airline#extensions#branch#displayed_head_limit = 10
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tagbar#enabled = 1
+let g:airline#extensions#virtualenv#enabled = 1
 
 "------------------------------------------------------------------------------
-" => ACK - betterthangrep.com
-"------------------------------------------------------------------------------
-Plug 'mileszs/ack.vim'
-
-"------------------------------------------------------------------------------
-" => Check Python code on the fly
-"------------------------------------------------------------------------------
-Plug 'mitechie/pyflakes-pathogen'
-
-"------------------------------------------------------------------------------
-" => UltiSnips - The ultimate snippet solution for Vim
-"    Needs python; run `pip install neovim` and check with :echo has("python")
-"------------------------------------------------------------------------------
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-let g:UltiSnipsEditSplit="vertical"
-
-"------------------------------------------------------------------------------
-" => Sparkup - Write HTML in CSS-like syntax
-"------------------------------------------------------------------------------
-Plug 'rstacruz/sparkup'
-
-"------------------------------------------------------------------------------
-" => NERDTree - Explore the filesystem.
+" => NERDTree - File system explorer
 "    :NERDTree
 "------------------------------------------------------------------------------
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
 "nnoremap <leader>d :NERDTreeToggle<CR>
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeIgnore=['.git$[[dir]]', '.DS_STORE$[[file]]', '*.swp$[[file]]', 'tmp[[dir]]', '*.pyc$[[file]]', '\.hg','\.svn','\.bzr', '\.db$', '\.sqlite$', '__pycache__']
@@ -119,38 +119,59 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 nnoremap <silent> <F2> :NERDTreeFind<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 
-
 "------------------------------------------------------------------------------
-" => NERDTree-Tabs - NERDTree and tabs together in Vim, painlessly
-"------------------------------------------------------------------------------
-Plug 'jistr/vim-nerdtree-tabs'
-map <Leader>n <plug>NERDTreeTabsToggle<CR>
-
-" Start Vim with NERDTreeTabs open
-"let g:nerdtree_tabs_open_on_gui_startup = 1
-"let g:nerdtree_tabs_open_on_console_startup = 1
-
-"------------------------------------------------------------------------------
-" => Nerdcommenter - Vim plugin for intensely orgasmic commenting
+" => NERD Commenter - Vim plugin for intensely orgasmic commenting
+"    Has more functions than vim-commentary.
 "    <leader>cc: comment
 "    <leader>cl: aligned comment
 "    <leader>cu: uncomment
 "------------------------------------------------------------------------------
-Plug 'scrooloose/nerdcommenter'
+Plug 'preservim/nerdcommenter'
 
 "------------------------------------------------------------------------------
-" => Gundu - Visualize your Vim undo tree and display diffs
+" => Nvim-lspconfig - Configs for Neovim's built-in language server client
+"    :LspInfo
+"------------------------------------------------------------------------------
+Plug 'neovim/nvim-lspconfig'
+
+"------------------------------------------------------------------------------
+" => Nvim-compe - Autocompletion
+"------------------------------------------------------------------------------
+Plug 'hrsh7th/nvim-compe'
+
+"------------------------------------------------------------------------------
+" => Lspsaga - A light-weight lsp plugin based on neovim built-in LSP
+"------------------------------------------------------------------------------
+Plug 'glepnir/lspsaga.nvim'
+
+"------------------------------------------------------------------------------
+" => Symbols-outline - A tree like view for symbols in Neovim using the LSP
+"    :SymbolsOutline :SymbolsOutlineOpen :SymbolsOutlineClose
+"------------------------------------------------------------------------------
+Plug 'simrat39/symbols-outline.nvim'
+
+"------------------------------------------------------------------------------
+" => Tree-sitter - A parser generator tool and an incremental parsing library
+"------------------------------------------------------------------------------
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
+
+"------------------------------------------------------------------------------
+" => Gundo - Visualize your Vim undo tree and display diffs
+"    Alternative to Undotree
 "    :GundoToggle
 "------------------------------------------------------------------------------
-Plug 'sjl/gundo.vim'
-nnoremap <leader>g :GundoToggle<CR>
+"Plug 'sjl/gundo.vim'
+"let g:gundo_prefer_python3 = 1
+"nnoremap <leader>g :GundoToggle<CR>
 
 "------------------------------------------------------------------------------
-" => Fugitive - Git wrapper
-"    :Gedit :Gsplit :Gstatus :Gbrowse :Gblame :Gdiff, etc
+" => Undotree - Display your undo history in a graph
+"    Alternative to Gundo
+"   :UndotreeToggle
 "------------------------------------------------------------------------------
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
+Plug 'mbbill/undotree'
+nnoremap <leader>u :UndotreeToggle<CR>
 
 "------------------------------------------------------------------------------
 " => Vim-Repeat - Enable repeating supported plugin maps with "."
@@ -175,28 +196,52 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 
 "------------------------------------------------------------------------------
+" => Fugitive - Git wrapper
+"    :Git add, :Git commit, :Git rebase -i, :Git log, :Git diff, :Git difftool
+"    :Gdiffsplit, :Git mergetool, :Gedit, :Gsplit, :GBrowse, etc.
+"------------------------------------------------------------------------------
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb' " required by fugitive to :GBrowse
+
+"------------------------------------------------------------------------------
+" => Gv - A git commit browser
+"    Requires fugitive
+"    :GV    open commit browser 
+"    :GV!   only list commits that affected the current file
+"------------------------------------------------------------------------------
+Plug 'junegunn/gv.vim'
+
+"------------------------------------------------------------------------------
+" => Dispatch - Asynchronous build and test dispatcher
+"    :Make! :Copen :Dispatch
+"------------------------------------------------------------------------------
+"Plug 'tpope/vim-dispatch'
+
+"------------------------------------------------------------------------------
 " => TaskList - List FIXME, TODO and XXX
 "    <leader>tl
 "------------------------------------------------------------------------------
 Plug 'vim-scripts/TaskList.vim'
 
 "------------------------------------------------------------------------------
-" => Zenburn - Colorscheme
-"    :colorscheme zenburn
-"------------------------------------------------------------------------------
-Plug 'jnurmine/Zenburn'
-
-"------------------------------------------------------------------------------
 " => Gruvbox - Colorscheme
+"    The community fork is more up to date
 "    :colorscheme gruvbox
 "------------------------------------------------------------------------------
-Plug 'morhetz/gruvbox'
+"Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 
 "------------------------------------------------------------------------------
 " => Molokai - Colorscheme
 "    :colorscheme molokai
 "------------------------------------------------------------------------------
-Plug 'tomasr/molokai'
+"Plug 'tomasr/molokai'
+
+"------------------------------------------------------------------------------
+" => Zenburn - Colorscheme
+"    :colorscheme zenburn
+"------------------------------------------------------------------------------
+"Plug 'jnurmine/Zenburn'
 
 "------------------------------------------------------------------------------
 " => Indent Object
@@ -207,31 +252,23 @@ Plug 'tomasr/molokai'
 "    <count>aI     (A)n (I)ndentation level and lines above/below.
 "    <count>iI     (I)nner (I)ndentation level (no lines above/below).
 "------------------------------------------------------------------------------
-Plug 'michaeljsmith/vim-indent-object'
-
-"------------------------------------------------------------------------------
-" => PEP8 - Python style guide checker
-"    Install before: `pip install pep8`
-"    http://www.python.org/dev/peps/pep-0008/
-"------------------------------------------------------------------------------
-Plug 'vim-scripts/pep8'
-let g:pep8_map = '<leader>8'
+"Plug 'michaeljsmith/vim-indent-object'
 
 "------------------------------------------------------------------------------
 " => L9
 "------------------------------------------------------------------------------
-Plug 'vim-scripts/L9'
+"Plug 'vim-scripts/L9'
 
 "------------------------------------------------------------------------------
 " => LaTeX
 "------------------------------------------------------------------------------
-Plug 'lervag/vimtex'
-let g:tex_flavor = 'latex'
+"Plug 'lervag/vimtex'
+"let g:tex_flavor = 'latex'
 
 "------------------------------------------------------------------------------
 " => Command-T - Fast file navigation for VIM
 "------------------------------------------------------------------------------
-Plug 'wincent/Command-T'
+"Plug 'wincent/Command-T'
 
 "------------------------------------------------------------------------------
 " => C.vim - C and C++
@@ -242,46 +279,47 @@ Plug 'wincent/Command-T'
 "              s:C_FormatDate = '%d/%b/%Y'
 "              s:C_FormatTime = '%T'
 "------------------------------------------------------------------------------
-Plug 'vim-scripts/c.vim'
+"Plug 'vim-scripts/c.vim'
+"let g:C_Styles = { '*.c,*.h' : 'default', '*.cc,*.cpp,*.hh,*.hpp' : 'CPP' }
 
 "------------------------------------------------------------------------------
 " => Vim-javascript - JavaScript syntax highlighting and improved indentation
 "------------------------------------------------------------------------------
-Plug 'pangloss/vim-javascript'
-let g:javascript_plugin_jsdoc = 1
+"Plug 'pangloss/vim-javascript'
+"let g:javascript_plugin_jsdoc = 1
 
 "------------------------------------------------------------------------------
 " => Deoplete - Asynchronous completion for neovim
 "    Replaces YouCompleteMe
 "    Run :UpdateRemotePlugins first
 "------------------------------------------------------------------------------
-Plug 'Shougo/deoplete.nvim'
-if has('nvim')
-  " Enable deoplete.
-  let g:deoplete#enable_at_startup = 1
+"Plug 'Shougo/deoplete.nvim'
+"if has('nvim')
+"  " Enable deoplete.
+"  let g:deoplete#enable_at_startup = 1
 
-  augroup omnifuncs
-    autocmd!
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-    autocmd FileType javascript setlocal omnifunc=tern#Complete
-  augroup end
+"  augroup omnifuncs
+"    autocmd!
+"    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"    autocmd FileType javascript setlocal omnifunc=tern#Complete
+"  augroup end
 
-  let g:tern_request_timeout = 1
-  let g:tern_show_argument_hints = 'on_hold'
-  let g:tern_show_signature_in_pum = 0
+"  let g:tern_request_timeout = 1
+"  let g:tern_show_argument_hints = 'on_hold'
+"  let g:tern_show_signature_in_pum = 0
 
-  " Automatically close preview window after autocompletion
-  autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
-endif
+"  " Automatically close preview window after autocompletion
+"  autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
+"endif
 
 "------------------------------------------------------------------------------
 " => Vim expand region
 "    Visually select larger regions of text using the same key combination
 "------------------------------------------------------------------------------
-Plug 'terryma/vim-expand-region'
+"Plug 'terryma/vim-expand-region'
 
 "------------------------------------------------------------------------------
 " => ALE - Asynchronous Lint Engine
@@ -289,66 +327,15 @@ Plug 'terryma/vim-expand-region'
 "    Python: pip install pycodestyle pyflakes flake8 vim-vint proselint yamllint
 "    Shell: shellcheck
 "------------------------------------------------------------------------------
-Plug 'w0rp/ale'
-let g:ale_linters = {}
-:call extend(g:ale_linters, {
-    \'python': ['flake8'], })
-
-"------------------------------------------------------------------------------
-" => Vim-airline - Lean & mean status/tabline for vim that's light as air
-"    Works better when the terminal font is set to Powerline or Hack Nerd Font
-"------------------------------------------------------------------------------
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-let g:airline#extensions#branch#displayed_head_limit = 10
-let g:airline_powerline_fonts = 1
-let g:airline_theme = 'powerlineish'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline_skip_empty_sections = 1
-let g:airline#extensions#virtualenv#enabled = 1
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-if !exists('g:airline_powerline_fonts')
-  let g:airline#extensions#tabline#left_sep = ' '
-  let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline_left_sep          = '▶'
-  let g:airline_left_alt_sep      = '»'
-  let g:airline_right_sep         = '◀'
-  let g:airline_right_alt_sep     = '«'
-  let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
-  let g:airline#extensions#readonly#symbol   = '⊘'
-  let g:airline#extensions#linecolumn#prefix = '¶'
-  let g:airline#extensions#paste#symbol      = 'ρ'
-  let g:airline_symbols.linenr    = '␊'
-  let g:airline_symbols.branch    = '⎇'
-  let g:airline_symbols.paste     = 'ρ'
-  let g:airline_symbols.paste     = 'Þ'
-  let g:airline_symbols.paste     = '∥'
-  let g:airline_symbols.whitespace = 'Ξ'
-else
-  let g:airline#extensions#tabline#left_sep = ''
-  let g:airline#extensions#tabline#left_alt_sep = ''
-
-  " powerline symbols
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
-endif
+"Plug 'w0rp/ale'
+"let g:ale_linters = {}
+":call extend(g:ale_linters, {
+"    \'python': ['flake8'], })
 
 "------------------------------------------------------------------------------
 " => MiniBufExpl - List open buffers as tabs
 "------------------------------------------------------------------------------
-Plug 'fholgado/minibufexpl.vim'
+"Plug 'fholgado/minibufexpl.vim'
 
 "------------------------------------------------------------------------------
 " => Tern - Tern-based JavaScript editing support
@@ -360,68 +347,67 @@ Plug 'fholgado/minibufexpl.vim'
 "   TernRefs: Show all references to the variable or property under the cursor.
 "   TernRename: Rename the variable under the cursor.
 "------------------------------------------------------------------------------
-Plug 'ternjs/tern_for_vim'
-let g:tern_map_keys=1                       "enable keyboard shortcuts
-let g:tern_show_argument_hints='on_hold'    "show argument hints
+"Plug 'ternjs/tern_for_vim'
+"let g:tern_map_keys=1                       "enable keyboard shortcuts
+"let g:tern_show_argument_hints='on_hold'    "show argument hints
 
 "------------------------------------------------------------------------------
 " => Vim-gnupg - Edit gpg encrypted files
 "------------------------------------------------------------------------------
-Plug 'https://github.com/jamessan/vim-gnupg'
+"Plug 'https://github.com/jamessan/vim-gnupg'
 
 "------------------------------------------------------------------------------
 " => Fuzzy Finder
-"    On macOS, can be installed with homebrew.
 "    :FZF
 "------------------------------------------------------------------------------
 "Plugin 'junegunn/fzf'
-set rtp+=/usr/local/opt/fzf
+"set rtp+=/usr/local/opt/fzf
 
-if isdirectory('/usr/local/opt/fzf')
-  Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-else
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-  Plug 'junegunn/fzf.vim'
-endif
-let g:make = 'gmake'
-if exists('make')
-        let g:make = 'make'
-endif
+"if isdirectory('/usr/local/opt/fzf')
+"  Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+"else
+"  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+"  Plug 'junegunn/fzf.vim'
+"endif
+"let g:make = 'gmake'
+"if exists('make')
+"        let g:make = 'make'
+"endif
 
-set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
-let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
+"set wildmode=list:longest,list:full
+"set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
+"let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
 
-" The Silver Searcher
-if executable('ag')
-  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
-  set grepprg=ag\ --nogroup\ --nocolor
-endif
+"" The Silver Searcher
+"if executable('ag')
+"  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+"  set grepprg=ag\ --nogroup\ --nocolor
+"endif
 
-" ripgrep
-if executable('rg')
-  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-  set grepprg=rg\ --vimgrep
-  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
-endif
+"" ripgrep
+"if executable('rg')
+"  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+"  set grepprg=rg\ --vimgrep
+"  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+"endif
 
-cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-nnoremap <silent> <leader>b :Buffers<CR>
-nnoremap <silent> <leader>e :FZF -m<CR>
-"Recovery commands from history through FZF
-nmap <leader>y :History:<CR>
+"cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+"nnoremap <silent> <leader>b :Buffers<CR>
+"nnoremap <silent> <leader>e :FZF -m<CR>
+""Recovery commands from history through FZF
+"nmap <leader>y :History:<CR>
 
 "------------------------------------------------------------------------------
 " => FuzzyFinder - Finds buffers/files/commands/bookmarks/tags fast
 "    :FufFile :FufBuffer
 "------------------------------------------------------------------------------
-Plug 'vim-scripts/FuzzyFinder'
-nmap ,f :FufFile<CR>
-nmap ,e :FufCoverageFile<CR>
-nmap ,u :FufTaggedFile<CR>
-nmap ,c :FufFileWithCurrentBufferDir<CR>
-nmap ,b :FufBuffer<CR>
-nmap ,l :FufLine<CR>
+"Plug 'vim-scripts/FuzzyFinder'
+"nmap ,f :FufFile<CR>
+"nmap ,e :FufCoverageFile<CR>
+"nmap ,u :FufTaggedFile<CR>
+"nmap ,c :FufFileWithCurrentBufferDir<CR>
+"nmap ,b :FufBuffer<CR>
+"nmap ,l :FufLine<CR>
 
 "------------------------------------------------------------------------------
 " => Taglist - Source code browser. Provides an overview of the structure of
@@ -429,46 +415,24 @@ nmap ,l :FufLine<CR>
 " files in different programming languages.
 "    Requires 'exuberant ctags'
 "------------------------------------------------------------------------------
-Plug 'vim-scripts/taglist.vim'
+"Plug 'vim-scripts/taglist.vim'
 
 "------------------------------------------------------------------------------
 " => Vim-autoformat - Easy code formatting in Vim
 "    :Autoformat
 "------------------------------------------------------------------------------
-Plug 'Chiel92/vim-autoformat'
-let g:formatdef_rustfmt = '"rustfmt"'
-let g:formatters_rust = ['rustfmt']
-
-"------------------------------------------------------------------------------
-" => Rust language
-"------------------------------------------------------------------------------
-Plug 'rust-lang/rust.vim'
-
-"------------------------------------------------------------------------------
-" => Database
-" let g:dbext_default_profile_mySQL = 'type=MYSQL:user=root:passwd=pass:dbname=mysql'
-"------------------------------------------------------------------------------
-Plug 'vim-scripts/dbext.vim'
-
-"------------------------------------------------------------------------------
-" => SQL
-"------------------------------------------------------------------------------
-Plug 'vim-scripts/Align'
-Plug 'vim-scripts/SQLUtilities'
-vmap <silent>sf         <Plug>SQLU_Formatter<CR>
-nmap <silent>scl        <Plug>SQLU_CreateColumnList<CR>
-nmap <silent>scd        <Plug>SQLU_GetColumnDef<CR>
-nmap <silent>scdt       <Plug>SQLU_GetColumnDataType<CR>
-nmap <silent>scp        <Plug>SQLU_CreateProcedure<CR>
+"Plug 'Chiel92/vim-autoformat'
+"let g:formatdef_rustfmt = '"rustfmt"'
+"let g:formatters_rust = ['rustfmt']
 
 "------------------------------------------------------------------------------
 " => Instant Markdown previews
 "    Install first: `npm -g install instant-markdown-d`
 "    If autostart=0, run with :InstantMarkdownPreview
 "------------------------------------------------------------------------------
-Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
-let g:instant_markdown_slow = 0
-let g:instant_markdown_autostart = 0
+"Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
+"let g:instant_markdown_slow = 0
+"let g:instant_markdown_autostart = 0
 "let g:instant_markdown_open_to_the_world = 1
 "let g:instant_markdown_allow_unsafe_content = 1
 "let g:instant_markdown_allow_external_content = 0
@@ -476,111 +440,208 @@ let g:instant_markdown_autostart = 0
 "let g:instant_markdown_mermaid = 1
 "let g:instant_markdown_logfile = '/tmp/instant_markdown.log'
 "let g:instant_markdown_autoscroll = 0
-let g:instant_markdown_port = 8888
+"let g:instant_markdown_port = 8888
 "let g:instant_markdown_python = 1
-
-"------------------------------------------------------------------------------
-" => Vim-commentary
-"------------------------------------------------------------------------------
-Plug 'tpope/vim-commentary'
-
-"------------------------------------------------------------------------------
-" => Vim-Session
-"------------------------------------------------------------------------------
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-session'
-
-"------------------------------------------------------------------------------
-" => HTML
-"------------------------------------------------------------------------------
-Plug 'hail2u/vim-css3-syntax'
-Plug 'gorodinskiy/vim-coloresque'
-Plug 'tpope/vim-haml'
-Plug 'mattn/emmet-vim'
-
-"------------------------------------------------------------------------------
-" => Javascript
-"------------------------------------------------------------------------------
-Plug 'jelera/vim-javascript-syntax'
-
-"------------------------------------------------------------------------------
-" => Perl
-"------------------------------------------------------------------------------
-Plug 'vim-perl/vim-perl'
-Plug 'c9s/perlomni.vim'
-
-"------------------------------------------------------------------------------
-" => Python
-"------------------------------------------------------------------------------
-Plug 'davidhalter/jedi-vim'
-Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-
-let g:jedi#popup_on_dot = 0
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = "<leader>d"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#rename_command = "<leader>r"
-let g:jedi#show_call_signatures = "0"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#smart_auto_mappings = 0
-
-"------------------------------------------------------------------------------
-" => Ruby
-"------------------------------------------------------------------------------
-Plug 'tpope/vim-rails'
-Plug 'tpope/vim-rake'
-Plug 'tpope/vim-projectionist'
-Plug 'thoughtbot/vim-rspec'
-Plug 'ecomba/vim-ruby-refactoring'
-
-"------------------------------------------------------------------------------
-" => Vim-gitgutter - Shows a git diff in the 'gutter' (sign column)
-"------------------------------------------------------------------------------
-Plug 'airblade/vim-gitgutter'
-
-"------------------------------------------------------------------------------
-" => Grep - Grep search tools integration with Vim
-"    :Grep :GrepAdd :Rgrep :RgrepAdd :GrepBugger :GrepBufferAdd
-"------------------------------------------------------------------------------
-Plug 'vim-scripts/grep.vim'
-nnoremap <silent> <leader>f :Rgrep<CR>
-let Grep_Default_Options = '-IR'
-let Grep_Skip_Files = '*.log *.db'
-let Grep_Skip_Dirs = '.git node_modules'
-
-"------------------------------------------------------------------------------
-" => CSApprox - Make gvim-only colorschemes work transparently in terminal vim
-"------------------------------------------------------------------------------
-Plug 'vim-scripts/CSApprox'
-
-"------------------------------------------------------------------------------
-" => DelimitMate - Automatic closing of quotes, parenthesis, brackets, etc.
-"------------------------------------------------------------------------------
-Plug 'Raimondi/delimitMate'
 
 "------------------------------------------------------------------------------
 " => Tagbar - Displays tags in a window, ordered by scope
 "------------------------------------------------------------------------------
 Plug 'majutsushi/tagbar'
+nmap <silent> <F4> :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
+
+"------------------------------------------------------------------------------
+" => Vim-Session
+"------------------------------------------------------------------------------
+"Plug 'xolox/vim-misc'
+"Plug 'xolox/vim-session'
+
+"------------------------------------------------------------------------------
+" => ACK - betterthangrep.com
+"------------------------------------------------------------------------------
+"Plug 'mileszs/ack.vim'
+
+"------------------------------------------------------------------------------
+" => UltiSnips - The ultimate snippet solution for Vim
+"    Needs python; run `pip install neovim` and check with :echo has("python")
+"------------------------------------------------------------------------------
+"Plug 'SirVer/ultisnips'
+"Plug 'honza/vim-snippets'
+"let g:UltiSnipsExpandTrigger="<tab>"
+"let g:UltiSnipsJumpForwardTrigger="<c-b>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"let g:UltiSnipsEditSplit="vertical"
+
+"------------------------------------------------------------------------------
+" => Neoformat - A (Neo)vim plugin for formatting code
+"    :Neoformat
+"------------------------------------------------------------------------------
+Plug 'sbdchd/neoformat'
+let g:neoformat_enabled_python = ['black', 'autopep8', 'yapf', 'docformatter']
+
+"------------------------------------------------------------------------------
+" => Python
+"------------------------------------------------------------------------------
+"Plug 'davidhalter/jedi-vim'
+"Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
+"let g:jedi#popup_on_dot = 0
+"let g:jedi#goto_assignments_command = "<leader>g"
+"let g:jedi#goto_definitions_command = "<leader>d"
+"let g:jedi#documentation_command = "K"
+"let g:jedi#usages_command = "<leader>n"
+"let g:jedi#rename_command = "<leader>r"
+"let g:jedi#show_call_signatures = "0"
+"let g:jedi#completions_command = "<C-Space>"
+"let g:jedi#smart_auto_mappings = 0
+
+"------------------------------------------------------------------------------
+" => Black - The uncompromising Python code formatter
+"    Neoformat can invoke Black
+"------------------------------------------------------------------------------
+"Plug 'psf/black'
+
+"------------------------------------------------------------------------------
+" => PEP8 - Python style guide checker
+"    Install before: `pip install pep8`
+"    http://www.python.org/dev/peps/pep-0008/
+"------------------------------------------------------------------------------
+"Plug 'vim-scripts/pep8'
+"let g:pep8_map = '<leader>8'
+
+"------------------------------------------------------------------------------
+" => Pytest
+"------------------------------------------------------------------------------
+"Plug 'alfredodeza/pytest.vim'
+
+"------------------------------------------------------------------------------
+" => Python Documentation
+"    <C-k>
+"------------------------------------------------------------------------------
+"Plug 'fs111/pydoc.vim'
+
+"------------------------------------------------------------------------------
+" => Check Python code on the fly
+"------------------------------------------------------------------------------
+"Plug 'mitechie/pyflakes-pathogen'
+
+"------------------------------------------------------------------------------
+" => Rust language
+"------------------------------------------------------------------------------
+"Plug 'rust-lang/rust.vim'
+
+"------------------------------------------------------------------------------
+" => Database
+" let g:dbext_default_profile_mySQL = 'type=MYSQL:user=root:passwd=pass:dbname=mysql'
+"------------------------------------------------------------------------------
+"Plug 'vim-scripts/dbext.vim'
+
+"------------------------------------------------------------------------------
+" => SQL
+"------------------------------------------------------------------------------
+"Plug 'vim-scripts/Align'
+"Plug 'vim-scripts/SQLUtilities'
+"vmap <silent>sf         <Plug>SQLU_Formatter<CR>
+"nmap <silent>scl        <Plug>SQLU_CreateColumnList<CR>
+"nmap <silent>scd        <Plug>SQLU_GetColumnDef<CR>
+"nmap <silent>scdt       <Plug>SQLU_GetColumnDataType<CR>
+"nmap <silent>scp        <Plug>SQLU_CreateProcedure<CR>
+
+"------------------------------------------------------------------------------
+" => HTML
+"------------------------------------------------------------------------------
+"Plug 'hail2u/vim-css3-syntax'
+"Plug 'gorodinskiy/vim-coloresque'
+"Plug 'tpope/vim-haml'
+"Plug 'mattn/emmet-vim'
+
+"------------------------------------------------------------------------------
+" => Javascript
+"------------------------------------------------------------------------------
+"Plug 'jelera/vim-javascript-syntax'
+
+"------------------------------------------------------------------------------
+" => Perl
+"------------------------------------------------------------------------------
+"Plug 'vim-perl/vim-perl'
+"Plug 'c9s/perlomni.vim'
+
+"------------------------------------------------------------------------------
+" => Ruby
+"------------------------------------------------------------------------------
+"Plug 'tpope/vim-rails'
+"Plug 'tpope/vim-rake'
+"Plug 'tpope/vim-projectionist'
+"Plug 'thoughtbot/vim-rspec'
+"Plug 'ecomba/vim-ruby-refactoring'
+
+"------------------------------------------------------------------------------
+" => Go - A Vim plugin that runs gofmt when you save
+"------------------------------------------------------------------------------
+"Plug 'tweekmonster/gofmt.vim'
+
+"------------------------------------------------------------------------------
+" => Vim-gitgutter - Shows a git diff in the 'gutter' (sign column)
+"------------------------------------------------------------------------------
+"Plug 'airblade/vim-gitgutter'
+
+"------------------------------------------------------------------------------
+" => Grep - Grep search tools integration with Vim
+"    :Grep :GrepAdd :Rgrep :RgrepAdd :GrepBugger :GrepBufferAdd
+"------------------------------------------------------------------------------
+"Plug 'vim-scripts/grep.vim'
+"nnoremap <silent> <leader>f :Rgrep<CR>
+"let Grep_Default_Options = '-IR'
+"let Grep_Skip_Files = '*.log *.db'
+"let Grep_Skip_Dirs = '.git node_modules'
+
+"------------------------------------------------------------------------------
+" => CSApprox - Make gvim-only colorschemes work transparently in terminal vim
+"------------------------------------------------------------------------------
+"Plug 'vim-scripts/CSApprox'
+
+"------------------------------------------------------------------------------
+" => DelimitMate - Automatic closing of quotes, parenthesis, brackets, etc.
+"------------------------------------------------------------------------------
+"Plug 'Raimondi/delimitMate'
 
 "------------------------------------------------------------------------------
 " => IndentLine - Display the indention levels with thin vertical lines 
 "------------------------------------------------------------------------------
-Plug 'Yggdroot/indentLine'
+"Plug 'Yggdroot/indentLine'
 
 "------------------------------------------------------------------------------
 " => Vim-polyglot - A collection of language packs for Vim
 "------------------------------------------------------------------------------
-Plug 'sheerun/vim-polyglot'
+"Plug 'sheerun/vim-polyglot'
 "let g:polyglot_disabled = ['python']
 "let python_highlight_all = 1
 
 "------------------------------------------------------------------------------
 " => Vimproc - Asynchronous execution library for Vim.
 "------------------------------------------------------------------------------
-Plug 'Shougo/vimproc.vim', {'do': g:make}
+"Plug 'Shougo/vimproc.vim', {'do': g:make}
+
+"------------------------------------------------------------------------------
+" => Sparkup - Write HTML in CSS-like syntax
+"------------------------------------------------------------------------------
+"Plug 'rstacruz/sparkup'
+
+"------------------------------------------------------------------------------
+" => NERDTree-Tabs - NERDTree and tabs together in Vim, painlessly
+"    No longer actively maintained
+"------------------------------------------------------------------------------
+"Plug 'jistr/vim-nerdtree-tabs'
+"map <Leader>n <plug>NERDTreeTabsToggle<CR>
+
+" Start Vim with NERDTreeTabs open
+"let g:nerdtree_tabs_open_on_gui_startup = 1
+"let g:nerdtree_tabs_open_on_console_startup = 1
+
+"------------------------------------------------------------------------------
+" => Vim-commentary
+"    Simpler than NERD Commenter
+"------------------------------------------------------------------------------
+"Plug 'tpope/vim-commentary'
 
 "------------------------------------------------------------------------------
 call plug#end()
-filetype plugin indent on

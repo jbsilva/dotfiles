@@ -6,7 +6,7 @@
 " Description:  Neovim configuration
 " Author:       Julio Batista Silva
 " Created:      2011
-" Last Change:  Mon 19 Oct 2020 19:30
+" Last Change:  Thu, 27 May 2021 06:05:19 -0300
 "===================================================================
 
 "------------------------------------------------------------------------------
@@ -22,7 +22,10 @@ let g:VIMSETTINGS = escape(expand('<sfile>:p'), ' ')  "dotfiles/.config/nvim/set
 let g:VIMCONF = g:DOTFILES . '/init.vim'              "dotfiles/.config/nvim/init.vim
 let g:TEMPLATES = g:VIMFILES . '/templates'           "dotfiles/.config/nvim/templates
 
-" Python path. Where pynvim is installed
+"------------------------------------------------------------------------------
+" => Python path
+"    Where pynvim is installed
+"------------------------------------------------------------------------------
 if has('mac') || has('macunix') || has('gui_macvim')
     let g:python_host_prog = '/usr/bin/python2'
     let g:python3_host_prog = '/usr/bin/python3'
@@ -34,12 +37,10 @@ elseif has("unix")
 "    let g:python3_host_prog = '/usr/bin/python3'
 endif
 
-
 "------------------------------------------------------------------------------
 " => Don't show session save message
 "------------------------------------------------------------------------------
 let g:session_autosave = 'no'
-
 
 "------------------------------------------------------------------------------
 " => Utilities
@@ -58,7 +59,6 @@ fun! s:Insere(file)
         endfor
     endif
 endfun
-
 
 "------------------------------------------------------------------------------
 " => Encoding
@@ -81,36 +81,28 @@ endif
 " => Colorscheme
 "------------------------------------------------------------------------------
 if has("gui_running")
-    colorscheme molokai
+    colorscheme gruvbox
 else
     colorscheme gruvbox
 endif
-
-
-"------------------------------------------------------------------------------
-" => Check Html5
-"    http://about.validator.nu/html5check.py
-"------------------------------------------------------------------------------
-"map ,h5 :!html5check.py %<CR>
-
 
 "------------------------------------------------------------------------------
 " => General stuff
 "------------------------------------------------------------------------------
 " When started as "evim", evim.vim will already have done these settings.
-if v:progname =~? "evim"
-  finish
-endif
+"if v:progname =~? "evim"
+"  finish
+"endif
 
 " Shell
-if exists('$SHELL')
-    set shell=$SHELL
-else
-    set shell=/bin/sh
-endif
+"if exists('$SHELL')
+"    set shell=$SHELL
+"else
+"    set shell=/bin/sh
+"endif
 
 " Don't use Ex mode, use Q for formatting
-map Q gq
+"map Q gq
 
 " CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -123,54 +115,54 @@ if has('mouse')
 endif
 
 " Enable highlighting
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-endif
+"if &t_Co > 2 || has("gui_running")
+"  syntax on
+"  set hlsearch
+"endif
 
 " Visual
-if has("gui_running")
-  if has("gui_mac") || has("gui_macvim")
-    set guifont=Menlo:h12
-    set transparency=7
-  endif
-else
-  let g:CSApprox_loaded = 1
-  let g:indentLine_enabled = 1
-  let g:indentLine_concealcursor = 0
-  let g:indentLine_char = '┆'
-  let g:indentLine_faster = 1
-endif
+"if has("gui_running")
+"  if has("gui_mac") || has("gui_macvim")
+"    set guifont=Menlo:h12
+"    set transparency=7
+"  endif
+"else
+"  let g:CSApprox_loaded = 1
+"  let g:indentLine_enabled = 1
+"  let g:indentLine_concealcursor = 0
+"  let g:indentLine_char = '┆'
+"  let g:indentLine_faster = 1
+"endif
 
 
 " Only do this part when compiled with support for autocommands.
-if has("autocmd")
-    filetype plugin indent on
+"if has("autocmd")
+"    filetype plugin indent on
     
-    " Put these in an autocmd group, so that we can delete them easily.
-    augroup vimrcEx
-    au!
+"    " Put these in an autocmd group, so that we can delete them easily.
+"    augroup vimrcEx
+"    au!
     
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid or when inside an event handler
-    " (happens when dropping a file on gvim).
-    " Also don't do it when the mark is in the first line, that is the default
-    " position when opening a file.
-    autocmd BufReadPost *
-        \ if line("'\"") > 1 && line("'\"") <= line("$") |
-        \   exe "normal! g`\"" |
-        \ endif
+"    " When editing a file, always jump to the last known cursor position.
+"    " Don't do it when the position is invalid or when inside an event handler
+"    " (happens when dropping a file on gvim).
+"    " Also don't do it when the mark is in the first line, that is the default
+"    " position when opening a file.
+"    autocmd BufReadPost *
+"        \ if line("'\"") > 1 && line("'\"") <= line("$") |
+"        \   exe "normal! g`\"" |
+"        \ endif
 
-    augroup END
-else
-  set autoindent        " always set autoindenting on
-endif
+"    augroup END
+"else
+"  set autoindent        " always set autoindenting on
+"endif
 
 " See the changes you made
-if !exists(":DiffOrig")
-    command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-                \ | wincmd p | diffthis
-endif
+"if !exists(":DiffOrig")
+"    command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+"                \ | wincmd p | diffthis
+"endif
 
 
 "------------------------------------------------------------------------------
@@ -178,7 +170,7 @@ endif
 "------------------------------------------------------------------------------
 filetype plugin on
 
-ru macros/matchit.vim       " Enabled extended % matching
+"ru macros/matchit.vim       " Enabled extended % matching
 set bs=2                    " Allow backspacing over anything
 set cmdheight=1             " Command line height
 set cot=menu                " Don't show extra info on completions
@@ -190,7 +182,7 @@ set ic scs                  " Only be case sensitive when search contains upperc
 set lz                      " Don't redraw screen during macros
 set modeline                " Modeline. Warning: possibly insecure
 set nobackup                " Disable backup
-set nofoldenable
+"set nofoldenable
 set noswapfile              " Disable swapfiles
 set nowritebackup           " ^
 set number                  " Show line numbers
@@ -212,29 +204,41 @@ set tf                      " Improves redrawing for newer computers
 set tm=500                  " Lower timeout for mappings
 set ul=200                  " Only undo up to 200 times
 set whichwrap=h,l,<,>,[,]
-set wildchar=<tab>
-set wildmenu                " Filesystem surfing - press :e and ^D
 
-"" Searching
+"------------------------------------------------------------------------------
+" => Wildmenu - Enables "enhanced mode" of command-line completion
+"------------------------------------------------------------------------------
+set wildchar=<tab>
+set wildmenu                    " Filesystem surfing - press :e and ^D
+set wildmode=longest,list,full
+
+"Ignore files
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,solr/**,log/**,*.psd,*.PSD,.git/**,.gitkeep,.gems/**
+set wildignore+=*.ico,*.ICO,backup/**,*.sql,*.dump,*.tmp,*.min.js,Gemfile.lock
+set wildignore+=*.png,*.PNG,*.JPG,*.jpg,*.JPEG,*.jpeg,*.GIF,*.gif,*.pdf,*.PDF
+set wildignore+=vendor/**,coverage/**,tmp/**,rdoc/**,*.BACKUP.*,*.BASE.*,*.LOCAL.*,*.REMOTE.*,.sass-cache/**
+set wildignore+=*.pyc
+
+
+"------------------------------------------------------------------------------
+" => Searching
+"------------------------------------------------------------------------------
 set hlsearch
 set incsearch               " Increment search
 set ignorecase
 set smartcase               " Upper-case sensitive search
-
-set title
-set titleold="Terminal"
-set titlestring=%F
-
-set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-if exists("*fugitive#statusline")
-  set statusline+=%{fugitive#statusline()}
-endif
+"------------------------------------------------------------------------------
+" => Window title
+"------------------------------------------------------------------------------
+set title
+set titleold="Terminal"
+set titlestring=%F
 
 "------------------------------------------------------------------------------
 " => Color column 80
@@ -248,13 +252,20 @@ map <C-P> :bp<cr>
 map <C-N> :bn<cr>
 
 "------------------------------------------------------------------------------
+" => Switching windows
+"------------------------------------------------------------------------------
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+noremap <C-h> <C-w>h
+
+"------------------------------------------------------------------------------
 " => Fast scroll using arrow keys
 "------------------------------------------------------------------------------
 noremap <Left> 5h
 noremap <Down> 5j
 noremap <Up> 5k
 noremap <Right> 5l
-
 
 "------------------------------------------------------------------------------
 " => Avoids accidental use of <F1>
@@ -326,9 +337,9 @@ endif
 "       For english:                `:setlocal spell spelllang=en_us`
 "       Deactivate correction:      `:setlocal nospell`
 "       Commands (`:help spell`):   `[s`, `]s`, `z=`, `zg`, `zw`, `:spellr`
-"    Textos com 78 colunas
+"    Text with 80 columns
 "------------------------------------------------------------------------------
-autocmd FileType text setlocal textwidth=78 spell spelllang=pt_br
+autocmd FileType text setlocal textwidth=80 spell spelllang=pt_br
 
 "------------------------------------------------------------------------------
 " => C e C++
@@ -337,72 +348,64 @@ au FileType c,cpp set cindent
 au FileType c,cpp set formatoptions+=ro
 "au FileType c,cpp set foldmethod=syntax
 "au FileType c,cpp set foldlevel=4
-let g:C_Styles = { '*.c,*.h' : 'default', '*.cc,*.cpp,*.hh,*.hpp' : 'CPP' }
-
 
 "------------------------------------------------------------------------------
 " => Python
 "------------------------------------------------------------------------------
-au FileType python set foldmethod=indent
-au FileType python set foldlevel=99
-au FileType python set omnifunc=pythoncomplete#Complete
-let g:SuperTabDefaultCompletionType = "context"
+"au FileType python set foldmethod=indent
+"au FileType python set foldlevel=99
+"au FileType python set omnifunc=pythoncomplete#Complete
+"let g:SuperTabDefaultCompletionType = "context"
 
-" vim-python
-augroup vimrc-python
-  autocmd!
-  autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79
-      \ formatoptions+=croq softtabstop=4
-      \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
-augroup END
-
+"" vim-python
+"augroup vimrc-python
+"  autocmd!
+"  autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79
+"      \ formatoptions+=croq softtabstop=4
+"      \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+"augroup END
 
 "------------------------------------------------------------------------------
 " => Ruby
 "------------------------------------------------------------------------------
-au FileType ruby,eruby setlocal sts=2 sw=2
-au FileType ruby,eruby set omnifunc=rubycomplete#Complete
-au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-au FileType ruby,eruby let g:rubycomplete_rails = 1
-au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-
+"au FileType ruby,eruby setlocal sts=2 sw=2
+"au FileType ruby,eruby set omnifunc=rubycomplete#Complete
+"au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+"au FileType ruby,eruby let g:rubycomplete_rails = 1
+"au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
 "------------------------------------------------------------------------------
 " => HTML
 "   Some of these snipets are implemented by another plugin
 "------------------------------------------------------------------------------
-au FileType html,xhtml,php,eruby imap bbb <br />
-au FileType html,xhtml,php,eruby imap aaa <a href=""></a><left><left><left><left><left><left>
-au FileType html,xhtml,php,eruby imap iii <img src="" /><left><left><left><left>
-au FileType html,xhtml,php,eruby imap ddd <div id=""></div><left><left><left><left><left><left><left><left>
-autocmd Filetype html setlocal ts=2 sw=2 expandtab " for html files, 2 spaces
-
+"au FileType html,xhtml,php,eruby imap bbb <br />
+"au FileType html,xhtml,php,eruby imap aaa <a href=""></a><left><left><left><left><left><left>
+"au FileType html,xhtml,php,eruby imap iii <img src="" /><left><left><left><left>
+"au FileType html,xhtml,php,eruby imap ddd <div id=""></div><left><left><left><left><left><left><left><left>
+"autocmd Filetype html setlocal ts=2 sw=2 expandtab " for html files, 2 spaces
 
 "------------------------------------------------------------------------------
 " => Javascript
 "------------------------------------------------------------------------------
-let g:javascript_enable_domhtmlcss = 1
-
+"let g:javascript_enable_domhtmlcss = 1
 
 "------------------------------------------------------------------------------
 " => Read MS Word documents
 "    Requires antiword (http://vim.wikia.com/wiki/View_and_diff_MS_Word_files)
 "------------------------------------------------------------------------------
-if executable('antiword')
-    augroup Word
-        au!
-        au BufReadPre *.doc set ro
-        au BufReadPre *.doc set hlsearch!
-        au BufReadPost *.doc %!antiword "%"
-    augroup END
-endif
-
+"if executable('antiword')
+"    augroup Word
+"        au!
+"        au BufReadPre *.doc set ro
+"        au BufReadPre *.doc set hlsearch!
+"        au BufReadPost *.doc %!antiword "%"
+"    augroup END
+"endif
 
 "------------------------------------------------------------------------------
 " => Terminal emulation
 "------------------------------------------------------------------------------
-nnoremap <silent> <leader>sh :terminal<CR>
-
+"nnoremap <silent> <leader>sh :terminal<CR>
 
 "------------------------------------------------------------------------------
 " => Remove trailing whitespaces
@@ -414,19 +417,17 @@ command! FixWhitespace :%s/\s\+$//e
 "------------------------------------------------------------------------------
 vnoremap <Leader>es :<c-u>exec join(getline("'<","'>"),"\n")<CR>
 
-
-
-" Tagbar
-nmap <silent> <F4> :TagbarToggle<CR>
-let g:tagbar_autofocus = 1
-
-" Disable visualbell
+"------------------------------------------------------------------------------
+" => Disable visualbell
+"------------------------------------------------------------------------------
 set noerrorbells visualbell t_vb=
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
 endif
 
-"" Copy/Paste/Cut
+"------------------------------------------------------------------------------
+" => Copy/Paste/Cut
+"------------------------------------------------------------------------------
 if has('unnamedplus')
   set clipboard=unnamed,unnamedplus
 endif
@@ -441,32 +442,36 @@ if has('macunix')
   vmap <C-c> :w !pbcopy<CR><CR>
 endif
 
-"" Buffer nav
-noremap <leader>z :bp<CR>
-noremap <leader>q :bp<CR>
-noremap <leader>x :bn<CR>
-noremap <leader>w :bn<CR>
-
-"" Close buffer
-noremap <leader>c :bd<CR>
-
-"" Clean search (highlight)
+"------------------------------------------------------------------------------
+" => Clean search highlight
+"------------------------------------------------------------------------------
 nnoremap <silent> <leader><space> :noh<cr>
 
-"" Switching windows
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
-noremap <C-h> <C-w>h
-
-"" Vmap for maintain Visual Mode after shifting > and <
+"------------------------------------------------------------------------------
+" => Stay in Visual Mode after indenting with '>' or '<'
+"------------------------------------------------------------------------------
 vmap < <gv
 vmap > >gv
 
-"" Move visual block
+"------------------------------------------------------------------------------
+" => Move visual block
+"------------------------------------------------------------------------------
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-"" Open current line on GitHub
-"nnoremap <Leader>o :.Gbrowse<CR>
+"------------------------------------------------------------------------------
+" => Statusline
+"    Commented as the status line will be defined by the vim-airline plugin
+"------------------------------------------------------------------------------
+"set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
+
+"if exists("*fugitive#statusline")
+"  set statusline+=%{FugitiveStatusline()}
+"endif
+
+"------------------------------------------------------------------------------
+" => Check Html5
+"    http://about.validator.nu/html5check.py
+"------------------------------------------------------------------------------
+"map ,h5 :!html5check.py %<CR>
 
