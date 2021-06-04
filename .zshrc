@@ -316,6 +316,9 @@ alias gst='git status'
 # Paste clipboard in new vim file
 alias paste2vim='pbpaste | nvim -'
 
+# Open AuTHentication (OATH) one-time password
+alias otp='oathtool --totp -b'
+
 # C/C++/Objective-C
 alias g++e='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -Werror'    # Warnings = Error
 alias g++w='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'            # Warnings
