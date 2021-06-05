@@ -137,3 +137,4 @@ nvimlog
 .config/mimeapps.list
 .config/gtk-2.0/
 .config/plasma-workspace/
+.config/konquerorrc
