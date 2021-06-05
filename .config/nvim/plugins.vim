@@ -27,8 +27,7 @@
 "*****************************************************************************
 "" Vim-PLug core
 "*****************************************************************************
-let vimplug_file=expand('$XDG_CONFIG_HOME/nvim/autoload/plug.vim')
-
+let vimplug_file=g:VIMDIR . "/autoload/plug.vim"
 let g:vim_bootstrap_langs = "html,javascript,perl,python,ruby"
 let g:vim_bootstrap_editor = "nvim"
 
@@ -46,7 +45,7 @@ if !filereadable(vimplug_file)
 endif
 
 " Required:
-call plug#begin(expand('~/.config/nvim/plugged'))
+call plug#begin(g:VIMDIR . "/plugged")
 
 
 "*****************************************************************************

@@ -173,6 +173,7 @@ set nobackup                " Disable backup
 set noswapfile              " Disable swapfiles
 set nowritebackup           " ^
 set number                  " Show line numbers
+set relativenumber          " Relative line numbers
 set report=0                " Always report when lines are changed
 set ruler                   " Show the cursor position all the time
 set sb                      " Open new split windows below current

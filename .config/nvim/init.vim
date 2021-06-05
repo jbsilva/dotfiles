@@ -35,12 +35,11 @@ endif
 "   let user = expand($USER_FULLNAME)                   -- Environment variable
 "   let user = system('git config -z --get user.name')  -- Shell command
 "------------------------------------------------------------------------------
-let g:DOTFILES = escape(expand('%:p:h:h'), ' ') "dotfiles/.config
-let g:VIMDIR = escape(expand('%:p:h'), ' ')     "dotfiles/.config/nvim
-let g:INITFILE = escape(expand('%:p'), ' ')     "dotfiles/.config/nvim/init.vim
-let g:TEMPLATES = g:VIMDIR . '/templates'       "dotfiles/.config/nvim/templates
-let g:VIMSETTINGS = g:VIMDIR . '/settings.vim'  "dotfiles/.config/nvim/settings.vim
-let g:PLUGINS = g:VIMDIR . '/plugins.vim'       "dotfiles/.config/nvim/plugins.vim
+let g:DOTFILES = escape(expand('<sfile>:p:h:h'), ' ')         "dotfiles/.config
+let g:VIMDIR = escape(expand('<sfile>:p:h'), ' ')        "dotfiles/.config/nvim
+let g:TEMPLATES = g:VIMDIR . '/templates'      "dotfiles/.config/nvim/templates
+let g:SETTINGS = g:VIMDIR . '/settings.vim' "dotfiles/.config/nvim/settings.vim
+let g:PLUGINS = g:VIMDIR . '/plugins.vim'    "dotfiles/.config/nvim/plugins.vim
 
 "------------------------------------------------------------------------------
 " => Leader key
@@ -55,5 +54,5 @@ exec 'source' g:PLUGINS
 "------------------------------------------------------------------------------
 " => Load the settings
 "------------------------------------------------------------------------------
-exec 'source' g:VIMSETTINGS
+exec 'source' g:SETTINGS
 
