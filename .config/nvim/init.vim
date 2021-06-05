@@ -4,12 +4,12 @@
 "               ====oOO==(_)==OOo=====
 "
 " File:         init.vim
-" Description:  Arquivo de configuração do Nvim
+" Description:  Neovim config file
 " Author:       Julio Batista Silva
 " Created:      2008
-" Last Change:  25 Mar 2021
+" Last Change:  05 Jun 2021
 " Licence:
-"           Copyright (c) 2008-2021 Julio Batista Silva <julio@juliobs.com>
+"           Copyright (c) 2008-2021 Julio Batista Silva <vim@juliobs.com>
 "                       All Rights Reserved
 "
 "           This program is free software. It comes without any warranty, to
@@ -28,21 +28,32 @@ if exists('g:vscode')
     finish
 endif
 
+"------------------------------------------------------------------------------
+" => Constants
+" Different ways to define a variable. Eg.:
+"   let user = 'Julio Batista Silva'                    -- String
+"   let user = expand($USER_FULLNAME)                   -- Environment variable
+"   let user = system('git config -z --get user.name')  -- Shell command
+"------------------------------------------------------------------------------
+let g:DOTFILES = escape(expand('%:p:h:h'), ' ') "dotfiles/.config
+let g:VIMDIR = escape(expand('%:p:h'), ' ')     "dotfiles/.config/nvim
+let g:INITFILE = escape(expand('%:p'), ' ')     "dotfiles/.config/nvim/init.vim
+let g:TEMPLATES = g:VIMDIR . '/templates'       "dotfiles/.config/nvim/templates
+let g:VIMSETTINGS = g:VIMDIR . '/settings.vim'  "dotfiles/.config/nvim/settings.vim
+let g:PLUGINS = g:VIMDIR . '/plugins.vim'       "dotfiles/.config/nvim/plugins.vim
 
 "------------------------------------------------------------------------------
 " => Leader key
 "------------------------------------------------------------------------------
 let mapleader=','
 
-
 "------------------------------------------------------------------------------
-" => Vim-plug
+" => Vim-plug Plugins
 "------------------------------------------------------------------------------
-source $XDG_CONFIG_HOME/nvim/vimplug_plugins.vim
-
+exec 'source' g:PLUGINS
 
 "------------------------------------------------------------------------------
 " => Load the settings
 "------------------------------------------------------------------------------
-source $XDG_CONFIG_HOME/nvim/settings.vim
+exec 'source' g:VIMSETTINGS
 

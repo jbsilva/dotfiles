@@ -10,19 +10,6 @@
 "===================================================================
 
 "------------------------------------------------------------------------------
-" => Constants
-" Different ways to define a variable. Eg.:
-"   let user = 'Julio Batista Silva'                    -- String
-"   let user = expand($USER_FULLNAME)                   -- Variavel de ambiente
-"   let user = system('git config -z --get user.name')  -- Shell command
-"------------------------------------------------------------------------------
-let g:DOTFILES = escape(expand('<sfile>:p:h:h'), ' ') "dotfiles
-let g:VIMFILES = escape(expand('<sfile>:p:h'), ' ')   "dotfiles/.config/nvim
-let g:VIMSETTINGS = escape(expand('<sfile>:p'), ' ')  "dotfiles/.config/nvim/settings.vim
-let g:VIMCONF = g:DOTFILES . '/init.vim'              "dotfiles/.config/nvim/init.vim
-let g:TEMPLATES = g:VIMFILES . '/templates'           "dotfiles/.config/nvim/templates
-
-"------------------------------------------------------------------------------
 " => Python path
 "    Where pynvim is installed
 "------------------------------------------------------------------------------
@@ -273,6 +260,11 @@ noremap <Right> 5l
 inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 vnoremap <F1> <ESC>
+
+"------------------------------------------------------------------------------
+" => Save as root: :Sw
+"------------------------------------------------------------------------------
+command! -nargs=0 Sw w !sudo tee % > /dev/null
 
 "------------------------------------------------------------------------------
 " => Correct commands written with CapsLock on
