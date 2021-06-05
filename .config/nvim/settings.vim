@@ -1,4 +1,4 @@
-"===================================================================
+"==============================================================================
 "                      ( O O )
 "               ====oOO==(_)==OOo=====
 "
@@ -6,8 +6,8 @@
 " Description:  Neovim configuration
 " Author:       Julio Batista Silva
 " Created:      2011
-" Last Change:  Thu, 27 May 2021 06:05:19 -0300
-"===================================================================
+" Last Change:  Sat, 05 Jun 2021 17:20:00 -0300
+"==============================================================================
 
 "------------------------------------------------------------------------------
 " => Python path
@@ -121,36 +121,11 @@ endif
 "  let g:indentLine_faster = 1
 "endif
 
-
-" Only do this part when compiled with support for autocommands.
-"if has("autocmd")
-"    filetype plugin indent on
-    
-"    " Put these in an autocmd group, so that we can delete them easily.
-"    augroup vimrcEx
-"    au!
-    
-"    " When editing a file, always jump to the last known cursor position.
-"    " Don't do it when the position is invalid or when inside an event handler
-"    " (happens when dropping a file on gvim).
-"    " Also don't do it when the mark is in the first line, that is the default
-"    " position when opening a file.
-"    autocmd BufReadPost *
-"        \ if line("'\"") > 1 && line("'\"") <= line("$") |
-"        \   exe "normal! g`\"" |
-"        \ endif
-
-"    augroup END
-"else
-"  set autoindent        " always set autoindenting on
-"endif
-
 " See the changes you made
 "if !exists(":DiffOrig")
 "    command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 "                \ | wincmd p | diffthis
 "endif
-
 
 "------------------------------------------------------------------------------
 " => Standard stuff
@@ -158,40 +133,45 @@ endif
 filetype plugin on
 
 "ru macros/matchit.vim       " Enabled extended % matching
-set bs=2                    " Allow backspacing over anything
-set cmdheight=1             " Command line height
-set cot=menu                " Don't show extra info on completions
+set backspace=2             " Allow backspacing over anything
+"set cmdheight=1             " Command line height
+"set completeopt=menu        " Don't show extra info on completions
 set expandtab               " Insert spaces instead of tab chars
-set formatoptions+=l
+"set formatoptions+=l
 set hidden                  " Allow hidden buffers
-set history=100             " 100 lines of command line history
 set ic scs                  " Only be case sensitive when search contains uppercase
-set lz                      " Don't redraw screen during macros
+set lazyredraw              " Don't redraw screen during macros
 set modeline                " Modeline. Warning: possibly insecure
-set nobackup                " Disable backup
 "set nofoldenable
 set noswapfile              " Disable swapfiles
-set nowritebackup           " ^
+"set nobackup                " Disable backup
+"set nowritebackup           " Don't make a backup before overwriting a file
 set number                  " Show line numbers
 set relativenumber          " Relative line numbers
 set report=0                " Always report when lines are changed
 set ruler                   " Show the cursor position all the time
-set sb                      " Open new split windows below current
-set sc                      " Show incomplete command at bottom right
 set scrolloff=4             " Min. number of lines above/below cursor
-set selection=inclusive
+"set selection=inclusive
 set shiftwidth=4            " Allows the use of < and > for VISUAL indenting
 set showcmd                 " Display incomplete commands
 set showmatch               " Show matching brackets (),{},[]
 set showmode                " Show mode at bottom of screen
-set softtabstop=4           " Counts n spaces when DELETE or BCKSPCE is used
-set splitbelow
-set t_vb=                   " ^
 set tabstop=4               " A n-space tab width
-set tf                      " Improves redrawing for newer computers
-set tm=500                  " Lower timeout for mappings
-set ul=200                  " Only undo up to 200 times
-set whichwrap=h,l,<,>,[,]
+set softtabstop=4           " Counts n spaces when DELETE or BCKSPCE is used
+set splitbelow              " Open new split windows below current
+set t_vb=                   " ^
+set timeoutlen=500          " Lower timeout for mappings
+set undolevels=500          " Only undo up to 500 times
+set whichwrap=h,l,<,>,[,]   " Allow move to next line
+
+"------------------------------------------------------------------------------
+" => Disable relative numbers if not usefull
+"------------------------------------------------------------------------------
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
+  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
+augroup END
 
 "------------------------------------------------------------------------------
 " => Wildmenu - Enables "enhanced mode" of command-line completion
@@ -207,7 +187,6 @@ set wildignore+=*.png,*.PNG,*.JPG,*.jpg,*.JPEG,*.jpeg,*.GIF,*.gif,*.pdf,*.PDF
 set wildignore+=vendor/**,coverage/**,tmp/**,rdoc/**,*.BACKUP.*,*.BASE.*,*.LOCAL.*,*.REMOTE.*,.sass-cache/**
 set wildignore+=*.pyc
 
-
 "------------------------------------------------------------------------------
 " => Searching
 "------------------------------------------------------------------------------
@@ -220,6 +199,15 @@ set smartcase               " Upper-case sensitive search
 " search will center on the line it's found in.
 nnoremap n nzzzv
 nnoremap N Nzzzv
+
+"------------------------------------------------------------------------------
+" => Restore last cursor position
+"    restore-cursor last-position-jump
+"------------------------------------------------------------------------------
+autocmd BufReadPost *
+  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+  \ |   exe "normal! g`\""
+  \ | endif
 
 "------------------------------------------------------------------------------
 " => Window title
@@ -436,7 +424,7 @@ if has('macunix')
 endif
 
 "------------------------------------------------------------------------------
-" => Clean search highlight
+" => Clean search highlight with <leader><space>
 "------------------------------------------------------------------------------
 nnoremap <silent> <leader><space> :noh<cr>
 
