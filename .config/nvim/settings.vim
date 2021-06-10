@@ -409,19 +409,39 @@ endif
 "------------------------------------------------------------------------------
 " => Copy/Paste/Cut
 "------------------------------------------------------------------------------
-if has('unnamedplus')
-  set clipboard=unnamed,unnamedplus
-endif
+"if has('unnamedplus')
+"  set clipboard=unnamed,unnamedplus
+"endif
 
-noremap YY "+y<CR>
-noremap <leader>p "+gP<CR>
-noremap XX "+x<CR>
+" Y copy from cursor to last-non-blank-char
+nnoremap Y yg_
 
-if has('macunix')
-  " pbcopy for OSX copy/paste
-  vmap <C-x> :!pbcopy<CR>
-  vmap <C-c> :w !pbcopy<CR><CR>
-endif
+" Copy to system clipboard
+vnoremap <leader>y "+y
+nnoremap <leader>y "+y
+nnoremap <leader>yy "+yy
+nnoremap <leader>Y "+yg_
+
+" Cut to system clipboard
+vnoremap <leader>x "+x
+nnoremap <leader>x "+x
+nnoremap <leader>X "+X
+
+" Paste from system clipboard
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+
+"noremap YY "+y<CR>
+"noremap <leader>p "+gP<CR>
+"noremap XX "+x<CR>
+
+"if has('macunix')
+"  " pbcopy for OSX copy/paste
+"  vmap <C-x> :!pbcopy<CR>
+"  vmap <C-c> :w !pbcopy<CR><CR>
+"endif
 
 "------------------------------------------------------------------------------
 " => Clean search highlight with <leader><space>
