@@ -319,6 +319,9 @@ alias paste2vim='pbpaste | nvim -'
 # Open AuTHentication (OATH) one-time password
 alias otp='oathtool --totp -b'
 
+# Backup
+alias bkp='rsync --recursive --links --times --delete --compress-level=0 --info=flist2,name,progress --human-readable'
+
 # C/C++/Objective-C
 alias g++e='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -Werror'    # Warnings = Error
 alias g++w='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'            # Warnings
