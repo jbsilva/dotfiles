@@ -252,51 +252,53 @@ vnoremap <F1> <ESC>
 
 "------------------------------------------------------------------------------
 " => Save as root: :Sw
+"    Use lambdalisue/suda plugin while github.com/neovim/neovim/issues/1716 is
+"    not solved
 "------------------------------------------------------------------------------
-command! -nargs=0 Sw w !sudo tee % > /dev/null
+"command! Sw w !sudo tee % > /dev/null
 
 "------------------------------------------------------------------------------
 " => Correct commands written with CapsLock on
 "------------------------------------------------------------------------------
-command! -nargs=* -complete=file Q q <args>
-command! -nargs=* -complete=file W w <args>
-command! -nargs=* -complete=file Wq wq <args>
-command! -nargs=* -complete=file WQ wq <args>
-command! -nargs=* -complete=file E e <args>
-command! -nargs=* -complete=file Cd cd <args>
-command! -nargs=* -complete=file CD cd <args>
-command! -nargs=* -complete=option Set set <args>
+"command! -nargs=* -complete=file Q q <args>
+"command! -nargs=* -complete=file W w <args>
+"command! -nargs=* -complete=file Wq wq <args>
+"command! -nargs=* -complete=file WQ wq <args>
+"command! -nargs=* -complete=file E e <args>
+"command! -nargs=* -complete=file Cd cd <args>
+"command! -nargs=* -complete=file CD cd <args>
+"command! -nargs=* -complete=option Set set <args>
 
-cnoreabbrev W! w!
-cnoreabbrev Q! q!
-cnoreabbrev Qall! qall!
-cnoreabbrev Wq wq
-cnoreabbrev Wa wa
-cnoreabbrev wQ wq
-cnoreabbrev WQ wq
-cnoreabbrev W w
-cnoreabbrev Q q
-cnoreabbrev Qall qall
+"cnoreabbrev W! w!
+"cnoreabbrev Q! q!
+"cnoreabbrev Qall! qall!
+"cnoreabbrev Wq wq
+"cnoreabbrev Wa wa
+"cnoreabbrev wQ wq
+"cnoreabbrev WQ wq
+"cnoreabbrev W w
+"cnoreabbrev Q q
+"cnoreabbrev Qall qall
 
 "------------------------------------------------------------------------------
 " => Fix filetype detection
 "------------------------------------------------------------------------------
-au BufNewFile,BufRead .htaccess,httpd.conf set filetype=apache
-au BufNewFile,BufRead *.inc set filetype=php
-au BufNewFile,BufRead *.sys set filetype=php
-au BufNewFile,BufRead grub.conf set filetype=grub
-au BufNewFile,BufRead *.blog set filetype=blog
-au BufNewFile,BufRead *.tex set filetype=tex
+"au BufNewFile,BufRead .htaccess,httpd.conf set filetype=apache
+"au BufNewFile,BufRead *.inc set filetype=php
+"au BufNewFile,BufRead *.sys set filetype=php
+"au BufNewFile,BufRead grub.conf set filetype=grub
+"au BufNewFile,BufRead *.blog set filetype=blog
+"au BufNewFile,BufRead *.tex set filetype=tex
 
 "------------------------------------------------------------------------------
 " => Keymappings for compilation and execution
 "------------------------------------------------------------------------------
-au FileType php map <F6> :!php &<CR>
-au FileType python map <F6> :!python %<CR>
-au FileType perl map <F6> :!perl %<CR>
-au FileType ruby map <F6> :!ruby %<CR>
-au FileType lua map <F6> :!lua %<CR>
-au FileType html,xhtml map <F6> :!chromium %<CR>
+"au FileType php map <F6> :!php &<CR>
+"au FileType python map <F6> :!python %<CR>
+"au FileType perl map <F6> :!perl %<CR>
+"au FileType ruby map <F6> :!ruby %<CR>
+"au FileType lua map <F6> :!lua %<CR>
+"au FileType html,xhtml map <F6> :!chromium %<CR>
 
 "------------------------------------------------------------------------------
 " => Templates

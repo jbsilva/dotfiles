@@ -53,6 +53,13 @@ call plug#begin(g:VIMDIR . "/plugged")
 "*****************************************************************************
 
 "------------------------------------------------------------------------------
+" => Suda - Read or write files with sudo command
+"    Workaroud for https://github.com/neovim/neovim/issues/1716
+"    :SudaRead :SudaWrite
+"------------------------------------------------------------------------------
+Plug 'lambdalisue/suda.vim'
+
+"------------------------------------------------------------------------------
 " => Devicons - Add icons to plugins
 "    Install a Nerd Font (ryanoasis/nerd-fonts) first
 "------------------------------------------------------------------------------
