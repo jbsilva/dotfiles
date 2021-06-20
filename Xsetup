@@ -1,0 +1,18 @@
+#!/bin/sh
+# Xsetup - run as root before the login dialog appears
+setxkbmap br -option caps:swapescape
+
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --auto
+
+# Force Composition Pipeline
+s="$(nvidia-settings -q CurrentMetaMode -t)"
+echo "$s"
+if [[ "${s}" != "" ]]; then
+  s="${s#*" :: "}"
+  echo "$s"
+  if [[ "${s}" != "NULL" ]]; then
+    nvidia-settings -a CurrentMetaMode="${s//\}/, ForceCompositionPipeline=On\}}"
+  fi
+fi
+
