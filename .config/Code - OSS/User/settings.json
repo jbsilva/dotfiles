@@ -20,7 +20,7 @@
         "--good-names=i,j,k,ex,Run,_,df"
     ],
     "python.linting.pylintUseMinimalCheckers": false,
-    "python.condaPath": "/home/julio/miniconda3/bin/conda",
+    "python.condaPath": "/home/julio/mambaforge/condabin/conda",
     "terminal.integrated.inheritEnv": false,
     "git.autofetch": true,
     "diffEditor.renderSideBySide": true,
