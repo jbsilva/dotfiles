@@ -140,3 +140,5 @@
 .config/xsettingsd/
 nvimlog
 .config/digikam_systemrc
+.config/calibrerc
+.config/fcitx5/
