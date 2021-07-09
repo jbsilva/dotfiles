@@ -1,0 +1,11 @@
+[Desktop Entry]
+Comment=IBus Daemon
+#Exec=ibus-daemon -drx --panel=/usr/lib/kimpanel-ibus-panel
+Exec=ibus-daemon -drx
+GenericName=IBus Daemon
+Icon=ibus-engine
+Name=IBus Daemon
+StartupNotify=true
+Terminal=true
+Type=Application
+X-KDE-SubstituteUID=false
