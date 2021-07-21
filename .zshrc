@@ -263,6 +263,8 @@ esac
 # Aliases
 ###############################################################################
 alias list='du -shc *'
+alias listh='du -shc * | sort -h'
+
 alias back='cd "$OLDPWD"'
 alias ..='cd ../'
 alias ...='cd ../../'
@@ -347,6 +349,10 @@ alias dnorestart='docker update --restart=no $* $(docker ps -q)'
 # Kitty terminal
 alias icat='kitty +kitten icat'
 alias kssh='kitty +kitten ssh'  # alias ssh='TERM="xterm-256color" ssh'
+
+# Clipboard
+# Prezto already defined the pbcopy and pbpaste aliases
+alias clipboard='if [ -p /dev/stdin ]; then pbcopy; fi; pbpaste'
 
 
 ###############################################################################
