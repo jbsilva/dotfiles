@@ -3,12 +3,10 @@ if [[ "$OSTYPE" != linux* ]]; then
     return 1
 fi
 
-
-# List files and directories sorted by size.
-alias listh='du -shc * | sort -h'
-
 # Arch Linux
-alias pac='sudo pacman -S'
-
-# Update all
-alias upd="sudo pacman -Syu --noconfirm && yay -Syu --removemake --noconfirm"
+if (( $+commands[pacman] )); then
+    alias pac='sudo pacman -S'
+else
+    print "Not Arch Linux?" >&2
+    return 1
+fi
