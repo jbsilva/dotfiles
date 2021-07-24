@@ -262,6 +262,8 @@ esac
 ###############################################################################
 # Aliases
 ###############################################################################
+alias please='sudo $(fc -ln -1)'        # Last command with sudo
+
 alias list='du -shc *'
 alias listh='du -shc * | sort -h'
 
@@ -360,7 +362,6 @@ alias clipboard='if [ -p /dev/stdin ]; then pbcopy; fi; pbpaste'
 ###############################################################################
 alias rainbow='yes "$(seq 16 231)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
 alias fucking='sudo'
-alias please='sudo'
 alias emacs='echo "segmentation fault"'
 alias more='less'
 alias CAT='echo "=^.^=\n"'
