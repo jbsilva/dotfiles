@@ -26,10 +26,12 @@
 .config/baloofilerc
 .config/bluedevilglobalrc
 .config/calibre/
+.config/calibrerc
 .config/configstore
 .config/copyq
 .config/dconf/user
 .config/device_automounter_kcmrc
+.config/digikam_systemrc
 .config/digikamrc
 .config/discord/
 .config/discoverrc
@@ -39,6 +41,7 @@
 .config/drkonqirc
 .config/emaildefaults
 .config/evolution/
+.config/fcitx5/
 .config/filetypesrc
 .config/git/
 .config/gitahead.com/
@@ -134,11 +137,9 @@
 .config/user-dirs.dirs
 .config/vlc/
 .config/wireshark
+.config/wslu
 .config/xfce4
 .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
 .config/xm1
 .config/xsettingsd/
 nvimlog
-.config/digikam_systemrc
-.config/calibrerc
-.config/fcitx5/
