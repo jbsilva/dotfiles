@@ -143,3 +143,6 @@
 .config/xm1
 .config/xsettingsd/
 nvimlog
+.config/breezerc
+.config/fcitx/
+.config/kactivitymanagerd-pluginsrc
