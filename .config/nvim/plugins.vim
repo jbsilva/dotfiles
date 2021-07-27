@@ -24,9 +24,9 @@
 "------------------------------------------------------------------------------
 
 
-"*****************************************************************************
+"******************************************************************************
 "" Vim-PLug core
-"*****************************************************************************
+"******************************************************************************
 let vimplug_file=g:VIMDIR . "/autoload/plug.vim"
 let g:vim_bootstrap_langs = "html,javascript,perl,python,ruby"
 let g:vim_bootstrap_editor = "nvim"
@@ -48,9 +48,9 @@ endif
 call plug#begin(g:VIMDIR . "/plugged")
 
 
-"*****************************************************************************
+"******************************************************************************
 "" Plug install packages
-"*****************************************************************************
+"******************************************************************************
 
 "------------------------------------------------------------------------------
 " => Suda - Read or write files with sudo command
@@ -83,13 +83,54 @@ map <Leader>h <Plug>(easymotion-linebackward)
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
 "------------------------------------------------------------------------------
+" => Plenary - Lua functions. Dependence of other plugins
+"------------------------------------------------------------------------------
+Plug 'nvim-lua/plenary.nvim'
+
+"------------------------------------------------------------------------------
+" => Popup - An implementation of the Popup API from vim in Neovim
+"------------------------------------------------------------------------------
+Plug 'nvim-lua/popup.nvim'
+
+"------------------------------------------------------------------------------
 " => Telescope - Highly extendable fuzzy finder over lists
 "------------------------------------------------------------------------------
-" dependencies
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-" telescope
 Plug 'nvim-telescope/telescope.nvim'
+
+"------------------------------------------------------------------------------
+" => Nvim-lspconfig - Configs for Neovim's built-in language server client
+"
+"    Install the language servers:
+"       https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#pyright
+"
+"    Configuration in the section '=> Nvim-lspconfig config'.
+"
+"    :LspInfo
+"------------------------------------------------------------------------------
+Plug 'neovim/nvim-lspconfig'
+
+"------------------------------------------------------------------------------
+" => Nvim-compe - Autocompletion
+"------------------------------------------------------------------------------
+Plug 'hrsh7th/nvim-compe'
+
+"------------------------------------------------------------------------------
+" => Lspsaga - A light-weight lsp plugin based on neovim's built-in LSP
+"------------------------------------------------------------------------------
+Plug 'glepnir/lspsaga.nvim'
+
+"------------------------------------------------------------------------------
+" => Rust-tools - Tools for better development in Rust using the built-in LSP
+"
+"   Commands:
+"     RustSetInlayHints                  RustParentModule
+"     RustDisableInlayHints              RustJoinLines
+"     RustToggleInlayHints               RustHoverActions
+"     RustRunnables                      RustMoveItemDown
+"     RustExpandMacro                    RustMoveItemUp
+"     RustOpenCargo                      RustStartStandaloneServerForBuffer
+"------------------------------------------------------------------------------
+Plug 'simrat39/rust-tools.nvim'
 
 "------------------------------------------------------------------------------
 " => Vim-airline - Lean & mean status/tabline for vim that's light as air
@@ -133,26 +174,6 @@ nnoremap <silent> <F3> :NERDTreeToggle<CR>
 "    <leader>cu: uncomment
 "------------------------------------------------------------------------------
 Plug 'preservim/nerdcommenter'
-
-"------------------------------------------------------------------------------
-" => Nvim-lspconfig - Configs for Neovim's built-in language server client
-"
-"    Install a language server:
-"       https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#pyright
-"
-"    :LspInfo
-"------------------------------------------------------------------------------
-Plug 'neovim/nvim-lspconfig'
-
-"------------------------------------------------------------------------------
-" => Nvim-compe - Autocompletion
-"------------------------------------------------------------------------------
-Plug 'hrsh7th/nvim-compe'
-
-"------------------------------------------------------------------------------
-" => Lspsaga - A light-weight lsp plugin based on neovim built-in LSP
-"------------------------------------------------------------------------------
-Plug 'glepnir/lspsaga.nvim'
 
 "------------------------------------------------------------------------------
 " => Symbols-outline - A tree like view for symbols in Neovim using the LSP
@@ -675,6 +696,10 @@ EOF
 "    This has to stay after `call plug#end()`
 "------------------------------------------------------------------------------
 lua << EOF
-require'lspconfig'.pyright.setup{}
+local nvim_lsp = require('lspconfig')
+local servers = { "pyright", "rust_analyzer" }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {}
+end
 EOF
 
