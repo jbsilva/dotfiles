@@ -306,6 +306,7 @@ fi
 alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 alias d755="find . -type d -exec chmod 755 {} \;"
+alias d750="find . -type d -exec chmod 750 {} \;"
 alias f644="find . -type f -exec chmod 644 {} \;"
 alias f640="find . -type f -exec chmod 640 {} \;"
 alias now='date +"%T"'
