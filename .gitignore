@@ -6,6 +6,7 @@
 !.config/Code - OSS/User/
 .config/Code - OSS/User/*
 !.config/Code - OSS/User/settings.json
+!.config/transmission-daemon/settings.json
 .config/.mono
 .config/GIMP
 .config/GitExtensions
@@ -25,6 +26,7 @@
 .config/baloofileinformationrc
 .config/baloofilerc
 .config/bluedevilglobalrc
+.config/breezerc
 .config/calibre/
 .config/calibrerc
 .config/configstore
@@ -41,6 +43,7 @@
 .config/drkonqirc
 .config/emaildefaults
 .config/evolution/
+.config/fcitx/
 .config/fcitx5/
 .config/filetypesrc
 .config/git/
@@ -48,12 +51,7 @@
 .config/gnome-control-center/
 .config/goa-1.0/
 .config/gtk-2.0/
-.config/gtk-3.0/assets/
-.config/gtk-3.0/colors.css
-.config/gtk-3.0/gtk.css
-.config/gtk-3.0/servers
-.config/gtk-3.0/settings.ini
-.config/gtk-3.0/window_decorations.css
+.config/gtk-3.0/
 .config/gtk-4.0/
 .config/gtkrc
 .config/gtkrc-2.0
@@ -61,6 +59,7 @@
 .config/htop/htoprc
 .config/ibus/
 .config/inkscape
+.config/kactivitymanagerd-pluginsrc
 .config/kactivitymanagerd-statsrc
 .config/kactivitymanagerdrc
 .config/karabiner/automatic_backups
@@ -95,10 +94,12 @@
 .config/libreoffice
 .config/lxpanel/
 .config/lxsession/
+.config/lxtask.conf
 .config/lxterminal/
 .config/mimeapps.list
 .config/monitors.xml
 .config/monitors.xml~
+.config/mtmigrate
 .config/nautilus/
 .config/ncmpcpp/error.log
 .config/nvim/.netrwhist
@@ -123,6 +124,8 @@
 .config/pulse
 .config/qalculate/
 .config/qt5ct/qt5ct.conf
+.config/rclone
+.config/retroarch
 .config/session/
 .config/showfotorc
 .config/soffice.binrc
@@ -132,6 +135,7 @@
 .config/systemsettingsrc
 .config/teams/
 .config/totem/
+.config/transmission-daemon/*
 .config/transmission-remote-gtk/
 .config/trashrc
 .config/user-dirs.dirs
@@ -139,10 +143,6 @@
 .config/wireshark
 .config/wslu
 .config/xfce4
-.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-power-manager.xml
 .config/xm1
 .config/xsettingsd/
 nvimlog
-.config/breezerc
-.config/fcitx/
-.config/kactivitymanagerd-pluginsrc
