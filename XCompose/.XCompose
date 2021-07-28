@@ -1,0 +1,16 @@
+# UTF-8 (Unicode) compose sequence
+# Base: /usr/share/X11/locale/en_US.UTF-8/Compose
+# Inspirations:
+#   - https://github.com/kragen/xcompose
+#   - https://gist.github.com/5310/9b98f8591f404b21d8c7e52739961070
+
+include "%H/dotfiles/XCompose/dotXCompose"
+include "%H/dotfiles/XCompose/frakturcompose"
+include "%H/dotfiles/XCompose/emoji.compose"
+include "%H/dotfiles/XCompose/modletters.compose"
+include "%H/dotfiles/XCompose/parens.compose"
+
+<Multi_key> <c>                                     : "ç"   ccedilla
+<Multi_key> <C>                                     : "Ç"   Ccedilla
+<dead_acute> <c>                                    : "ç"   ccedilla
+<dead_acute> <C>                                    : "Ç"   Ccedilla

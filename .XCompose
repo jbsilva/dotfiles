@@ -1,8 +1,0 @@
-# UTF-8 (Unicode) compose sequence
-include "%L"
-<Multi_key> <c>   : "ç"   ccedilla
-<Multi_key> <C>   : "Ç"   Ccedilla
-<dead_acute> <c>  : "ç"   ccedilla
-<dead_acute> <C>  : "Ç"   Ccedilla
-
-<Multi_key> <t> <o> <w> <e> <r>  : "🗼"
