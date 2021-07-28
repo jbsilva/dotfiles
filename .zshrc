@@ -356,7 +356,7 @@ alias kssh='kitty +kitten ssh'  # alias ssh='TERM="xterm-256color" ssh'
 
 # Clipboard
 # Prezto already defined the pbcopy and pbpaste aliases
-alias clipboard='if [ -p /dev/stdin ]; then pbcopy; fi; pbpaste'
+alias clipboard='if [ -p /dev/stdin ]; then pbcopy &> /dev/null; fi; pbpaste'
 
 
 ###############################################################################
