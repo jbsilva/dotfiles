@@ -75,6 +75,13 @@ function addToPathEnd {
 addToPathStart /usr/local/sbin
 addToPathStart $HOME/bin
 
+# Neovim compiled from source
+if (( ! $+commands[nvim] )); then
+    if [[ -d $HOME/neovim/bin ]]; then
+        addToPathStart $HOME/neovim/bin
+    fi
+fi
+
 if [[ -z "$XDG_CONFIG_HOME" ]]; then
     export XDG_CONFIG_HOME=$HOME/.config
 fi
