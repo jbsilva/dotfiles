@@ -269,7 +269,7 @@ esac
 ###############################################################################
 # Aliases
 ###############################################################################
-alias sudo='sudo '
+# alias sudo='sudo '
 alias please='sudo $(fc -ln -1)'        # Last command with sudo
 
 alias list='du -shc *'
