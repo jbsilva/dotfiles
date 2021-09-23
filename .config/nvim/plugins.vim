@@ -529,8 +529,9 @@ let g:neoformat_enabled_python = ['black', 'autopep8', 'yapf', 'docformatter']
 "------------------------------------------------------------------------------
 " => Black - The uncompromising Python code formatter
 "    Neoformat can invoke Black
+"    :Black
 "------------------------------------------------------------------------------
-"Plug 'psf/black'
+Plug 'psf/black'
 
 "------------------------------------------------------------------------------
 " => PEP8 - Python style guide checker
