@@ -27,5 +27,7 @@
     "editor.renderControlCharacters": true,
     "editor.renderWhitespace": "all",
     "window.zoomLevel": 0,
-    "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
+    "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+    "python.pythonPath": "/home/julio/mambaforge/envs/learning/bin/python",
+    "editor.lineNumbers": "relative"
 }
