@@ -152,6 +152,11 @@ zplug "plugins/docker-compose", from:oh-my-zsh, if:'[[ $commands[docker-compose]
 zplug "webyneter/docker-aliases", use:docker-aliases.plugin.zsh
 
 ###############################################################################
+# Kafka completion
+###############################################################################
+zplug "Dabz/kafka-zsh-completions"
+
+###############################################################################
 # Jump back to parent directory
 # Quickly go back to a specific parent directory. Command: `bd dir_name`
 ###############################################################################
