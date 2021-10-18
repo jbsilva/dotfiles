@@ -163,6 +163,7 @@ set t_vb=                   " ^
 set timeoutlen=500          " Lower timeout for mappings
 set undolevels=500          " Only undo up to 500 times
 set whichwrap=h,l,<,>,[,]   " Allow move to next line
+set inccommand=nosplit      " Preview the effects of a command as you type
 
 "------------------------------------------------------------------------------
 " => Disable relative numbers if not usefull
@@ -414,6 +415,16 @@ endif
 "if has('unnamedplus')
 "  set clipboard=unnamed,unnamedplus
 "endif
+
+" d: delete (to the black hole register "_)
+" leader d: cut
+nnoremap x "_x
+nnoremap d "_d
+nnoremap D "_D
+vnoremap d "_d
+nnoremap <leader>d ""d
+nnoremap <leader>D ""D
+vnoremap <leader>d ""d
 
 " Y copy from cursor to last-non-blank-char
 nnoremap Y yg_
