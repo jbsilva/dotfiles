@@ -181,10 +181,10 @@ bindkey -M viins '^s' emoji::cli
 
 ###############################################################################
 #                          Pyenv and pyenv-virtualenv
-# pyenv install 2.7 && pyenv install 3.7 && pyenv rehash && pyenv global 2.7 3.7
+# pyenv install 2.7 && pyenv install 3.8.12 && pyenv rehash && pyenv global 2.7 3.8.12
 ###############################################################################
-#if (( $+commands[pyenv] )); then eval "$(pyenv init -)"; fi
-#if (( $+commands[pyenv-virtualenv-init] )); then eval "$(pyenv virtualenv-init -)"; fi
+if (( $+commands[pyenv] )); then eval "$(pyenv init --path)"; fi
+if (( $+commands[pyenv-virtualenv-init] )); then eval "$(pyenv virtualenv-init -)"; fi
 
 
 ###############################################################################
