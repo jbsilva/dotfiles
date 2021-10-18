@@ -365,6 +365,10 @@ alias kssh='kitty +kitten ssh'  # alias ssh='TERM="xterm-256color" ssh'
 # Prezto already defined the pbcopy and pbpaste aliases
 alias clipboard='if [ -p /dev/stdin ]; then pbcopy &> /dev/null; fi; pbpaste'
 
+# Split files
+alias split_80_20='gawk '"'"'BEGIN {srand()} {f = FILENAME (rand() <= 0.8 ? ".80" : ".20"); print > f}'"'"''
+alias split_70_30='gawk '"'"'BEGIN {srand()} {f = FILENAME (rand() <= 0.7 ? ".70" : ".30"); print > f}'"'"''
+
 
 ###############################################################################
 #                                     FUN
