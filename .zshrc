@@ -72,6 +72,7 @@ function addToPathEnd {
 # Some will be in ~/.xprofile
 ###############################################################################
 
+addToPathStart $HOME/.poetry/bin
 addToPathStart /usr/local/sbin
 addToPathStart $HOME/bin
 
