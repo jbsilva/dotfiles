@@ -1,0 +1,21 @@
+{
+    "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+    "keyboard.dispatch": "keyCode",
+    "python.defaultInterpreterPath": "/home/julio/mambaforge/envs/learning/bin/python",
+    "python.linting.flake8Enabled": true,
+    "python.linting.banditEnabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.prospectorEnabled": true,
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pydocstyleEnabled": true,
+    "python.linting.pylamaEnabled": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "python.formatting.provider": "black",
+    "terminal.integrated.fontFamily": "Hack Nerd Font",
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "python.formatting.blackArgs": [
+        "-l 79"
+    ]
+}

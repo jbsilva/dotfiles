@@ -6,6 +6,10 @@
 !.config/Code - OSS/User/
 .config/Code - OSS/User/*
 !.config/Code - OSS/User/settings.json
+.config/Code/*
+!.config/Code/User/
+.config/Code/User/*
+!.config/Code/User/settings.json
 !.config/transmission-daemon/settings.json
 .config/.mono
 .config/GIMP
