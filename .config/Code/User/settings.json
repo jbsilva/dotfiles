@@ -8,7 +8,6 @@
     "python.linting.prospectorEnabled": true,
     "python.linting.pycodestyleEnabled": true,
     "python.linting.pydocstyleEnabled": true,
-    "python.linting.pylamaEnabled": true,
     "[python]": {
         "editor.defaultFormatter": "ms-python.python"
     },
