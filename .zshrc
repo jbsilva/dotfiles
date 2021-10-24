@@ -370,6 +370,12 @@ alias clipboard='if [ -p /dev/stdin ]; then pbcopy &> /dev/null; fi; pbpaste'
 alias split_80_20='gawk '"'"'BEGIN {srand()} {f = FILENAME (rand() <= 0.8 ? ".80" : ".20"); print > f}'"'"''
 alias split_70_30='gawk '"'"'BEGIN {srand()} {f = FILENAME (rand() <= 0.7 ? ".70" : ".30"); print > f}'"'"''
 
+# See open ports
+alias open_ports='sudo ss -tulpn | grep LISTEN'
+
+# Dicionarios
+alias houaiss='WINEPREFIX="/home/julio/.local/share/wineprefixes/dicionarios" wine /home/julio/.local/share/wineprefixes/dicionarios/drive_c/Program\ Files/Houaiss3/Houaiss3.exe & disown'
+alias aurelio='WINEPREFIX="/home/julio/.local/share/wineprefixes/dicionarios" wine /home/julio/.local/share/wineprefixes/dicionarios/drive_c/Program\ Files/Positivo/Miniaurelio/aurelio.exe & disown'
 
 ###############################################################################
 #                                     FUN
