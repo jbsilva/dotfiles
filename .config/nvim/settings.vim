@@ -412,16 +412,22 @@ endif
 "------------------------------------------------------------------------------
 " => Copy/Paste/Cut
 "------------------------------------------------------------------------------
+
+" Leave this commented.
+" unnamed: copy to PRIMARY ("*" register. Inserted with middle mouse button)
+" unnamedplus: copy to CLIPBOARD ("+" register. Normal system clipboard)
 "if has('unnamedplus')
 "  set clipboard=unnamed,unnamedplus
 "endif
 
-" d: delete (to the black hole register "_)
-" leader d: cut
+" Delete without overwriting last yank (delete to the black hole register "_)
 nnoremap x "_x
 nnoremap d "_d
 nnoremap D "_D
 vnoremap d "_d
+vnoremap x "_x
+
+" Normal delete using the <leader> key
 nnoremap <leader>d ""d
 nnoremap <leader>D ""D
 vnoremap <leader>d ""d
@@ -430,10 +436,9 @@ vnoremap <leader>d ""d
 nnoremap Y yg_
 
 " Copy to system clipboard
-vnoremap <leader>y "+y
 nnoremap <leader>y "+y
-nnoremap <leader>yy "+yy
 nnoremap <leader>Y "+yg_
+vnoremap <leader>y "+y
 
 " Cut to system clipboard
 vnoremap <leader>x "+x
@@ -445,6 +450,18 @@ vnoremap <leader>p "+p
 vnoremap <leader>P "+P
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
+
+" Make p paste from "0 (what was yanked without specifiying a register)
+" instead of from the unnamed register ("").
+" The unnamed register ("") points to the last used register ("+ in the
+" commands above), except when using the black hole register ("_).
+" The loop is necessary to recover the hability to use p with other registers.
+noremap p "0p
+noremap P "0P
+for s:i in ['"','*','+','-','.',':','%','/','=','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+    execute 'noremap "'.s:i.'p "'.s:i.'p'
+    execute 'noremap "'.s:i.'P "'.s:i.'P'
+endfor
 
 "noremap YY "+y<CR>
 "noremap <leader>p "+gP<CR>
