@@ -357,6 +357,7 @@ alias qmvor='qmv -R --format=destination-only'
 
 # Docker
 alias dnorestart='docker update --restart=no $* $(docker ps -q)'
+alias dprune='docker system prune --volumes'
 
 # Kitty terminal
 alias icat='kitty +kitten icat'
