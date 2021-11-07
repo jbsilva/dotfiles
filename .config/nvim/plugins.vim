@@ -68,6 +68,7 @@ Plug 'ryanoasis/vim-devicons'
 "------------------------------------------------------------------------------
 " => Easymotion - Simpler way to use some motions in vim
 "    Instead of <number>w, type <Leader><Leader>w and then a highlighted letter
+"    To paste into search use Ctrl+R+", Ctrl+R+'+', Ctrl+R+0 or Ctrl+R+w
 "------------------------------------------------------------------------------
 Plug 'easymotion/vim-easymotion'
 
