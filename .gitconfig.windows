@@ -1,4 +1,0 @@
-# vim: set ft=gitconfig :
-#[core]
-#    autocrlf = true
-#    whitespace = cr-at-eol

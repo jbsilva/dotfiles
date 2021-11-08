@@ -88,12 +88,12 @@
 	permission-reset = !git diff -p -R --no-ext-diff --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
 
 # Include platform specific configuration
-[includeIf "gitdir/i:c:/"]
-    path = ~/.gitconfig.windows
-[includeIf "gitdir/i:/users/"]
-    path = ~/.gitconfig.mac
-[includeIf "gitdir/i:/home/"]
-    path = ~/.gitconfig.linux
+;[includeIf "gitdir/i:c:/"]
+;    path = ~/.gitconfig.windows
+;[includeIf "gitdir/i:/users/"]
+;    path = ~/.gitconfig.mac
+;[includeIf "gitdir/i:/home/"]
+;    path = ~/.gitconfig.linux
 [credential]
 	helper = store
 [pull]
