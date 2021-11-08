@@ -151,3 +151,10 @@
 .config/xsettingsd/
 nvimlog
 .config/filelightrc
+.config/Lens/
+.config/helm/
+.config/katevirc
+.config/menus/
+.config/nvm/
+.config/vlcrc
+.config/pypoetry/auth.toml
