@@ -101,3 +101,7 @@
 [init]
 	defaultBranch = main
 [global]
+[merge]
+	tool = meld
+[diff]
+	guitool = meld
