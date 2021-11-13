@@ -15,6 +15,13 @@
     "terminal.integrated.fontFamily": "Hack Nerd Font",
     "terminal.integrated.defaultProfile.linux": "zsh",
     "python.formatting.blackArgs": [
-        "-l 79"
+        "-l 88"
+    ],
+    "window.zoomLevel": 1,
+    "python.linting.pycodestyleArgs": [
+        "--max-line-length=88"
+    ],
+    "python.linting.banditArgs": [
+        "-s B101"
     ]
 }
