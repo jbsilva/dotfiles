@@ -90,9 +90,9 @@ fi
 fpath=(/usr/local/share/zsh-completions $fpath)
 
 local NVIM=nvim
+export NVIM_PYTHON_LOG_FILE_PATH=~/.config/nvim/nvimlog
 export VISUAL=$NVIM
 export EDITOR=$NVIM
-export NVIM_PYTHON_LOG_FILE_PATH=~/.config/nvim/nvimlog
 export OS="$(uname -s)"
 export USER='Julio'
 export USER_FULLNAME='Julio Batista Silva'
@@ -330,6 +330,8 @@ alias nowdate='date +"%d-%m-%Y"'
 alias sha1='openssl sha1'
 alias sha256='shasum -a 256'
 alias wget='wget -c'        # Resume wget by default
+
+alias ack='ack --ignore-dir=".mypy_cache"'
 
 alias unzipall="unzip '*.zip'"
 
