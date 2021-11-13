@@ -491,6 +491,14 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 "------------------------------------------------------------------------------
+" => Map Ctrl-Backspace to delete the previous word
+"    Not the same was <C-w> that erases the previous WORD
+"    In my terminal, Control+backspace sends  (U+0008)
+"------------------------------------------------------------------------------
+inoremap <C-BS> <C-\><C-o>db
+inoremap <C-h> <C-\><C-o>db
+
+"------------------------------------------------------------------------------
 " => Statusline
 "    Commented as the status line will be defined by the vim-airline plugin
 "------------------------------------------------------------------------------
