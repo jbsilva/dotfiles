@@ -139,7 +139,6 @@ set backspace=2             " Allow backspacing over anything
 set expandtab               " Insert spaces instead of tab chars
 "set formatoptions+=l
 set hidden                  " Allow hidden buffers
-set ic scs                  " Only be case sensitive when search contains uppercase
 set lazyredraw              " Don't redraw screen during macros
 set modeline                " Modeline. Warning: possibly insecure
 "set nofoldenable
@@ -193,8 +192,8 @@ set wildignore+=*.pyc
 "------------------------------------------------------------------------------
 set hlsearch
 set incsearch               " Increment search
-set ignorecase
-set smartcase               " Upper-case sensitive search
+set ignorecase              " Ignore case in search patterns...
+set smartcase               " ...except if search pattern contains upper case
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
