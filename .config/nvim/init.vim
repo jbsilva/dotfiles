@@ -22,24 +22,26 @@
 "===================================================================
 
 "------------------------------------------------------------------------------
-" => Empty config for VSCode
-"------------------------------------------------------------------------------
-if exists('g:vscode')
-    finish
-endif
-
-"------------------------------------------------------------------------------
 " => Constants
 " Different ways to define a variable. Eg.:
 "   let user = 'Julio Batista Silva'                    -- String
 "   let user = expand($USER_FULLNAME)                   -- Environment variable
 "   let user = system('git config -z --get user.name')  -- Shell command
 "------------------------------------------------------------------------------
-let g:DOTFILES = escape(expand('<sfile>:p:h:h'), ' ')         "dotfiles/.config
-let g:VIMDIR = escape(expand('<sfile>:p:h'), ' ')        "dotfiles/.config/nvim
-let g:TEMPLATES = g:VIMDIR . '/templates'      "dotfiles/.config/nvim/templates
-let g:SETTINGS = g:VIMDIR . '/settings.vim' "dotfiles/.config/nvim/settings.vim
-let g:PLUGINS = g:VIMDIR . '/plugins.vim'    "dotfiles/.config/nvim/plugins.vim
+let g:DOTFILES = escape(expand('<sfile>:p:h:h'), ' ') "dotfiles/.config
+let g:VIMDIR = escape(expand('<sfile>:p:h'), ' ')     "dotfiles/.config/nvim
+let g:TEMPLATES = g:VIMDIR . '/templates'             "dotfiles/.config/nvim/templates
+let g:SETTINGS = g:VIMDIR . '/settings.vim'           "dotfiles/.config/nvim/settings.vim
+let g:PLUGINS = g:VIMDIR . '/plugins.vim'             "dotfiles/.config/nvim/plugins.vim
+let g:VSCODE = g:VIMDIR . '/vscode.vim'               "dotfiles/.config/nvim/vscode.vim
+
+"------------------------------------------------------------------------------
+" => Config for VSCode
+"------------------------------------------------------------------------------
+if exists('g:vscode')
+    exec 'source' g:VSCODE
+    finish
+endif
 
 "------------------------------------------------------------------------------
 " => Leader key
