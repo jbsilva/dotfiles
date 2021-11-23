@@ -23,5 +23,8 @@
     ],
     "python.linting.banditArgs": [
         "-s B101"
-    ]
+    ],
+    "workbench.startupEditor": "none",
+    "editor.lineNumbers": "relative",
+    "editor.rulers": [80,88,120]
 }
