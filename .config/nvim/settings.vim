@@ -427,6 +427,7 @@ vnoremap d "_d
 vnoremap x "_x
 
 " Normal delete using the <leader> key
+" Use <leader>x to cut to system clipboard
 nnoremap <leader>d ""d
 nnoremap <leader>D ""D
 vnoremap <leader>d ""d
