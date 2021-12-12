@@ -72,7 +72,7 @@ zplug "arzzen/calc.plugin.zsh"
 # History Search Multi Word
 # Ctrl-r: bindkey "^r" history-search-multi-word
 ###############################################################################
-zplug "zdharma/history-search-multi-word"
+zplug "zdharma-continuum/history-search-multi-word"
 
 ###############################################################################
 # Enhancd - A next-generation cd command with an interactive filter
