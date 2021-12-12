@@ -78,8 +78,8 @@ addToPathStart $HOME/bin
 
 # Neovim compiled from source
 if (( ! $+commands[nvim] )); then
-    if [[ -d $HOME/neovim/bin ]]; then
-        addToPathStart $HOME/neovim/bin
+    if [[ -d $HOME/.local/nvim/bin ]]; then
+        addToPathStart $HOME/.local/nvim/bin
     fi
 fi
 
@@ -105,8 +105,8 @@ export DEFAULT_FOREGROUND=006 DEFAULT_BACKGROUND=235
 export DEFAULT_COLOR=$DEFAULT_FOREGROUND
 
 # Language
-export LANG='en_US.UTF-8'
-export LC_ALL='en_US.UTF-8'
+export LANG='en_GB.UTF-8'
+export LC_ALL='en_GB.UTF-8'
 
 
 # Terminal Emulator
