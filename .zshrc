@@ -72,8 +72,8 @@ function addToPathEnd {
 # Some will be in ~/.xprofile
 ###############################################################################
 
-addToPathStart $HOME/.poetry/bin
 addToPathStart /usr/local/sbin
+addToPathStart $HOME/.local/bin
 addToPathStart $HOME/bin
 
 # Neovim compiled from source
