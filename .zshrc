@@ -371,6 +371,7 @@ alias qmvor='qmv -R --format=destination-only'
 alias dnorestart='docker update --restart=no $* $(docker ps -q)'
 alias dprune='docker system prune --volumes'
 alias dpsa='docker ps -a'
+alias dupgrade="docker images | awk '{print $1}' | grep -v 'none' | grep -iv 'repo' | xargs -n1 docker pull"
 
 # Kitty terminal
 alias icat='kitty +kitten icat'
