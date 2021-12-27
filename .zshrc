@@ -336,6 +336,8 @@ alias ack='ack --ignore-dir=".mypy_cache"'
 alias unzipall="unzip '*.zip'"
 
 alias gst='git status'
+alias git-remove-untracked='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -d'
+alias git-remove-merged='git branch --merged master | grep -E -v "(^\*|master|main|dev)" | xargs git branch -d'
 
 # Paste clipboard in new vim file
 alias paste2vim='pbpaste | nvim -'
