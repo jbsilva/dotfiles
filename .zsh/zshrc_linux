@@ -6,7 +6,4 @@ fi
 # Arch Linux
 if (( $+commands[pacman] )); then
     alias pac='sudo pacman -S'
-else
-    print "Not Arch Linux?" >&2
-    return 1
 fi
