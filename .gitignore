@@ -159,3 +159,5 @@ nvimlog
 .config/vlcrc
 .config/pypoetry/auth.toml
 .config/Insomnia/
+.config/privateinternetaccess/
+.config/Raspberry Pi/
