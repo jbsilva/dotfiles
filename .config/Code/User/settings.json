@@ -26,5 +26,15 @@
     ],
     "workbench.startupEditor": "none",
     "editor.lineNumbers": "relative",
-    "editor.rulers": [80,88,120]
+    "editor.rulers": [
+        80,
+        88,
+        120
+    ],
+    "python.linting.flake8Args": [
+        "--max-line-length=88"
+    ],
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
