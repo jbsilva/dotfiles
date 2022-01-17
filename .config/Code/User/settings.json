@@ -1,7 +1,5 @@
 {
     "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
-    "keyboard.dispatch": "keyCode",
-    "python.defaultInterpreterPath": "/home/julio/.pyenv/shims/python",
     "python.linting.flake8Enabled": true,
     "python.linting.banditEnabled": true,
     "python.linting.mypyEnabled": true,
@@ -36,5 +34,6 @@
     ],
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "keyboard.dispatch": "keyCode"
 }
