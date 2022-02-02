@@ -1,3 +1,7 @@
 [ELAN050A:01 04F3:3158 Touchpad]
 naturalScroll=true
 tapToClick=true
+
+[Synaptics TM3512-010]
+middleEmulation=true
+tapToClick=true

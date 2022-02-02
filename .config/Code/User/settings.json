@@ -33,7 +33,7 @@
         "--max-line-length=79"
     ],
     "[json]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "vscode.json-language-features"
     },
     "keyboard.dispatch": "keyCode",
     "vim.enableNeovim": true
