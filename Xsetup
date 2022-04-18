@@ -1,18 +1,15 @@
 #!/bin/sh
-# Xsetup - run as root before the login dialog appears
-setxkbmap br -option caps:swapescape
+# /usr/share/sddm/scripts/Xsetup - run as root before the login dialog appears
 
+# Keyboards
+kb_script="/home/julio/bin/keyboards.sh"
+[ -s "$kb_script" ] && \. "$kb_script"
+
+
+# Nvidia
 xrandr --setprovideroutputsource modesetting NVIDIA-0
 xrandr --auto
 
 # Force Composition Pipeline
-s="$(nvidia-settings -q CurrentMetaMode -t)"
-echo "$s"
-if [[ "${s}" != "" ]]; then
-  s="${s#*" :: "}"
-  echo "$s"
-  if [[ "${s}" != "NULL" ]]; then
-    nvidia-settings -a CurrentMetaMode="${s//\}/, ForceCompositionPipeline=On\}}"
-  fi
-fi
-
+nfcp_script="/home/julio/bin/nvidia-force_comp_pipeline.sh"
+[ -s "$nfcp_script" ] && \. "$nfcp_script"
