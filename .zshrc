@@ -74,6 +74,7 @@ function addToPathEnd {
 
 addToPathStart /usr/local/sbin
 addToPathStart $HOME/.local/bin
+addToPathStart $HOME/.cargo/bin
 addToPathStart $HOME/bin
 
 # Neovim compiled from source
