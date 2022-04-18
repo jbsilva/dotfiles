@@ -13,11 +13,11 @@
     "terminal.integrated.fontFamily": "Hack Nerd Font",
     "terminal.integrated.defaultProfile.linux": "zsh",
     "python.formatting.blackArgs": [
-        "-l 88"
+        "-l 79"
     ],
     "window.zoomLevel": 1,
     "python.linting.pycodestyleArgs": [
-        "--max-line-length=88"
+        "--max-line-length=79"
     ],
     "python.linting.banditArgs": [
         "-s B101"
@@ -30,10 +30,11 @@
         120
     ],
     "python.linting.flake8Args": [
-        "--max-line-length=88"
+        "--max-line-length=79"
     ],
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "keyboard.dispatch": "keyCode"
+    "keyboard.dispatch": "keyCode",
+    "vim.enableNeovim": true
 }
