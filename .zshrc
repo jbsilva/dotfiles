@@ -340,6 +340,14 @@ alias gst='git status'
 alias git-remove-untracked='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -d'
 alias git-remove-merged='git branch --merged master | grep -E -v "(^\*|master|main|dev)" | xargs git branch -d'
 
+# Supercrabtree/k
+# _k: original k
+#  k: human readable, without Git (faster)
+# kk: human readable, with Git
+eval "$(echo "_k() {"; declare -f k | tail -n +2)"
+alias kk="_k --human --group-directories-first"
+alias k="_k --human --group-directories-first --no-vcs"
+
 # Paste clipboard in new vim file
 alias paste2vim='pbpaste | nvim -'
 
