@@ -184,28 +184,28 @@ bindkey -M viins '^s' emoji::cli
 #                          Pyenv and pyenv-virtualenv
 # pyenv install 2.7 && pyenv install 3.8.12 && pyenv rehash && pyenv global 2.7 3.8.12
 ###############################################################################
-if (( $+commands[pyenv] )); then eval "$(pyenv init --path)"; fi
+if (( $+commands[pyenv] )); then eval "$(pyenv init --path)"; eval "$(pyenv init -)"; fi
 if (( $+commands[pyenv-virtualenv-init] )); then eval "$(pyenv virtualenv-init -)"; fi
 
 
 ###############################################################################
 #                                    Conda
 ###############################################################################
-#export CONDA_AUTO_ACTIVATE_BASE=false
-## >>> conda initialize >>>
-## !! Contents within this block are managed by 'conda init' !!
-#__conda_setup="$('/home/julio/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-#if [ $? -eq 0 ]; then
-#    eval "$__conda_setup"
-#else
-#    if [ -f "/home/julio/mambaforge/etc/profile.d/conda.sh" ]; then
-#        . "/home/julio/mambaforge/etc/profile.d/conda.sh"
-#    else
-#        export PATH="/home/julio/mambaforge/bin:$PATH"
-#    fi
-#fi
-#unset __conda_setup
-## <<< conda initialize <<<
+export CONDA_AUTO_ACTIVATE_BASE=false
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/julio/.pyenv/versions/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/julio/.pyenv/versions/mambaforge/etc/profile.d/conda.sh" ]; then
+        . "/home/julio/.pyenv/versions/mambaforge/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/julio/.pyenv/versions/mambaforge/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
 ###############################################################################
 #                                    rbenv
