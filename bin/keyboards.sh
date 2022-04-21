@@ -9,11 +9,15 @@ keyboard_id=$(
 )
 if [ ! -z "$keyboard_id" ]; then
     setxkbmap -device $keyboard_id    \
-              -layout br              \
+              -layout us              \
+              # -layout br              \
+              -variant intl           \
               -option lv3:ralt_switch \
-              -option compose:menu    \
+              #  -option compose:menu    \
+              -option compose:rctlr   \
               -option caps:swapescape
 fi
+
 
 # Keychron K2
 # See https://zsh.sourceforge.io/Doc/Release/Expansion.html#Parameter-Expansion-Flags
@@ -31,3 +35,4 @@ do
               -option compose:rctrl   \
               -option caps:swapescape
 done
+
