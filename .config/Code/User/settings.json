@@ -1,40 +1,33 @@
 {
-    "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+    "workbench.colorTheme": "Default Dark+",
+    "terminal.external.linuxExec": "kitty",
+    "terminal.integrated.fontFamily": "Hack Nerd Font",
+    "python.linting.mypyEnabled": true,
     "python.linting.flake8Enabled": true,
     "python.linting.banditEnabled": true,
-    "python.linting.mypyEnabled": true,
-    "python.linting.prospectorEnabled": true,
     "python.linting.pycodestyleEnabled": true,
     "python.linting.pydocstyleEnabled": true,
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.python"
-    },
+    "python.linting.pylintEnabled": true,
     "python.formatting.provider": "black",
-    "terminal.integrated.fontFamily": "Hack Nerd Font",
-    "terminal.integrated.defaultProfile.linux": "zsh",
     "python.formatting.blackArgs": [
         "-l 79"
     ],
-    "window.zoomLevel": 1,
-    "python.linting.pycodestyleArgs": [
-        "--max-line-length=79"
-    ],
-    "python.linting.banditArgs": [
-        "-s B101"
-    ],
-    "workbench.startupEditor": "none",
-    "editor.lineNumbers": "relative",
     "editor.rulers": [
         80,
-        88,
-        120
-    ],
-    "python.linting.flake8Args": [
-        "--max-line-length=79"
+        88
     ],
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
     "keyboard.dispatch": "keyCode",
-    "vim.enableNeovim": true
+    "vim.easymotion": true,
+    "vim.history": 100,
+    "vim.hlsearch": true,
+    "vim.leader": ",",
+    "vim.neovimUseConfigFile": true,
+    "vim.enableNeovim": true,
+    "vim.smartRelativeLine": true,
+    "vim.textwidth": 79,
+    "vim.vimrc.enable": true,
+    "python.testing.pytestEnabled": true
 }
