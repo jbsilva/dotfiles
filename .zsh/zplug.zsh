@@ -154,7 +154,7 @@ zplug "webyneter/docker-aliases", use:docker-aliases.plugin.zsh
 ###############################################################################
 # Kafka completion
 ###############################################################################
-zplug "Dabz/kafka-zsh-completions"
+# zplug "Dabz/kafka-zsh-completions"
 
 ###############################################################################
 # Jump back to parent directory
