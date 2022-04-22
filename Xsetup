@@ -2,8 +2,8 @@
 # /usr/share/sddm/scripts/Xsetup - run as root before the login dialog appears
 
 # Keyboards
-kb_script="/home/julio/bin/keyboards.sh"
-[ -s "$kb_script" ] && \. "$kb_script"
+#kb_script="/home/julio/bin/keyboards.sh"
+#[ -s "$kb_script" ] && \. "$kb_script"
 
 
 # Nvidia
