@@ -1,7 +1,0 @@
-[Desktop Entry]
-Exec=/home/julio/bin/keyboards.sh
-Icon=dialog-scripts
-Name=keyboards.sh
-Path=
-Type=Application
-X-KDE-AutostartScript=true
