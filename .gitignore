@@ -161,3 +161,6 @@ nvimlog
 .config/Insomnia/
 .config/privateinternetaccess/
 .config/Raspberry Pi/
+.config/kdedefaults/
+.config/kiorc
+.config/kded_device_automounterrc
