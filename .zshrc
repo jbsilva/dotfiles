@@ -205,7 +205,12 @@ else
     fi
 fi
 unset __conda_setup
+
+if [ -f "/home/julio/.pyenv/versions/mambaforge/etc/profile.d/mamba.sh" ]; then
+    . "/home/julio/.pyenv/versions/mambaforge/etc/profile.d/mamba.sh"
+fi
 # <<< conda initialize <<<
+
 
 ###############################################################################
 #                                    rbenv
