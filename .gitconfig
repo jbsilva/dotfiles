@@ -95,7 +95,7 @@
 ;[includeIf "gitdir/i:/home/"]
 ;    path = ~/.gitconfig.linux
 [credential]
-	helper = store
+	helper = /usr/lib/git-core/git-credential-libsecret
 [pull]
 	rebase = true
 [init]
