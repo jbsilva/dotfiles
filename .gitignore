@@ -164,3 +164,7 @@ nvimlog
 .config/kdedefaults/
 .config/kiorc
 .config/kded_device_automounterrc
+.config/plasmawindowed-appletsrc
+.config/another-redis-desktop-manager/
+.config/plasmawindowedrc
+.config/simple-scan/
