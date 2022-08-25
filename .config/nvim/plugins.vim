@@ -349,6 +349,13 @@ Plug 'gruvbox-community/gruvbox'
 "endif
 
 "------------------------------------------------------------------------------
+" => Vim-visual-multi
+"    Multiple cursors plugin for vim
+"    https://github.com/mg979/vim-visual-multi/wiki/Quick-start
+"------------------------------------------------------------------------------
+Plug 'mg979/vim-visual-multi'
+
+"------------------------------------------------------------------------------
 " => Vim expand region
 "    Visually select larger regions of text using the same key combination
 "------------------------------------------------------------------------------
