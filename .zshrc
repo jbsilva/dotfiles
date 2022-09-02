@@ -360,7 +360,8 @@ alias paste2vim='pbpaste | nvim -'
 alias otp='oathtool --totp -b'
 
 # Backup
-alias bkp='rsync --recursive --links --times --delete --compress-level=0 --info=flist2,name,progress --human-readable'
+alias bkp='rsync --recursive --links --times --compress-level=0 --info=flist2,name,progress --human-readable'
+alias bkpd='rsync --recursive --links --times --compress-level=0 --info=flist2,name,progress --human-readable --delete'
 
 # C/C++/Objective-C
 alias g++e='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -Werror'    # Warnings = Error
