@@ -95,6 +95,7 @@ Plug 'nvim-lua/popup.nvim'
 
 "------------------------------------------------------------------------------
 " => Telescope - Highly extendable fuzzy finder over lists
+"    Install sharkdp/fd and BurntSushi/ripgrep before
 "------------------------------------------------------------------------------
 Plug 'nvim-telescope/telescope.nvim'
 
