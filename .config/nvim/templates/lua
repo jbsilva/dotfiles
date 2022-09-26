@@ -1,5 +1,0 @@
-#!/usr/bin/env lua
--- Author: $USER_FULLNAME
--- Email: $USER_EMAIL
-
-print("Hello World!")

@@ -1,9 +1,0 @@
-use std::io::prelude::*;
-use std::io;
-
-
-fn main() {
-    print!("Hello");
-    io::stdout().flush().ok().expect("Could not flush stdout");
-    io::stdin().read_line(&mut guess).ok().expect("Failed to read line");
-}
