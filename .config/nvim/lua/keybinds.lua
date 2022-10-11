@@ -1,4 +1,4 @@
-local remap = require("keymap")
+local remap = require("mapmodes")
 local noremap = remap.noremap
 local inoremap = remap.inoremap
 local vnoremap = remap.vnoremap
