@@ -5,6 +5,16 @@
     autocrlf = false
     safecrlf = true
     editor = nvim
+[pull]
+    rebase = true
+[init]
+    defaultBranch = main
+[merge]
+    tool = meld
+[diff]
+    guitool = meld
+[push]
+    autoSetupRemote = true
 [alias]
     # List of aliases
     alias = "!f(){ git config -l | grep alias; };f"
@@ -66,7 +76,7 @@
 
     # Prune stale remote branches
     prune-all = !git remote | xargs -n 1 git remote prune
-    
+
     # Info about last commit
     whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
     whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
@@ -85,25 +95,14 @@
 
     # What commit a file was added
     whatadded = log --follow --diff-filter=A --find-renames=40%
-	permission-reset = !git diff -p -R --no-ext-diff --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
+    permission-reset = !git diff -p -R --no-ext-diff --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
+
 
 # Include platform specific configuration
-;[includeIf "gitdir/i:c:/"]
-;    path = ~/.gitconfig.windows
-;[includeIf "gitdir/i:/users/"]
-;    path = ~/.gitconfig.mac
-;[includeIf "gitdir/i:/home/"]
-;    path = ~/.gitconfig.linux
-[credential]
-	helper = /usr/lib/git-core/git-credential-libsecret
-[pull]
-	rebase = true
-[init]
-	defaultBranch = main
-[global]
-[merge]
-	tool = meld
-[diff]
-	guitool = meld
-[push]
-	autoSetupRemote = true
+[includeIf "gitdir/i:c:/"]
+    path = ~/.gitconfig-windows
+[includeIf "gitdir/i:/users/"]
+    path = ~/.gitconfig-macos
+[includeIf "gitdir/i:/home/"]
+    path = ~/.gitconfig-linux
+
