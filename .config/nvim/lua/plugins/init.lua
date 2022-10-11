@@ -1,18 +1,4 @@
- -------------------------------------------------------------------------------
---> Install Packer
--------------------------------------------------------------------------------
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
-end
-
-local packer_bootstrap = ensure_packer()
+local packer_bootstrap = require('plugins.bootstrap').ensure_packer()
 
 return require('packer').startup(function(use)
   ----------------------------------------------------------
@@ -41,9 +27,15 @@ return require('packer').startup(function(use)
   }
 
   ----------------------------------------------------------
-  --> Git blame
+  --> Git blame: A git blame plugin for Neovim written in Lua
   ----------------------------------------------------------
   use 'f-person/git-blame.nvim'
+
+  ----------------------------------------------------------
+  --> WhichKey: Displays a popup with possible keybindings of the command you
+  -- started typing
+  ----------------------------------------------------------
+  use 'folke/which-key.nvim'
 
   ----------------------------------------------------------
   --> Popup: An implementation of the Popup API from vim in Neovim
@@ -70,7 +62,7 @@ return require('packer').startup(function(use)
     tag = 'nightly',
     event = 'CursorHold',
     config = function()
-      require('settings.nvim-tree')
+      require('plugins.config.nvim-tree')
     end,
   }
 
@@ -84,7 +76,7 @@ return require('packer').startup(function(use)
       requires = 'nvim-lua/plenary.nvim',
       event = 'CursorHold',
       config = function()
-        require('settings.telescope').config()
+        require('plugins.config.telescope').config()
       end,
     },
     -- FZF
@@ -140,7 +132,7 @@ return require('packer').startup(function(use)
       after = 'tokyonight.nvim',
       event = 'BufEnter',
       config = function()
-        require('settings.lualine').config()
+        require('plugins.config.lualine').config()
       end
     },
     {
@@ -177,10 +169,10 @@ return require('packer').startup(function(use)
       'antoinemadec/FixCursorHold.nvim'
     },
     setup = function()
-      require('settings.neotest').setup()
+      require('plugins.config.neotest').setup()
     end,
     config = function()
-      require('settings.neotest').config()
+      require('plugins.config.neotest').config()
     end,
   }
 
@@ -207,7 +199,7 @@ return require('packer').startup(function(use)
       event = 'CursorHold',
       run = ':TSUpdate',
       config = function()
-        require('settings.treesitter').config()
+        require('plugins.config.treesitter').config()
       end,
     },
     { 'nvim-treesitter/playground', after = 'nvim-treesitter' },
@@ -225,10 +217,10 @@ return require('packer').startup(function(use)
   use {
     'easymotion/vim-easymotion',
     setup = function()
-      require('settings.easymotion').setup()
+      require('plugins.config.easymotion').setup()
     end,
     config = function()
-      require('settings.easymotion').config()
+      require('plugins.config.easymotion').config()
     end,
   }
 
@@ -282,7 +274,7 @@ return require('packer').startup(function(use)
   -- use {
   --   'preservim/nerdcommenter',
   --   config = function()
-  --     require('settings.nerdcommenter').config()
+  --     require('plugins.config.nerdcommenter').config()
   --   end,
   -- }
 
@@ -297,7 +289,7 @@ return require('packer').startup(function(use)
     'numToStr/Comment.nvim',
     event = 'BufRead',
     config = function()
-      require('settings.comment').config()
+      require('plugins.config.comment').config()
     end,
   }
 
