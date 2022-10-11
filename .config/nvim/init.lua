@@ -12,8 +12,11 @@
 -- Download: https://github.com/jbsilva/dotfiles
 -- ===================================================================
 
-require('options')
-require('autocmd')
-require('plugins')
-require('keybinds')
-
+if vim.g.vscode then
+  require("vscode")
+else
+  require('options')
+  require('autocmd')
+  require('plugins')
+  require('keybinds')
+end
