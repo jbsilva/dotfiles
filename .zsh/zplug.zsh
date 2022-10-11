@@ -113,8 +113,12 @@ fi
 
 if [[ $OSTYPE = (darwin)* ]]; then
 	zplug "plugins/osx",      from:oh-my-zsh
-	zplug "plugins/brew",     from:oh-my-zsh, if:"which brew"
-	zplug "plugins/macports", from:oh-my-zsh, if:"which port"
+    if (( $+commands[brew] )); then
+	    zplug "plugins/brew",     from:oh-my-zsh, if:"which brew"
+    fi
+    if (( $+commands[port] )); then
+	    zplug "plugins/macports", from:oh-my-zsh, if:"which port"
+    fi
     zplug "mwilliammyers/plugin-osx"
 fi
 
