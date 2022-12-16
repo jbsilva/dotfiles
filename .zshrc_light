@@ -1,0 +1,209 @@
+###############################################################################
+#               Julio's ~/.zshrc file
+#
+#                      ( O O )
+#               ====oOO==(_)==OOo=====
+#
+# License:
+#           Copyright (c) 2011-2022, Julio Batista Silva <julio@juliobs.com>
+#                       All Rights Reserved
+#
+#           This program is free software. It comes without any warranty, to
+#           the extent permitted by applicable law. You can redistribute it
+#           and/or modify it under the terms of the Do What The Fuck You Want
+#           To Public License, Version 2, as published by Sam Hocevar. See
+#           http://sam.zoy.org/wtfpl/COPYING for more details.
+#
+# Created:      12 Aug 2011
+# Last Change:  27 Nov 2022
+#
+# Download: https://github.com/jbsilva/dotfiles
+###############################################################################
+
+
+###############################################################################
+# Security test
+###############################################################################
+
+# Don't do anything for non-interactive shells
+[[ -z "$PS1" ]] && return
+
+# Return if zsh is called from Vim
+if [[ -n $VIMRUNTIME ]]; then
+    return 0
+fi
+
+
+###############################################################################
+# Path Functions
+###############################################################################
+
+# Add to beginning of PATH
+function addToPathStart {
+  case ":$PATH:" in
+    *":$1:"*) :;; # already there
+    *) PATH="$1:$PATH";;
+  esac
+}
+
+# Add to end of PATH
+function addToPathEnd {
+  case ":$PATH:" in
+    *":$1:"*) :;; # already there
+    *) PATH="$PATH:$1";;
+  esac
+}
+
+
+###############################################################################
+#                                     Vars
+###############################################################################
+
+addToPathStart $HOME/bin
+
+# Neovim compiled from source
+if (( ! $+commands[nvim] )); then
+    if [[ -d $HOME/.local/nvim/bin ]]; then
+        addToPathStart $HOME/.local/nvim/bin
+    fi
+fi
+
+fpath=(/usr/local/share/zsh-completions $fpath)
+
+
+###############################################################################
+#                                    Zplug
+# Plugin manager for zsh (https://github.com/zplug/zplug)
+###############################################################################
+# Install zplug if necessary and start it
+export ZPLUG_HOME="${ZDOTDIR:-$HOME}/.zplug"
+test -e $ZPLUG_HOME || git clone https://github.com/zplug/zplug $ZPLUG_HOME
+export ZPLUG_LOADFILE="$HOME/.zsh/zplug.zsh"
+source "${ZPLUG_HOME}/init.zsh"
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load
+
+
+###############################################################################
+#                                 Keybindings
+# bindkey -l will give you a list of existing keymap names.
+# bindkey -M <keymap> will list all the bindings in a given keymap.
+# zle -al lists all registered zle commands
+###############################################################################
+for keymap in 'emacs' 'viins' 'vicmd'; do
+    # Requires zdharma/history-search-multi-word plugin
+    bindkey -M $keymap '^r' history-search-multi-word
+done
+unset keymap
+
+
+###############################################################################
+#                          Pyenv and pyenv-virtualenv
+# pyenv install 2.7 && pyenv install 3.8.12 && pyenv rehash && pyenv global 2.7 3.8.12
+###############################################################################
+if (( $+commands[pyenv] )); then eval "$(pyenv init --path)"; eval "$(pyenv init -)"; fi
+if (( $+commands[pyenv-virtualenv-init] )); then eval "$(pyenv virtualenv-init -)"; fi
+
+
+###############################################################################
+# Options
+###############################################################################
+setopt autocd                   # Allow changing directories without `cd`
+setopt pushd_ignore_dups        # Dont push copies of the same dir on stack.
+setopt pushd_minus              # Reference stack entries with "-".
+setopt extended_glob
+
+
+###############################################################################
+# History
+###############################################################################
+HISTFILE=~/.zsh_history
+HISTSIZE=5000
+SAVEHIST=10000
+setopt append_history           # Dont overwrite history
+setopt extended_history         # Also record time and duration of commands.
+setopt share_history            # Share history between multiple shells
+setopt hist_expire_dups_first   # Clear duplicates when trimming internal hist.
+setopt hist_find_no_dups        # Dont display duplicates during searches.
+setopt hist_ignore_dups         # Ignore consecutive duplicates.
+setopt hist_ignore_all_dups     # Remember only one unique copy of the command.
+setopt hist_reduce_blanks       # Remove superfluous blanks.
+setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
+
+
+###############################################################################
+# Aliases
+###############################################################################
+alias list='du -shc *'
+alias listh='du -shc * | sort -h'
+
+alias back='cd "$OLDPWD"'
+alias ..='cd ../'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+
+alias dir='ls -1'           # Show one entry per line
+alias lah='ls -alh'         # Show all human-readable
+alias ld='ls -ld'           # Show info about the directory
+alias lla='ls -lAFh'        # Show hidden all files
+alias ll='ls -lF'           # Show long file information
+alias la='ls -AF'           # Show hidden files
+alias lx='ls -lXB'          # Sort by extension
+alias lk='ls -lSr'          # Sort by size, biggest last
+alias lc='ls -ltcr'         # Sort by and show change time, most recent last
+alias lu='ls -ltur'         # Sort by and show access time, most recent last
+alias lt='ls -ltr'          # Sort by date, most recent last
+alias lr='ls -lR'           # Recursive ls
+alias lsr='find . -mindepth 2 -maxdepth 2 -type d -exec ls -ld "{}" \;' # ls dirs with depth 2
+
+alias cls="clear"
+
+alias d755="find . -type d -exec chmod 755 {} \;"
+alias d750="find . -type d -exec chmod 750 {} \;"
+alias f644="find . -type f -exec chmod 644 {} \;"
+alias f640="find . -type f -exec chmod 640 {} \;"
+alias sha1='openssl sha1'
+alias sha256='shasum -a 256'
+alias wget='wget -c'        # Resume wget by default
+
+alias ack='ack --ignore-dir=".mypy_cache"'
+
+# Git
+alias gst='git status'
+alias git-remove-untracked='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -d'
+alias git-remove-merged='git branch --merged master | grep -E -v "(^\*|master|main|dev)" | xargs git branch -d'
+
+# Backup
+alias bkp='rsync --recursive --links --times --compress-level=0 --info=flist2,name,progress --human-readable'
+alias bkpd='rsync --recursive --links --times --compress-level=0 --info=flist2,name,progress --human-readable --delete'
+
+# Renamers
+alias recc='rename -X -c --rews --camelcase --nows'
+alias qmvv='qmv --format=dc --options=spaces,width=40,autowidth'
+alias qmvo='qmv --format=destination-only'
+alias qmvor='qmv -R --format=destination-only'
+
+# Docker
+alias dnorestart='docker update --restart=no $* $(docker ps -q)'
+alias dprune='docker system prune --volumes'
+alias dpsa='docker ps -a'
+alias dupgrade="docker images | awk '{print $1}' | grep -v 'none' | grep -iv 'repo' | xargs -n1 docker pull"
+
+
+###############################################################################
+#                                Powerlevel10k
+###############################################################################
+case $(tty) in 
+  (/dev/tty[1-9]) [[ -f ~/.p10k_console.zsh ]] && source ~/.p10k_console.zsh;;
+              (*) [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh;; 
+          esac
+
