@@ -400,7 +400,8 @@ alias dupgrade="docker images | awk '{print $1}' | grep -v 'none' | grep -iv 're
 
 # Kitty terminal
 alias icat='kitty +kitten icat'
-alias kssh='kitty +kitten ssh'  # alias ssh='TERM="xterm-256color" ssh'
+alias kssh='kitty +kitten ssh'
+alias kkssh='TERM="xterm-256color" ssh'
 
 # Clipboard
 # Prezto already defined the pbcopy and pbpaste aliases
