@@ -1,0 +1,59 @@
+# macOS only
+if [[ "$OSTYPE" != darwin* ]]; then
+    return 1
+fi
+
+# Install Homebrew
+# if [[ ! -x "$(command -v brew)" ]]; then
+#     iStep "Installing Homebrew"
+#     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# fi
+
+# Binutils, coreutils, findutils, sed, grep, etc
+export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH"
+# export PATH="/usr/local/opt/binutils/bin:$PATH"
+# export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+# export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+# export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+
+
+# Byobu
+if [ -e /usr/local/bin/byobu ]; then
+    export BYOBU_PREFIX="$(brew --prefix)"
+fi
+
+# Google-cloud-sdk
+if [ -d $(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk ]; then
+  source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+  source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+fi
+
+###############################################################################
+# Aliases
+###############################################################################
+
+# Show/hide all files in Finder
+alias showAllOn='defaults write com.apple.finder AppleShowAllFiles 1 && killall Finder'
+alias showAllOff='defaults write com.apple.finder AppleShowAllFiles 0 && killall Finder'
+
+# Show/hide desktop
+alias hide_Desktop='defaults write com.apple.finder CreateDesktop -bool FALSE; killall Finder'
+alias show_Desktop='defaults write com.apple.finder CreateDesktop TRUE; killall Finder'
+
+# List directories first. GNU coreutils
+# alias lsd='/usr/local/bin/gls --color -h --group-directories-first'
+# alias lsdl='lsd | less'
+
+# List files and directories sorted by size. GNU coreutils
+# alias listh='du -shc * | gsort -h'
+
+# Updates with Homebrew. Do a `sudo chown -R $(whoami):admin /usr/local` first.
+# compaudit | xargs chmod g-w
+alias brewup="brew update && brew upgrade && brew upgrade --cask && brew cleanup && brew doctor"
+alias brewup_greedy="brew update && brew upgrade && brew upgrade --cask --greedy && brew cleanup && brew doctor"
+# alias brewup="brew update && brew upgrade && brew outdated --cask --verbose | awk '{print $1}' | xargs brew reinstall --cask && brew cleanup && brew doctor"
+# alias brewup_greedy="brew update && brew upgrade && brew outdated --cask --greedy --verbose | grep -v '(latest)' | awk '{print $1}' | xargs brew reinstall --cask && brew cleanup && brew doctor"
+
+
+# UTI
+# source $HOME/.zsh/getuti.zsh

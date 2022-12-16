@@ -282,8 +282,8 @@ setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
 ###############################################################################
 case $OS in
     Darwin)
-        export OSX_VERSION="$(sw_vers -productVersion)"
-        [[ -f "$HOME/.zsh/zshrc_osx" ]] && source "$HOME/.zsh/zshrc_osx"
+        export MACOS_VERSION="$(sw_vers -productVersion)"
+        [[ -f "$HOME/.zsh/zshrc_macos" ]] && source "$HOME/.zsh/zshrc_macos"
         ;;
     Linux)
         [[ -f "$HOME/.zsh/zshrc_linux" ]] && source "$HOME/.zsh/zshrc_linux"
