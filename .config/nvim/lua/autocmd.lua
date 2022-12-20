@@ -69,8 +69,8 @@ autocmd(
   'BufWritePost',
   {
     group = augroup('Packer', { clear = true }),
-    pattern = 'plugins.lua',
-    command = 'PackerCompile',
+    pattern = 'init.lua',
+    command = 'source <afile> | PackerCompile',
   }
 )
 
