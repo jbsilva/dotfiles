@@ -1,3 +1,9 @@
+-------------------------------------------------------------------------------
+-- Keybinds
+-- 
+--  Use `:verbose map <KEYS>` to check if/where a shortcut is already in use
+-------------------------------------------------------------------------------
+
 local remap = require("mapmodes")
 local noremap = remap.noremap
 local inoremap = remap.inoremap
