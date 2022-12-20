@@ -172,3 +172,4 @@ nvimlog
 .config/Transmission Remote GUI
 .config/gitui
 .config/gcloud
+packer_compiled.lua
