@@ -19,6 +19,7 @@ zstyle ':prezto:load' pmodule \
   'history' \
   'directory' \
   'spectrum' \
+  'gnu-utility' \
   'utility' \
   'completion' \
   'fasd' \
@@ -32,6 +33,12 @@ zstyle ':prezto:load' pmodule \
   'syntax-highlighting' \
   'history-substring-search' \
   'prompt'
+
+# GNU Utility
+# Homebrew prefixes 'g' to GNU utililies:
+#     brew install coreutils binutils findutils libtool grep make gnu-sed
+# Adding "gnubin" directories to the PATH may break system scripts. Use this instead
+zstyle ':prezto:module:gnu-utility' prefix 'g'
 
 # Disable hosts completion
 zstyle ':prezto:module:completion:*:hosts' etc-host-ignores \
