@@ -65,7 +65,7 @@ onoremap('A', ':<C-u>normal! mzggVG<CR>`z')
 xnoremap('A', ':<C-u>normal! ggVG<CR>')
 
 -------------------------------------------------------------------------------
---> Clean search highlight with <leader><space>
+--> Clean search highlight with ,<space>
 -------------------------------------------------------------------------------
 nnoremap(',<space>', ':noh<CR>', { silent = true })
 
