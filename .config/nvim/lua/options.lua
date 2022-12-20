@@ -21,7 +21,7 @@ o.timeoutlen = 500
 --> Lower updatetime
 -- Used for CursorHold
 ------------------------------------------------------------------------------
-o.updatetime = 500
+o.updatetime = 300
 
 ------------------------------------------------------------------------------
 --> Number of screen lines to keep above and below the cursor
