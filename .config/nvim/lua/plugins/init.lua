@@ -354,6 +354,17 @@ return require('packer').startup(function(use)
   use("github/copilot.vim")
 
   ----------------------------------------------------------
+  --> Zen Mode: Distraction-free coding for Neovim
+  -- :ZenMode
+  ----------------------------------------------------------
+  use {
+    "folke/zen-mode.nvim",
+    config = function()
+      require("zen-mode").setup()
+    end
+  }
+
+  ----------------------------------------------------------
   --> Automatically set up your configuration after cloning packer.nvim
   ----------------------------------------------------------
   if packer_bootstrap then
