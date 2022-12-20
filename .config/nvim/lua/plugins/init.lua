@@ -27,9 +27,6 @@ return require('packer').startup(function(use)
   }
 
   ----------------------------------------------------------
-  ----------------------------------------------------------
-
-  ----------------------------------------------------------
   --> WhichKey: Show possible keybindings of the command you started typing
   -- :WhichKey
   ----------------------------------------------------------
@@ -192,12 +189,53 @@ return require('packer').startup(function(use)
   }
 
   ----------------------------------------------------------
-  --> Nvim-lspconfig - Configs for Neovim's built-in language server client
+  --> Nvim-lspconfig: Configs for Neovim's built-in language server client
   -- Install the language servers:
   --    https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#pyright
   --    :LspInfo
   ----------------------------------------------------------
-  use 'neovim/nvim-lspconfig'
+  -- use {
+  --   'neovim/nvim-lspconfig',
+  --   requires = {
+  --     -- Automatically install LSPs to stdpath for neovim
+  --     'williamboman/mason.nvim',
+  --     'williamboman/mason-lspconfig.nvim',
+  --     -- Useful status updates for LSP
+  --     'j-hui/fidget.nvim',
+  --   },
+  --   setup = function()
+  --     require('mason').setup()
+  --   end,
+  -- }
+
+  ----------------------------------------------------------
+  --> LSP Zero: A starting point to setup some lsp related features
+  ----------------------------------------------------------
+  use {
+    'VonHeikemen/lsp-zero.nvim',
+    requires = {
+      -- LSP Support
+      {'neovim/nvim-lspconfig'},
+      {'williamboman/mason.nvim'},
+      {'williamboman/mason-lspconfig.nvim'},
+
+      -- Autocompletion
+      {'hrsh7th/nvim-cmp'},
+      {'hrsh7th/cmp-buffer'},
+      {'hrsh7th/cmp-path'},
+      {'saadparwaiz1/cmp_luasnip'},
+      {'hrsh7th/cmp-nvim-lsp'},
+      {'hrsh7th/cmp-nvim-lua'},
+
+      -- Snippets
+      {'L3MON4D3/LuaSnip'},
+      {'rafamadriz/friendly-snippets'},
+    },
+    config = function()
+      require('plugins.config.lsp_zero').config()
+    end,
+    event = "InsertEnter",
+  }
 
   ----------------------------------------------------------
   --> Vim-Polyglot: A collection of language packs for Vim
