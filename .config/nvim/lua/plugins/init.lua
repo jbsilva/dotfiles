@@ -30,8 +30,8 @@ return require('packer').startup(function(use)
   ----------------------------------------------------------
 
   ----------------------------------------------------------
-  --> WhichKey: Displays a popup with possible keybindings of the command you
-  -- started typing
+  --> WhichKey: Show possible keybindings of the command you started typing
+  -- :WhichKey
   ----------------------------------------------------------
   use 'folke/which-key.nvim'
 
