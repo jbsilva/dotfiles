@@ -58,6 +58,11 @@ xnoremap('<C-j>', ":move '>+1<CR>gv=gv")
 xnoremap('<C-k>', ":move '<-2<CR>gv=gv")
 
 -------------------------------------------------------------------------------
+--> Keep cursor in the same place when joining lines
+-------------------------------------------------------------------------------
+-- nnoremap('J', 'mzJ`z')
+
+-------------------------------------------------------------------------------
 --> Use operator pending mode to visually select the whole buffer
 -- e.g. dA = delete buffer ALL, yA = copy whole buffer ALL
 -------------------------------------------------------------------------------
