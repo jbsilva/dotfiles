@@ -45,8 +45,8 @@ o.numberwidth = 4
 -- Show the line number relative to the line with the cursor
 o.relativenumber = true
 
--- Only draw signcolumn (left of line numbers) when there is a sign to display
-o.signcolumn = 'auto'
+-- Draw signcolumn (left of line numbers)
+o.signcolumn = 'yes'
 
 -- Highlight the current line
 o.cursorline = true
