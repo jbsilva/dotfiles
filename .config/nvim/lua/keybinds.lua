@@ -41,6 +41,11 @@ noremap('<A-j>', '<C-w>j')
 noremap('<A-k>', '<C-w>k')
 noremap('<A-l>', '<C-w>l')
 noremap('<A-h>', '<C-w>h')
+-- Temporary fix for macOS using the "US International - PC" layout
+noremap('∆', '<C-w>j')
+noremap('˚', '<C-w>k')
+noremap('¬', '<C-w>l')
+noremap('˙', '<C-w>h')
 
 -------------------------------------------------------------------------------
 --> Tab splits
