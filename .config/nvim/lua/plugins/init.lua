@@ -122,7 +122,7 @@ return require('packer').startup(function(use)
   -- Tokyo Night: A dark and light theme ported from VSCode
   use 'folke/tokyonight.nvim'
 
-  -- Github's Neovim themes
+  -- GitHub's Neovim themes
   use({
     'projekt0n/github-nvim-theme',
     config = function()
