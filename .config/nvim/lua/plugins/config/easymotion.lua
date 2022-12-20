@@ -4,7 +4,7 @@ function M.setup()
   ---------------------------------------------------------------------------
   --> Keymaps
   ---------------------------------------------------------------------------
-  local remap = require("keymap")
+  local remap = require("mapmodes")
   local nnoremap = remap.nnoremap
 
   -- Avoid repetitive use of the h j k and l keys

@@ -14,7 +14,7 @@ function M.setup()
   ---------------------------------------------------------------------------
   --> Keymaps
   ---------------------------------------------------------------------------
-  local remap = require("keymap")
+  local remap = require("mapmodes")
   local nnoremap = remap.nnoremap
 
   nnoremap('<leader>tf', function()

@@ -46,7 +46,7 @@ function M.config()
   ---------------------------------------------------------------------------
   --> Keymaps
   ---------------------------------------------------------------------------
-  local remap = require("keymap")
+  local remap = require("mapmodes")
   local nnoremap = remap.nnoremap
 
   nnoremap('<C-n>', '<CMD>NvimTreeToggle<CR>')
