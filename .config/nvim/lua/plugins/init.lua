@@ -210,6 +210,8 @@ return require('packer').startup(function(use)
 
   ----------------------------------------------------------
   --> LSP Zero: A starting point to setup some lsp related features
+  --> Null-ls: Inject LSP diagnostics, code actions, and more via Lua
+  --> Debug Adapter Protocol client implementation for Neovim
   ----------------------------------------------------------
   use {
     'VonHeikemen/lsp-zero.nvim',
@@ -218,6 +220,14 @@ return require('packer').startup(function(use)
       {'neovim/nvim-lspconfig'},
       {'williamboman/mason.nvim'},
       {'williamboman/mason-lspconfig.nvim'},
+
+      --> Null-ls
+      { 'jose-elias-alvarez/null-ls.nvim' },
+      { 'jayp0521/mason-null-ls.nvim' },
+
+      --> Debugging
+      { "mfussenegger/nvim-dap" },
+      { "jayp0521/mason-nvim-dap.nvim" },
 
       -- Autocompletion
       {'hrsh7th/nvim-cmp'},

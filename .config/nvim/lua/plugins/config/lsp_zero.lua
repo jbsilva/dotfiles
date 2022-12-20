@@ -8,8 +8,9 @@ function M.config()
   lsp.ensure_installed({
     'bashls',                 -- Bash
     'html',                   -- HTML
-    'jedi_language_server',   -- Python
-    -- 'pyright',                -- Python
+    -- 'jedi_language_server',   -- Python
+    -- 'pylsp',                  -- Python
+    'pyright',                -- Python. Requires npm
     'jsonls',                 -- Json
     'marksman',               -- Markdown
     'rust_analyzer',          -- Rust
@@ -20,27 +21,101 @@ function M.config()
     'yamlls',                 -- Yaml
   })
 
+  ----------------------------------------------------------
+  --> CMP
+  ----------------------------------------------------------
   local cmp = require('cmp')
-  local cmp_select = {behavior = cmp.SelectBehavior.Select}
-  local cmp_mappings = lsp.defaults.cmp_mappings({
-    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    ["<C-Space>"] = cmp.mapping.complete(),
-  })
+  local cmp_mappings = lsp.defaults.cmp_mappings()
 
-  -- disable completion with tab
-  -- this helps with copilot setup
+  -- Disable completion with tab
   cmp_mappings['<Tab>'] = nil
   cmp_mappings['<S-Tab>'] = nil
 
   lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
+    mapping = cmp_mappings,
   })
 
   lsp.nvim_workspace()
 
   lsp.setup()
+
+  ----------------------------------------------------------
+  --> Null-ls
+  --  Sources: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
+  ----------------------------------------------------------
+  local null_ls = require('null-ls')
+  local formatting = null_ls.builtins.formatting
+  local diagnostics = null_ls.builtins.diagnostics
+
+  null_ls.setup({
+    sources = {
+      -- Stylua: Lua
+      -- https://github.com/JohnnyMorganz/StyLua#options
+      formatting.stylua.with({
+        extra_args = {
+          '--indent-type', 'spaces',
+          '--indent-width', '2',
+          '--column-width', '88',
+          '--quote-style', 'AutoPreferSingle',
+        },
+      }),
+      -- Prettier: Javascript, TypeScript, CSS, JSON, HTML, Yaml, Markdown
+      formatting.prettier.with({
+        extra_args = {
+          '--no-semi',
+          '--single-quote',
+          '--jsx-single-quote',
+        },
+      }),
+      -- Black: Python
+      formatting.black.with({
+        extra_args = {
+          '--line-length', '88',
+        }
+      }),
+      -- Isort: Python
+      formatting.isort.with({
+        extra_args = {
+          '--line-length', '88',
+        }
+      }),
+      -- Flake8: Python
+      -- https://pycodestyle.pycqa.org/en/latest/intro.html#error-codes
+      diagnostics.flake8.with({
+        extra_args = {
+          '--max-line-length', '88',
+          '--ignore', 'W391',
+        },
+      }),
+    },
+  })
+
+  ----------------------------------------------------------
+  --> Mason-null-ls
+  ----------------------------------------------------------
+  require('mason-null-ls').setup({
+    -- ensure_installed = {
+    --   "stylua",
+    --   "jq",
+    --   "prettier",
+    --   "black",
+    --   "isort",
+    --   "mypy",
+    --   "pylint",
+    -- },
+    automatic_installation = true,
+    automatic_setup = false,
+  })
+
+  ----------------------------------------------------------
+  --> Mason-dap
+  ----------------------------------------------------------
+  require('mason-nvim-dap').setup({
+    ensure_installed = {
+      'python',
+    },
+    automatic_setup = true,
+  })
 end
 
 return M
