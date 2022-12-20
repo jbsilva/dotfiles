@@ -310,6 +310,12 @@ return require('packer').startup(function(use)
   }
 
   ----------------------------------------------------------
+  --> GitHub Copilot: uses OpenAI Codex to suggest code in real-time
+  -- :Copilot setup
+  ----------------------------------------------------------
+  use("github/copilot.vim")
+
+  ----------------------------------------------------------
   --> Automatically set up your configuration after cloning packer.nvim
   ----------------------------------------------------------
   if packer_bootstrap then
