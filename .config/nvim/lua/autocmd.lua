@@ -48,18 +48,19 @@ autocmd(
 
 -------------------------------------------------------------------------------
 --> Remember last cursor position
+--  TODO: fix undesired jumps
 -------------------------------------------------------------------------------
-autocmd(
-  'BufReadPost',
-  {
-     callback = function()
-       local row, col = unpack(vim.api.nvim_buf_get_mark(0, '"'))
-       if row > 0 and row <= vim.api.nvim_buf_line_count(0) then
-         vim.api.nvim_win_set_cursor(0, { row, col })
-       end
-     end,
-  }
-)
+-- autocmd(
+--   'BufReadPost',
+--   {
+--     callback = function()
+--       local row, col = unpack(vim.api.nvim_buf_get_mark(0, '"'))
+--       if row > 0 and row <= vim.api.nvim_buf_line_count(0) then
+--         vim.api.nvim_win_set_cursor(0, { row, col })
+--       end
+--     end,
+--   }
+-- )
 
 -------------------------------------------------------------------------------
 --> Automatically run :PackerCompile whenever plugins.lua is updated
