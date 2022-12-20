@@ -82,13 +82,13 @@
     whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
 
     # Delete local branches that have been merged into master
-    purge = !git branch -d $(git branch --merged master | grep -v -e '*' -e 'master')
+    # purge = !git branch -d $(git branch --merged master | grep -v -e '*' -e 'master')
 
     # Who commits more
     #fixers = !git log -M -C --format=\"format:%aN\" --grep=\"^[[:digit:]]\\+:\" | sort | uniq -c | sort -n
 
     # Check if a branch has been merged into the current HEAD
-    merged = !sh -c 'git rev-list HEAD | grep $(git rev-parse $0)'
+    # merged = !sh -c 'git rev-list HEAD | grep $(git rev-parse $0)'
 
     # Date of the first commit
     log-first-date = !git log --date-order --date=iso --pretty=\"format:%ad\" --reverse | head -1
