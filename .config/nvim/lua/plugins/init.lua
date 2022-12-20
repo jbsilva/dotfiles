@@ -240,7 +240,8 @@ return require('packer').startup(function(use)
   }
 
   ----------------------------------------------------------
-  --> CamelCaseMotion: CamelCase motion through words
+  --> CamelCaseMotion: CamelCase/snake_case motion through words
+  --  <leader>w, <leader>b, <leader>e, ci<leader>w (inner motion)
   ----------------------------------------------------------
   use {
     'bkad/CamelCaseMotion',
