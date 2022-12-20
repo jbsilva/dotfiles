@@ -36,6 +36,17 @@ return require('packer').startup(function(use)
   use 'folke/which-key.nvim'
 
   ----------------------------------------------------------
+  --> Undotree: The undo history visualizer for VIM
+  --  :UndotreeToggle
+  ----------------------------------------------------------
+  use {
+    'mbbill/undotree',
+    setup = function()
+      require('plugins.config.undotree').setup()
+    end,
+  }
+
+  ----------------------------------------------------------
   --> Popup: An implementation of the Popup API from vim in Neovim
   ----------------------------------------------------------
   -- use 'nvim-lua/popup.nvim'
