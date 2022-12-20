@@ -27,9 +27,7 @@ return require('packer').startup(function(use)
   }
 
   ----------------------------------------------------------
-  --> Git blame: A git blame plugin for Neovim written in Lua
   ----------------------------------------------------------
-  use 'f-person/git-blame.nvim'
 
   ----------------------------------------------------------
   --> WhichKey: Displays a popup with possible keybindings of the command you
@@ -125,16 +123,21 @@ return require('packer').startup(function(use)
 
   ----------------------------------------------------------
   --> Lualine: A blazing fast and easy to configure Neovim statusline
+  --  Uses:
+  --    Git blame: A git blame plugin for Neovim written in Lua
+  --    fidget.nvim: Standalone UI for nvim-lsp progress
   ----------------------------------------------------------
   use {
     {
       'nvim-lualine/lualine.nvim',
       after = 'tokyonight.nvim',
+      requires = 'f-person/git-blame.nvim',
       event = 'BufEnter',
       config = function()
         require('plugins.config.lualine').config()
       end
     },
+    -- Fidget
     {
       'j-hui/fidget.nvim',
       after = 'lualine.nvim',
