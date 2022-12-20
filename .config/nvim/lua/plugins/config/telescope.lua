@@ -30,7 +30,7 @@ function M.config()
     end
   )
 
-  -- Get :help
+  -- Get :help. Capital H
   nnoremap('<leader>H', Telescope.help_tags)
 
   -- Fuzzy find active buffers
