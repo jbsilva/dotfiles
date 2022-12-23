@@ -103,6 +103,7 @@
     path = ~/.gitconfig-windows
 [includeIf "gitdir/i:/users/"]
     path = ~/.gitconfig-macos
+# On WSL symlink to dotfiles/.gitconfig-wsl
 [includeIf "gitdir/i:/home/"]
     path = ~/.gitconfig-linux
 
