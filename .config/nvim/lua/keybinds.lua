@@ -92,6 +92,7 @@ nnoremap(',<space>', ':noh<CR>', { silent = true })
 
 -------------------------------------------------------------------------------
 --> Replace current word
+--  Also check Treesitter's smart_rename
 -------------------------------------------------------------------------------
 nnoremap('<leader>s', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
@@ -155,10 +156,13 @@ nnoremap('<leader>P', '"+P')
 noremap('p', '"0p')
 noremap('P', '"0P')
 
--- registers = {'"','*','+','-','.',':','%','/','=','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'}
--- for s:i in registers do
---     execute 'noremap "'.s:i.'p "'.s:i.'p'
---     execute 'noremap "'.s:i.'P "'.s:i.'P'
+-- registers = { '"', '*', '+', '-', '.', ':', '%', '/', '=', '1', '2', '3', '4',
+--     '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+--     'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
+--     'z' }
+-- for r in registers do
+--   noremap(r.p, r.p)
+--   noremap(r.P, r.P)
 -- end
 
 -------------------------------------------------------------------------------
