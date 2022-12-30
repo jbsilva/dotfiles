@@ -67,7 +67,6 @@ function M.config()
 
   null_ls.setup({
     sources = {
-      -- Stylua: Lua
 
       -- Prettier: Javascript, TypeScript, CSS, JSON, HTML, Yaml, Markdown
       formatting.prettier.with({
@@ -86,6 +85,7 @@ function M.config()
       -- Mdformat: An opinionated Markdown formatter that can be used to enforce a consistent style in Markdown files
       formatting.mdformat,
 
+      -- Stylua: An opinionated code formatter for Lua
       -- https://github.com/JohnnyMorganz/StyLua#options
       formatting.stylua.with({
         extra_args = {
