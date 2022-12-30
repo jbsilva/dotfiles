@@ -94,19 +94,23 @@ function M.config()
         set_jumps = true, -- whether to set jumps in the jumplist
         goto_next_start = {
           [']f'] = '@function.outer',
-          [']]'] = '@class.outer',
+          [']]'] = { query = "@class.outer", desc = "Next class start" },
+          [']b'] = '@block.outer',
         },
         goto_next_end = {
           [']F'] = '@function.outer',
           [']['] = '@class.outer',
+          [']B'] = '@block.outer',
         },
         goto_previous_start = {
           ['[f'] = '@function.outer',
           ['[['] = '@class.outer',
+          ['[b'] = '@block.outer',
         },
         goto_previous_end = {
           ['[F'] = '@function.outer',
           ['[]'] = '@class.outer',
+          ['[B'] = '@block.outer',
         },
       },
 
