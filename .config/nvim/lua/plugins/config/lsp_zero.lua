@@ -43,7 +43,6 @@ function M.config()
   ----------------------------------------------------------
   --> CMP
   ----------------------------------------------------------
-  local cmp = require('cmp')
   local cmp_mappings = lsp.defaults.cmp_mappings()
 
   -- Disable completion with tab
