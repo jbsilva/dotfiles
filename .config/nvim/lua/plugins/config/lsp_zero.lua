@@ -95,18 +95,21 @@ function M.config()
           '--quote-style', 'AutoPreferSingle',
         },
       }),
+
       -- Black: Python
       formatting.black.with({
         extra_args = {
           '--line-length', '88',
         }
       }),
+
       -- Isort: Python
       formatting.isort.with({
         extra_args = {
           '--line-length', '88',
         }
       }),
+
       -- Flake8: Python
       -- https://pycodestyle.pycqa.org/en/latest/intro.html#error-codes
       diagnostics.flake8.with({
