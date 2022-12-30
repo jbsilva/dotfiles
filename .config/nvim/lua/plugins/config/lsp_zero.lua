@@ -69,6 +69,18 @@ function M.config()
   null_ls.setup({
     sources = {
       -- Stylua: Lua
+
+      -- Prettier: Javascript, TypeScript, CSS, JSON, HTML, Yaml, Markdown
+      formatting.prettier.with({
+        extra_args = {
+          '--no-semi',
+          '--single-quote',
+          '--jsx-single-quote',
+          '--tab-width', '2',
+          '--print-width', vim.bo.textwidth,
+        },
+      }),
+
       -- https://github.com/JohnnyMorganz/StyLua#options
       formatting.stylua.with({
         extra_args = {
@@ -76,14 +88,6 @@ function M.config()
           '--indent-width', '2',
           '--column-width', '88',
           '--quote-style', 'AutoPreferSingle',
-        },
-      }),
-      -- Prettier: Javascript, TypeScript, CSS, JSON, HTML, Yaml, Markdown
-      formatting.prettier.with({
-        extra_args = {
-          '--no-semi',
-          '--single-quote',
-          '--jsx-single-quote',
         },
       }),
       -- Black: Python
