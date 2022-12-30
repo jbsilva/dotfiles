@@ -84,6 +84,9 @@ function M.config()
       -- Markdownlint: Markdown style checker and lint tool
       diagnostics.markdownlint,
 
+      -- Mdformat: An opinionated Markdown formatter that can be used to enforce a consistent style in Markdown files
+      formatting.mdformat,
+
       -- https://github.com/JohnnyMorganz/StyLua#options
       formatting.stylua.with({
         extra_args = {
