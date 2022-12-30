@@ -1,3 +1,22 @@
+----------------------------------------------------------
+--> LSP Zero
+--
+--  :LspZeroFormat
+--  :LspZeroWorkspaceList
+--
+--  K: display information about symbol
+--  gD: jumps to declaration
+--  gi: lists all implementations of symbol
+--  go: jumps to definition of the type
+--  gr: list all references to symbol
+--  <F2> renames all references of the symbol
+--
+--  gl: show diagnostics
+--  [d: previous diagnosticvim.lsp.buf.rename().
+--  ]d: next diagnostic
+--
+--  https://github.com/VonHeikemen/lsp-zero.nvim
+----------------------------------------------------------
 local M = {}
 
 function M.config()
