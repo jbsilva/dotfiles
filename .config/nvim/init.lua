@@ -8,7 +8,7 @@
 -- Description:  Neovim config file. Ported from my old init.vim
 -- Author:       Julio Batista Silva
 -- Created:      2008 as init.vim
--- Last Change:  20 Dez 2022
+-- Last Change:  30 Dec 2022
 --
 -- Download: https://github.com/jbsilva/dotfiles
 -- ===================================================================
