@@ -118,6 +118,14 @@ function M.config()
           '--ignore', 'W391',
         },
       }),
+
+      -- Rustfmt: Rust
+      formatting.rustfmt.with({
+        extra_args = {
+          "--edition=2021"
+        },
+      }),
+
     },
   })
 
