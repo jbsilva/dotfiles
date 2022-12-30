@@ -81,6 +81,9 @@ function M.config()
         },
       }),
 
+      -- Markdownlint: Markdown style checker and lint tool
+      diagnostics.markdownlint,
+
       -- https://github.com/JohnnyMorganz/StyLua#options
       formatting.stylua.with({
         extra_args = {
