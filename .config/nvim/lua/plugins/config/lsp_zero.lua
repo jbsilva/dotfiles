@@ -67,31 +67,45 @@ function M.config()
 
   ----------------------------------------------------------
   --> Null-ls
-  --  Sources: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
+  -- The order matters.
+  -- Sources: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
   ----------------------------------------------------------
   local null_ls = require('null-ls')
   local formatting = null_ls.builtins.formatting
   local diagnostics = null_ls.builtins.diagnostics
+  local hover = null_ls.builtins.hover
 
   null_ls.setup({
     sources = {
 
+      -- Dictionary: Shows the first available definition for the current word under the cursor
+     hover.dictionary,
+
       -- Prettier: Javascript, TypeScript, CSS, JSON, HTML, Yaml, Markdown
-      formatting.prettier.with({
-        extra_args = {
-          '--no-semi',
-          '--single-quote',
-          '--jsx-single-quote',
-          '--tab-width', '2',
-          '--print-width', vim.bo.textwidth,
-        },
-      }),
+      -- formatting.prettier.with({
+      --   extra_args = {
+      --     '--no-semi',
+      --     '--single-quote',
+      --     '--jsx-single-quote',
+      --     '--tab-width', '2',
+      --     '--print-width', vim.bo.textwidth,
+      --   },
+      -- }),
 
       -- Markdownlint: Markdown style checker and lint tool
       diagnostics.markdownlint,
 
       -- Mdformat: An opinionated Markdown formatter that can be used to enforce a consistent style in Markdown files
-      formatting.mdformat,
+      -- formatting.mdformat,
+
+      -- Remark: an extensive and complex Markdown formatter/prettifier
+      formatting.remark,
+
+      -- Terrafmt: formats terraform blocks embedded in Markdown files
+      -- formatting.terrafmt,
+
+      -- Terraform_fmt: rewrites terraform configuration files to a canonical format and style
+      -- formatting.terraform_fmt,
 
       -- Stylua: An opinionated code formatter for Lua
       -- https://github.com/JohnnyMorganz/StyLua#options
@@ -104,15 +118,15 @@ function M.config()
         },
       }),
 
-      -- Black: Python
-      formatting.black.with({
+      -- Isort: Python
+      formatting.isort.with({
         extra_args = {
           '--line-length', '88',
         }
       }),
 
-      -- Isort: Python
-      formatting.isort.with({
+      -- Black: Python
+      formatting.black.with({
         extra_args = {
           '--line-length', '88',
         }
