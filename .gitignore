@@ -173,3 +173,4 @@ nvimlog
 .config/gitui
 .config/gcloud
 packer_compiled.lua
+.config/iterm2
