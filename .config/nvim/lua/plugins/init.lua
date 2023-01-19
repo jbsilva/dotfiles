@@ -238,8 +238,10 @@ return require('packer').startup(function(use)
       {'hrsh7th/cmp-nvim-lua'},
 
       -- Snippets
+      -- Alternatives: LuaSnip, Vsnip, Ultisnips, Snippy
       {'L3MON4D3/LuaSnip'},
       {'rafamadriz/friendly-snippets'},
+      {'saadparwaiz1/cmp_luasnip'},
     },
     config = function()
       require('plugins.config.lsp_zero').config()
