@@ -43,11 +43,19 @@ function M.config()
   ----------------------------------------------------------
   --> CMP
   ----------------------------------------------------------
+  local cmp = require('cmp')
   local cmp_mappings = lsp.defaults.cmp_mappings()
 
   -- Disable completion with tab
   cmp_mappings['<Tab>'] = nil
   cmp_mappings['<S-Tab>'] = nil
+  -- Disable completion with Enter
+  cmp_mappings['<CR>'] = nil
+  -- Use Shift+Enter to accept completion
+  cmp_mappings['<S-CR>'] = cmp.mapping.confirm {
+    behavior = cmp.ConfirmBehavior.Insert,
+    select = true,
+  }
 
   lsp.setup_nvim_cmp({
     mapping = cmp_mappings,
