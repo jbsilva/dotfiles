@@ -304,6 +304,7 @@ alias back='cd "$OLDPWD"'
 alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
+alias .....='cd ../../../../'
 
 alias dir='ls -1'           # Show one entry per line
 alias lah='ls -alh'         # Show all human-readable
@@ -320,6 +321,8 @@ alias lr='ls -lR'           # Recursive ls
 alias lsr='find . -mindepth 2 -maxdepth 2 -type d -exec ls -ld "{}" \;' # ls dirs with depth 2
 
 alias cls="clear"
+
+alias vim='nvim'
 
 # Download mp3 from Youtube
 if (( $+commands[youtube-dl] )); then
