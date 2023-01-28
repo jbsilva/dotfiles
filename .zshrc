@@ -417,10 +417,6 @@ alias split_70_30='gawk '"'"'BEGIN {srand()} {f = FILENAME (rand() <= 0.7 ? ".70
 # See open ports
 alias open_ports='sudo ss -tulpn | grep LISTEN'
 
-# Dicionarios
-alias houaiss='WINEPREFIX="/home/julio/.local/share/wineprefixes/dicionarios" wine /home/julio/.local/share/wineprefixes/dicionarios/drive_c/Program\ Files/Houaiss3/Houaiss3.exe & disown'
-alias aurelio='WINEPREFIX="/home/julio/.local/share/wineprefixes/dicionarios" wine /home/julio/.local/share/wineprefixes/dicionarios/drive_c/Program\ Files/Positivo/Miniaurelio/aurelio.exe & disown'
-
 ###############################################################################
 #                                     FUN
 ###############################################################################
