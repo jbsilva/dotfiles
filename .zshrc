@@ -340,8 +340,8 @@ fi
 #alias pip3_upgrade="pip3 install --upgrade pip && pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install --upgrade"
 alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
-alias d755="find . -type d -exec chmod 755 {} \;"
-alias d750="find . -type d -exec chmod 750 {} \;"
+alias d755="find . -mindepth 1 -type d -not \( -name '#recycle' -prune \) -not \( -name '@eaDir' -prune \) -exec chmod 755 {} \;"
+alias d750="find . -mindepth 1 -type d -not \( -name '#recycle' -prune \) -not \( -name '@eaDir' -prune \) -exec chmod 750 {} \;"
 alias f644="find . -type f -exec chmod 644 {} \;"
 alias f640="find . -type f -exec chmod 640 {} \;"
 alias now='date +"%T"'
