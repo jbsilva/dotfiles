@@ -394,6 +394,8 @@ alias recc='rename -X -c --rews --camelcase --nows'
 alias qmvv='qmv --format=dc --options=spaces,width=40,autowidth'
 alias qmvo='qmv --format=destination-only'
 alias qmvor='qmv -R --format=destination-only'
+alias exif_move="exiftool -P -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN' -d '%Y/%m' '-Directory<\${CreateDate}' '-Directory<\${DateTimeOriginal}' ."
+alias exif_rename="exiftool -P -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN' -d '%Y%m%d_%H%M%S' '-filename<%f-\${ImageSize}%-03c.%le' '-filename<\${CreateDate}%-03c.%le' '-filename<\${DateTimeOriginal}%-03c.%le' ."
 
 # Docker
 alias dnorestart='docker update --restart=no $* $(docker ps -q)'
