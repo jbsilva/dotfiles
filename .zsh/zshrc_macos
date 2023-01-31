@@ -34,6 +34,11 @@ fi
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
+# Homebrew completions
+if (( $+commands[brew] )); then
+  fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
+fi
+
 ###############################################################################
 # Aliases
 ###############################################################################
