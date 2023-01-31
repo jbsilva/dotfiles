@@ -1,6 +1,6 @@
 # macOS only
 if [[ "$OSTYPE" != darwin* ]]; then
-    return 1
+  return 1
 fi
 
 # Install Homebrew
@@ -20,7 +20,7 @@ fi
 
 # Byobu
 if [ -e /usr/local/bin/byobu ]; then
-    export BYOBU_PREFIX="$(brew --prefix)"
+  export BYOBU_PREFIX="$(brew --prefix)"
 fi
 
 # Google-cloud-sdk
