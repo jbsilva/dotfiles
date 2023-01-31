@@ -179,8 +179,8 @@ alias lsr='find . -mindepth 2 -maxdepth 2 -type d -exec ls -ld "{}" \;' # ls dir
 
 alias cls="clear"
 
-alias d755="find . -type d -exec chmod 755 {} \;"
-alias d750="find . -type d -exec chmod 750 {} \;"
+alias d755="find . -mindepth 1 -type d -not \( -name '#recycle' -prune \) -not \( -name '@eaDir' -prune \) -exec chmod 755 {} \;"
+alias d750="find . -mindepth 1 -type d -not \( -name '#recycle' -prune \) -not \( -name '@eaDir' -prune \) -exec chmod 750 {} \;"
 alias f644="find . -type f -exec chmod 644 {} \;"
 alias f640="find . -type f -exec chmod 640 {} \;"
 alias sha1='openssl sha1'
