@@ -181,8 +181,8 @@ alias cls="clear"
 
 alias d755="find . -mindepth 1 -type d -not \( -name '#recycle' -prune \) -not \( -name '@eaDir' -prune \) -exec chmod 755 {} \;"
 alias d750="find . -mindepth 1 -type d -not \( -name '#recycle' -prune \) -not \( -name '@eaDir' -prune \) -exec chmod 750 {} \;"
-alias f644="find . -type f -exec chmod 644 {} \;"
-alias f640="find . -type f -exec chmod 640 {} \;"
+alias f644="find . -type d -not \( -name '#recycle' -prune \) -not \( -name '@eaDir' -prune \) -o -type f -exec chmod 644 {} \;"
+alias f640="find . -type d -not \( -name '#recycle' -prune \) -not \( -name '@eaDir' -prune \) -o -type f -exec chmod 640 {} \;"
 alias sha1='openssl sha1'
 alias sha256='shasum -a 256'
 alias wget='wget -c'        # Resume wget by default
