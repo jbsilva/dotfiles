@@ -89,6 +89,7 @@ if [[ -z "$XDG_CONFIG_HOME" ]]; then
 fi
 
 fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=($HOME/.zsh/completions $fpath)
 
 local NVIM=nvim
 export NVIM_PYTHON_LOG_FILE_PATH=~/.config/nvim/nvimlog
