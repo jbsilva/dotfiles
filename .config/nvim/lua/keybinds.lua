@@ -26,8 +26,8 @@ nnoremap('N', 'Nzz')
 -------------------------------------------------------------------------------
 --> Quickly save the current buffer or all buffers
 -------------------------------------------------------------------------------
-nnoremap('<leader>w', '<CMD>update<CR>')
-nnoremap('<leader>W', '<CMD>wall<CR>')
+nnoremap(',w', '<CMD>update<CR>')
+nnoremap(',W', '<CMD>wall<CR>')
 
 -------------------------------------------------------------------------------
 --> Close current buffer
