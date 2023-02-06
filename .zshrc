@@ -180,6 +180,9 @@ unset keymap
 # Requires b4b4r07/emoji-cli plugin
 bindkey -M viins '^s' emoji::cli
 
+# Press vv to edit command in an external editor
+bindkey -M vicmd "vv" edit-command-line
+
 
 ###############################################################################
 #                          Pyenv and pyenv-virtualenv
