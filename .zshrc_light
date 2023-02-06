@@ -117,6 +117,8 @@ for keymap in 'emacs' 'viins' 'vicmd'; do
 done
 unset keymap
 
+# Press vv to edit command in an external editor
+bindkey -M vicmd "vv" edit-command-line
 
 ###############################################################################
 #                          Pyenv and pyenv-virtualenv
