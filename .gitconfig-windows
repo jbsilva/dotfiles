@@ -1,2 +1,4 @@
+[include]
+	path = ~/.gitconfig-global
 [credential]
-    helper = manager
+	helper = manager

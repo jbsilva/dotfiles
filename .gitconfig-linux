@@ -1,2 +1,5 @@
+[include]
+	path = ~/.gitconfig-global
 [credential]
 	helper = /usr/lib/git-core/git-credential-libsecret
+	helper = store --file ~/.gitcreds

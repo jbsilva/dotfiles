@@ -1,0 +1,90 @@
+[user]
+	name = Julio Batista Silva
+	email = julio@juliobs.com
+[core]
+	excludesfile = ~/.gitignore-global
+	autocrlf = false
+	safecrlf = warn
+	editor = nvim
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
+[merge]
+	tool = meld
+[diff]
+	guitool = meld
+[push]
+	autoSetupRemote = true
+[alias]
+	# List of aliases
+	alias = "!f(){ git config -l | grep alias; };f"
+	aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'
+
+	# Shortcuts
+	co = checkout
+	ci = commit
+	cp = cherry-pick
+	cl = "!f() { echo 'Remove following files?'; echo; git clean -dn; echo; echo 'Press ENTER to confirm'; read -p 'Press ^C to stop cleanup and exit' a && git clean -df; }; f"
+	st = status -s
+	br = branch
+	amend = commit --amend
+	k = !gitk
+
+	sm = submodule
+	sup = submodule update
+
+	rmbranch = "!f(){ git branch -d ${1} && git push origin --delete ${1}; };f"
+	mkbranch = "!f(){ git checkout -b ${1} && git push origin -u ${1}; };f"
+
+	snap = !git stash save "snapshot: $(date)"
+	snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+	snapshots = !git stash list --grep snapshot
+	unstash = stash pop
+	apply0 = !git stash apply "stash@{0}"
+	drop0 = !git stash drop "stash@{0}"
+	sll = "!f() { for s in `git stash list --pretty=format:%gd`; do git stash show -p $s; done; };f"
+
+	type = cat-file -t
+	dump = cat-file -p
+
+	shove = push --force-with-lease
+
+	# Pretty log
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+	lc = log ORIG_HEAD.. --stat --no-merges
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit
+	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	ll = log --graph --date=short
+	show-tree = log --all --graph --decorate --oneline --simplify-by-decoration
+	rawlog = log --format=\"format:commit %H%nAuthor:%an%n%n%B%n\"
+
+	accept-ours = "!f() { git checkout --ours -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+	accept-theirs = "!f() { git checkout --theirs -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+	unadd = git reset HEAD
+	unpushed = cherry -v
+	contains = branch --contains
+	tagage = !sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'
+	cloneurl = config --get remote.origin.url
+	ls-ignored = ls-files --exclude-standard --ignored --others
+
+	# Branches that are merged locally already
+	lurkers = branch --merged master
+
+	# New commits created by the last command
+	new = !sh -c 'git log $1@{1}..$1@{0} "$@"'
+
+	# Prune stale remote branches
+	prune-all = !git remote | xargs -n 1 git remote prune
+
+	# Info about last commit
+	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+	whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+
+	# Date of the first commit
+	log-first-date = !git log --date-order --date=iso --pretty=\"format:%ad\" --reverse | head -1
+
+	# What commit a file was added
+	whatadded = log --follow --diff-filter=A --find-renames=40%
+	permission-reset = !git diff -p -R --no-ext-diff --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
