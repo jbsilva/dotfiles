@@ -40,6 +40,13 @@ zstyle ':prezto:load' pmodule \
 # Adding "gnubin" directories to the PATH may break system scripts. Use this instead
 zstyle ':prezto:module:gnu-utility' prefix 'g'
 
+# Auto-start Tmux localy
+# zstyle ':prezto:module:tmux:auto-start' local 'yes'
+
+# Auto-start Tmux in a SSH connection
+zstyle ':prezto:module:tmux:auto-start' remote 'yes'
+zstyle ':prezto:module:tmux:session' name 'julio'
+
 # Disable hosts completion
 zstyle ':prezto:module:completion:*:hosts' etc-host-ignores \
       '0.0.0.0' '127.0.0.1'
