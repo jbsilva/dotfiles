@@ -175,3 +175,4 @@ nvimlog
 packer_compiled.lua
 .config/iterm2
 .config/darktable
+.config/getmail
