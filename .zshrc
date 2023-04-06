@@ -15,7 +15,7 @@
 #           http://sam.zoy.org/wtfpl/COPYING for more details.
 #
 # Created:      12 Aug 2011
-# Last Change:  16 Dez 2022
+# Last Change:  04 Apr 2023
 #
 # Download: https://github.com/jbsilva/dotfiles
 ###############################################################################
@@ -51,21 +51,19 @@ fi
 # Path Functions
 ###############################################################################
 
+# Use $path array and force unique values
+typeset -U path PATH
+
 # Add to beginning of PATH
 function addToPathStart {
-  case ":$PATH:" in
-    *":$1:"*) :;; # already there
-    *) PATH="$1:$PATH";;
-  esac
+    path=("$1" $path)
 }
 
 # Add to end of PATH
 function addToPathEnd {
-  case ":$PATH:" in
-    *":$1:"*) :;; # already there
-    *) PATH="$PATH:$1";;
-  esac
+    path+=("$1")
 }
+
 
 ###############################################################################
 #                                     Vars
