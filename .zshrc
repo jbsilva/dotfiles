@@ -42,7 +42,7 @@ fi
 
 ###############################################################################
 # FZF - Command-line fuzzy finder
-# Run `/usr/local/opt/fzf/install` after instalation through Homebrew
+# If installed with Homebrew, run `/usr/local/opt/fzf/install`
 ###############################################################################
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
