@@ -226,22 +226,21 @@ fi
 ###############################################################################
 #                                    rbenv
 ###############################################################################
-if (( $+commands[rbenv] )); then eval "$(rbenv init -)"; fi
+# if (( $+commands[rbenv] )); then eval "$(rbenv init -)"; fi
 
 
 ###############################################################################
 #                             Ruby Version Manager
 ###############################################################################
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-addToPathEnd $HOME/.rvm/bin
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+# addToPathEnd $HOME/.rvm/bin
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 ###############################################################################
 #                                     jenv
 ###############################################################################
-#export PATH="$HOME/.jenv/bin:$PATH"
-if (( $+commands[jenv] )); then eval "$(jenv init -)"; fi
+# export PATH="$HOME/.jenv/bin:$PATH"
+# if (( $+commands[jenv] )); then eval "$(jenv init -)"; fi
 
 
 ###############################################################################
