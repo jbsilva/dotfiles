@@ -170,6 +170,11 @@ zplug "plugins/docker-compose", from:oh-my-zsh, if:'[[ $commands[docker-compose]
 zplug "webyneter/docker-aliases", use:docker-aliases.plugin.zsh
 
 ###############################################################################
+# asdf
+###############################################################################
+zplug "plugins/asdf",         from:oh-my-zsh
+
+###############################################################################
 # Kafka completion
 ###############################################################################
 # zplug "Dabz/kafka-zsh-completions"

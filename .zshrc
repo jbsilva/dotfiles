@@ -183,6 +183,13 @@ bindkey -M viins '^s' emoji::cli
 # Press vv to edit command in an external editor
 bindkey -M vicmd "vv" edit-command-line
 
+###############################################################################
+#                                   asdf
+# Prefer to configure via zplug
+###############################################################################
+# if [ -f "$HOME/.asdf/asdf.sh" ]; then
+#     . "$HOME/.asdf/asdf.sh"
+# fi
 
 ###############################################################################
 #                          Pyenv and pyenv-virtualenv
