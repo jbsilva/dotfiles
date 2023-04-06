@@ -34,7 +34,7 @@ function M.config()
     'marksman',               -- Markdown
     'rust_analyzer',          -- Rust
     'sqlls',                  -- SQL
-    'sumneko_lua',            -- Lua
+    'lua_ls',                 -- Lua
     'terraformls',            -- Terraform
     'tsserver',               -- TypeScript
     'yamlls',                 -- Yaml
