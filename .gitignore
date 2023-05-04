@@ -176,3 +176,7 @@ packer_compiled.lua
 .config/iterm2
 .config/darktable
 .config/getmail
+.config/konsolerc
+.config/plasma-welcomerc
+.config/PlasmaDiscoverUpdates
+.config/plasmaparc
