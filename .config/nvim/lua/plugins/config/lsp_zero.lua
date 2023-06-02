@@ -51,8 +51,8 @@ function M.config()
   cmp_mappings['<S-Tab>'] = nil
   -- Disable completion with Enter
   cmp_mappings['<CR>'] = nil
-  -- Use Shift+Enter to accept completion
-  cmp_mappings['<S-CR>'] = cmp.mapping.confirm {
+  -- Use Right arrow to accept completion
+  cmp_mappings['<Right>'] = cmp.mapping.confirm {
     behavior = cmp.ConfirmBehavior.Insert,
     select = true,
   }
