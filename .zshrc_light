@@ -82,6 +82,7 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 [[ -f "$HOME/.zsh/rm_empty_dirs.zsh" ]] && source "$HOME/.zsh/rm_empty_dirs.zsh"
 [[ -f "$HOME/.zsh/rm_empty_files.zsh" ]] && source "$HOME/.zsh/rm_empty_files.zsh"
 [[ -f "$HOME/.zsh/rm_regex.zsh" ]] && source "$HOME/.zsh/rm_regex.zsh"
+[[ -f "$HOME/.zsh/mount_share.zsh" ]] && source "$HOME/.zsh/mount_share.zsh"
 
 ###############################################################################
 #                                    Zplug
