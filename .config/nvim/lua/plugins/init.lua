@@ -159,7 +159,7 @@ return require('packer').startup(function(use)
   --> Bufferline: A snazzy bufferline for Neovim
   ----------------------------------------------------------
   use {
-    'akinsho/bufferline.nvim', tag = 'v2.*',
+    'akinsho/bufferline.nvim', tag = '*',
     requires = 'kyazdani42/nvim-web-devicons',
     config = function()
       require('bufferline').setup()
