@@ -118,6 +118,8 @@ else
     export TERM="xterm-256color"
 fi
 
+# Completions
+autoload -U +X bashcompinit && bashcompinit
 
 ###############################################################################
 #                                    Go
