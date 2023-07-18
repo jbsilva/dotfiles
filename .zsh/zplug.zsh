@@ -189,3 +189,9 @@ zplug "plugins/poetry",         from:oh-my-zsh
 ###############################################################################
 zplug "tarrasch/zsh-bd"
 
+###############################################################################
+# Terraform
+###############################################################################
+if (( $+commands[terraform] )); then
+    zplug "plugins/terraform", from:oh-my-zsh, if:"which terraform"
+fi
