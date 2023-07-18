@@ -23,15 +23,14 @@ zstyle ':prezto:load' pmodule \
   'utility' \
   'completion' \
   'fasd' \
-  'homebrew' \
   'git' \
   'tmux' \
   'gpg' \
-  'osx' \
   'archive' \
   'autosuggestions' \
   'syntax-highlighting' \
   'history-substring-search' \
+  'docker' \
   'prompt'
 
 # GNU Utility
@@ -165,8 +164,8 @@ zplug "hlissner/zsh-autopair", defer:2
 ###############################################################################
 # Docker completion
 ###############################################################################
-zplug "plugins/docker",         from:oh-my-zsh, if:'[[ $commands[docker] ]]'
-zplug "plugins/docker-compose", from:oh-my-zsh, if:'[[ $commands[docker-compose] ]]'
+# zplug "plugins/docker",         from:oh-my-zsh, if:'[[ $commands[docker] ]]'
+#  zplug "plugins/docker-compose", from:oh-my-zsh, if:'[[ $commands[docker-compose] ]]'
 zplug "webyneter/docker-aliases", use:docker-aliases.plugin.zsh
 
 ###############################################################################
