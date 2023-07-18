@@ -113,9 +113,9 @@ export LC_ALL='en_GB.UTF-8'
 export term_emulator=$(ps -h -o comm -p $PPID)
 
 if [[ $term_emulator == *"kitty"* ]]; then
-	export TERM="xterm-kitty"
+    export TERM="xterm-kitty"
 else
-	export TERM="xterm-256color"
+    export TERM="xterm-256color"
 fi
 
 
@@ -347,9 +347,9 @@ fi
 
 # Set editor preference to nvim if available.
 if which nvim &>/dev/null; then
-	alias vim='() { $(whence -p nvim) $@ }'
+    alias vim='() { $(whence -p nvim) $@ }'
 else
-	alias vim='() { $(whence -p vim) $@ }'
+    alias vim='() { $(whence -p vim) $@ }'
 fi
 
 # alias pip2_upgrade="pip2 install --upgrade pip && pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --upgrade"
