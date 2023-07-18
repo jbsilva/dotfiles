@@ -147,7 +147,7 @@ return require('packer').startup(function(use)
     },
     -- Fidget
     {
-      'j-hui/fidget.nvim',
+      'j-hui/fidget.nvim', tag = 'legacy',
       after = 'lualine.nvim',
       config = function()
         require('fidget').setup()
