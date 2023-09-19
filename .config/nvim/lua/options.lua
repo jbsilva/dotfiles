@@ -55,7 +55,7 @@ o.cursorline = true
 -- o.cursorcolumn = true
 
 -- Color columns 80 and 88
-o.colorcolumn = '80,88'
+o.colorcolumn = '80,88,100'
 
 -- Text wrap
 o.wrap = true
