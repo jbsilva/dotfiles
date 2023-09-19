@@ -1,41 +1,154 @@
 {
-    "workbench.colorTheme": "Default Dark+",
-    "terminal.external.linuxExec": "kitty",
-    "terminal.integrated.fontFamily": "Hack Nerd Font",
-    "python.linting.mypyEnabled": true,
-    "python.linting.flake8Enabled": true,
-    "python.linting.banditEnabled": true,
-    "python.linting.pycodestyleEnabled": true,
-    "python.linting.pydocstyleEnabled": true,
-    "python.linting.pylintEnabled": true,
-    "python.formatting.provider": "black",
-    "python.formatting.blackArgs": [
-        "-l 88"
-    ],
-    "editor.rulers": [
-        80,
-        88
-    ],
-    "[json]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "bodil.prettier-toml"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "aws.telemetry": false,
+  "black-formatter.args": ["-l 100"],
+  "black-formatter.importStrategy": "fromEnvironment",
+  "cSpell.userWords": ["Hoppe"],
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.fontFamily": "'Hack Nerd Font', 'Cascadia Code', 'FiraCode Nerd Font', Consolas",
+  "editor.formatOnSave": true,
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "boundary",
+  "editor.rulers": [80, 88, 100],
+  "errorLens.enabled": false,
+  "git.autofetch": true,
+  "gitlens.graph.dimMergeCommits": true,
+  "gitlens.telemetry.enabled": false,
+  "isort.args": [
+    // "--settings-path", "${workspaceFolder}/pyproject.toml",
+    "--atomic",
+    "--combine-as",
+    "--line-length=100",
+    "--lines-after-imports=2",
+    "--profile=black",
+    "--remove-redundant-aliases",
+    "--trailing-comma"
+  ],
+  "isort.importStrategy": "fromEnvironment",
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "prettier.printWidth": 100,
+  "prettier.proseWrap": "always",
+  "pylint.args": ["--max-line-length=100"],
+  "pylint.importStrategy": "fromEnvironment",
+  "python.analysis.autoFormatStrings": true,
+  "serverlessIDE.telemetry.enableTelemetry": false,
+  "telemetry.telemetryLevel": "off",
+  "vim.camelCaseMotion.enable": true,
+  "vim.easymotion": true,
+  "vim.highlightedyank.enable": true,
+  "vim.history": 500,
+  "vim.hlsearch": true,
+  "vim.leader": " ",
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      // Delete without overwriting last yank (delete to the black hole register "_)
+      "after": ["\"", "_", "d"],
+      "before": ["d"]
     },
-    "keyboard.dispatch": "keyCode",
-    "vim.easymotion": true,
-    "vim.history": 100,
-    "vim.hlsearch": true,
-    "vim.leader": ",",
-    "vim.neovimUseConfigFile": true,
-    "vim.enableNeovim": true,
-    "vim.smartRelativeLine": true,
-    "vim.textwidth": 79,
-    "vim.vimrc.enable": true,
-    "python.testing.pytestEnabled": true,
-    "python.linting.pycodestyleArgs": [
-        "--max-line-length=88"
-    ],
-    "editor.wordWrapColumn": 88,
-    "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
-    "vscode-neovim.neovimInitVimPaths.linux": "/home/julio/.config/nvim/init.lua",
-    "vscode-neovim.useCtrlKeysForInsertMode": false,
-    "vscode-neovim.useCtrlKeysForNormalMode": false
+    {
+      // Normal delete with <leader>d
+      "after": ["d"],
+      "before": ["<leader>", "d"]
+    },
+    {
+      "after": ["\"", "_", "D"],
+      "before": ["D"]
+    },
+    {
+      "after": ["D"],
+      "before": ["<leader>", "D"]
+    },
+    {
+      "after": ["\"", "_", "x"],
+      "before": ["x"]
+    },
+    {
+      "after": ["x"],
+      "before": ["<leader>", "x"]
+    },
+    {
+      // Yank to system clipboard with <leader>y
+      "after": ["\"", "+", "y"],
+      "before": ["<leader>", "y"]
+    },
+    {
+      // Paste from system clipboard with <leader>p
+      "after": ["\"", "+", "p"],
+      "before": ["<leader>", "p"]
+    }
+  ],
+  "vim.showMarksInGutter": true,
+  "vim.smartRelativeLine": true,
+  "vim.textwidth": 100,
+  "vim.visualModeKeyBindingsNonRecursive": [
+    {
+      // Delete without overwriting last yank (delete to the black hole register "_)
+      "after": ["\"", "_", "d"],
+      "before": ["d"]
+    },
+    {
+      // Normal delete with <leader>d
+      "after": ["d"],
+      "before": ["<leader>", "d"]
+    },
+    {
+      // Yank to system clipboard with <leader>y
+      "after": ["\"", "+", "y"],
+      "before": ["<leader>", "y"]
+    },
+    {
+      // Paste from system clipboard with <leader>p
+      "after": ["\"", "+", "p"],
+      "before": ["<leader>", "p"]
+    }
+  ],
+  "workbench.colorCustomizations": {},
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.startupEditor": "none",
+  "yaml.customTags": [
+    "!And",
+    "!And sequence",
+    "!If",
+    "!If sequence",
+    "!Not",
+    "!Not sequence",
+    "!Equals",
+    "!Equals sequence",
+    "!Or",
+    "!Or sequence",
+    "!FindInMap",
+    "!FindInMap sequence",
+    "!Base64",
+    "!Join",
+    "!Join sequence",
+    "!Cidr",
+    "!Ref",
+    "!Sub",
+    "!Sub sequence",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!ImportValue sequence",
+    "!Select",
+    "!Select sequence",
+    "!Split",
+    "!Split sequence"
+  ]
 }
