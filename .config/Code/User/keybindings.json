@@ -1,0 +1,72 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+  // Run current line in terminal
+  {
+    "key": "ctrl+shift+alt+t",
+    "command": "workbench.action.terminal.runSelectedText",
+    "when": "editorTextFocus && !findInputFocussed && !jupyter.ownsSelection && !notebookEditorFocused && !replaceInputFocussed"
+  },
+
+  // Toggle focus between terminal and editor
+  {
+    "key": "ctrl+t ctrl+t",
+    "command": "workbench.action.terminal.focus"
+  },
+  {
+    "key": "ctrl+t ctrl+t",
+    "command": "workbench.action.focusActiveEditorGroup",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+shift+alt+d",
+    "command": "python.debugInTerminal",
+    "when": "editorTextFocus && !findInputFocussed && !jupyter.ownsSelection && !notebookEditorFocused && !replaceInputFocussed && editorLangId == 'python'"
+  },
+  {
+    "key": "ctrl+shift+alt+g",
+    "command": "python.sortImports"
+  },
+  {
+    "key": "ctrl+shift+alt+f",
+    "command": "editor.action.formatDocument",
+    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+  },
+  {
+    "key": "shift+alt+f",
+    "command": "-editor.action.formatDocument",
+    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+  },
+  {
+    "key": "ctrl+shift+alt+f",
+    "command": "editor.action.formatDocument.none",
+    "when": "editorTextFocus && !editorHasDocumentFormattingProvider && !editorReadonly"
+  },
+  {
+    "key": "shift+alt+f",
+    "command": "-editor.action.formatDocument.none",
+    "when": "editorTextFocus && !editorHasDocumentFormattingProvider && !editorReadonly"
+  },
+  {
+    "key": "ctrl+shift+alt+f1",
+    "command": "workbench.action.focusNextGroup"
+  },
+  {
+    "key": "ctrl+shift+alt+d",
+    "command": "extension.vim_ctrl+d",
+    "when": "editorTextFocus && vim.active && vim.use<C-d> && !inDebugRepl"
+  },
+  {
+    "key": "ctrl+d",
+    "command": "-extension.vim_ctrl+d",
+    "when": "editorTextFocus && vim.active && vim.use<C-d> && !inDebugRepl"
+  },
+  {
+    "key": "ctrl+u",
+    "command": "-extension.vim_ctrl+u",
+    "when": "editorTextFocus && vim.active && vim.use<C-u> && !inDebugRepl"
+  },
+  {
+    "key": "ctrl+shift+alt+u",
+    "command": "extension.vim_ctrl+u"
+  }
+]
