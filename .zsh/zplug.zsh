@@ -23,7 +23,6 @@ zstyle ':prezto:load' pmodule \
   'utility' \
   'completion' \
   'fasd' \
-  'git' \
   'tmux' \
   'gpg' \
   'archive' \
@@ -98,6 +97,12 @@ zplug "zdharma-continuum/history-search-multi-word"
 zplug "djui/alias-tips"
 #zplug "/molovo/tipz"
 #zplug "MichaelAquilina/zsh-you-should-use"
+
+###############################################################################
+# Git
+###############################################################################
+zplug "plugins/git",         from:oh-my-zsh
+# zplug "plugins/git-extras",         from:oh-my-zsh
 
 ###############################################################################
 # Git-extra-commands - Extra git helper scripts packaged as a plugin.
