@@ -70,6 +70,8 @@ fi
 
 fpath=(/usr/local/share/zsh-completions $fpath)
 
+# Hashicorp Vault
+export VAULT_ADDR='http://127.0.0.1:8300'
 
 ###############################################################################
 # More Functions
