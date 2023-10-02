@@ -59,3 +59,11 @@ function unmount_share()
 {
     sudo $SYNOSHARE --enc_unmount $@
 }
+
+# Unmount all decripted shares
+function unmount_all_shares()
+{
+    SHARES="$(sudo ${SYNOSHARE} --enum DEC | sed '1,2d;:a;N;$!ba;s/\n/ /g')"
+    echo "Unmounting ${SHARES}"
+    echo ${SHARES} | xargs sudo $SYNOSHARE --enc_unmount
+}
