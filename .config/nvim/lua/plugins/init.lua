@@ -27,6 +27,12 @@ return require('packer').startup(function(use)
   }
 
   ----------------------------------------------------------
+  --> Suda: read or write files with `sudo` command
+  -- :SudaWrite, :SudaRead
+  ----------------------------------------------------------
+  use 'lambdalisue/suda.vim'
+
+  ----------------------------------------------------------
   --> WhichKey: Show possible keybindings of the command you started typing
   -- :WhichKey
   ----------------------------------------------------------
