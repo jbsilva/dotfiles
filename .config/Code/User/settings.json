@@ -9,18 +9,15 @@
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "[toml]": {
-    "editor.defaultFormatter": "bodil.prettier-toml"
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "aws.telemetry": false,
-  "black-formatter.args": ["-l 100"],
-  "black-formatter.importStrategy": "fromEnvironment",
-  "cSpell.userWords": ["Hoppe"],
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.fontFamily": "'Hack Nerd Font', 'Cascadia Code', 'FiraCode Nerd Font', Consolas",
   "editor.formatOnSave": true,
