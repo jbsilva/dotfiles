@@ -78,6 +78,42 @@
       // Paste from system clipboard with <leader>p
       "after": ["\"", "+", "p"],
       "before": ["<leader>", "p"]
+    },
+    {
+      // Y copy from cursor to last-non-blank-char
+      "after": ["y", "g", "_"],
+      "before": ["Y"]
+    },
+    {
+      // Clean search highlight with ,<space>
+      "before": [",", "<leader>"],
+      "commands": [":nohl"]
+    },
+    {
+      // Close editor with C-w
+      "before": ["<C-w>"],
+      "commands": ["workbench.action.closeActiveEditor"]
+    },
+    {
+      // Focus on File Explorer
+      "before": ["<C-n>"],
+      "commands": ["workbench.files.action.focusFilesExplorer"]
+    },
+    {
+      "before": ["<C-h>"],
+      "commands": ["workbench.action.focusLeftGroup"]
+    },
+    {
+      "before": ["<C-l>"],
+      "commands": ["workbench.action.focusRightGroup"]
+    },
+    {
+      "before": ["<C-j>"],
+      "commands": ["workbench.action.focusBelowGroup"]
+    },
+    {
+      "before": ["<C-k>"],
+      "commands": ["workbench.action.focusAboveGroup"]
     }
   ],
   "vim.showMarksInGutter": true,
@@ -103,6 +139,11 @@
       // Paste from system clipboard with <leader>p
       "after": ["\"", "+", "p"],
       "before": ["<leader>", "p"]
+    },
+    {
+      // Skip last occurrence highlighted by `gb` or `ctrl+d`
+      "before": ["g", "s"],
+      "commands": ["editor.action.moveSelectionToNextFindMatch"]
     }
   ],
   "workbench.colorCustomizations": {},
