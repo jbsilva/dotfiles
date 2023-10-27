@@ -136,5 +136,8 @@
     "!Select sequence",
     "!Split",
     "!Split sequence"
-  ]
+  ],
+  "mypy-type-checker.severity": {
+    "error": "Hint"
+  }
 }
