@@ -28,17 +28,6 @@
   "git.autofetch": true,
   "gitlens.graph.dimMergeCommits": true,
   "gitlens.telemetry.enabled": false,
-  "isort.args": [
-    // "--settings-path", "${workspaceFolder}/pyproject.toml",
-    "--atomic",
-    "--combine-as",
-    "--line-length=100",
-    "--lines-after-imports=2",
-    "--profile=black",
-    "--remove-redundant-aliases",
-    "--trailing-comma"
-  ],
-  "isort.importStrategy": "fromEnvironment",
   "mypy-type-checker.importStrategy": "fromEnvironment",
   "prettier.printWidth": 100,
   "prettier.proseWrap": "always",
