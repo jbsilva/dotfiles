@@ -68,5 +68,9 @@
   {
     "key": "ctrl+shift+alt+u",
     "command": "extension.vim_ctrl+u"
+  },
+  {
+    "key": "alt+oem_5",
+    "command": "workbench.action.splitEditorDown"
   }
 ]
