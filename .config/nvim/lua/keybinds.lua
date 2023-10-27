@@ -92,6 +92,7 @@ nnoremap(',<space>', ':noh<CR>', { silent = true })
 
 -------------------------------------------------------------------------------
 --> Execute selection
+-- A better alternative is to edit the command line with C-f
 -------------------------------------------------------------------------------
 -- vnoremap('<leader>es', ':<C-u>exec join(getline("\'<","\'>"),"\n")<CR>')
 
