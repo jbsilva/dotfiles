@@ -191,83 +191,6 @@ bindkey -M viins '^s' emoji::cli
 # Press vv to edit command in an external editor
 bindkey -M vicmd "vv" edit-command-line
 
-###############################################################################
-#                                   asdf
-# Prefer to configure via zplug
-###############################################################################
-# if [ -f "$HOME/.asdf/asdf.sh" ]; then
-#     . "$HOME/.asdf/asdf.sh"
-# fi
-
-###############################################################################
-#                          Pyenv and pyenv-virtualenv
-# pyenv install 2.7 && pyenv install 3.8.12 && pyenv rehash && pyenv global 2.7 3.8.12
-###############################################################################
-# if (( $+commands[pyenv] )); then eval "$(pyenv init --path)"; eval "$(pyenv init -)"; fi
-# if (( $+commands[pyenv-virtualenv-init] )); then eval "$(pyenv virtualenv-init -)"; fi
-
-
-###############################################################################
-#                                    Conda
-###############################################################################
-export CONDA_AUTO_ACTIVATE_BASE=false
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/.pyenv/versions/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/.pyenv/versions/mambaforge/etc/profile.d/conda.sh" ]; then
-        . "$HOME/.pyenv/versions/mambaforge/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/.pyenv/versions/mambaforge/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-
-if [ -f "$HOME/.pyenv/versions/mambaforge/etc/profile.d/mamba.sh" ]; then
-    . "$HOME/.pyenv/versions/mambaforge/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
-
-
-###############################################################################
-#                                    rbenv
-###############################################################################
-# if (( $+commands[rbenv] )); then eval "$(rbenv init -)"; fi
-
-
-###############################################################################
-#                             Ruby Version Manager
-###############################################################################
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-# addToPathEnd $HOME/.rvm/bin
-# [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
-
-###############################################################################
-#                                     jenv
-###############################################################################
-# export PATH="$HOME/.jenv/bin:$PATH"
-# if (( $+commands[jenv] )); then eval "$(jenv init -)"; fi
-
-
-###############################################################################
-#                            Node Version Manager
-###############################################################################
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-###############################################################################
-#                                   Perl
-###############################################################################
-PATH="$HOME/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="$HOME/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="$HOME/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"$HOME/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
-
 
 ###############################################################################
 # Options
@@ -354,8 +277,6 @@ else
     alias vim='() { $(whence -p vim) $@ }'
 fi
 
-# alias pip2_upgrade="pip2 install --upgrade pip && pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --upgrade"
-#alias pip3_upgrade="pip3 install --upgrade pip && pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install --upgrade"
 alias difff='/usr/bin/diff'
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 alias d755="find . -mindepth 1 -type d -not \( -name '#recycle' -prune \) -not \( -name '@eaDir' -prune \) -exec chmod 755 {} \;"
@@ -393,16 +314,6 @@ alias otp='oathtool --totp -b'
 # Backup
 alias bkp='rsync --recursive --links --times --compress-level=0 --info=flist2,name,progress --human-readable'
 alias bkpd='rsync --recursive --links --times --compress-level=0 --info=flist2,name,progress --human-readable --delete'
-
-# C/C++/Objective-C
-alias g++e='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -Werror'    # Warnings = Error
-alias g++w='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'            # Warnings
-alias g++p='g++ -O2 -lm -Wall -Wextra -Weffc++ -Wwrite-strings -pedantic'  # Warnings + Pedantic
-alias g++d='g++ -O0 -ggdb3 -lm -Wall -Wextra -Weffc++ -Wwrite-strings'     # Debug
-alias g++11='g++ -O2 -lm -std=c++11 -Wall -Wextra'                         # C++11
-alias g++p11='g++ -O2 -lm -std=c++11 -Wall -Wextra -Weffc++ -Wwrite-strings -pedantic'  # Warnings + Pedantic + C++11
-alias estiliza='astyle --unpad-paren --style=allman --pad-oper --pad-comma --delete-empty-lines --break-blocks --convert-tabs --align-pointer=name --align-reference=name --lineend=linux --pad-header --indent-col1-comments --indent-switches --suffix=none --keep-one-line-statements'
-alias estiliza_objc='astyle --unpad-paren --style=attach --pad-oper --pad-comma --delete-empty-lines --break-blocks --convert-tabs --align-pointer=name --align-reference=name --lineend=linux --pad-header --indent-switches --suffix=none --keep-one-line-statements --pad-method-prefix --unpad-return-type --unpad-param-type --align-method-colon --pad-method-colon=none'
 
 # Python
 alias ap8='autopep8 --in-place --aggressive --aggressive'
