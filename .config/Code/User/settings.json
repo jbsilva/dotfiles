@@ -24,18 +24,22 @@
   "editor.minimap.enabled": false,
   "editor.renderWhitespace": "boundary",
   "editor.rulers": [80, 88, 100],
-  "errorLens.enabled": false,
   "git.autofetch": true,
   "gitlens.graph.dimMergeCommits": true,
   "gitlens.telemetry.enabled": false,
   "mypy-type-checker.importStrategy": "fromEnvironment",
+  "mypy-type-checker.severity": {
+    "error": "Hint"
+  },
   "prettier.printWidth": 100,
   "prettier.proseWrap": "always",
-  "pylint.args": ["--max-line-length=100"],
-  "pylint.importStrategy": "fromEnvironment",
   "python.analysis.autoFormatStrings": true,
+  "remote.SSH.remotePlatform": {
+    "nas": "linux"
+  },
   "serverlessIDE.telemetry.enableTelemetry": false,
   "telemetry.telemetryLevel": "off",
+  "terminal.integrated.defaultProfile.linux": "tmux",
   "vim.camelCaseMotion.enable": true,
   "vim.easymotion": true,
   "vim.highlightedyank.enable": true,
@@ -177,8 +181,5 @@
     "!Select sequence",
     "!Split",
     "!Split sequence"
-  ],
-  "mypy-type-checker.severity": {
-    "error": "Hint"
-  }
+  ]
 }
