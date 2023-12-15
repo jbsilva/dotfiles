@@ -42,8 +42,8 @@ zstyle ':prezto:module:gnu-utility' prefix 'g'
 # zstyle ':prezto:module:tmux:auto-start' local 'yes'
 
 # Auto-start Tmux in a SSH connection
-zstyle ':prezto:module:tmux:auto-start' remote 'yes'
-zstyle ':prezto:module:tmux:session' name 'julio'
+# zstyle ':prezto:module:tmux:auto-start' remote 'yes'
+# zstyle ':prezto:module:tmux:session' name 'julio'
 
 # Disable hosts completion
 zstyle ':prezto:module:completion:*:hosts' etc-host-ignores \
