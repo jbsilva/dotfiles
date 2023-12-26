@@ -12,7 +12,7 @@
 #           the extent permitted by applicable law. You can redistribute it
 #           and/or modify it under the terms of the Do What The Fuck You Want
 #           To Public License, Version 2, as published by Sam Hocevar. See
-#           http://sam.zoy.org/wtfpl/COPYING for more details.
+#           http://www.wtfpl.net/txt/copying for more details.
 #
 # Created:      12 Aug 2011
 # Last Change:  04 Apr 2023
@@ -105,8 +105,8 @@ export DEFAULT_FOREGROUND=006 DEFAULT_BACKGROUND=235
 export DEFAULT_COLOR=$DEFAULT_FOREGROUND
 
 # Language
-export LANG='en_GB.UTF-8'
-export LC_ALL='en_GB.UTF-8'
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
 
 
 # Terminal Emulator
@@ -120,6 +120,7 @@ fi
 
 # Completions
 autoload -U +X bashcompinit && bashcompinit
+
 
 ###############################################################################
 #                                    Go
@@ -148,6 +149,7 @@ function iBad()        { echo -e "    \033[1;31m✖\033[0m $@"; }
 [[ -f "$HOME/.zsh/rm_empty_dirs.zsh" ]] && source "$HOME/.zsh/rm_empty_dirs.zsh"
 [[ -f "$HOME/.zsh/rm_empty_files.zsh" ]] && source "$HOME/.zsh/rm_empty_files.zsh"
 [[ -f "$HOME/.zsh/rm_regex.zsh" ]] && source "$HOME/.zsh/rm_regex.zsh"
+[[ -f "$HOME/.zsh/mount_share.zsh" ]] && source "$HOME/.zsh/mount_share.zsh"
 
 
 ###############################################################################
@@ -314,9 +316,6 @@ alias otp='oathtool --totp -b'
 # Backup
 alias bkp='rsync --recursive --links --times --compress-level=0 --info=flist2,name,progress --human-readable'
 alias bkpd='rsync --recursive --links --times --compress-level=0 --info=flist2,name,progress --human-readable --delete'
-
-# Python
-alias ap8='autopep8 --in-place --aggressive --aggressive'
 
 # Renamers
 alias recc='rename -X -c --rews --camelcase --nows'
