@@ -30,7 +30,7 @@
 
 # Return if zsh is called from Vim
 if [[ -n $VIMRUNTIME ]]; then
-    return 0
+  return 0
 fi
 
 
@@ -63,12 +63,15 @@ addToPathStart $HOME/bin
 
 # Neovim compiled from source
 if (( ! $+commands[nvim] )); then
-    if [[ -d $HOME/.local/nvim/bin ]]; then
-        addToPathStart $HOME/.local/nvim/bin
-    fi
+  if [[ -d $HOME/.local/nvim/bin ]]; then
+    addToPathStart $HOME/.local/nvim/bin
+  fi
 fi
 
+# Completions
+autoload -U +X bashcompinit && bashcompinit
 fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=($HOME/.zsh/completions $fpath)
 
 # Hashicorp Vault
 export VAULT_ADDR='http://127.0.0.1:8300'
@@ -98,10 +101,11 @@ source "${ZPLUG_HOME}/init.zsh"
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo
+    zplug install
+  fi
 fi
 
 # Then, source plugins and add commands to $PATH
@@ -115,8 +119,8 @@ zplug load
 # zle -al lists all registered zle commands
 ###############################################################################
 for keymap in 'emacs' 'viins' 'vicmd'; do
-    # Requires zdharma/history-search-multi-word plugin
-    bindkey -M $keymap '^r' history-search-multi-word
+  # Requires zdharma/history-search-multi-word plugin
+  bindkey -M $keymap '^r' history-search-multi-word
 done
 unset keymap
 
@@ -124,19 +128,11 @@ unset keymap
 bindkey -M vicmd "vv" edit-command-line
 
 ###############################################################################
-#                          Pyenv and pyenv-virtualenv
-# pyenv install 2.7 && pyenv install 3.8.12 && pyenv rehash && pyenv global 2.7 3.8.12
-###############################################################################
-if (( $+commands[pyenv] )); then eval "$(pyenv init --path)"; eval "$(pyenv init -)"; fi
-if (( $+commands[pyenv-virtualenv-init] )); then eval "$(pyenv virtualenv-init -)"; fi
-
-
-###############################################################################
 # Options
 ###############################################################################
-setopt autocd                   # Allow changing directories without `cd`
-setopt pushd_ignore_dups        # Dont push copies of the same dir on stack.
-setopt pushd_minus              # Reference stack entries with "-".
+setopt autocd            # Allow changing directories without `cd`
+setopt pushd_ignore_dups # Dont push copies of the same dir on stack.
+setopt pushd_minus       # Reference stack entries with "-".
 setopt extended_glob
 
 
@@ -146,16 +142,15 @@ setopt extended_glob
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
 SAVEHIST=10000
-setopt append_history           # Dont overwrite history
-setopt extended_history         # Also record time and duration of commands.
-setopt share_history            # Share history between multiple shells
-setopt hist_expire_dups_first   # Clear duplicates when trimming internal hist.
-setopt hist_find_no_dups        # Dont display duplicates during searches.
-setopt hist_ignore_dups         # Ignore consecutive duplicates.
-setopt hist_ignore_all_dups     # Remember only one unique copy of the command.
-setopt hist_reduce_blanks       # Remove superfluous blanks.
-setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
-
+setopt append_history         # Dont overwrite history
+setopt extended_history       # Also record time and duration of commands.
+setopt share_history          # Share history between multiple shells
+setopt hist_expire_dups_first # Clear duplicates when trimming internal hist.
+setopt hist_find_no_dups      # Dont display duplicates during searches.
+setopt hist_ignore_dups       # Ignore consecutive duplicates.
+setopt hist_ignore_all_dups   # Remember only one unique copy of the command.
+setopt hist_reduce_blanks     # Remove superfluous blanks.
+setopt hist_save_no_dups      # Omit older commands in favor of newer ones.
 
 ###############################################################################
 # Aliases
@@ -190,7 +185,7 @@ alias f644="find . -type d -not \( -name '#recycle' -prune \) -not \( -name '@ea
 alias f640="find . -type d -not \( -name '#recycle' -prune \) -not \( -name '@eaDir' -prune \) -o -type f -exec chmod 640 {} \;"
 alias sha1='openssl sha1'
 alias sha256='shasum -a 256'
-alias wget='wget -c'        # Resume wget by default
+alias wget='wget -c' # Resume wget by default
 
 alias ack='ack --ignore-dir=".mypy_cache"'
 
@@ -229,4 +224,12 @@ case $(tty) in
 ###############################################################################
 #                                Zellij
 ###############################################################################
-eval "$(zellij setup --generate-auto-start zsh)"
+if [[ -z "$ZELLIJ" &&
+  -z "$EMACS" &&
+  -z "$VIM" &&
+  -z "$INSIDE_EMACS" &&
+  -n "$SSH_TTY" &&
+  "$TERM_PROGRAM" != "vscode" &&
+  "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
+  zellij attach -c NAS
+fi

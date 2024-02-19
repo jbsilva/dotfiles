@@ -77,17 +77,14 @@ addToPathStart $HOME/bin
 
 # Neovim compiled from source
 if (( ! $+commands[nvim] )); then
-    if [[ -d $HOME/.local/nvim/bin ]]; then
-        addToPathStart $HOME/.local/nvim/bin
-    fi
+  if [[ -d $HOME/.local/nvim/bin ]]; then
+    addToPathStart $HOME/.local/nvim/bin
+  fi
 fi
 
 if [[ -z "$XDG_CONFIG_HOME" ]]; then
   export XDG_CONFIG_HOME=$HOME/.config
 fi
-
-fpath=(/usr/local/share/zsh-completions $fpath)
-fpath=($HOME/.zsh/completions $fpath)
 
 local NVIM=nvim
 export NVIM_PYTHON_LOG_FILE_PATH=~/.config/nvim/nvimlog
@@ -108,7 +105,6 @@ export DEFAULT_COLOR=$DEFAULT_FOREGROUND
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
-
 # Terminal Emulator
 export term_emulator=$(ps -h -o comm -p $PPID)
 
@@ -121,6 +117,8 @@ fi
 # Completions
 autoload -U +X bashcompinit && bashcompinit
 
+fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=($HOME/.zsh/completions $fpath)
 
 ###############################################################################
 #                                    Go
@@ -165,10 +163,11 @@ source "${ZPLUG_HOME}/init.zsh"
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo
+    zplug install
+  fi
   printf "Install? [y/N]: "
   if read -q; then
     echo
@@ -187,8 +186,8 @@ zplug load
 # zle -al lists all registered zle commands
 ###############################################################################
 for keymap in 'emacs' 'viins' 'vicmd'; do
-    # Requires zdharma/history-search-multi-word plugin
-    bindkey -M $keymap '^r' history-search-multi-word
+  # Requires zdharma/history-search-multi-word plugin
+  bindkey -M $keymap '^r' history-search-multi-word
   # Requires zdharma/history-search-multi-word plugin
   bindkey -M $keymap '^r' history-search-multi-word
 done
@@ -244,7 +243,7 @@ esac
 # Aliases
 ###############################################################################
 # alias sudo='sudo '
-alias please='sudo $(fc -ln -1)'        # Last command with sudo
+alias please='sudo $(fc -ln -1)' # Last command with sudo
 
 alias list='du -shc *'
 alias listh='du -shc * | sort -h'
@@ -295,7 +294,7 @@ alias now='date +"%T"'
 alias nowdate='date +"%d-%m-%Y"'
 alias sha1='openssl sha1'
 alias sha256='shasum -a 256'
-alias wget='wget -c'        # Resume wget by default
+alias wget='wget -c' # Resume wget by default
 
 alias ack='ack --ignore-dir=".mypy_cache"'
 
@@ -375,13 +374,12 @@ case $(tty) in
 ###############################################################################
 #                                Zellij
 ###############################################################################
-if [[ -z "$ZELLIJ" && \
-      -z "$EMACS" && \
-      -z "$VIM" && \
-      -z "$INSIDE_EMACS" && \
-      -n "$SSH_TTY" && \
-      "$TERM_PROGRAM" != "vscode" && \
-      "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
+if [[ -z "$ZELLIJ" &&
+  -z "$EMACS" &&
+  -z "$VIM" &&
+  -z "$INSIDE_EMACS" &&
+  -n "$SSH_TTY" &&
+  "$TERM_PROGRAM" != "vscode" &&
+  "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
   zellij attach -c
 fi
-
