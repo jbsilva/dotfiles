@@ -24,7 +24,7 @@
 # Source ~/.zprofile
 ###############################################################################
 if [[ -s "$HOME/.zprofile" ]]; then
-    source "$HOME/.zprofile"
+  source "$HOME/.zprofile"
 fi
 
 
@@ -36,7 +36,7 @@ fi
 
 # Return if zsh is called from Vim
 if [[ -n $VIMRUNTIME ]]; then
-    return 0
+  return 0
 fi
 
 
@@ -56,12 +56,12 @@ typeset -U path PATH
 
 # Add to beginning of PATH
 function addToPathStart {
-    path=("$1" $path)
+  path=("$1" $path)
 }
 
 # Add to end of PATH
 function addToPathEnd {
-    path+=("$1")
+  path+=("$1")
 }
 
 
@@ -83,7 +83,7 @@ if (( ! $+commands[nvim] )); then
 fi
 
 if [[ -z "$XDG_CONFIG_HOME" ]]; then
-    export XDG_CONFIG_HOME=$HOME/.config
+  export XDG_CONFIG_HOME=$HOME/.config
 fi
 
 fpath=(/usr/local/share/zsh-completions $fpath)
@@ -113,9 +113,9 @@ export LC_ALL='en_US.UTF-8'
 export term_emulator=$(ps -h -o comm -p $PPID)
 
 if [[ $term_emulator == *"kitty"* ]]; then
-    export TERM="xterm-kitty"
+  export TERM="xterm-kitty"
 else
-    export TERM="xterm-256color"
+  export TERM="xterm-256color"
 fi
 
 # Completions
@@ -169,6 +169,11 @@ if ! zplug check --verbose; then
     if read -q; then
         echo; zplug install
     fi
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo
+    zplug install
+  fi
 fi
 
 # Then, source plugins and add commands to $PATH
@@ -184,6 +189,8 @@ zplug load
 for keymap in 'emacs' 'viins' 'vicmd'; do
     # Requires zdharma/history-search-multi-word plugin
     bindkey -M $keymap '^r' history-search-multi-word
+  # Requires zdharma/history-search-multi-word plugin
+  bindkey -M $keymap '^r' history-search-multi-word
 done
 unset keymap
 
@@ -197,9 +204,9 @@ bindkey -M vicmd "vv" edit-command-line
 ###############################################################################
 # Options
 ###############################################################################
-setopt autocd                   # Allow changing directories without `cd`
-setopt pushd_ignore_dups        # Dont push copies of the same dir on stack.
-setopt pushd_minus              # Reference stack entries with "-".
+setopt autocd            # Allow changing directories without `cd`
+setopt pushd_ignore_dups # Dont push copies of the same dir on stack.
+setopt pushd_minus       # Reference stack entries with "-".
 setopt extended_glob
 
 
@@ -209,28 +216,27 @@ setopt extended_glob
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
 SAVEHIST=10000
-setopt append_history           # Dont overwrite history
-setopt extended_history         # Also record time and duration of commands.
-setopt share_history            # Share history between multiple shells
-setopt hist_expire_dups_first   # Clear duplicates when trimming internal hist.
-setopt hist_find_no_dups        # Dont display duplicates during searches.
-setopt hist_ignore_dups         # Ignore consecutive duplicates.
-setopt hist_ignore_all_dups     # Remember only one unique copy of the command.
-setopt hist_reduce_blanks       # Remove superfluous blanks.
-setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
-
+setopt append_history         # Dont overwrite history
+setopt extended_history       # Also record time and duration of commands.
+setopt share_history          # Share history between multiple shells
+setopt hist_expire_dups_first # Clear duplicates when trimming internal hist.
+setopt hist_find_no_dups      # Dont display duplicates during searches.
+setopt hist_ignore_dups       # Ignore consecutive duplicates.
+setopt hist_ignore_all_dups   # Remember only one unique copy of the command.
+setopt hist_reduce_blanks     # Remove superfluous blanks.
+setopt hist_save_no_dups      # Omit older commands in favor of newer ones.
 
 ###############################################################################
 # OS specific stuff
 ###############################################################################
 case $OS in
-    Darwin)
-        export MACOS_VERSION="$(sw_vers -productVersion)"
-        [[ -f "$HOME/.zsh/zshrc_macos" ]] && source "$HOME/.zsh/zshrc_macos"
-        ;;
-    Linux)
-        [[ -f "$HOME/.zsh/zshrc_linux" ]] && source "$HOME/.zsh/zshrc_linux"
-        ;;
+Darwin)
+  export MACOS_VERSION="$(sw_vers -productVersion)"
+  [[ -f "$HOME/.zsh/zshrc_macos" ]] && source "$HOME/.zsh/zshrc_macos"
+  ;;
+Linux)
+  [[ -f "$HOME/.zsh/zshrc_linux" ]] && source "$HOME/.zsh/zshrc_linux"
+  ;;
 esac
 
 
@@ -269,14 +275,14 @@ alias vim='nvim'
 
 # Download mp3 from Youtube
 if (( $+commands[youtube-dl] )); then
-    alias ytmp3="youtube-dl --extract-audio --audio-format mp3"
+  alias ytmp3="youtube-dl --extract-audio --audio-format mp3"
 fi
 
 # Set editor preference to nvim if available.
 if which nvim &>/dev/null; then
-    alias vim='() { $(whence -p nvim) $@ }'
+  alias vim='() { $(whence -p nvim) $@ }'
 else
-    alias vim='() { $(whence -p vim) $@ }'
+  alias vim='() { $(whence -p vim) $@ }'
 fi
 
 alias difff='/usr/bin/diff'
