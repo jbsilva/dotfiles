@@ -54,7 +54,6 @@ function addToPathEnd {
   esac
 }
 
-
 ###############################################################################
 #                                     Vars
 ###############################################################################
@@ -68,13 +67,13 @@ if (( ! $+commands[nvim] )); then
   fi
 fi
 
-# Completions
-autoload -U +X bashcompinit && bashcompinit
-fpath=(/usr/local/share/zsh-completions $fpath)
-fpath=($HOME/.zsh/completions $fpath)
-
 # Hashicorp Vault
 export VAULT_ADDR='http://127.0.0.1:8300'
+
+# Completions
+fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=($HOME/.zsh/completions $fpath)
+autoload -U +X bashcompinit && bashcompinit
 
 ###############################################################################
 # More Functions
@@ -126,6 +125,7 @@ unset keymap
 
 # Press vv to edit command in an external editor
 bindkey -M vicmd "vv" edit-command-line
+
 
 ###############################################################################
 # Options
@@ -233,3 +233,10 @@ if [[ -z "$ZELLIJ" &&
   "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
   zellij attach -c NAS
 fi
+
+# Perl
+PATH="/var/services/homes/julio/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/var/services/homes/julio/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/var/services/homes/julio/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/var/services/homes/julio/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/var/services/homes/julio/perl5"; export PERL_MM_OPT;
