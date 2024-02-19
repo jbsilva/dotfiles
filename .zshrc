@@ -15,7 +15,7 @@
 #           http://www.wtfpl.net/txt/copying for more details.
 #
 # Created:      12 Aug 2011
-# Last Change:  04 Apr 2023
+# Last Change:  19 Feb 2024
 #
 # Download: https://github.com/jbsilva/dotfiles
 ###############################################################################
@@ -375,4 +375,13 @@ case $(tty) in
 ###############################################################################
 #                                Zellij
 ###############################################################################
-eval "$(zellij setup --generate-auto-start zsh)"
+if [[ -z "$ZELLIJ" && \
+      -z "$EMACS" && \
+      -z "$VIM" && \
+      -z "$INSIDE_EMACS" && \
+      -n "$SSH_TTY" && \
+      "$TERM_PROGRAM" != "vscode" && \
+      "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
+  zellij attach -c
+fi
+
