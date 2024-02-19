@@ -373,20 +373,6 @@ case $(tty) in
 
 
 ###############################################################################
-#                                   Neofetch
-###############################################################################
-#if [[ $term_emulator == *"kitty"* ]]; then
-#    # kitty
-#    neofetch --backend 'kitty'
-#elif [[  $term_emulator == *"tmux"*  ]] || [[ $term_emulator == "login" ]]; then
-#    # tmux
-#    neofetch --backend 'w3m' --ascii_distro 'arch_small' 
-#else
-#    # xterm and rxvt
-#    neofetch --backend 'w3m' --xoffset 20 --yoffset 20 --gap 0
-#fi
-
-###############################################################################
 #                                Zellij
 ###############################################################################
 eval "$(zellij setup --generate-auto-start zsh)"
