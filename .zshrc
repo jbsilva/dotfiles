@@ -385,3 +385,14 @@ if [[ -z "$ZELLIJ" &&
   "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
   zellij attach -c
 fi
+
+###############################################################################
+#                                Pixi
+###############################################################################
+if [[ -d $HOME/.pixi/bin ]]; then
+  addToPathStart $HOME/.pixi/bin
+fi
+
+if (( $+commands[pixi] )); then
+  eval "$(pixi completion --shell zsh)"
+fi
