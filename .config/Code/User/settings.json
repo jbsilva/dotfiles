@@ -25,6 +25,7 @@
   "editor.renderWhitespace": "boundary",
   "editor.rulers": [80, 88, 100],
   "git.autofetch": true,
+  "git.confirmSync": false,
   "gitlens.graph.dimMergeCommits": true,
   "gitlens.telemetry.enabled": false,
   "mypy-type-checker.importStrategy": "fromEnvironment",
