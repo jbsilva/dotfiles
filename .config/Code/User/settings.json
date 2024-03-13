@@ -164,4 +164,6 @@
   "workbench.colorTheme": "Default Dark Modern",
   "workbench.startupEditor": "none",
   "cSpell.language": "en,pt-BR",
+  "tabby.usage.anonymousUsageTracking": true,
+  "tabby.inlineCompletion.triggerMode": "automatic"
 }
