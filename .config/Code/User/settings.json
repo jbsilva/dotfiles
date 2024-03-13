@@ -149,6 +149,15 @@
       // Skip last occurrence highlighted by `gb` or `ctrl+d`
       "before": ["g", "s"],
       "commands": ["editor.action.moveSelectionToNextFindMatch"]
+    },
+    // Repeatable visual mode indent with '>' and '>'
+    {
+      "before": [">"],
+      "commands": ["editor.action.indentLines"]
+    },
+    {
+      "before": ["<"],
+      "commands": ["editor.action.outdentLines"]
     }
   ],
   "workbench.colorCustomizations": {},
