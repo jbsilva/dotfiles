@@ -40,7 +40,7 @@
   },
   "serverlessIDE.telemetry.enableTelemetry": false,
   "telemetry.telemetryLevel": "off",
-  "terminal.integrated.defaultProfile.linux": "tmux",
+  "terminal.integrated.defaultProfile.linux": "zsh",
   "vim.camelCaseMotion.enable": true,
   "vim.easymotion": true,
   "vim.highlightedyank.enable": true,
