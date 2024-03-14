@@ -177,3 +177,7 @@ noremap('P', '"0P')
 local command = vim.api.nvim_create_user_command
 command('FixWhitespace', ':%s/\\s\\+$//e', { desc = 'Remove trailing whitespaces' })
 
+-------------------------------------------------------------------------------
+--> Fix line endings
+-------------------------------------------------------------------------------
+nnoremap('<leader>rl', ':e ++ff=dos<CR> :set ff=unix<CR>')
