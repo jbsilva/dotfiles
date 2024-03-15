@@ -4,9 +4,14 @@
   {
     "key": "ctrl+shift+alt+r",
     "command": "workbench.action.terminal.runSelectedText",
-    "when": "editorTextFocus && !findInputFocussed && !jupyter.ownsSelection && !notebookEditorFocused && !replaceInputFocussed"
+    "when": "editorTextFocus && !findInputFocussed && !jupyter.ownsSelection && !notebookEditorFocused && !replaceInputFocussed && !inDebugMode"
   },
-
+  // Run current line in the debug console
+  {
+    "key": "ctrl+shift+alt+r",
+    "command": "editor.debug.action.selectionToRepl",
+    "when": "editorTextFocus && !findInputFocussed && !replaceInputFocussed && debugState == 'stopped'"
+  },
   // Toggle focus between terminal and editor
   {
     "key": "ctrl+t ctrl+t",
@@ -16,11 +21,6 @@
     "key": "ctrl+t ctrl+t",
     "command": "workbench.action.focusActiveEditorGroup",
     "when": "terminalFocus"
-  },
-  {
-    "key": "ctrl+shift+alt+d",
-    "command": "python.debugInTerminal",
-    "when": "editorTextFocus && !findInputFocussed && !jupyter.ownsSelection && !notebookEditorFocused && !replaceInputFocussed && editorLangId == 'python'"
   },
   {
     "key": "ctrl+shift+alt+g",
