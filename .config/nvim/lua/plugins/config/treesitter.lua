@@ -165,15 +165,6 @@ function M.config()
         },
       },
     },
-
-    ---------------------------------------------------------------------------
-    --> JoosepAlviste/nvim-ts-context-commentstring
-    -- Set the commentstring option based on the cursor location in the file
-    ---------------------------------------------------------------------------
-    context_commentstring = {
-        enable = true,
-        enable_autocmd = false,
-    },
   }
 end
 

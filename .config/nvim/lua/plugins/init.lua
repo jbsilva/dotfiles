@@ -71,9 +71,6 @@ return require('packer').startup(function(use)
   ----------------------------------------------------------
   use {
     'nvim-tree/nvim-tree.lua',
-    requires = 'nvim-tree/nvim-web-devicons',
-    tag = 'nightly',
-    event = 'CursorHold',
     config = function()
       require('plugins.config.nvim-tree').config()
     end,
@@ -193,29 +190,9 @@ return require('packer').startup(function(use)
     end,
   }
 
-  ----------------------------------------------------------
-  --> Nvim-lspconfig: Configs for Neovim's built-in language server client
-  -- Install the language servers:
-  --    https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#pyright
-  --    :LspInfo
-  ----------------------------------------------------------
-  -- use {
-  --   'neovim/nvim-lspconfig',
-  --   requires = {
-  --     -- Automatically install LSPs to stdpath for neovim
-  --     'williamboman/mason.nvim',
-  --     'williamboman/mason-lspconfig.nvim',
-  --     -- Useful status updates for LSP
-  --     'j-hui/fidget.nvim',
-  --   },
-  --   setup = function()
-  --     require('mason').setup()
-  --   end,
-  -- }
 
   ----------------------------------------------------------
   --> LSP Zero: A starting point to setup some lsp related features
-  --> Null-ls: Inject LSP diagnostics, code actions, and more via Lua
   --> Debug Adapter Protocol client implementation for Neovim
   ----------------------------------------------------------
   use {
@@ -226,10 +203,6 @@ return require('packer').startup(function(use)
       {'williamboman/mason.nvim'},
       {'williamboman/mason-lspconfig.nvim'},
 
-      --> Null-ls
-      { 'jose-elias-alvarez/null-ls.nvim' },
-      { 'jayp0521/mason-null-ls.nvim' },
-
       --> Debugging
       { "mfussenegger/nvim-dap" },
       { "jayp0521/mason-nvim-dap.nvim" },
@@ -238,7 +211,6 @@ return require('packer').startup(function(use)
       {'hrsh7th/nvim-cmp'},
       {'hrsh7th/cmp-buffer'},
       {'hrsh7th/cmp-path'},
-      {'saadparwaiz1/cmp_luasnip'},
       {'hrsh7th/cmp-nvim-lsp'},
       {'hrsh7th/cmp-nvim-lua'},
 
