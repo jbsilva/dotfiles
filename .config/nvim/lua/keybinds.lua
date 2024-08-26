@@ -181,4 +181,5 @@ command('FixWhitespace', ':%s/\\s\\+$//e', { desc = 'Remove trailing whitespaces
 --> Fix line endings
 -------------------------------------------------------------------------------
 -- nnoremap('<leader>rl', ':e ++ff=dos<CR> :set ff=unix<CR>')
-nnoremap('<leader>rl', ':%s/\\r$//<CR>')
+-- nnoremap('<leader>rl', ':%s/\\r$//<CR>')
+command('FixLineEnding', ':%s/\\r$//e', { desc = 'Remove trailing CR' })
