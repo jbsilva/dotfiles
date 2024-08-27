@@ -167,3 +167,6 @@
 .config/xm1
 .config/xsettingsd/
 .config/gittyup.github.com
+.gitconfig-wsl-hoppe
+.config/jgit/config
+.config/github-copilot/versions.json
