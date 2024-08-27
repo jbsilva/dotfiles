@@ -255,6 +255,7 @@ alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
+alias .....='cd ../../../../../'
 
 alias dir='ls -1'           # Show one entry per line
 alias lah='ls -alh'         # Show all human-readable
@@ -304,7 +305,9 @@ alias unzipall="unzip '*.zip'"
 
 alias gst='git status'
 alias git-remove-untracked='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -d'
-alias git-remove-merged='git branch --merged master | grep -E -v "(^\*|master|main|dev)" | xargs git branch -d'
+alias git-remove-merged='git branch --merged master | grep -E -v "(^\*|master|main|dev|develop|testing)" | xargs git branch -d'
+alias git-remove-remote-merged-to-master-keep='git fetch --prune origin && git branch -r --merged | grep -E -v "(^\*|master|main|dev|develop|testing)" | sed "s/origin\///" | xargs -n 1 git push --delete origin'
+alias git-remove-remote-merged-to-master='git fetch --prune origin && git branch -r --merged | grep -E -v "(^\*|master|main)" | sed "s/origin\///" | xargs -n 1 git push --delete origin'
 
 # Supercrabtree/k
 # _k: original k
@@ -315,6 +318,7 @@ alias kk="_k --human --group-directories-first"
 alias k="_k --human --group-directories-first --no-vcs"
 
 # Paste clipboard in new vim file
+# On Linux, install xclip and xsel. Prezto's utlity module defines pbpaste.
 alias paste2vim='pbpaste | nvim -'
 
 # Open AuTHentication (OATH) one-time password
