@@ -170,3 +170,4 @@
 .gitconfig-wsl-hoppe
 .config/jgit/config
 .config/github-copilot/versions.json
+.config/uv/uv-receipt.json
