@@ -405,3 +405,9 @@ fi
 #                                uv
 ###############################################################################
 eval "$(uv generate-shell-completion zsh)"
+
+###############################################################################
+#                                gnome-keyring
+# Wait for systemd --user dbus session and unlock keyring
+###############################################################################
+eval $(echo -n db | gnome-keyring-daemon --unlock --replace 2> /dev/null)
