@@ -16,49 +16,33 @@
 --  ]d: next diagnostic
 --
 --  https://github.com/VonHeikemen/lsp-zero.nvim
+-- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
 ----------------------------------------------------------
 local M = {}
 
 function M.config()
   local lsp_zero = require('lsp-zero')
 
-  -- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
-  lsp_zero.ensure_installed({
-    'bashls',                 -- Bash
-    'html',                   -- HTML
-    -- 'jedi_language_server',   -- Python
-    -- 'pylsp',                  -- Python
-    'pyright',                -- Python. Requires npm
-    'jsonls',                 -- Json
-    'marksman',               -- Markdown
-    'rust_analyzer',          -- Rust
-    'sqlls',                  -- SQL
-    'lua_ls',                 -- Lua
-    'terraformls',            -- Terraform
-    'tsserver',               -- TypeScript
-    'yamlls',                 -- Yaml
-  })
-
   ----------------------------------------------------------
   --> CMP
   ----------------------------------------------------------
-  local cmp = require('cmp')
-  local cmp_mappings = lsp_zero.defaults.cmp_mappings()
-
-  -- Disable completion with tab
-  cmp_mappings['<Tab>'] = nil
-  cmp_mappings['<S-Tab>'] = nil
-  -- Disable completion with Enter
-  cmp_mappings['<CR>'] = nil
-  -- Use Right arrow to accept completion
-  cmp_mappings['<Right>'] = cmp.mapping.confirm {
-    behavior = cmp.ConfirmBehavior.Insert,
-    select = true,
-  }
-
-  lsp_zero.setup_nvim_cmp({
-    mapping = cmp_mappings,
-  })
+  -- local cmp = require('cmp')
+  -- local cmp_mappings = lsp_zero.defaults.cmp_mappings()
+  --
+  -- -- Disable completion with tab
+  -- cmp_mappings['<Tab>'] = nil
+  -- cmp_mappings['<S-Tab>'] = nil
+  -- -- Disable completion with Enter
+  -- cmp_mappings['<CR>'] = nil
+  -- -- Use Right arrow to accept completion
+  -- cmp_mappings['<Right>'] = cmp.mapping.confirm {
+  --   behavior = cmp.ConfirmBehavior.Insert,
+  --   select = true,
+  -- }
+  --
+  -- lsp_zero.setup_nvim_cmp({
+  --   mapping = cmp_mappings,
+  -- })
 
   ----------------------------------------------------------
   --> Mason-dap
