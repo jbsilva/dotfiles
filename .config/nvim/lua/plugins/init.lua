@@ -305,7 +305,12 @@ return require('packer').startup(function(use)
   --  Multiple cursors plugin for Vim
   --  https://github.com/mg979/vim-visual-multi/wiki/Quick-start
   ----------------------------------------------------------
-  use 'mg979/vim-visual-multi'
+  use {
+    'mg979/vim-visual-multi',
+    setup = function()
+      vim.g.VM_mouse_mappings = 1
+    end,
+  }
 
   ----------------------------------------------------------
   --> NERD Commenter: Vim plugin for intensely nerdy commenting powers
