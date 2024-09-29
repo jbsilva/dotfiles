@@ -402,12 +402,20 @@ if (( $+commands[pixi] )); then
 fi
 
 ###############################################################################
-#                                uv
+#                               uv and uvx
 ###############################################################################
-eval "$(uv generate-shell-completion zsh)"
+if (( $+commands[uv] )); then
+  eval "$(uv generate-shell-completion zsh)"
+fi
+
+if (( $+commands[uvx] )); then
+  eval "$(uvx --generate-shell-completion zsh)"
+fi
 
 ###############################################################################
 #                                gnome-keyring
 # Wait for systemd --user dbus session and unlock keyring
 ###############################################################################
-eval $(echo -n db | gnome-keyring-daemon --unlock --replace 2> /dev/null)
+if (( $+commands[gnome-keyring-daemon] )); then
+  eval $(echo -n db | gnome-keyring-daemon --unlock --replace 2> /dev/null)
+fi
