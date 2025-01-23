@@ -49,7 +49,7 @@ function M.config()
   local remap = require("mapmodes")
   local nnoremap = remap.nnoremap
 
-  nnoremap('<C-n>', '<CMD>NvimTreeToggle<CR>')
+  nnoremap(',e', '<CMD>NvimTreeToggle<CR>')
 
   vim.api.nvim_create_autocmd(
     'FileType',
