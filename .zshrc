@@ -419,3 +419,11 @@ fi
 if (( $+commands[gnome-keyring-daemon] )); then
   eval $(echo -n db | gnome-keyring-daemon --unlock 2> /dev/null)
 fi
+###############################################################################
+#                                .NET
+# curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 3.1
+# curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 8.0
+###############################################################################
+# export DOTNET_ROOT=/usr/lib/dotnet:$HOME/.dotnet:/snap/dotnet-sdk/current
+export DOTNET_ROOT=$HOME/.dotnet
+export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
