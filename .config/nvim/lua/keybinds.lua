@@ -80,10 +80,10 @@ xnoremap('<C-k>', ":move '<-2<CR>gv=gv")
 
 -------------------------------------------------------------------------------
 --> Use operator pending mode to visually select the whole buffer
--- e.g. dA = delete buffer ALL, yA = copy whole buffer ALL
+-- e.g. dAA = delete buffer ALL, yAA = copy whole buffer ALL
 -------------------------------------------------------------------------------
-onoremap('A', ':<C-u>normal! mzggVG<CR>`z')
-xnoremap('A', ':<C-u>normal! ggVG<CR>')
+onoremap('AA', ':<C-u>normal! mzggVG<CR>`z')
+xnoremap('AA', ':<C-u>normal! ggVG<CR>')
 
 -------------------------------------------------------------------------------
 --> Clean search highlight with ,<space>
