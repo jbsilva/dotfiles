@@ -15,7 +15,7 @@
 #           http://www.wtfpl.net/txt/copying for more details.
 #
 # Created:      12 Aug 2011
-# Last Change:  19 Feb 2024
+# Last Change:  28 Jan 2025
 #
 # Download: https://github.com/jbsilva/dotfiles
 ###############################################################################
@@ -273,8 +273,6 @@ alias lsr='find . -mindepth 2 -maxdepth 2 -type d -exec ls -ld "{}" \;' # ls dir
 
 alias cls="clear"
 
-alias vim='nvim'
-
 # Download mp3 from Youtube
 if (( $+commands[youtube-dl] )); then
   alias ytmp3="youtube-dl --extract-audio --audio-format mp3"
@@ -413,17 +411,20 @@ if (( $+commands[uvx] )); then
 fi
 
 ###############################################################################
+#                                .NET
+# curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 3.1
+# curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 8.0
+###############################################################################
+if [[ -d "$HOME/.dotnet" ]]; then
+  export DOTNET_ROOT=$HOME/.dotnet
+  addToPathEnd $DOTNET_ROOT
+  addToPathEnd $DOTNET_ROOT/tools
+fi
+
+###############################################################################
 #                                gnome-keyring
 # Wait for systemd --user dbus session and unlock keyring
 ###############################################################################
 if (( $+commands[gnome-keyring-daemon] )); then
   eval $(echo -n db | gnome-keyring-daemon --unlock 2> /dev/null)
 fi
-###############################################################################
-#                                .NET
-# curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 3.1
-# curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 8.0
-###############################################################################
-# export DOTNET_ROOT=/usr/lib/dotnet:$HOME/.dotnet:/snap/dotnet-sdk/current
-export DOTNET_ROOT=$HOME/.dotnet
-export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
