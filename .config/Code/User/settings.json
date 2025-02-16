@@ -112,18 +112,22 @@
       "commands": ["workbench.files.action.focusFilesExplorer"]
     },
     {
+      // Focus on Left Group
       "before": ["<C-h>"],
       "commands": ["workbench.action.focusLeftGroup"]
     },
     {
+      // Focus on Right Group
       "before": ["<C-l>"],
       "commands": ["workbench.action.focusRightGroup"]
     },
     {
+      // Focus on Below Group
       "before": ["<C-j>"],
       "commands": ["workbench.action.focusBelowGroup"]
     },
     {
+      // Focus on Above Group
       "before": ["<C-k>"],
       "commands": ["workbench.action.focusAboveGroup"]
     }
