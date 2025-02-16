@@ -51,16 +51,6 @@
     "command": "workbench.action.focusNextGroup"
   },
   {
-    "key": "ctrl+shift+alt+d",
-    "command": "extension.vim_ctrl+d",
-    "when": "editorTextFocus && vim.active && vim.use<C-d> && !inDebugRepl"
-  },
-  {
-    "key": "ctrl+d",
-    "command": "-extension.vim_ctrl+d",
-    "when": "editorTextFocus && vim.active && vim.use<C-d> && !inDebugRepl"
-  },
-  {
     "key": "ctrl+u",
     "command": "-extension.vim_ctrl+u",
     "when": "editorTextFocus && vim.active && vim.use<C-u> && !inDebugRepl"
@@ -111,5 +101,15 @@
     "key": "ctrl+p",
     "command": "-extension.vim_ctrl+p",
     "when": "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'"
+  },
+  {
+    "key": "ctrl+d",
+    "command": "-editor.action.addSelectionToNextFindMatch",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+d",
+    "command": "-list.focusPageDown",
+    "when": "listFocus && !inputFocus"
   }
 ]
