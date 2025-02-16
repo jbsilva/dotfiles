@@ -40,6 +40,10 @@
   "serverlessIDE.telemetry.enableTelemetry": false,
   "telemetry.telemetryLevel": "off",
   "terminal.integrated.defaultProfile.linux": "zsh",
+
+  // Allow using Ctrl+f in the terminal (to open Vim edit command)
+  "terminal.integrated.commandsToSkipShell": ["-workbench.action.terminal.focusFind"],
+
   "vim.camelCaseMotion.enable": true,
   "vim.easymotion": true,
   "vim.highlightedyank.enable": true,
