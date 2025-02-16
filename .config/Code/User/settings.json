@@ -215,6 +215,5 @@
   "workbench.colorTheme": "Default Dark Modern",
   "workbench.startupEditor": "none",
   "cSpell.language": "en,pt-BR",
-  "cSpell.userWords": ["boto", "setenv"],
   "vim.visualstar": true
 }
