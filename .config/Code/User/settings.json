@@ -140,6 +140,28 @@
       // Focus on Above Group
       "before": ["<C-k>"],
       "commands": ["workbench.action.focusAboveGroup"]
+    },
+    {
+      // Use VS Code undo
+      "before": ["u"],
+      "after": [],
+      "commands": [
+        {
+          "command": "undo",
+          "args": []
+        }
+      ]
+    },
+    {
+      // Use VS Code redo
+      "before": ["<C-r>"],
+      "after": [],
+      "commands": [
+        {
+          "command": "redo",
+          "args": []
+        }
+      ]
     }
   ],
   "vim.showMarksInGutter": true,
