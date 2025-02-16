@@ -217,5 +217,6 @@
   "cSpell.language": "en,pt-BR",
   "cSpell.userWords": ["boto", "setenv"],
   "tabby.usage.anonymousUsageTracking": true,
-  "tabby.inlineCompletion.triggerMode": "automatic"
+  "tabby.inlineCompletion.triggerMode": "automatic",
+  "vim.visualstar": true
 }
