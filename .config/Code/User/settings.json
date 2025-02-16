@@ -92,9 +92,19 @@
       "before": ["<leader>", "p"]
     },
     {
+      // Paste from system clipboard with <leader>P
+      "after": ["\"", "+", "P"],
+      "before": ["<leader>", "P"]
+    },
+    {
       // Y copy from cursor to last-non-blank-char
       "after": ["y", "g", "_"],
       "before": ["Y"]
+    },
+    {
+      // Yank until last-non-blank-char to system clipboard with <leader>Y
+      "after": ["\"", "+", "y", "g", "_"],
+      "before": ["<leader>", "Y"]
     },
     {
       // Clean search highlight with ,<space>
@@ -155,6 +165,11 @@
       // Paste from system clipboard with <leader>p
       "after": ["\"", "+", "p"],
       "before": ["<leader>", "p"]
+    },
+    {
+      // Paste from system clipboard with <leader>P
+      "after": ["\"", "+", "P"],
+      "before": ["<leader>", "P"]
     },
     {
       // Skip last occurrence highlighted by `gb` or `ctrl+d`
