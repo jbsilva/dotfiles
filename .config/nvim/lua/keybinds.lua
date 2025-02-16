@@ -74,6 +74,12 @@ xnoremap('<C-j>', ":move '>+1<CR>gv=gv")
 xnoremap('<C-k>', ":move '<-2<CR>gv=gv")
 
 -------------------------------------------------------------------------------
+--> Use <leader>v for Visual Block Mode
+-- Useful when Ctrl+V and Ctrl+Q are not forwarded to Neovim (e.g. VS Code)
+-------------------------------------------------------------------------------
+nnoremap('<leader>v', '<C-v>')
+
+-------------------------------------------------------------------------------
 --> Keep cursor in the same place when joining lines
 -------------------------------------------------------------------------------
 -- nnoremap('J', 'mzJ`z')
