@@ -22,7 +22,7 @@
   "editor.fontFamily": "'Hack Nerd Font', 'Cascadia Code', 'FiraCode Nerd Font', Consolas",
   "editor.formatOnSave": true,
   "editor.renderWhitespace": "boundary",
-  "editor.rulers": [80, 88, 100],
+  "editor.rulers": [80, 100],
   "git.autofetch": true,
   "git.confirmSync": false,
   "gitlens.graph.dimMergeCommits": true,
