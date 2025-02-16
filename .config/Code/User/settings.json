@@ -57,23 +57,27 @@
       "before": ["d"]
     },
     {
-      // Normal delete with <leader>d
+      // Normal delete with <leader>d (overwrite last yank)
       "after": ["d"],
       "before": ["<leader>", "d"]
     },
     {
+      // Delete until end of line without overwriting last yank
       "after": ["\"", "_", "D"],
       "before": ["D"]
     },
     {
+      // Normal delete with <leader>D (overwrite last yank). Same as `d$`
       "after": ["D"],
       "before": ["<leader>", "D"]
     },
     {
+      // Delete without overwriting last yank
       "after": ["\"", "_", "x"],
       "before": ["x"]
     },
     {
+      // Normal delete with <leader>x. Same as `dl`
       "after": ["x"],
       "before": ["<leader>", "x"]
     },
