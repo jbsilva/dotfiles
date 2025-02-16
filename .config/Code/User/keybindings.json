@@ -111,5 +111,13 @@
     "key": "ctrl+d",
     "command": "-list.focusPageDown",
     "when": "listFocus && !inputFocus"
+  },
+  {
+    "key": "ctrl+shift+alt+l",
+    "command": "workbench.action.navigateToLastEditLocation"
+  },
+  {
+    "key": "ctrl+k ctrl+q",
+    "command": "-workbench.action.navigateToLastEditLocation"
   }
 ]
