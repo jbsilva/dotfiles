@@ -20,7 +20,7 @@
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "aws.telemetry": false,
+  "cSpell.language": "en,pt-BR",
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.fontFamily": "'Hack Nerd Font', 'Cascadia Code', 'FiraCode Nerd Font', Consolas",
   "editor.formatOnSave": true,
@@ -40,13 +40,12 @@
   "remote.SSH.remotePlatform": {
     "nas": "linux"
   },
-  "serverlessIDE.telemetry.enableTelemetry": false,
   "telemetry.telemetryLevel": "off",
-  "terminal.integrated.defaultProfile.linux": "zsh",
 
   // Allow using Ctrl+f in the terminal (to open Vim edit command)
   "terminal.integrated.commandsToSkipShell": ["-workbench.action.terminal.focusFind"],
 
+  "terminal.integrated.defaultProfile.linux": "zsh",
   "vim.camelCaseMotion.enable": true,
   "vim.easymotion": true,
   "vim.highlightedyank.enable": true,
@@ -146,8 +145,8 @@
     },
     {
       // Use VS Code undo
-      "before": ["u"],
       "after": [],
+      "before": ["u"],
       "commands": [
         {
           "command": "undo",
@@ -157,8 +156,8 @@
     },
     {
       // Use VS Code redo
-      "before": ["<C-r>"],
       "after": [],
+      "before": ["<C-r>"],
       "commands": [
         {
           "command": "redo",
@@ -211,9 +210,8 @@
       "commands": ["editor.action.outdentLines"]
     }
   ],
+  "vim.visualstar": true,
   "workbench.colorCustomizations": {},
   "workbench.colorTheme": "Default Dark Modern",
-  "workbench.startupEditor": "none",
-  "cSpell.language": "en,pt-BR",
-  "vim.visualstar": true
+  "workbench.startupEditor": "none"
 }
