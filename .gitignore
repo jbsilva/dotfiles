@@ -171,3 +171,5 @@
 .config/jgit/config
 .config/github-copilot/versions.json
 .config/uv/uv-receipt.json
+.config/hatch/
+.config/zellij/config.kdl.bak
