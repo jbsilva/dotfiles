@@ -42,8 +42,11 @@
   },
   "telemetry.telemetryLevel": "off",
 
-  // Allow using Ctrl+f in the terminal (to open Vim edit command)
-  "terminal.integrated.commandsToSkipShell": ["-workbench.action.terminal.focusFind"],
+  // Allow using Ctrl+f and Ctrl+q in the terminal (for Vim)
+  "terminal.integrated.commandsToSkipShell": [
+    "-workbench.action.terminal.focusFind",
+    "-workbench.action.quickOpenView"
+  ],
 
   "terminal.integrated.defaultProfile.linux": "zsh",
   "vim.camelCaseMotion.enable": true,
