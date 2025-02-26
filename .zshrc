@@ -430,3 +430,11 @@ fi
 if (( $+commands[gnome-keyring-daemon] )); then
   eval $(echo -n db | gnome-keyring-daemon --unlock 2> /dev/null)
 fi
+
+###############################################################################
+#                                Nexus Tools
+###############################################################################
+if [[ -d "$HOME/.nexus-tools" ]]; then
+  export NEXUS_TOOLS_PATH="$HOME/.nexus-tools"
+  addToPathEnd $NEXUS_TOOLS_PATH
+fi
