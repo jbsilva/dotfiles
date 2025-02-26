@@ -321,6 +321,8 @@ alias paste2vim='pbpaste | nvim -'
 
 # Open AuTHentication (OATH) one-time password
 alias otp='oathtool --totp -b'
+alias otp8='oathtool --totp=SHA1 -b -d 8 -s 60'
+alias otp8hex='oathtool --totp -s 60 -v -d8'
 
 # Backup
 alias bkp='rsync --recursive --links --times --compress-level=0 --info=flist2,name,progress --human-readable'
