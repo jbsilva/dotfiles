@@ -116,8 +116,8 @@
     "command": "-workbench.action.navigateToLastEditLocation"
   },
   {
-    "key": "ctrl+q",
-    "command": "-workbench.action.quickOpenView",
-    "when": "terminalFocus"
+    "key": "ctrl+d",
+    "command": "-extension.vim_ctrl+d",
+    "when": "editorTextFocus && vim.active && vim.use<C-d> && !inDebugRepl"
   }
 ]
