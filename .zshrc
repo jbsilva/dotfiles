@@ -130,8 +130,11 @@ fi
 ###############################################################################
 #                                    Go
 ###############################################################################
-export GOPATH="${GOPATH:-$HOME/go}"
-addToPathStart $GOPATH/bin
+if [[ -d $HOME/.local/go/bin ]]; then
+  addToPathStart $HOME/.local/go/bin
+elif [[ -d /usr/local/go/bin ]]; then
+  addToPathStart /usr/local/go/bin
+fi
 
 
 ###############################################################################
