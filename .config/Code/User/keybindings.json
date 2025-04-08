@@ -119,5 +119,14 @@
     "key": "ctrl+d",
     "command": "-extension.vim_ctrl+d",
     "when": "editorTextFocus && vim.active && vim.use<C-d> && !inDebugRepl"
+  },
+  {
+    "key": "ctrl+q",
+    "command": "workbench.action.quickOpenView",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "ctrl+q",
+    "command": "-workbench.action.quickOpenView"
   }
 ]
