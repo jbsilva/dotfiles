@@ -5,7 +5,7 @@
 #               ====oOO==(_)==OOo=====
 #
 # License:
-#           Copyright (c) 2011-2022, Julio Batista Silva <julio@juliobs.com>
+#           Copyright (c) 2011-2025, Julio Batista Silva <julio@juliobs.com>
 #                       All Rights Reserved
 #
 #           This program is free software. It comes without any warranty, to
@@ -15,7 +15,7 @@
 #           http://www.wtfpl.net/txt/copying for more details.
 #
 # Created:      12 Aug 2011
-# Last Change:  28 Jan 2025
+# Last Change:  05 Apr 2025
 #
 # Download: https://github.com/jbsilva/dotfiles
 ###############################################################################
