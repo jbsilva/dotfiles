@@ -173,3 +173,4 @@
 .config/uv/uv-receipt.json
 .config/hatch/
 .config/zellij/config.kdl.bak
+.config/go/telemetry
