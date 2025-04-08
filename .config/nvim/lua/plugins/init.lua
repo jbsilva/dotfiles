@@ -69,49 +69,48 @@ return require('packer').startup(function(use)
   --> Nvim-tree: A file explorer for Neovim written in Lua
   -- See also: telescope-file-browser
   ----------------------------------------------------------
-  use {
-    'nvim-tree/nvim-tree.lua',
-    config = function()
-      require('plugins.config.nvim-tree').config()
-    end,
-  }
+  -- use {
+  --   'nvim-tree/nvim-tree.lua',
+  --   config = function()
+  --     require('plugins.config.nvim-tree').config()
+  --   end,
+  -- }
 
   ----------------------------------------------------------
   --> Telescope: Highly extendable fuzzy finder over lists
   -- Install sharkdp/fd and BurntSushi/ripgrep before
   ----------------------------------------------------------
-  use {
-    {
-      'nvim-telescope/telescope.nvim',
-      requires = 'nvim-lua/plenary.nvim',
-      event = 'CursorHold',
-      config = function()
-        require('plugins.config.telescope').config()
-      end,
-    },
-    -- FZF
-    {
-      'nvim-telescope/telescope-fzf-native.nvim',
-      after = 'telescope.nvim',
-      run = 'make',
-      config = function()
-        require('telescope').load_extension('fzf')
-      end,
-    },
-    -- Symbols
-    {
-      'nvim-telescope/telescope-symbols.nvim',
-      after = 'telescope.nvim',
-    },
-    -- File browser extension
-    {
-      'nvim-telescope/telescope-file-browser.nvim',
-      after = 'telescope.nvim',
-      config = function()
-        require('telescope').load_extension('file_browser')
-      end,
-    },
-  }
+  -- use {
+  --   {
+  --     'nvim-telescope/telescope.nvim',
+  --     requires = 'nvim-lua/plenary.nvim',
+  --     config = function()
+  --       require('plugins.config.telescope').config()
+  --     end,
+  --   },
+  --   -- FZF
+  --   {
+  --     'nvim-telescope/telescope-fzf-native.nvim',
+  --     after = 'telescope.nvim',
+  --     run = 'make',
+  --     config = function()
+  --       require('telescope').load_extension('fzf')
+  --     end,
+  --   },
+  --   -- Symbols
+  --   {
+  --     'nvim-telescope/telescope-symbols.nvim',
+  --     after = 'telescope.nvim',
+  --   },
+  --   -- File browser extension
+  --   {
+  --     'nvim-telescope/telescope-file-browser.nvim',
+  --     after = 'telescope.nvim',
+  --     config = function()
+  --       require('telescope').load_extension('file_browser')
+  --     end,
+  --   },
+  -- }
 
   ----------------------------------------------------------
   --> Colorschemes
@@ -172,23 +171,23 @@ return require('packer').startup(function(use)
   ----------------------------------------------------------
   --> Neotest: A framework for interacting with tests within NeoVim
   ----------------------------------------------------------
-  use {
-    'nvim-neotest/neotest',
-    cmd = { 'Neotest', 'NeotestRun' },
-    module = 'neotest',
-    requires = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'rouge8/neotest-rust',
-      'antoinemadec/FixCursorHold.nvim'
-    },
-    setup = function()
-      require('plugins.config.neotest').setup()
-    end,
-    config = function()
-      require('plugins.config.neotest').config()
-    end,
-  }
+  -- use {
+  --   'nvim-neotest/neotest',
+  --   cmd = { 'Neotest', 'NeotestRun' },
+  --   module = 'neotest',
+  --   requires = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'rouge8/neotest-rust',
+  --     'antoinemadec/FixCursorHold.nvim'
+  --   },
+  --   setup = function()
+  --     require('plugins.config.neotest').setup()
+  --   end,
+  --   config = function()
+  --     require('plugins.config.neotest').config()
+  --   end,
+  -- }
 
 
   ----------------------------------------------------------
@@ -235,21 +234,20 @@ return require('packer').startup(function(use)
   --> Treesitter: A parser generator tool and an incremental parsing library
   -- :TSInstallInfo
   ----------------------------------------------------------
-  use {
-    {
-      'nvim-treesitter/nvim-treesitter',
-      event = 'CursorHold',
-      run = ':TSUpdate',
-      config = function()
-        require('plugins.config.treesitter').config()
-      end,
-    },
-    { 'nvim-treesitter/playground', after = 'nvim-treesitter' },
-    { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' },
-    { 'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter' },
-    { 'windwp/nvim-ts-autotag', after = 'nvim-treesitter' },
-    { 'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter' },
-  }
+  -- use {
+  --   {
+  --     'nvim-treesitter/nvim-treesitter',
+  --     run = ':TSUpdate',
+  --     config = function()
+  --       require('plugins.config.treesitter').config()
+  --     end,
+  --   },
+  --   { 'nvim-treesitter/playground', after = 'nvim-treesitter' },
+  --   { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' },
+  --   { 'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter' },
+  --   { 'windwp/nvim-ts-autotag', after = 'nvim-treesitter' },
+  --   { 'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter' },
+  -- }
 
   ----------------------------------------------------------
   --> Easymotion: Simpler way to use some motions in Vim
@@ -345,18 +343,18 @@ return require('packer').startup(function(use)
   --> GitHub Copilot: uses OpenAI Codex to suggest code in real-time
   -- :Copilot setup
   ----------------------------------------------------------
-  use("github/copilot.vim")
+  -- use("github/copilot.vim")
 
   ----------------------------------------------------------
   --> Zen Mode: Distraction-free coding for Neovim
   -- :ZenMode
   ----------------------------------------------------------
-  use {
-    "folke/zen-mode.nvim",
-    config = function()
-      require("zen-mode").setup()
-    end
-  }
+  -- use {
+  --   "folke/zen-mode.nvim",
+  --   config = function()
+  --     require("zen-mode").setup()
+  --   end
+  -- }
 
   ----------------------------------------------------------
   --> Automatically set up your configuration after cloning packer.nvim
