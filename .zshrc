@@ -398,6 +398,21 @@ if [[ -z "$ZELLIJ" &&
   zellij attach -c
 fi
 
+
+###############################################################################
+#                                asdf
+###############################################################################
+if (( $+commands[asdf] )); then
+  export ASDF_DATA_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
+  addToPathStart ${ASDF_DATA_DIR}/shims
+
+  if [[ ! -f "$HOME/.zsh/completions/_asdf" ]]; then
+    asdf completion zsh > "$HOME/.zsh/completions/_asdf"
+    autoload -Uz compinit && compinit
+  fi
+fi
+
+
 ###############################################################################
 #                                Pixi
 ###############################################################################
