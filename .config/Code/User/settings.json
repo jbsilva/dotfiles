@@ -216,5 +216,6 @@
   "vim.visualstar": true,
   "workbench.colorCustomizations": {},
   "workbench.colorTheme": "Default Dark Modern",
-  "workbench.startupEditor": "none"
+  "workbench.startupEditor": "none",
+  "vim.sneak": true
 }
