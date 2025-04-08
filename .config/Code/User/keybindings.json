@@ -104,11 +104,6 @@
   },
   {
     "key": "ctrl+d",
-    "command": "-editor.action.addSelectionToNextFindMatch",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+d",
     "command": "-list.focusPageDown",
     "when": "listFocus && !inputFocus"
   },
