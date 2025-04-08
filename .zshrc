@@ -119,8 +119,6 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.zsh/completions $fpath)
 autoload -U +X bashcompinit && bashcompinit
 
-fpath=(/usr/local/share/zsh-completions $fpath)
-fpath=($HOME/.zsh/completions $fpath)
 
 ###############################################################################
 #                                    Go
