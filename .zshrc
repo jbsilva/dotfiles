@@ -72,7 +72,6 @@ function addToPathEnd {
 
 addToPathStart /usr/local/sbin
 addToPathStart $HOME/.local/bin
-addToPathStart $HOME/.cargo/bin
 addToPathStart $HOME/bin
 
 # Neovim compiled from source
@@ -119,6 +118,14 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.zsh/completions $fpath)
 autoload -U +X bashcompinit && bashcompinit
 
+
+###############################################################################
+#                                    Rust
+###############################################################################
+if [[ -d $HOME/.cargo/bin ]]; then
+  addToPathStart $HOME/.cargo/bin
+  # . "$HOME/.cargo/env"
+fi
 
 ###############################################################################
 #                                    Go
