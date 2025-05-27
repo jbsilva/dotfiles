@@ -6,16 +6,46 @@
 	autocrlf = false
 	safecrlf = warn
 	editor = nvim
+	# fsmonitor = true
+	# untrackedCache = true
 [pull]
 	rebase = true
 [init]
 	defaultBranch = main
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[tag]
+	sort = version:refname
 [merge]
 	tool = meld
+	conflictstyle = zdiff3
 [diff]
 	guitool = meld
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
 [push]
 	autoSetupRemote = true
+	default = simple
+	followTags = true
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+[help]
+	autocorrect = prompt
+[commit]
+	verbose = true
+[rerere]
+	enabled = true
+	autoupdate = true
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
 [alias]
 	# List of aliases
 	alias = "!f(){ git config -l | grep alias; };f"
