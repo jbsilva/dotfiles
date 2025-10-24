@@ -219,8 +219,7 @@
     }
   ],
   "vim.visualstar": true,
-  "workbench.colorCustomizations": {},
-  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.iconTheme": "material-icon-theme",
   "workbench.startupEditor": "none",
   "vim.sneak": true
 }
