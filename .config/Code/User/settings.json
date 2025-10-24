@@ -1,4 +1,7 @@
 {
+  "[terragrunt]": {
+    "editor.defaultFormatter": "jkillian.custom-local-formatters"
+  },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
