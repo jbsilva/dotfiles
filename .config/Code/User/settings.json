@@ -55,6 +55,7 @@
     "-workbench.action.terminal.focusFind",
     "-workbench.action.quickOpenView"
   ],
+  "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.defaultProfile.linux": "zsh",
   "vim.camelCaseMotion.enable": true,
   "vim.easymotion": true,
