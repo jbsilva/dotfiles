@@ -21,7 +21,8 @@
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
   "[yaml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "diffEditor.ignoreTrimWhitespace": false
   },
   "cSpell.language": "en,pt-BR",
   "diffEditor.ignoreTrimWhitespace": false,
