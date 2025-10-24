@@ -24,6 +24,15 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "diffEditor.ignoreTrimWhitespace": false
   },
+  "customLocalFormatters.formatters": [
+    {
+      "command": "terragrunt hcl format",
+      "languages": [
+        "hcl",
+        "terragrunt"
+      ]
+    }
+  ],
   "cSpell.language": "en,pt-BR",
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.fontFamily": "'Hack Nerd Font', 'Cascadia Code', 'FiraCode Nerd Font', Consolas",
