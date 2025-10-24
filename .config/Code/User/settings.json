@@ -49,18 +49,12 @@
   },
   "prettier.printWidth": 100,
   "prettier.proseWrap": "always",
-  "python.analysis.autoFormatStrings": true,
-  "remote.SSH.remotePlatform": {
-    "nas": "linux"
-  },
   "telemetry.telemetryLevel": "off",
-
   // Allow using Ctrl+f and Ctrl+q in the terminal (for Vim)
   "terminal.integrated.commandsToSkipShell": [
     "-workbench.action.terminal.focusFind",
     "-workbench.action.quickOpenView"
   ],
-
   "terminal.integrated.defaultProfile.linux": "zsh",
   "vim.camelCaseMotion.enable": true,
   "vim.easymotion": true,
