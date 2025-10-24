@@ -226,4 +226,5 @@
     "editor.defaultFormatter": "ms-dotnettools.csharp"
   },
   "dotnetAcquisitionExtension.enableTelemetry": false,
+  "telemetry.feedback.enabled": false,
 }
