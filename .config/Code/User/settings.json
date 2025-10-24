@@ -27,10 +27,7 @@
   "customLocalFormatters.formatters": [
     {
       "command": "terragrunt hcl format",
-      "languages": [
-        "hcl",
-        "terragrunt"
-      ]
+      "languages": ["hcl", "terragrunt"]
     }
   ],
   "cSpell.language": "en,pt-BR",
