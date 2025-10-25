@@ -1,4 +1,6 @@
-# Linux
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,linux,macos
+
+### Linux ###
 *~
 
 # temporary files which can be created if a process still has a handle open of a deleted file
@@ -12,8 +14,8 @@
 
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
-################################################################################
-# macOS
+
+### macOS ###
 # General
 .DS_Store
 .AppleDouble
@@ -40,8 +42,12 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-################################################################################
-# Windows
+
+### macOS Patch ###
+# iCloud generated files
+*.icloud
+
+### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
 Thumbs.db:encryptable
