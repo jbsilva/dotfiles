@@ -234,4 +234,19 @@
   "dotnetAcquisitionExtension.enableTelemetry": false,
   "telemetry.feedback.enabled": false,
   "terminal.integrated.scrollback": 50000
+  "nix.formatterPath": "nixfmt",
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nil",
+  "nix.serverSettings": {
+    "nil": {
+      "formatting": {
+        "command": ["nixfmt"]
+      },
+      "options": {
+        "nix-darwin": {
+          "expr": "(builtins.getFlake \"${userHome}/dotfiles/nix-darwin\").darwinConfigurations.M4.options"
+        }
+      }
+    }
+  },
 }
