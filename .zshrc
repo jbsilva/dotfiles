@@ -338,6 +338,7 @@ alias qmvo='qmv --format=destination-only'
 alias qmvor='qmv -R --format=destination-only'
 alias exif_move="exiftool -P -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN' -d '%Y/%m' '-Directory<\${CreateDate}' '-Directory<\${DateTimeOriginal}' ."
 alias exif_rename="exiftool -P -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN' -d '%Y%m%d_%H%M%S' '-filename<%f-\${ImageSize}%-03c.%le' '-filename<\${CreateDate}%-03c.%le' '-filename<\${DateTimeOriginal}%-03c.%le' ."
+alias exif_copyright="exiftool -G1 -Artist -Copyright -IPTC:By-line -IPTC:CopyrightNotice -IPTC:Credit -XMP-dc:Creator -XMP-dc:Rights -XMP-iptcCore:CreatorWorkEmail -XMP-iptcCore:CreatorWorkURL -XMP-plus:CopyrightOwnerName -XMP-plus:CopyrightStatus -XMP-plus:ImageCreatorName -XMP-plus:LicensorName -XMP-xmpRights:Marked -XMP-xmpRights:Owner -XMP-xmpRights:UsageTerms"
 
 # Docker
 alias dnorestart='docker update --restart=no $* $(docker ps -q)'
