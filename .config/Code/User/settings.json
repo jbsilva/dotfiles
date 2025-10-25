@@ -1,6 +1,12 @@
 {
-  "[terragrunt]": {
-    "editor.defaultFormatter": "jkillian.custom-local-formatters"
+  // =============================
+  // Language-specific settings
+  // =============================
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "mohd-akram.vscode-html-format"
   },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -14,52 +20,95 @@
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[nix]": {
+    "editor.defaultFormatter": "jnoortheen.nix-ide"
+  },
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "[terragrunt]": {
+    "editor.defaultFormatter": "jkillian.custom-local-formatters"
   },
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
-  "[html]": {
-    "editor.defaultFormatter": "mohd-akram.vscode-html-format"
-  },
-  "[nix]": {
-    "editor.defaultFormatter": "jnoortheen.nix-ide"
-  },
   "[yaml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "diffEditor.ignoreTrimWhitespace": false
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+
+  // =============================
+  // Editor
+  // =============================
+  "editor.autoClosingBrackets": "never",
+  "editor.fontFamily": "'Hack Nerd Font', 'Cascadia Code', 'FiraCode Nerd Font', Consolas",
+  "editor.formatOnSave": true,
+  "editor.renderWhitespace": "boundary",
+  "editor.rulers": [80, 100],
+  // https://github.com/VSCodeVim/Vim/issues/9680
+  "editor.experimentalEditContextEnabled": false,
+
+  // =============================
+  // Diff Editor
+  // =============================
+  "diffEditor.ignoreTrimWhitespace": false,
+
+  // =============================
+  // Formatting
+  // =============================
   "customLocalFormatters.formatters": [
     {
       "command": "terragrunt hcl format",
       "languages": ["hcl", "terragrunt"]
     }
   ],
-  "cSpell.language": "en,pt-BR",
-  "diffEditor.ignoreTrimWhitespace": false,
-  "editor.fontFamily": "'Hack Nerd Font', 'Cascadia Code', 'FiraCode Nerd Font', Consolas",
-  "editor.formatOnSave": true,
-  "editor.renderWhitespace": "boundary",
-  "editor.rulers": [80, 100],
+  "prettier.printWidth": 100,
+  "prettier.proseWrap": "always",
+
+  // =============================
+  // Git & GitLens
+  // =============================
   "git.autofetch": true,
   "git.confirmSync": false,
   "gitlens.graph.dimMergeCommits": true,
   "gitlens.telemetry.enabled": false,
-  "mypy-type-checker.importStrategy": "fromEnvironment",
-  "mypy-type-checker.severity": {
-    "error": "Hint"
+
+  // =============================
+  // Nix
+  // =============================
+  "nix.enableLanguageServer": true,
+  "nix.formatterPath": "nixfmt",
+  "nix.serverPath": "nil",
+  "nix.serverSettings": {
+    "nil": {
+      "formatting": {
+        "command": ["nixfmt"]
+      },
+      "options": {
+        "nix-darwin": {
+          "expr": "(builtins.getFlake \"${userHome}/dotfiles/nix-darwin\").darwinConfigurations.M4.options"
+        }
+      }
+    }
   },
-  "prettier.printWidth": 100,
-  "prettier.proseWrap": "always",
-  "telemetry.telemetryLevel": "off",
+
+  // =============================
+  // Terminal
+  // =============================
   // Allow using Ctrl+f and Ctrl+q in the terminal (for Vim)
   "terminal.integrated.commandsToSkipShell": [
     "-workbench.action.terminal.focusFind",
     "-workbench.action.quickOpenView"
   ],
-  "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.scrollback": 50000,
+  "terminal.integrated.stickyScroll.enabled": true,
+  "terminal.integrated.suggest.enabled": true,
+
+  // =============================
+  // Vim (VSCodeVim)
+  // =============================
   "vim.camelCaseMotion.enable": true,
   "vim.easymotion": true,
   "vim.highlightedyank.enable": true,
@@ -182,6 +231,7 @@
   ],
   "vim.showMarksInGutter": true,
   "vim.smartRelativeLine": true,
+  "vim.sneak": true,
   "vim.textwidth": 100,
   "vim.visualModeKeyBindingsNonRecursive": [
     {
@@ -225,28 +275,50 @@
     }
   ],
   "vim.visualstar": true,
+
+  // =============================
+  // Workbench
+  // =============================
   "workbench.iconTheme": "material-icon-theme",
   "workbench.startupEditor": "none",
-  "vim.sneak": true,
-  "[csharp]": {
-    "editor.defaultFormatter": "ms-dotnettools.csharp"
+
+  // =============================
+  // AI & Copilot
+  // =============================
+  "chat.agent.maxRequests": 50,
+  "github.copilot.nextEditSuggestions.enabled": true,
+
+  // =============================
+  // Containers
+  // =============================
+  "containers.contexts.showInStatusBar": true,
+  "dev.containers.dockerPath": "/opt/homebrew/bin/docker",
+  "dev.containers.dockerSocketPath": "~/.config/colima/default/docker.sock",
+
+  // =============================
+  // Spell check
+  // =============================
+  "cSpell.language": "en,pt-BR",
+
+  // =============================
+  // Type checking
+  // =============================
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "mypy-type-checker.severity": {
+    "error": "Hint"
   },
+
+  // =============================
+  // SonarLint
+  // =============================
+  "sonarlint.disableTelemetry": true,
+  "sonarlint.focusOnNewCode": true,
+  "sonarlint.pathToNodeExecutable": "/run/current-system/sw/bin/node",
+
+  // =============================
+  // Telemetry & privacy
+  // =============================
   "dotnetAcquisitionExtension.enableTelemetry": false,
   "telemetry.feedback.enabled": false,
-  "terminal.integrated.scrollback": 50000
-  "nix.formatterPath": "nixfmt",
-  "nix.enableLanguageServer": true,
-  "nix.serverPath": "nil",
-  "nix.serverSettings": {
-    "nil": {
-      "formatting": {
-        "command": ["nixfmt"]
-      },
-      "options": {
-        "nix-darwin": {
-          "expr": "(builtins.getFlake \"${userHome}/dotfiles/nix-darwin\").darwinConfigurations.M4.options"
-        }
-      }
-    }
-  },
+  "telemetry.telemetryLevel": "off"
 }
