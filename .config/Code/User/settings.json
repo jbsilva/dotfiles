@@ -23,6 +23,9 @@
   "[html]": {
     "editor.defaultFormatter": "mohd-akram.vscode-html-format"
   },
+  "[nix]": {
+    "editor.defaultFormatter": "jnoortheen.nix-ide"
+  },
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "diffEditor.ignoreTrimWhitespace": false
