@@ -25,6 +25,7 @@
 .config/calibre/
 .config/calibrerc
 .config/chromium
+.config/colima
 .config/configstore
 .config/copyq
 .config/darktable
@@ -32,6 +33,7 @@
 .config/device_automounter_kcmrc
 .config/digikam_systemrc
 .config/digikamrc
+.config/direnv/
 .config/discord/
 .config/discoverrc
 .config/dleyna-renderer-service.conf
@@ -48,8 +50,11 @@
 .config/getmail
 .config/git/
 .config/gitahead.com/
+.config/github-copilot/versions.json
+.config/gittyup.github.com
 .config/gitui
 .config/gnome-control-center/
+.config/go/telemetry
 .config/goa-1.0/
 .config/gtk-2.0/
 .config/gtk-3.0/
@@ -57,12 +62,14 @@
 .config/gtkrc
 .config/gtkrc-2.0
 .config/gwenviewrc
+.config/hatch/
 .config/helm/
 .config/htop/htoprc
 .config/ibus/
 .config/inkscape
 .config/iterm2
 .config/jellyfin.org
+.config/jgit/config
 .config/kactivitymanagerd-pluginsrc
 .config/kactivitymanagerd-statsrc
 .config/kactivitymanagerdrc
@@ -159,6 +166,7 @@
 .config/transmission-remote-gtk/
 .config/trashrc
 .config/user-dirs.dirs
+.config/uv/uv-receipt.json
 .config/vlc/
 .config/vlcrc
 .config/wireshark
@@ -166,13 +174,4 @@
 .config/xfce4
 .config/xm1
 .config/xsettingsd/
-.config/gittyup.github.com
-.gitconfig-wsl-hoppe
-.config/jgit/config
-.config/github-copilot/versions.json
-.config/uv/uv-receipt.json
-.config/hatch/
 .config/zellij/config.kdl.bak
-.config/go/telemetry
-.config/colima
-.config/direnv/lib/hm-nix-direnv.sh
