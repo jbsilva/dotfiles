@@ -467,3 +467,9 @@ if [[ -d "$HOME/.lmstudio/bin" ]]; then
   addToPathEnd $LM_STUDIO_PATH
 fi
 # End of LM Studio CLI section
+
+###############################################################################
+#                                VS Code
+###############################################################################
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+
