@@ -114,7 +114,7 @@ fi
 
 
 ###############################################################################
-# Completions
+#                                Completions
 ###############################################################################
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.zsh/completions $fpath)
@@ -129,6 +129,7 @@ if [[ -d $HOME/.cargo/bin ]]; then
   addToPathStart $HOME/.cargo/bin
   # . "$HOME/.cargo/env"
 fi
+
 
 ###############################################################################
 #                                    Go
@@ -237,6 +238,7 @@ setopt hist_ignore_dups       # Ignore consecutive duplicates.
 setopt hist_ignore_all_dups   # Remember only one unique copy of the command.
 setopt hist_reduce_blanks     # Remove superfluous blanks.
 setopt hist_save_no_dups      # Omit older commands in favor of newer ones.
+
 
 ###############################################################################
 # OS specific stuff
@@ -365,6 +367,7 @@ alias split_70_30='gawk '"'"'BEGIN {srand()} {f = FILENAME (rand() <= 0.7 ? ".70
 # See open ports
 alias open_ports='sudo ss -tulpn | grep LISTEN'
 
+
 ###############################################################################
 #                                     FUN
 ###############################################################################
@@ -422,6 +425,7 @@ if (( $+commands[pixi] )); then
   eval "$(pixi completion --shell zsh)"
 fi
 
+
 ###############################################################################
 #                               uv and uvx
 ###############################################################################
@@ -432,6 +436,7 @@ fi
 if (( $+commands[uvx] )); then
   eval "$(uvx --generate-shell-completion zsh)"
 fi
+
 
 ###############################################################################
 #                                .NET
@@ -444,6 +449,7 @@ if [[ -d "$HOME/.dotnet" ]]; then
   addToPathEnd $DOTNET_ROOT/tools
 fi
 
+
 ###############################################################################
 #                                gnome-keyring
 # Wait for systemd --user dbus session and unlock keyring
@@ -452,6 +458,7 @@ if (( $+commands[gnome-keyring-daemon] )); then
   eval $(echo -n db | gnome-keyring-daemon --unlock 2> /dev/null)
 fi
 
+
 ###############################################################################
 #                                Nexus Tools
 ###############################################################################
@@ -459,6 +466,7 @@ if [[ -d "$HOME/.nexus-tools" ]]; then
   export NEXUS_TOOLS_PATH="$HOME/.nexus-tools"
   addToPathEnd $NEXUS_TOOLS_PATH
 fi
+
 
 ###############################################################################
 #                                LM Studio
@@ -469,6 +477,7 @@ if [[ -d "$HOME/.lmstudio/bin" ]]; then
   addToPathEnd $LM_STUDIO_PATH
 fi
 # End of LM Studio CLI section
+
 
 ###############################################################################
 #                                VS Code
