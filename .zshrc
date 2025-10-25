@@ -483,3 +483,12 @@ fi
 #                                VS Code
 ###############################################################################
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+
+
+###############################################################################
+#                          AWS CLI completions
+###############################################################################
+if (( $+commands[aws_completer] )); then
+  echo "Got here"
+  complete -C aws_completer aws
+fi
