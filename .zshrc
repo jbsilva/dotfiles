@@ -281,11 +281,6 @@ alias lsr='find . -mindepth 2 -maxdepth 2 -type d -exec ls -ld "{}" \;' # ls dir
 
 alias cls="clear"
 
-# Download mp3 from Youtube
-if (( $+commands[youtube-dl] )); then
-  alias ytmp3="youtube-dl --extract-audio --audio-format mp3"
-fi
-
 # Set editor preference to nvim if available.
 if which nvim &>/dev/null; then
   alias vim='() { $(whence -p nvim) $@ }'
