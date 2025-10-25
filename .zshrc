@@ -69,7 +69,6 @@ function addToPathEnd {
 #                                     Vars
 # Some will be in ~/.xprofile
 ###############################################################################
-
 addToPathStart /usr/local/sbin
 addToPathStart $HOME/.local/bin
 addToPathStart $HOME/bin
@@ -472,4 +471,3 @@ fi
 #                                VS Code
 ###############################################################################
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
-
