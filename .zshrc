@@ -112,10 +112,14 @@ else
   export TERM="xterm-256color"
 fi
 
+
+###############################################################################
 # Completions
+###############################################################################
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.zsh/completions $fpath)
-autoload -U +X bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
 
 
 ###############################################################################
@@ -403,7 +407,6 @@ if (( $+commands[asdf] )); then
 
   if [[ ! -f "$HOME/.zsh/completions/_asdf" ]]; then
     asdf completion zsh > "$HOME/.zsh/completions/_asdf"
-    autoload -Uz compinit && compinit
   fi
 fi
 
