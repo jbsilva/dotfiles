@@ -10,3 +10,8 @@
 	trustExitCode = true
 [gpg]
 	program = /run/current-system/sw/bin/gpg
+[gitbutler]
+	aiModelProvider = lmstudio
+	aiLMStudioModelName = default
+	aiLMStudioEndpoint = http://127.0.0.1:1234
+	gitbutlerCommitter = 0
