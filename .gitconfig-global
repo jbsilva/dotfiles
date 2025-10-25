@@ -1,6 +1,7 @@
 [user]
 	name = Julio Batista Silva
 	email = julio@juliobs.com
+	signingkey = 3E596BF69EFC73E6
 [core]
 	excludesfile = ~/.gitignore-global
 	autocrlf = false
@@ -16,8 +17,11 @@
 	ui = auto
 [branch]
 	sort = -committerdate
+[commit]
+	gpgsign = true
 [tag]
 	sort = version:refname
+	gpgSign = true
 [merge]
 	tool = meld
 	conflictstyle = zdiff3
