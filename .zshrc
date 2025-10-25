@@ -456,3 +456,13 @@ if [[ -d "$HOME/.nexus-tools" ]]; then
   export NEXUS_TOOLS_PATH="$HOME/.nexus-tools"
   addToPathEnd $NEXUS_TOOLS_PATH
 fi
+
+###############################################################################
+#                                LM Studio
+###############################################################################
+# Added by LM Studio CLI (lms)
+if [[ -d "$HOME/.lmstudio/bin" ]]; then
+  export LM_STUDIO_PATH="$HOME/.lmstudio/bin"
+  addToPathEnd $LM_STUDIO_PATH
+fi
+# End of LM Studio CLI section
