@@ -322,5 +322,17 @@
   // =============================
   "dotnetAcquisitionExtension.enableTelemetry": false,
   "telemetry.feedback.enabled": false,
-  "telemetry.telemetryLevel": "off"
+  "telemetry.telemetryLevel": "off",
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
+  },
+  "chat.instructionsFilesLocations": {
+    ".github/instructions": true,
+    "/Users/julio/.aitk/instructions/": true
+  },
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-4.1"
 }
