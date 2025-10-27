@@ -46,6 +46,26 @@
       $SWDA_CMD setHandler --app "IINA" --UTI public.video
       $SWDA_CMD setHandler --app "IINA" --UTI public.webm
 
+      # Images (Preview)
+      $SWDA_CMD setHandler --app "Preview" --UTI com.apple.icns
+      $SWDA_CMD setHandler --app "Preview" --UTI com.canon.tif-raw-image
+      $SWDA_CMD setHandler --app "Preview" --UTI com.microsoft.bmp
+      $SWDA_CMD setHandler --app "Preview" --UTI com.microsoft.ico
+      $SWDA_CMD setHandler --app "Preview" --UTI com.microsoft.ppt.export.ext.jpg
+      $SWDA_CMD setHandler --app "Preview" --UTI com.microsoft.ppt.export.ext.png
+      $SWDA_CMD setHandler --app "Preview" --UTI com.microsoft.ppt.export.ext.tiff
+      $SWDA_CMD setHandler --app "Preview" --UTI public.camera-raw-image
+      $SWDA_CMD setHandler --app "Preview" --UTI public.gif
+      $SWDA_CMD setHandler --app "Preview" --UTI public.heic
+      $SWDA_CMD setHandler --app "Preview" --UTI public.heif
+      $SWDA_CMD setHandler --app "Preview" --UTI public.image
+      $SWDA_CMD setHandler --app "Preview" --UTI public.jpeg
+      $SWDA_CMD setHandler --app "Preview" --UTI public.png
+      $SWDA_CMD setHandler --app "Preview" --UTI public.tiff
+      $SWDA_CMD setHandler --app "Preview" --UTI public.webp
+
+      $SWDA_CMD setHandler --app "Vivaldi" --UTI public.svg-image
+
       # Browser (Vivaldi)
       $SWDA_CMD setHandler --app "Vivaldi" --URL http
       $SWDA_CMD setHandler --app "Vivaldi" --UTI com.microsoft.internet-shortcut
