@@ -54,6 +54,7 @@
       "fork"
       "ghostty"
       "gitbutler"
+      "gitkraken"
       "keyboard-maestro"
       "lm-studio"
       "maccy"
