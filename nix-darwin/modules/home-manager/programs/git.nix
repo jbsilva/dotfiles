@@ -3,7 +3,7 @@
   programs.git = {
     enable = true;
     signing = {
-      key = "3E596BF69EFC73E6";
+      key = "D1C6B63BEAE5330F";
       signByDefault = true;
     };
 

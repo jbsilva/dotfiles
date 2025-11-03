@@ -1,7 +1,7 @@
 [user]
 	name = Julio Batista Silva
 	email = julio@juliobs.com
-	signingkey = 3E596BF69EFC73E6
+	signingkey = D1C6B63BEAE5330F
 [core]
 	excludesfile = ~/.gitignore-global
 	autocrlf = false
