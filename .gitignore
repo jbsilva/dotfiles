@@ -1,5 +1,6 @@
 *.pyc
 .config/GIMP
+.config/GitKraken/
 .config/Insomnia/
 .config/JetBrains
 .config/KDE/
