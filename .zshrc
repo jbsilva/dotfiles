@@ -460,11 +460,22 @@ fi
 
 
 ###############################################################################
-#                                Nexus Tools
+#                                NVM
 ###############################################################################
-if [[ -d "$HOME/.nexus-tools" ]]; then
-  export NEXUS_TOOLS_PATH="$HOME/.nexus-tools"
-  addToPathEnd $NEXUS_TOOLS_PATH
+if [[ -d "$HOME/.config/nvm" ]]; then
+  export NVM_DIR="$HOME/.config/nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
+
+
+###############################################################################
+#                                WSL
+###############################################################################
+
+# Open Windows browser. Install wslu first: `sudo apt install wslu`
+if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+  export BROWSER=wslview
 fi
 
 
@@ -491,3 +502,13 @@ fi
 if (( $+commands[aws_completer] )); then
   complete -C aws_completer aws
 fi
+
+
+###############################################################################
+#                                Nexus Tools
+###############################################################################
+if [[ -d "$HOME/.nexus-tools" ]]; then
+  export NEXUS_TOOLS_PATH="$HOME/.nexus-tools"
+  addToPathEnd $NEXUS_TOOLS_PATH
+fi
+
