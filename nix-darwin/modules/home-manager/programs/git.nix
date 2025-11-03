@@ -55,13 +55,13 @@
         amend = "commit --amend";
         snap = "!git stash save \"snapshot: $(date)\"";
         unstash = "stash pop";
-        rmbranch = "!f(){ git branch -d \${1} && git push origin --delete \${1}; };f";
         mkbranch = "!f(){ git checkout -b \${1} && git push origin -u \${1}; };f";
+        rmbranch = "!f(){ git branch -d \${1} && git push origin --delete \${1}; };f";
+        hist = "log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short";
+        ld = "log --pretty=format:\"%h | %G? | Committer: %ci | Author: %ai | %an <%ae> | %s%d\"";
         lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative";
         lol = "log --graph --decorate --pretty=oneline --abbrev-commit";
         lola = "log --graph --decorate --pretty=oneline --abbrev-commit --all";
-        hist = "log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short";
-        ld = "log --pretty=format:\"%h | Committer: %ci | Author: %ai | %an <%ae> | %s%d\"";
         aliases = "config --get-regexp alias";
         shove = "push --force-with-lease";
         unpushed = "cherry -v --abbrev";
