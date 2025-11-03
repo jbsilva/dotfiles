@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, lib, ... }:
 {
   programs.git = {
     enable = true;
@@ -129,5 +129,15 @@
         gitbutlerCommitter = "0";
       };
     };
+
+    # Conditional includes for per-directory Git config.
+    # Use mkAfter to ensure this include appears at the end of config so it can override values.
+    includes = lib.mkAfter [
+      {
+        # Equivalent to: [includeIf "gitdir:~/Dev/Hoppe/**"]
+        condition = "gitdir:${config.home.homeDirectory}/Dev/Hoppe/**";
+        path = "${config.home.homeDirectory}/Dev/Hoppe/.gitconfig";
+      }
+    ];
   };
 }
