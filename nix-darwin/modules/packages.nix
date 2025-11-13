@@ -8,6 +8,8 @@
     curl
     discord
     exiftool
+    file-rename
+    findutils
     # firefox
     gawk
     # ghostty-bin
