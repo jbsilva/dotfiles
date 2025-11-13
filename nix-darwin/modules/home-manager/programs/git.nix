@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   programs.git = {
     enable = true;
@@ -58,6 +63,7 @@
         mkbranch = "!f(){ git checkout -b \${1} && git push origin -u \${1}; };f";
         rmbranch = "!f(){ git branch -d \${1} && git push origin --delete \${1}; };f";
         hist = "log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short";
+        logg = "log --pretty=format:\"%h | %G? | CD: %ci | AD: %ai | %an <%ae> | %s%d\"";
         ld = "log --pretty=format:\"%h | %G? | Committer: %ci | Author: %ai | %an <%ae> | %s%d\"";
         lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative";
         lol = "log --graph --decorate --pretty=oneline --abbrev-commit";
