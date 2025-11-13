@@ -15,6 +15,20 @@
         eval "$(! /opt/homebrew/bin/brew shellenv 2>/dev/null || /opt/homebrew/bin/brew shellenv)"
       fi
 
+      # Ensure Nix paths take precedence over macOS and Homebrew
+      # Use zsh's $path array for reliable de-duplication and ordering
+      if [ -n "$ZSH_VERSION" ]; then
+        typeset -U path
+        path=(
+          /run/current-system/sw/bin
+          /etc/profiles/per-user/$USER/bin
+          $path
+        )
+      else
+        # Fallback for non-zsh shells
+        export PATH="/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH"
+      fi
+
       # Keep OpenJDK bin visible even if path_helper overwrote PATH earlier
       export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
     '';
@@ -31,6 +45,18 @@
       # Homebrew shell environment (idempotent; safe to eval multiple times)
       if [ -x /opt/homebrew/bin/brew ]; then
         eval "$(! /opt/homebrew/bin/brew shellenv 2>/dev/null || /opt/homebrew/bin/brew shellenv)"
+      fi
+
+      # Ensure Nix paths take precedence over macOS and Homebrew for interactive shells, too
+      if [ -n "$ZSH_VERSION" ]; then
+        typeset -U path
+        path=(
+          /run/current-system/sw/bin
+          /etc/profiles/per-user/$USER/bin
+          $path
+        )
+      else
+        export PATH="/run/current-system/sw/bin:/etc/profiles/per-user/$USER/bin:$PATH"
       fi
 
       # Keep OpenJDK bin visible
