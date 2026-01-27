@@ -412,14 +412,14 @@ fi
 ###############################################################################
 #                                asdf
 ###############################################################################
-if (( $+commands[asdf] )); then
-  export ASDF_DATA_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
-  addToPathStart ${ASDF_DATA_DIR}/shims
+# if (( $+commands[asdf] )); then
+#   export ASDF_DATA_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
+#   addToPathStart ${ASDF_DATA_DIR}/shims
 
-  if [[ ! -f "$HOME/.zsh/completions/_asdf" ]]; then
-    asdf completion zsh > "$HOME/.zsh/completions/_asdf"
-  fi
-fi
+#   if [[ ! -f "$HOME/.zsh/completions/_asdf" ]]; then
+#     asdf completion zsh > "$HOME/.zsh/completions/_asdf"
+#   fi
+# fi
 
 
 ###############################################################################
