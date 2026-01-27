@@ -503,6 +503,15 @@ if (( $+commands[aws_completer] )); then
   complete -C aws_completer aws
 fi
 
+###############################################################################
+#                               Pants completions
+###############################################################################
+if (( $+commands[pants] )); then
+  if [[ ! -f "$HOME/.zsh/completions/_pants" ]]; then
+    pants complete --shell=zsh > "$HOME/.zsh/completions/_pants"
+  fi
+fi
+
 
 ###############################################################################
 #                                Nexus Tools
