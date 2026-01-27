@@ -6,7 +6,8 @@
     "editor.defaultFormatter": "ms-dotnettools.csharp"
   },
   "[html]": {
-    "editor.defaultFormatter": "mohd-akram.vscode-html-format"
+    //"editor.defaultFormatter": "mohd-akram.vscode-html-format"
+    "editor.defaultFormatter": "prettier.prettier-vscode"
   },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
