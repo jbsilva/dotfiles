@@ -31,8 +31,9 @@
     neovim
     nil
     nixd
-    nixfmt-rfc-style
+    nixfmt
     nodejs_24
+    nodePackages.prettier
     notion-app
     # ollama
     p7zip
@@ -43,6 +44,7 @@
     shottr
     slack
     swiftdefaultapps
+    tree
     # tailscale
     terraform
     the-unarchiver
@@ -50,6 +52,7 @@
     # warp-terminal
     wezterm
     wget
+    yt-dlp
     zellij
   ];
 }
