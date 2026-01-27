@@ -462,9 +462,9 @@ fi
 #                                gnome-keyring
 # Wait for systemd --user dbus session and unlock keyring
 ###############################################################################
-if (( $+commands[gnome-keyring-daemon] )); then
-  eval $(echo -n db | gnome-keyring-daemon --unlock 2> /dev/null)
-fi
+# if (( $+commands[gnome-keyring-daemon] )); then
+#   eval $(echo -n db | gnome-keyring-daemon --unlock 2> /dev/null)
+# fi
 
 
 ###############################################################################
