@@ -493,7 +493,13 @@ fi
 ###############################################################################
 #                                VS Code
 ###############################################################################
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  if (( $+commands[code-insiders] )); then
+    . "$(code-insiders --locate-shell-integration-path zsh)"
+  else
+    . "$(code --locate-shell-integration-path zsh)"
+  fi
+fi
 
 
 ###############################################################################
