@@ -77,6 +77,9 @@
   // =============================
   "git.autofetch": true,
   "git.confirmSync": false,
+  "gitlens.ai.experimental.composer.enabled": true,
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-5.2-codex",
   "gitlens.graph.dimMergeCommits": true,
   "gitlens.telemetry.enabled": false,
 
@@ -112,6 +115,11 @@
   "terminal.integrated.scrollback": 50000,
   "terminal.integrated.stickyScroll.enabled": true,
   "terminal.integrated.suggest.enabled": true,
+  "terminal.integrated.suggest.quickSuggestions": {
+    "commands": "off",
+    "arguments": "off",
+    "unknown": "off"
+  },
 
   // =============================
   // Vim (VSCodeVim)
@@ -294,6 +302,12 @@
   // =============================
   "chat.agent.maxRequests": 50,
   "github.copilot.nextEditSuggestions.enabled": true,
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
+  },
 
   // =============================
   // Containers
@@ -327,22 +341,5 @@
   // =============================
   "dotnetAcquisitionExtension.enableTelemetry": false,
   "telemetry.feedback.enabled": false,
-  "telemetry.telemetryLevel": "off",
-  "github.copilot.enable": {
-    "*": true,
-    "plaintext": false,
-    "markdown": true,
-    "scminput": false
-  },
-  "chat.instructionsFilesLocations": {
-    ".github/instructions": true,
-    "/Users/julio/.aitk/instructions/": true
-  },
-  "gitlens.ai.model": "vscode",
-  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
-  "terminal.integrated.suggest.quickSuggestions": {
-    "commands": "off",
-    "arguments": "off",
-    "unknown": "off"
-  }
+  "telemetry.telemetryLevel": "off"
 }
