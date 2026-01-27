@@ -15,7 +15,7 @@
 #           http://www.wtfpl.net/txt/copying for more details.
 #
 # Created:      12 Aug 2011
-# Last Change:  25 Oct 2025
+# Last Change:  27 Jan 2026
 #
 # Download: https://github.com/jbsilva/dotfiles
 ###############################################################################
@@ -381,9 +381,9 @@ alias CAT='echo "=^.^=\n"'
 ###############################################################################
 #                                Powerlevel10k
 ###############################################################################
-# case $(tty) in 
+# case $(tty) in
 #   (/dev/tty[1-9]) [[ -f ~/.p10k_console.zsh ]] && source ~/.p10k_console.zsh;;
-#               (*) [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh;; 
+#               (*) [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh;;
 #           esac
 
 
