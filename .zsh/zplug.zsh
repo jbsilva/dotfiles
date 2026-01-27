@@ -29,8 +29,8 @@ zstyle ':prezto:load' pmodule \
   'autosuggestions' \
   'syntax-highlighting' \
   'history-substring-search' \
-  'docker' \
-  'prompt'
+  'docker'
+  # 'prompt'
 
 # GNU Utility
 # Homebrew prefixes 'g' to GNU utililies:
@@ -63,7 +63,7 @@ zstyle ':prezto:module:history-substring-search' globbing-flags ''
 
 # Theme
 # For Powerlevel9k, remember to export POWERLEVEL9K_MODE='nerdfont-complete'
-zstyle ':prezto:module:prompt' theme 'powerlevel10k'
+# zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 
 # Auto-title
 zstyle ':prezto:module:terminal' auto-title 'yes'
