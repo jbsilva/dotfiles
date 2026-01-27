@@ -33,14 +33,18 @@
       "duckdb"
       "freetype"
       "fribidi"
+      "gphoto2"
       "harfbuzz"
       "imagemagick"
       "libpq"
       "libraqm"
       "lima-additional-guestagents"
       "nginx"
+      "opencode"
       "openjdk"
       "openssl"
+      "pinentry-mac"
+      "starship"
       "telnet"
     ];
     casks = [
@@ -49,6 +53,7 @@
       "bambu-studio"
       "betterdisplay"
       "bettertouchtool"
+      "canon-eos-utility"
       "cursor"
       "elgato-stream-deck"
       "fork"
@@ -70,12 +75,14 @@
       "postman"
       "spotify"
       "stats"
+      "steam"
       "tailscale-app"
       "telegram"
       "transmission-remote-gui"
       "ubiquiti-unifi-controller"
       "vivaldi"
       "warp"
+      "yubico-authenticator"
     ];
   };
 }
