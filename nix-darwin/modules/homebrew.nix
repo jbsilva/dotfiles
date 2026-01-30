@@ -35,6 +35,7 @@
       "fribidi"
       "gphoto2"
       "harfbuzz"
+      "hugo"
       "imagemagick"
       "libpq"
       "libraqm"

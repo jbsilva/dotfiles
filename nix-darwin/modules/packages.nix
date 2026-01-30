@@ -22,7 +22,7 @@
     go
     hclfmt
     htop
-    hugo
+    # hugo
     iina
     iperf
     jq
