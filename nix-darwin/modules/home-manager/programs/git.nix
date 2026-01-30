@@ -58,6 +58,8 @@
         br = "branch";
         cp = "cherry-pick";
         amend = "commit --amend";
+        commit-each = "!git diff --name-only -z | xargs -0 -I {} sh -c 'git add -- \"$1\" && git commit -m \"$1\" -- \"$1\"' _ {}";
+        commit-each-staged = "!git diff --cached --name-only -z | xargs -0 -I {} sh -c 'git commit -m \"$1\" -- \"$1\"' _ {}";
         snap = "!git stash save \"snapshot: $(date)\"";
         unstash = "stash pop";
         mkbranch = "!f(){ git checkout -b \${1} && git push origin -u \${1}; };f";
