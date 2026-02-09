@@ -114,7 +114,7 @@
   "terminal.integrated.defaultProfile.linux": "zsh",
   "terminal.integrated.defaultProfile.osx": "bash",
   "terminal.integrated.scrollback": 50000,
-  "terminal.integrated.stickyScroll.enabled": true,
+  "terminal.integrated.stickyScroll.enabled": false,
   "terminal.integrated.suggest.enabled": true,
   "terminal.integrated.suggest.quickSuggestions": {
     "commands": "off",
