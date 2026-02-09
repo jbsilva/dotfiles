@@ -9,6 +9,7 @@
 
     systemPath = [
       "/opt/homebrew/opt/openjdk/bin"
+      "/opt/homebrew/opt/libpq/bin"
     ];
   };
 }
