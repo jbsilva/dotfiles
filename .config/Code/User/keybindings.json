@@ -133,5 +133,13 @@
     "key": "ctrl+s",
     "command": "git.stageSelectedRanges",
     "when": "editorTextFocus && !operationInProgress && resourceScheme == 'file'"
+  },
+  {
+    "key": "ctrl+shift+alt+t",
+    "command": "workbench.action.terminal.newWithProfile",
+    "args": {
+      "profileName": "zsh",
+      "location": "view"
+    }
   }
 ]
