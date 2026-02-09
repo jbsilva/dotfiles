@@ -112,7 +112,7 @@
     "-workbench.action.quickOpenView"
   ],
   "terminal.integrated.defaultProfile.linux": "zsh",
-  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.defaultProfile.osx": "bash",
   "terminal.integrated.scrollback": 50000,
   "terminal.integrated.stickyScroll.enabled": true,
   "terminal.integrated.suggest.enabled": true,
