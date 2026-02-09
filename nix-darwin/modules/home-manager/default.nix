@@ -7,6 +7,7 @@
       { ... }:
       {
         imports = [
+          ./programs/gnupg.nix
           ./programs/git.nix
           ./programs/zsh.nix
           ./programs/direnv.nix
