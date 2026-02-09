@@ -47,6 +47,7 @@
       "pinentry-mac"
       "starship"
       "telnet"
+      "yt-dlp"
     ];
     casks = [
       "adobe-acrobat-reader"

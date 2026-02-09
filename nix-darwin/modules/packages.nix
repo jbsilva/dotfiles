@@ -52,7 +52,7 @@
     # warp-terminal
     wezterm
     wget
-    yt-dlp
+    # yt-dlp
     zellij
   ];
 }
