@@ -115,7 +115,8 @@
   "terminal.integrated.defaultProfile.osx": "bash",
   "terminal.integrated.scrollback": 50000,
   "terminal.integrated.stickyScroll.enabled": false,
-  "terminal.integrated.suggest.enabled": true,
+  "terminal.integrated.suggest.enabled": false,
+  "terminal.integrated.suggest.cdPath": "off",
   "terminal.integrated.suggest.quickSuggestions": {
     "commands": "off",
     "arguments": "off",
