@@ -55,6 +55,7 @@
       "bambu-studio"
       "betterdisplay"
       "bettertouchtool"
+      "bruno"
       "canon-eos-utility"
       "cursor"
       "elgato-stream-deck"
