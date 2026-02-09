@@ -301,7 +301,7 @@
   // =============================
   // AI & Copilot
   // =============================
-  "chat.agent.maxRequests": 50,
+  "chat.agent.maxRequests": 100,
   "github.copilot.nextEditSuggestions.enabled": true,
   "github.copilot.enable": {
     "*": true,
