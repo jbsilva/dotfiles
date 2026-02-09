@@ -133,10 +133,5 @@
     "key": "ctrl+s",
     "command": "git.stageSelectedRanges",
     "when": "editorTextFocus && !operationInProgress && resourceScheme == 'file'"
-  },
-  {
-    "key": "cmd+k alt+cmd+s",
-    "command": "-git.stageSelectedRanges",
-    "when": "editorTextFocus && !operationInProgress && resourceScheme == 'file'"
   }
 ]
