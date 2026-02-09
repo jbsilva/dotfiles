@@ -69,6 +69,7 @@
       "languages": ["hcl", "terragrunt"]
     }
   ],
+  "evenBetterToml.formatter.arrayAutoCollapse": false,
   "prettier.printWidth": 100,
   "prettier.proseWrap": "always",
 
