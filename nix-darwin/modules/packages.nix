@@ -5,7 +5,7 @@
     awscli2
     carapace
     coreutils
-    curl
+    curlFull
     discord
     exiftool
     file-rename
