@@ -334,7 +334,7 @@
   // SonarLint
   // =============================
   "sonarlint.disableTelemetry": true,
-  "sonarlint.focusOnNewCode": true,
+  "sonarlint.focusOnNewCode": false,
   "sonarlint.pathToNodeExecutable": "/run/current-system/sw/bin/node",
 
   // =============================
