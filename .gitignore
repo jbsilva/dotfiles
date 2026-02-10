@@ -1,20 +1,4 @@
 *.pyc
-.config/GIMP
-.config/GitKraken/
-.config/Insomnia/
-.config/JetBrains
-.config/KDE/
-.config/Lens/
-.config/Microsoft/
-.config/PlasmaDiscoverUpdates
-.config/Postman
-.config/QtProject.conf
-.config/Raspberry Pi/
-.config/Slack/
-.config/TelegramDesktoprc
-.config/Transmission Remote GUI
-.config/Trolltech.conf
-.config/VeraCrypt
 .config/akregatorrc
 .config/arkrc
 .config/baloofileinformationrc
@@ -49,9 +33,11 @@
 .config/filetypesrc
 .config/gcloud
 .config/getmail
+.config/GIMP
 .config/git/
 .config/gitahead.com/
 .config/github-copilot/versions.json
+.config/GitKraken/
 .config/gittyup.github.com
 .config/gitui
 .config/gnome-control-center/
@@ -68,8 +54,10 @@
 .config/htop/htoprc
 .config/ibus/
 .config/inkscape
+.config/Insomnia/
 .config/iterm2
 .config/jellyfin.org
+.config/JetBrains
 .config/jgit/config
 .config/kactivitymanagerd-pluginsrc
 .config/kactivitymanagerd-statsrc
@@ -81,6 +69,7 @@
 .config/kcminputrc
 .config/kconf_updaterc
 .config/kde.org/
+.config/KDE/
 .config/kdeconnect/
 .config/kded5rc
 .config/kded_device_automounterrc
@@ -107,6 +96,7 @@
 .config/kwinrc
 .config/kwinrulesrc
 .config/kxkbrc
+.config/Lens/
 .config/libaccounts-glib/
 .config/libfm/
 .config/libreoffice
@@ -115,11 +105,13 @@
 .config/lxtask.conf
 .config/lxterminal/
 .config/menus/
+.config/Microsoft/
 .config/mimeapps.list
 .config/monitors.xml
 .config/mtmigrate
 .config/nautilus/
 .config/ncmpcpp/error.log
+.config/nextjs-nodejs/
 .config/nvim/.netrwhist
 .config/nvim/autoload
 .config/nvim/plugged
@@ -137,12 +129,14 @@
 .config/plasma-welcomerc
 .config/plasma-workspace/
 .config/plasma.emojierrc
+.config/PlasmaDiscoverUpdates
 .config/plasmanotifyrc
 .config/plasmaparc
 .config/plasmarc
 .config/plasmashellrc
 .config/plasmawindowed-appletsrc
 .config/plasmawindowedrc
+.config/Postman
 .config/powerdevilrc
 .config/powermanagementprofilesrc
 .config/privateinternetaccess/
@@ -150,24 +144,31 @@
 .config/pypoetry/
 .config/qalculate/
 .config/qt5ct/
+.config/QtProject.conf
+.config/Raspberry Pi/
 .config/raycast
 .config/rclone
 .config/retroarch
 .config/session/
 .config/showfotorc
 .config/simple-scan/
+.config/Slack/
 .config/soffice.binrc
 .config/spectaclerc
 .config/spotify
 .config/systemmonitorrc
 .config/systemsettingsrc
 .config/teams/
+.config/TelegramDesktoprc
 .config/totem/
+.config/Transmission Remote GUI
 .config/transmission-daemon/*
 .config/transmission-remote-gtk/
 .config/trashrc
+.config/Trolltech.conf
 .config/user-dirs.dirs
 .config/uv/uv-receipt.json
+.config/VeraCrypt
 .config/vlc/
 .config/vlcrc
 .config/wireshark
