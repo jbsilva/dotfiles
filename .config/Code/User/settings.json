@@ -117,6 +117,7 @@
   "terminal.integrated.stickyScroll.enabled": false,
   "terminal.integrated.suggest.enabled": false,
   "terminal.integrated.suggest.cdPath": "off",
+  "terminal.integrated.enableImages": true,
   "terminal.integrated.suggest.quickSuggestions": {
     "commands": "off",
     "arguments": "off",
