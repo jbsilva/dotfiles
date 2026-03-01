@@ -3,47 +3,46 @@
   // Language-specific settings
   // =============================
   "[csharp]": {
-    "editor.defaultFormatter": "ms-dotnettools.csharp"
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
   },
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[javascript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "vscode.typescript-language-features",
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "prettier.singleQuote": false
+    "prettier.singleQuote": false,
   },
   "[nix]": {
-    "editor.defaultFormatter": "jnoortheen.nix-ide"
+    "editor.defaultFormatter": "jnoortheen.nix-ide",
   },
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.fixAll.ruff": "explicit",
-      "source.organizeImports.ruff": "explicit"
-    }
+      "source.organizeImports.ruff": "explicit",
+    },
   },
   "[terragrunt]": {
-    "editor.defaultFormatter": "jkillian.custom-local-formatters"
+    "editor.defaultFormatter": "jkillian.custom-local-formatters",
   },
   "[toml]": {
-    "editor.defaultFormatter": "tamasfe.even-better-toml"
+    "editor.defaultFormatter": "tamasfe.even-better-toml",
   },
   "[yaml]": {
     "diffEditor.ignoreTrimWhitespace": false,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "prettier.singleQuote": false
+    "prettier.singleQuote": false,
   },
-
   // =============================
   // Editor
   // =============================
@@ -66,8 +65,8 @@
   "customLocalFormatters.formatters": [
     {
       "command": "terragrunt hcl format",
-      "languages": ["hcl", "terragrunt"]
-    }
+      "languages": ["hcl", "terragrunt"],
+    },
   ],
   "evenBetterToml.formatter.arrayAutoCollapse": false,
   "prettier.printWidth": 100,
@@ -93,23 +92,22 @@
   "nix.serverSettings": {
     "nil": {
       "formatting": {
-        "command": ["nixfmt"]
+        "command": ["nixfmt"],
       },
       "options": {
         "nix-darwin": {
-          "expr": "(builtins.getFlake \"${userHome}/dotfiles/nix-darwin\").darwinConfigurations.M4.options"
-        }
-      }
-    }
+          "expr": "(builtins.getFlake \"${userHome}/dotfiles/nix-darwin\").darwinConfigurations.M4.options",
+        },
+      },
+    },
   },
-
   // =============================
   // Terminal
   // =============================
   // Allow using Ctrl+f and Ctrl+q in the terminal (for Vim)
   "terminal.integrated.commandsToSkipShell": [
     "-workbench.action.terminal.focusFind",
-    "-workbench.action.quickOpenView"
+    "-workbench.action.quickOpenView",
   ],
   "terminal.integrated.defaultProfile.linux": "zsh",
   "terminal.integrated.defaultProfile.osx": "bash",
@@ -121,9 +119,8 @@
   "terminal.integrated.suggest.quickSuggestions": {
     "commands": "off",
     "arguments": "off",
-    "unknown": "off"
+    "unknown": "off",
   },
-
   // =============================
   // Vim (VSCodeVim)
   // =============================
@@ -137,92 +134,92 @@
     {
       // Delete without overwriting last yank (delete to the black hole register "_)
       "after": ["\"", "_", "d"],
-      "before": ["d"]
+      "before": ["d"],
     },
     {
       // Normal delete with <leader>d (overwrite last yank)
       "after": ["d"],
-      "before": ["<leader>", "d"]
+      "before": ["<leader>", "d"],
     },
     {
       // Delete until end of line without overwriting last yank
       "after": ["\"", "_", "D"],
-      "before": ["D"]
+      "before": ["D"],
     },
     {
       // Normal delete with <leader>D (overwrite last yank). Same as `d$`
       "after": ["D"],
-      "before": ["<leader>", "D"]
+      "before": ["<leader>", "D"],
     },
     {
       // Delete without overwriting last yank
       "after": ["\"", "_", "x"],
-      "before": ["x"]
+      "before": ["x"],
     },
     {
       // Normal delete with <leader>x. Same as `dl`
       "after": ["x"],
-      "before": ["<leader>", "x"]
+      "before": ["<leader>", "x"],
     },
     {
       // Yank to system clipboard with <leader>y
       "after": ["\"", "+", "y"],
-      "before": ["<leader>", "y"]
+      "before": ["<leader>", "y"],
     },
     {
       // Paste from system clipboard with <leader>p
       "after": ["\"", "+", "p"],
-      "before": ["<leader>", "p"]
+      "before": ["<leader>", "p"],
     },
     {
       // Paste from system clipboard with <leader>P
       "after": ["\"", "+", "P"],
-      "before": ["<leader>", "P"]
+      "before": ["<leader>", "P"],
     },
     {
       // Y copy from cursor to last-non-blank-char
       "after": ["y", "g", "_"],
-      "before": ["Y"]
+      "before": ["Y"],
     },
     {
       // Yank until last-non-blank-char to system clipboard with <leader>Y
       "after": ["\"", "+", "y", "g", "_"],
-      "before": ["<leader>", "Y"]
+      "before": ["<leader>", "Y"],
     },
     {
       // Clean search highlight with ,<space>
       "before": [",", "<leader>"],
-      "commands": [":nohl"]
+      "commands": [":nohl"],
     },
     {
       // Close editor with C-w
       "before": ["<C-w>"],
-      "commands": ["workbench.action.closeActiveEditor"]
+      "commands": ["workbench.action.closeActiveEditor"],
     },
     {
       // Focus on File Explorer
       "before": ["<C-n>"],
-      "commands": ["workbench.files.action.focusFilesExplorer"]
+      "commands": ["workbench.files.action.focusFilesExplorer"],
     },
     {
       // Focus on Left Group
       "before": ["<C-h>"],
-      "commands": ["workbench.action.focusLeftGroup"]
+      "commands": ["workbench.action.focusLeftGroup"],
     },
     {
       // Focus on Right Group
       "before": ["<C-l>"],
-      "commands": ["workbench.action.focusRightGroup"]
+      "commands": ["workbench.action.focusRightGroup"],
     },
     {
       // Focus on Below Group
       "before": ["<C-j>"],
-      "commands": ["workbench.action.focusBelowGroup"]
+      "commands": ["workbench.action.focusBelowGroup"],
     },
     {
       // Focus on Above Group
       "before": ["<C-k>"],
-      "commands": ["workbench.action.focusAboveGroup"]
+      "commands": ["workbench.action.focusAboveGroup"],
     },
     {
       // Use VS Code undo
@@ -231,9 +228,9 @@
       "commands": [
         {
           "command": "undo",
-          "args": []
-        }
-      ]
+          "args": [],
+        },
+      ],
     },
     {
       // Use VS Code redo
@@ -242,10 +239,10 @@
       "commands": [
         {
           "command": "redo",
-          "args": []
-        }
-      ]
-    }
+          "args": [],
+        },
+      ],
+    },
   ],
   "vim.showMarksInGutter": true,
   "vim.smartRelativeLine": true,
@@ -255,45 +252,44 @@
     {
       // Delete without overwriting last yank (delete to the black hole register "_)
       "after": ["\"", "_", "d"],
-      "before": ["d"]
+      "before": ["d"],
     },
     {
       // Normal delete with <leader>d
       "after": ["d"],
-      "before": ["<leader>", "d"]
+      "before": ["<leader>", "d"],
     },
     {
       // Yank to system clipboard with <leader>y
       "after": ["\"", "+", "y"],
-      "before": ["<leader>", "y"]
+      "before": ["<leader>", "y"],
     },
     {
       // Paste from system clipboard with <leader>p
       "after": ["\"", "+", "p"],
-      "before": ["<leader>", "p"]
+      "before": ["<leader>", "p"],
     },
     {
       // Paste from system clipboard with <leader>P
       "after": ["\"", "+", "P"],
-      "before": ["<leader>", "P"]
+      "before": ["<leader>", "P"],
     },
     {
       // Skip last occurrence highlighted by `gb` or `ctrl+d`
       "before": ["g", "s"],
-      "commands": ["editor.action.moveSelectionToNextFindMatch"]
+      "commands": ["editor.action.moveSelectionToNextFindMatch"],
     },
     // Repeatable visual mode indent with '>' and '>'
     {
       "before": [">"],
-      "commands": ["editor.action.indentLines"]
+      "commands": ["editor.action.indentLines"],
     },
     {
       "before": ["<"],
-      "commands": ["editor.action.outdentLines"]
-    }
+      "commands": ["editor.action.outdentLines"],
+    },
   ],
   "vim.visualstar": true,
-
   // =============================
   // Workbench
   // =============================
@@ -310,7 +306,7 @@
     "*": true,
     "plaintext": false,
     "markdown": true,
-    "scminput": false
+    "scminput": false,
   },
   "github.copilot.chat.anthropic.tools.websearch.enabled": true,
   "github.copilot.chat.codesearch.enabled": true,
@@ -337,9 +333,8 @@
   // =============================
   "mypy-type-checker.importStrategy": "fromEnvironment",
   "mypy-type-checker.severity": {
-    "error": "Hint"
+    "error": "Hint",
   },
-
   // =============================
   // SonarLint
   // =============================
@@ -352,5 +347,5 @@
   // =============================
   "dotnetAcquisitionExtension.enableTelemetry": false,
   "telemetry.feedback.enabled": false,
-  "telemetry.telemetryLevel": "off"
+  "telemetry.telemetryLevel": "off",
 }
