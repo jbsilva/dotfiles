@@ -300,6 +300,10 @@
   // AI & Copilot
   // =============================
   "chat.agent.maxRequests": 100,
+  "chat.mcp.gallery.enabled": true,
+  "chat.tools.terminal.autoApprove": {
+    "ruff": true,
+  },
   "chat.viewSessions.orientation": "stacked",
   "github.copilot.nextEditSuggestions.enabled": true,
   "github.copilot.enable": {
