@@ -45,7 +45,9 @@
       };
     in
     {
-      # Build with: darwin-rebuild build --flake .#M4
+      # Update:  nix flake update
+      # Rebuild: sudo darwin-rebuild --show-trace switch --flake .#M4
+      # GC and store optimisation are handled automatically by nix.gc and nix.optimise.
       darwinConfigurations.M4 = nix-darwin.lib.darwinSystem {
         inherit specialArgs;
         modules = [
