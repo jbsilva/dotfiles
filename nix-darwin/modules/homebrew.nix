@@ -45,6 +45,7 @@
       "openjdk"
       "openssl"
       "pinentry-mac"
+      "socat"
       "starship"
       "telnet"
       "yt-dlp"
