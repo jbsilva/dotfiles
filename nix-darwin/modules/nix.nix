@@ -4,6 +4,10 @@
     settings = {
       experimental-features = "nix-command flakes";
       extra-nix-path = "nixpkgs=flake:nixpkgs";
+      trusted-users = [
+        "root"
+        "julio"
+      ];
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
