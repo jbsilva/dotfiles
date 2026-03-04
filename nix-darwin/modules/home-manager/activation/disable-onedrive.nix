@@ -6,7 +6,6 @@
     for label in $LABELS; do
       launchctl disable "gui/$UID/$label" 2>/dev/null || true
       launchctl bootout "gui/$UID/$label" 2>/dev/null || true
-      launchctl bootout "system/$label" 2>/dev/null || true
       rm -f "$HOME/Library/LaunchAgents/$label.plist" 2>/dev/null || true
     done
 
