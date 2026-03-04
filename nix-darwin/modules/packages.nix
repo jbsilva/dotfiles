@@ -47,6 +47,7 @@
     tree
     # tailscale
     terraform
+    tflint
     the-unarchiver
     vscode
     # warp-terminal
