@@ -6,9 +6,9 @@
     # Create the required symlink for system Java detection
     if [ -d "/opt/homebrew/opt/openjdk/libexec/openjdk.jdk" ]; then
       # Ensure the target directory exists
-      sudo mkdir -p /Library/Java/JavaVirtualMachines
+      mkdir -p /Library/Java/JavaVirtualMachines
       # Create the symlink (force overwrite if it exists)
-      sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
+      ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
       echo "OpenJDK symlink created successfully"
     else
       echo "OpenJDK not found at expected location - ensure 'brew install openjdk' has completed"
