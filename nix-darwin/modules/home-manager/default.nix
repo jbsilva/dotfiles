@@ -16,6 +16,7 @@
           ./activation/remove-lm-studio-login-item.nix
           ./activation/disable-onedrive.nix
           ./activation/disable-adobe-creative-cloud.nix
+          ./activation/tflint-plugins.nix
         ];
 
         home.username = "julio";
