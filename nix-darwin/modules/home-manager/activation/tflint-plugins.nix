@@ -1,7 +1,8 @@
 { pkgs, ... }:
 let
+  awsRuleset = pkgs.tflint-plugins.tflint-ruleset-aws;
   tflintPlugins = [
-    pkgs.tflint-plugins.tflint-ruleset-aws
+    awsRuleset
   ];
 in
 {
@@ -9,7 +10,7 @@ in
     plugin "aws" {
       enabled = true
       source  = "github.com/terraform-linters/tflint-ruleset-aws"
-      version = "0.45.0"
+      version = "${awsRuleset.version}"
     }
   '';
 
