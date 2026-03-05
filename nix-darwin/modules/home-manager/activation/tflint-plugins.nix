@@ -5,6 +5,14 @@ let
   ];
 in
 {
+  home.file.".tflint.hcl".text = ''
+    plugin "aws" {
+      enabled = true
+      source  = "github.com/terraform-linters/tflint-ruleset-aws"
+      version = "0.45.0"
+    }
+  '';
+
   home.activation.tflintPlugins = ''
     echo "Setting up TFLint plugins..."
 
