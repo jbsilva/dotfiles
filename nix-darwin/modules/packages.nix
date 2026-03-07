@@ -47,6 +47,7 @@
     tree
     # tailscale
     terraform
+    terragrunt
     tflint
     the-unarchiver
     vscode
