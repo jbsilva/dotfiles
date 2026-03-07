@@ -14,6 +14,7 @@
           ./activation/docker-plugins.nix
           ./activation/default-apps.nix
           ./activation/remove-lm-studio-login-item.nix
+          ./activation/disable-ollama.nix
           ./activation/disable-onedrive.nix
           ./activation/disable-adobe-creative-cloud.nix
           ./activation/tflint-plugins.nix

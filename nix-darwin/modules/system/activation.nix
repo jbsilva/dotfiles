@@ -78,5 +78,15 @@
     fi
 
     echo "Microsoft OneDrive launcher helper processed (vendor disabler + fallback)."
+
+    echo "Patching Ollama app-bundled LaunchAgent (RunAtLoad -> false)..."
+    OLLAMA_APP_PLIST="/Applications/Ollama.app/Contents/Library/LaunchAgents/com.ollama.ollama.plist"
+    if [ -f "$OLLAMA_APP_PLIST" ]; then
+      /usr/libexec/PlistBuddy -c "Set :RunAtLoad false" "$OLLAMA_APP_PLIST" 2>/dev/null \
+        && echo "Ollama app-bundled plist patched successfully." \
+        || echo "Warning: could not patch Ollama plist (check App Management permissions)."
+    else
+      echo "Ollama app-bundled plist not found (app not installed?)."
+    fi
   '';
 }
