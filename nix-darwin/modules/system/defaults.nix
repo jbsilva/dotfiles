@@ -41,7 +41,7 @@
       persistent-apps = [
         "/Applications/Vivaldi.app"
         "/Applications/Ghostty.app"
-        # "/Applications/Nix Apps/WezTerm.app"
+        "/System/Applications/Mail.app"
       ];
     };
 
