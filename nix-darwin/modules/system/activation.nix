@@ -39,23 +39,8 @@
     echo "Adobe Creative Cloud system components processed."
 
     echo "Disabling system-level Microsoft OneDrive daemons..."
-    # Prefer vendor-provided "Launcher Disabler.app" if present, fallback to rename.
     ONEDRIVE_LAUNCHER_DIR="/Applications/OneDrive.app/Contents/Library/LoginItems"
     ONEDRIVE_LAUNCHER_APP="$ONEDRIVE_LAUNCHER_DIR/OneDriveLauncher.app"
-    ONEDRIVE_DISABLER_APP="$ONEDRIVE_LAUNCHER_DIR/Launcher Disabler.app"
-
-    if [ -d "$ONEDRIVE_DISABLER_APP" ]; then
-      echo "Found 'Launcher Disabler.app' – invoking to remove background allowance."
-      # Run in user session if possible (falls back silently if not)
-      USER_ID=$(id -u julio 2>/dev/null || id -u)
-      if command -v launchctl >/dev/null 2>&1; then
-        launchctl asuser "$USER_ID" open -g -j "$ONEDRIVE_DISABLER_APP" 2>/dev/null || true
-      else
-        su -l julio -c "open -g -j '$ONEDRIVE_DISABLER_APP'" 2>/dev/null || true
-      fi
-      # Allow helper a moment to act
-      sleep 2
-    fi
 
     if [ -d "$ONEDRIVE_LAUNCHER_APP" ]; then
       echo "OneDriveLauncher.app still present after disabler attempt; applying fallback rename."
