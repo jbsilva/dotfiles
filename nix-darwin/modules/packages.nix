@@ -50,7 +50,7 @@
     terragrunt
     tflint
     the-unarchiver
-    vscode
+    # vscode
     # warp-terminal
     wezterm
     wget

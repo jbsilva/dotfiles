@@ -84,6 +84,7 @@
       "telegram"
       "transmission-remote-gui"
       "ubiquiti-unifi-controller"
+      "visual-studio-code"
       "vivaldi"
       "warp"
       "yubico-authenticator"
