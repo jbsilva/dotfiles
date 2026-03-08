@@ -82,6 +82,7 @@
       "steam"
       "tailscale-app"
       "telegram"
+      "thaw"
       "transmission-remote-gui"
       "ubiquiti-unifi-controller"
       "visual-studio-code"
