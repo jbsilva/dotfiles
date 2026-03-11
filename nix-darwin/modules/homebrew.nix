@@ -45,6 +45,7 @@
       "openjdk"
       "openssl"
       "pinentry-mac"
+      "skopeo"
       "socat"
       "starship"
       "telnet"
