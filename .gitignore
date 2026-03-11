@@ -12,6 +12,7 @@
 .config/chromium
 .config/colima
 .config/configstore
+.config/containers/auth.json
 .config/copyq
 .config/darktable
 .config/dconf/user
