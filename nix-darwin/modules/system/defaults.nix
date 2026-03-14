@@ -65,4 +65,6 @@
       TrackpadThreeFingerDrag = true;
     };
   };
+
+  system.startup.chime = false;
 }
