@@ -28,6 +28,8 @@
       "${pkgs.gnupg}/bin/gpg-agent"
       "--daemon"
       "--no-detach"
+      "--pinentry-program"
+      "/opt/homebrew/bin/pinentry-mac"
     ];
     EnvironmentVariables = {
       GNUPGHOME = "${config.home.homeDirectory}/.gnupg";
