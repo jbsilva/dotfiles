@@ -102,6 +102,7 @@
     "screencapture",
     "shellenv",
     "shottr",
+    "skopeo",
     "spotify",
     "spreadsheetml",
     "swda",
@@ -112,6 +113,9 @@
     "texbin",
     "trackpad",
     "Trackpad",
+    "TRAPEXIT",
+    "TRAPINT",
+    "TRAPTERM",
     "ubiquiti",
     "ulaw",
     "unarchiver",
@@ -124,6 +128,7 @@
     "wordprocessingml",
     "zdiff",
     "zellij",
-    "zhaofengli"
+    "zhaofengli",
+    "zparseopts"
   ]
 }

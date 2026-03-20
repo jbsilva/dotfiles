@@ -162,6 +162,7 @@ function iBad()        { echo -e "    \033[1;31m✖\033[0m $@"; }
 [[ -f "$HOME/.zsh/rm_empty_files.zsh" ]] && source "$HOME/.zsh/rm_empty_files.zsh"
 [[ -f "$HOME/.zsh/rm_regex.zsh" ]] && source "$HOME/.zsh/rm_regex.zsh"
 [[ -f "$HOME/.zsh/mount_share.zsh" ]] && source "$HOME/.zsh/mount_share.zsh"
+[[ -f "$HOME/.zsh/zot_push.zsh" ]] && source "$HOME/.zsh/zot_push.zsh"
 
 
 ###############################################################################
@@ -534,29 +535,3 @@ if [[ -d "$HOME/.nexus-tools" ]]; then
   export NEXUS_TOOLS_PATH="$HOME/.nexus-tools"
   addToPathEnd $NEXUS_TOOLS_PATH
 fi
-
-
-###############################################################################
-#                                  Zot
-# Local:
-#   ssh -L 5000:localhost:5000 user@server -N &
-#   skopeo login --tls-verify=false localhost:5000
-#   zot-push myimage:latest
-# Remote:
-#  docker login localhost:5000
-#  docker pull localhost:5000/myimage:latest
-#  docker tag localhost:5000/myimage:latest myimage:latest
-###############################################################################
-zot-push() {
-  local image=$1
-  local instance=${2:-default}
-  local socket="${HOME}/.config/colima/${instance}/docker.sock"
-
-  skopeo copy \
-    --src-daemon-host "unix://${socket}" \
-    --dest-tls-verify=false \
-    --dest-precompute-digests \
-    "docker-daemon:${image}" \
-    "docker://localhost:5000/${image}"
-}
-
