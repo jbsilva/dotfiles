@@ -295,6 +295,9 @@
   // =============================
   "workbench.iconTheme": "material-icon-theme",
   "workbench.startupEditor": "none",
+  "workbench.editorAssociations": {
+    "git-rebase-todo": "default",
+  },
 
   // =============================
   // AI & Copilot
