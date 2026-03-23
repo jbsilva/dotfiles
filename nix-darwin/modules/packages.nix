@@ -16,7 +16,6 @@
     git
     glow
     gnugrep
-    gnupg
     gnused
     gnutar
     go

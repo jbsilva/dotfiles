@@ -33,6 +33,7 @@
       "duckdb"
       "freetype"
       "fribidi"
+      "gnupg"
       "gphoto2"
       "harfbuzz"
       "hugo"

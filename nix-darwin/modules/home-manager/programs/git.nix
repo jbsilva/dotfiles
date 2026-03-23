@@ -129,7 +129,7 @@
       help.autocorrect = "prompt";
       commit.verbose = true;
       credential.helper = "osxkeychain";
-      gpg.program = "${pkgs.gnupg}/bin/gpg";
+      gpg.program = "/opt/homebrew/bin/gpg";
 
       gitbutler = {
         aiModelProvider = "lmstudio";
