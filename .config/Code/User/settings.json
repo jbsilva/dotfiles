@@ -299,7 +299,7 @@
   // =============================
   // AI & Copilot
   // =============================
-  "chat.agent.maxRequests": 100,
+  "chat.agent.maxRequests": 200,
   "chat.mcp.gallery.enabled": true,
   "chat.tools.terminal.autoApprove": {
     "ruff": true,
