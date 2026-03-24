@@ -14,6 +14,17 @@
       echo "OpenJDK not found at expected location - ensure 'brew install openjdk' has completed"
     fi
 
+    echo "Setting up MacTeX paths..."
+    # Create /Library/TeX/texbin symlink so path_helper and GUI apps find TeX.
+    # Points to the Distributions indirection which MacTeX updates across versions.
+    if [ -d "/Library/TeX/Distributions/Programs/texbin" ]; then
+      ln -sfn /Library/TeX/Distributions/Programs/texbin /Library/TeX/texbin
+      echo "MacTeX texbin symlink created"
+    fi
+    # Ensure path_helper adds /Library/TeX/texbin to PATH
+    echo "/Library/TeX/texbin" > /etc/paths.d/TeX
+    echo "MacTeX /etc/paths.d/TeX created"
+
     echo "Disabling system-level Adobe Creative Cloud agents/daemons..."
     ADOBE_SYSTEM_LABELS="com.adobe.GC.AGM com.adobe.GC.Invoker-1.0 com.adobe.AdobeCreativeCloud com.adobe.acc.installer.v2 com.adobe.acc.installer.helper com.adobe.AdobeIPCBroker com.adobe.CCXProcess com.adobe.AdobeCRDaemon com.adobe.AdobeResourceSynchronizer com.adobe.ARMDC.Communicator com.adobe.ARMDC.SMJobBlessHelper"
     for label in $ADOBE_SYSTEM_LABELS; do
