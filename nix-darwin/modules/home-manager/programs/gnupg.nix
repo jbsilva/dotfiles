@@ -1,38 +1,38 @@
 {
   lib,
+  pkgs,
   ...
 }:
 {
   # GPG and gpg-agent are installed via Homebrew (brews: gnupg, pinentry-mac)
-  # rather than nix, because home-manager's gpg-agent launchd integration is
-  # broken on macOS:
+  # rather than nix. git.nix points gpg.program at /opt/homebrew/bin/gpg.
   #
-  # - --supervised mode (home-manager default): Expects systemd-style socket
-  #   activation via LISTEN_FDS. macOS launchd can't pass fds this way, so
-  #   gpg-agent crashes: "fd 3 must be valid in --supervised mode".
-  #   KeepAlive causes an infinite crash-restart loop.
+  # Why not nix gnupg?
   #
-  # - --daemon --no-detach: gpg-agent --daemon always forks. The parent exits
-  #   immediately, launchd loses the child, and treats it as a crash.
+  # 1. Launchd integration is broken (all approaches fail on macOS):
+  #    - --supervised: needs systemd-style LISTEN_FDS; crashes with "fd 3 must
+  #      be valid" under launchd. KeepAlive = infinite crash-restart loop.
+  #    - --daemon --no-detach: always forks; launchd loses the child.
+  #    - Socket path override: fixes mismatch but not --supervised fd failure.
   #
-  # - Socket path override (SockPathName -> ~/.gnupg/S.gpg-agent): Fixes the
-  #   path mismatch but not the --supervised fd-passing failure.
+  # 2. Version mismatch kills pinentry. GnuPG 2.1+ auto-starts gpg-agent on
+  #    demand. If the nix gpg-agent (2.4.x) auto-starts first (it's on PATH
+  #    via home-manager profile), homebrew gpg (2.5.x) can't talk to it:
+  #    the Assuan protocol changed between major versions, so pinentry
+  #    requests fail with "No pinentry" even though pinentry-mac is fine.
   #
-  # - On-demand auto-start (no launchd agent): GnuPG 2.1+ auto-starts
-  #   gpg-agent when needed, but darwin-rebuild triggers it during activation
-  #   (before GUI session), creating a stale agent where pinentry-mac can't
-  #   display. All subsequent signing reuses this broken agent.
-  #
-  # With Homebrew gpg + pinentry-mac, the agent auto-starts on demand in the
-  # user's GUI session and pinentry-mac works reliably. git.nix points
-  # gpg.program at /opt/homebrew/bin/gpg.
-  #
-  # programs.gpg and services.gpg-agent still use the nix gnupg package
-  # internally (for config generation), but the actual gpg/gpg-agent binaries
-  # used at runtime come from Homebrew.
+  # Solution: keep programs.gpg/services.gpg-agent enabled purely for config
+  # file management (gpg.conf, gpg-agent.conf), but replace the package with
+  # a dummy so no nix gpg/gpg-agent binaries land on PATH.
 
   programs.gpg = {
     enable = true;
+    # Dummy package: home-manager generates ~/.gnupg/{gpg,gpg-agent}.conf
+    # but no nix gpg binaries end up on PATH (avoids version mismatch with
+    # homebrew gpg). The empty bin/ satisfies HM's package expectations.
+    package = pkgs.runCommandLocal "gnupg-dummy" {
+      meta.mainProgram = "gpg";
+    } "mkdir -p $out/bin";
   };
 
   services.gpg-agent = {

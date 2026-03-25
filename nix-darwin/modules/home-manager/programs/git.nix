@@ -10,7 +10,9 @@
     signing = {
       key = "D1C6B63BEAE5330F";
       signByDefault = true;
-      format = "openpgp";
+      # Do NOT set format = "openpgp" here. It's git's default, but setting it
+      # causes home-manager to emit [gpg "openpgp"] program = <package>/bin/gpg,
+      # which overrides our gpg.program below with the dummy nix package path.
     };
 
     ignores = [
