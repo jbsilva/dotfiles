@@ -142,8 +142,23 @@
     "when": "editorTextFocus && !operationInProgress && resourceScheme == 'file'"
   },
   {
-    "key": "ctrl+shift+alt+t",
+    "key": "ctrl+shift+alt+t", // Does not work on Windows because ctrl+alt=AltGr and AltGr+t=Þ
     "command": "workbench.action.terminal.newWithProfile",
+    "when": "terminalHasBeenCreated || terminalProcessSupported",
+    "args": {
+      "profileName": "zsh",
+      "location": "view"
+    }
+  },
+  {
+    "key": "ctrl+shift+alt+`",
+    "command": "-workbench.action.terminal.newInNewWindow",
+    "when": "terminalHasBeenCreated || terminalProcessSupported"
+  },
+  {
+    "key": "ctrl+shift+alt+`",
+    "command": "workbench.action.terminal.newWithProfile",
+    "when": "terminalHasBeenCreated || terminalProcessSupported",
     "args": {
       "profileName": "zsh",
       "location": "view"
