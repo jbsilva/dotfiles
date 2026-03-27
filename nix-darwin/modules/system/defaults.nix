@@ -58,6 +58,11 @@
       NSNavPanelExpandedStateForSaveMode2 = true;
       PMPrintingExpandedStateForPrint = true;
       PMPrintingExpandedStateForPrint2 = true;
+      NSAutomaticPeriodSubstitutionEnabled = false; # double-space → period
+      NSAutomaticCapitalizationEnabled = false; # auto capitalize
+      NSAutomaticDashSubstitutionEnabled = false; # smart dashes
+      NSAutomaticQuoteSubstitutionEnabled = false; # smart quotes
+      NSAutomaticSpellingCorrectionEnabled = true; # spell correction
     };
 
     trackpad = {
