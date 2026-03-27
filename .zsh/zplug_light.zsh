@@ -23,7 +23,6 @@ zstyle ':prezto:load' pmodule \
   'completion' \
   'fasd' \
   'git' \
-  'gpg' \
   'archive' \
   'autosuggestions' \
   'syntax-highlighting' \

@@ -24,7 +24,6 @@ zstyle ':prezto:load' pmodule \
   'completion' \
   'fasd' \
   'tmux' \
-  'gpg' \
   'archive' \
   'autosuggestions' \
   'syntax-highlighting' \
