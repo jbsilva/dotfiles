@@ -48,6 +48,7 @@
       "pinentry-mac"
       "skopeo"
       "socat"
+      "sonar-scanner"
       "starship"
       "telnet"
       "yt-dlp"
