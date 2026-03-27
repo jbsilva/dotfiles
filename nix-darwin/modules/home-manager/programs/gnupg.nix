@@ -21,9 +21,17 @@
   #    the Assuan protocol changed between major versions, so pinentry
   #    requests fail with "No pinentry" even though pinentry-mac is fine.
   #
+  # 3. Stale agent context. If gpg-agent auto-starts during darwin-rebuild
+  #    (which runs via sudo + launchctl asuser), it inherits a process
+  #    context without proper Aqua session access. pinentry-mac then can't
+  #    reach macOS Keychain/WindowServer, failing with "No pinentry".
+  #    Killing the agent and letting the next gpg operation auto-start a
+  #    fresh one in the user's GUI session fixes it.
+  #
   # Solution: keep programs.gpg/services.gpg-agent enabled purely for config
   # file management (gpg.conf, gpg-agent.conf), but replace the package with
-  # a dummy so no nix gpg/gpg-agent binaries land on PATH.
+  # a dummy so no nix gpg/gpg-agent binaries land on PATH. Kill any stale
+  # agent after activation so the next use auto-starts cleanly.
 
   programs.gpg = {
     enable = true;
@@ -37,6 +45,7 @@
 
   services.gpg-agent = {
     enable = true;
+    grabKeyboardAndMouse = false;
     pinentry.package = null;
     extraConfig = ''
       pinentry-program /opt/homebrew/bin/pinentry-mac
@@ -44,4 +53,13 @@
   };
 
   launchd.agents.gpg-agent.enable = lib.mkForce false;
+
+  # Kill any gpg-agent started during activation (stale context).
+  # The next gpg operation auto-starts a fresh agent in the user's
+  # GUI session where pinentry-mac can access Keychain.
+  home.activation.restartGpgAgent = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    if command -v /opt/homebrew/bin/gpgconf >/dev/null 2>&1; then
+      /opt/homebrew/bin/gpgconf --kill gpg-agent 2>/dev/null || true
+    fi
+  '';
 }
