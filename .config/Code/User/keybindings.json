@@ -1,4 +1,11 @@
-// Place your key bindings in this file to override the defaultsauto[]
+// Some of these keybindings may not work on all operating systems or keyboard layouts.
+// I use US International on Windows, Linux, and MacOS.
+//
+// Windows no longer supports the "keyCode" dispatch method, so some keybindings that use AltGr
+// (like ctrl+shift+alt+t) will not work.
+// Run `Developer: Inspect key mappings` and prefer combinations that aren't captured by the OS.
+//
+// Read more: https://github.com/microsoft/vscode/wiki/Keybinding-Issues
 [
   // Run current line in terminal
   {
