@@ -49,6 +49,7 @@
   "editor.autoClosingBrackets": "never",
   "editor.fontFamily": "'Hack Nerd Font', 'Cascadia Code', 'FiraCode Nerd Font', Consolas",
   "editor.formatOnSave": true,
+  "editor.largeFileOptimizations": false,
   "editor.renderWhitespace": "boundary",
   "editor.rulers": [80, 100],
   // https://github.com/VSCodeVim/Vim/issues/9680
