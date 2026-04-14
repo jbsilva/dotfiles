@@ -65,6 +65,7 @@
       "cursor"
       "discord"
       "elgato-stream-deck"
+      "firefox"
       "fork"
       "ghostty"
       "gitbutler"
