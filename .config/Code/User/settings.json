@@ -318,6 +318,7 @@
     "scminput": false,
   },
   "github.copilot.chat.anthropic.tools.websearch.enabled": true,
+  "github.copilot.chat.claudeAgent.allowDangerouslySkipPermissions": true,
   "github.copilot.chat.codesearch.enabled": true,
   "github.copilot.chat.generateTests.codeLens": true,
   "github.copilot.chat.githubMcpServer.enabled": true,
