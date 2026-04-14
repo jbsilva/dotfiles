@@ -61,6 +61,7 @@
       "bettertouchtool"
       "bruno"
       "canon-eos-utility"
+      "claude-code"
       "cursor"
       "discord"
       "elgato-stream-deck"
