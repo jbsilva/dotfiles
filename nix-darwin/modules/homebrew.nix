@@ -80,6 +80,8 @@
       "openmtp"
       "plex"
       "postman"
+      "proton-mail-bridge"
+      "proton-mail"
       "spotify"
       "stats"
       "steam"
