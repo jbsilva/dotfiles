@@ -32,10 +32,10 @@
     nixd
     nixfmt
     nodejs_24
-    nodePackages.prettier
     notion-app
     # ollama
     p7zip
+    prettier
     raycast
     renameutils
     ripgrep
