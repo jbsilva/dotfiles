@@ -42,7 +42,6 @@
       "libraqm"
       "lima-additional-guestagents"
       "nginx"
-      "opencode"
       "openjdk"
       "openssl"
       "pinentry-mac"

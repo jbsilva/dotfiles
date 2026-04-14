@@ -33,6 +33,7 @@
     nodejs_24
     notion-app
     # ollama
+    opencode
     p7zip
     prettier
     raycast
