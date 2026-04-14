@@ -78,6 +78,7 @@
       $SWDA_CMD setHandler --app "Visual Studio Code" --UTI com.apple.rtfd
       $SWDA_CMD setHandler --app "Visual Studio Code" --UTI com.apple.xml-property-list
       $SWDA_CMD setHandler --app "Visual Studio Code" --UTI com.sun.java-source
+      $SWDA_CMD setHandler --app "Visual Studio Code" --UTI net.daringfireball.markdown
       $SWDA_CMD setHandler --app "Visual Studio Code" --UTI org.khronos.collada.digital-asset-exchange
       $SWDA_CMD setHandler --app "Visual Studio Code" --UTI public.assembly-source
       $SWDA_CMD setHandler --app "Visual Studio Code" --UTI public.bash-script
