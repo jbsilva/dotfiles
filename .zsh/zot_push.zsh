@@ -318,5 +318,10 @@ zot-push() {
     "docker://localhost:${local_port}/${image}" \
     || { print -P "%F{red}✗ Image push failed%f" >&2; return 1 }
 
+  # Close the tunnel immediately; TRAPEXIT is kept as a safety net for error paths.
+  kill ${SSH_PID} 2>/dev/null
+  wait ${SSH_PID} 2>/dev/null
+  SSH_PID=0
+
   print -P "%F{green}✓ Pushed ${image} to ${server}${port_info}%f"
 }
