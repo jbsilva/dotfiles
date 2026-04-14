@@ -102,17 +102,19 @@
   // Terminal
   // =============================
   // Allow using Ctrl+f and Ctrl+q in the terminal (for Vim)
+  "terminal.external.osxExec": "ghostty",
   "terminal.integrated.commandsToSkipShell": [
     "-workbench.action.terminal.focusFind",
     "-workbench.action.quickOpenView",
   ],
   "terminal.integrated.defaultProfile.linux": "zsh",
   "terminal.integrated.defaultProfile.osx": "bash",
+  "terminal.integrated.enableImages": true,
+  "terminal.integrated.localEchoExcludePrograms": ["vim", "vi", "nano", "tmux", "nvim"],
   "terminal.integrated.scrollback": 50000,
   "terminal.integrated.stickyScroll.enabled": false,
-  "terminal.integrated.suggest.enabled": false,
   "terminal.integrated.suggest.cdPath": "off",
-  "terminal.integrated.enableImages": true,
+  "terminal.integrated.suggest.enabled": false,
   "terminal.integrated.suggest.quickSuggestions": {
     "commands": "off",
     "arguments": "off",
