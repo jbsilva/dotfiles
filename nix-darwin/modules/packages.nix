@@ -6,7 +6,6 @@
     carapace
     coreutils
     curlFull
-    discord
     exiftool
     file-rename
     findutils

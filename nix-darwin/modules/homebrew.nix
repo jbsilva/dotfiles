@@ -62,6 +62,7 @@
       "bruno"
       "canon-eos-utility"
       "cursor"
+      "discord"
       "elgato-stream-deck"
       "fork"
       "ghostty"
