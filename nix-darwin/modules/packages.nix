@@ -48,6 +48,7 @@
     terraform
     terragrunt
     tflint
+    tmux
     the-unarchiver
     # vscode
     # warp-terminal
