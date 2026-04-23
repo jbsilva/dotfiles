@@ -338,10 +338,7 @@
   // =============================
   // Type checking
   // =============================
-  "mypy-type-checker.importStrategy": "fromEnvironment",
-  "mypy-type-checker.severity": {
-    "error": "Hint",
-  },
+  // "mypy-type-checker.importStrategy": "fromEnvironment",
   // =============================
   // SonarLint
   // =============================
