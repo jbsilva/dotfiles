@@ -25,6 +25,20 @@
     echo "/Library/TeX/texbin" > /etc/paths.d/TeX
     echo "MacTeX /etc/paths.d/TeX created"
 
+    echo "Ensuring system atrun daemon is enabled..."
+    ATRUN_LABEL="com.apple.atrun"
+    ATRUN_PLIST="/System/Library/LaunchDaemons/$ATRUN_LABEL.plist"
+    if [ -f "$ATRUN_PLIST" ]; then
+      launchctl enable "system/$ATRUN_LABEL" 2>/dev/null || true
+      launchctl print "system/$ATRUN_LABEL" >/dev/null 2>&1 \
+        || launchctl bootstrap system "$ATRUN_PLIST" 2>/dev/null \
+        || launchctl load -w "$ATRUN_PLIST" 2>/dev/null \
+        || echo "Warning: failed to load $ATRUN_LABEL"
+      echo "atrun processed."
+    else
+      echo "Warning: $ATRUN_PLIST not found; at(1) will remain unavailable."
+    fi
+
     echo "Disabling system-level Adobe Creative Cloud agents/daemons..."
     ADOBE_SYSTEM_LABELS="com.adobe.GC.AGM com.adobe.GC.Invoker-1.0 com.adobe.AdobeCreativeCloud com.adobe.acc.installer.v2 com.adobe.acc.installer.helper com.adobe.AdobeIPCBroker com.adobe.CCXProcess com.adobe.AdobeCRDaemon com.adobe.AdobeResourceSynchronizer com.adobe.ARMDC.Communicator com.adobe.ARMDC.SMJobBlessHelper"
     for label in $ADOBE_SYSTEM_LABELS; do
