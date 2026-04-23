@@ -345,6 +345,19 @@
   "sonarlint.disableTelemetry": true,
   "sonarlint.focusOnNewCode": false,
   "sonarlint.pathToNodeExecutable": "/run/current-system/sw/bin/node",
+  "sonarlint.output.showVerboseLogs": true,
+  "sonarlint.connectedMode.connections.sonarcloud": [
+    {
+      "organizationKey": "pioneers-hub",
+      "connectionId": "pioneers-hub",
+      "region": "EU",
+    },
+    {
+      "connectionId": "hoppe-marine",
+      "organizationKey": "hoppe-marine",
+      "region": "EU",
+    },
+  ],
   // =============================
   // Telemetry & privacy
   // =============================
