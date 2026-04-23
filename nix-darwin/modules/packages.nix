@@ -33,6 +33,7 @@
     nodejs_24
     notion-app
     # ollama
+    openapi-generator-cli
     opencode
     p7zip
     prettier
