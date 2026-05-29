@@ -2,6 +2,11 @@
   description = "nix-darwin system flake";
 
   inputs = {
+    brew-src = {
+      url = "github:Homebrew/brew";
+      flake = false;
+    };
+
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -10,6 +15,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    nix-homebrew.inputs.brew-src.follows = "brew-src";
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
@@ -35,6 +41,7 @@
       homebrew-core,
       homebrew-cask,
       homebrew-nikitabobko,
+      ...
     }:
     let
       specialArgs = {
