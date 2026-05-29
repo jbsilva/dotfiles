@@ -348,6 +348,11 @@
   "sonarlint.output.showVerboseLogs": true,
   "sonarlint.connectedMode.connections.sonarcloud": [
     {
+      "organizationKey": "jbsilva",
+      "connectionId": "jbsilva",
+      "region": "EU",
+    },
+    {
       "organizationKey": "pioneers-hub",
       "connectionId": "pioneers-hub",
       "region": "EU",
