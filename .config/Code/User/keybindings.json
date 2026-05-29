@@ -146,7 +146,7 @@
     "command": "workbench.action.terminal.newWithProfile",
     "when": "terminalHasBeenCreated || terminalProcessSupported",
     "args": {
-      "profileName": "zsh",
+      "profileName": "tmux",
       "location": "view"
     }
   },
