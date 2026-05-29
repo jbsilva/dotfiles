@@ -15,6 +15,8 @@
           env = (old.env or { }) // {
             CGO_ENABLED = "1";
           };
+          # Work around hanging test runs on Darwin during checkPhase.
+          doCheck = false;
         });
       })
     ];
