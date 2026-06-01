@@ -2,6 +2,7 @@
   homebrewCore,
   homebrewCask,
   homebrewNikitabobko,
+  homebrewDocker,
   ...
 }:
 {
@@ -13,6 +14,7 @@
       "homebrew/homebrew-core" = homebrewCore;
       "homebrew/homebrew-cask" = homebrewCask;
       "nikitabobko/homebrew-tap" = homebrewNikitabobko;
+      "docker/homebrew-tap" = homebrewDocker;
     };
     mutableTaps = false;
   };
@@ -23,6 +25,10 @@
       autoUpdate = true;
       upgrade = true;
       cleanup = "uninstall";
+      # Homebrew 4.x requires --force/--force-cleanup/$HOMEBREW_ASK to run
+      # `brew bundle --cleanup` non-interactively. nix-darwin emits --cleanup
+      # without it, so authorize the uninstall explicitly here.
+      extraFlags = [ "--force-cleanup" ];
     };
     taps = [ ];
     brews = [
@@ -33,6 +39,7 @@
       "duckdb"
       "freetype"
       "fribidi"
+      "gh"
       "gnupg"
       "gphoto2"
       "harfbuzz"
@@ -67,6 +74,7 @@
       "cursor"
       "daisydisk"
       "discord"
+      "docker/tap/sbx"
       "elgato-stream-deck"
       "firefox"
       "fork"

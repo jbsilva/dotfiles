@@ -2,8 +2,11 @@
   description = "nix-darwin system flake";
 
   inputs = {
+    # Pinned before Homebrew/brew#22476 (tap-trust-eval-all) which breaks
+    # nix-homebrew's nix-store symlinks.  Remove pin once nix-homebrew
+    # handles the new realpath validation.
     brew-src = {
-      url = "github:Homebrew/brew";
+      url = "github:Homebrew/brew/7470da65dd677d3d4b6cc6e5e4bfeeaa39c06b80";
       flake = false;
     };
 
@@ -29,6 +32,11 @@
       url = "github:nikitabobko/homebrew-tap";
       flake = false;
     };
+    # Docker (sbx)
+    homebrew-docker = {
+      url = "github:docker/homebrew-tap";
+      flake = false;
+    };
   };
 
   outputs =
@@ -41,6 +49,7 @@
       homebrew-core,
       homebrew-cask,
       homebrew-nikitabobko,
+      homebrew-docker,
       ...
     }:
     let
@@ -49,6 +58,7 @@
         homebrewCore = homebrew-core;
         homebrewCask = homebrew-cask;
         homebrewNikitabobko = homebrew-nikitabobko;
+        homebrewDocker = homebrew-docker;
       };
     in
     {
