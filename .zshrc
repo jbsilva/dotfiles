@@ -156,12 +156,13 @@ function iBad()        { echo -e "    \033[1;31m✖\033[0m $@"; }
 [[ -f "$HOME/.zsh/baixa_dir.zsh" ]] && source "$HOME/.zsh/baixa_dir.zsh"
 [[ -f "$HOME/.zsh/cleand.zsh" ]] && source "$HOME/.zsh/cleand.zsh"
 [[ -f "$HOME/.zsh/clone_dir.zsh" ]] && source "$HOME/.zsh/clone_dir.zsh"
+[[ -f "$HOME/.zsh/git_retime.zsh" ]] && source "$HOME/.zsh/git_retime.zsh"
+[[ -f "$HOME/.zsh/mount_share.zsh" ]] && source "$HOME/.zsh/mount_share.zsh"
 [[ -f "$HOME/.zsh/my_ip.zsh" ]] && source "$HOME/.zsh/my_ip.zsh"
 [[ -f "$HOME/.zsh/python_server.zsh" ]] && source "$HOME/.zsh/python_server.zsh"
 [[ -f "$HOME/.zsh/rm_empty_dirs.zsh" ]] && source "$HOME/.zsh/rm_empty_dirs.zsh"
 [[ -f "$HOME/.zsh/rm_empty_files.zsh" ]] && source "$HOME/.zsh/rm_empty_files.zsh"
 [[ -f "$HOME/.zsh/rm_regex.zsh" ]] && source "$HOME/.zsh/rm_regex.zsh"
-[[ -f "$HOME/.zsh/mount_share.zsh" ]] && source "$HOME/.zsh/mount_share.zsh"
 [[ -f "$HOME/.zsh/zot_push.zsh" ]] && source "$HOME/.zsh/zot_push.zsh"
 
 
