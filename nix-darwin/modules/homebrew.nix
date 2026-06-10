@@ -84,6 +84,7 @@
       "insta360-link-controller"
       "keyboard-maestro"
       "lm-studio"
+      "lulu"
       "maccy"
       "mactex"
       "microsoft-office"
