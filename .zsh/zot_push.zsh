@@ -226,8 +226,23 @@ zot-push() {
   # Note: there is an inherent race between this check and SSH binding the port.
   # This window is negligible in practice but cannot be fully eliminated.
   if nc -z localhost ${local_port} 2>/dev/null; then
-    print -P "%F{red}✗ Port ${local_port} is already in use on localhost%f" >&2
-    return 1
+    # Check for a stale SSH tunnel left by a previous zot-push run.
+    # TRAPEXIT normally handles cleanup, but a race condition or abnormal
+    # exit can leave the tunnel orphaned. When detected, kill it and retry.
+    if pgrep -f "ssh -N -L ${local_port}:localhost:" >/dev/null 2>&1; then
+      print -P "%F{yellow}⚠ Killing stale SSH tunnel on port ${local_port}%f"
+      pkill -f "ssh -N -L ${local_port}:localhost:" 2>/dev/null
+      # Wait briefly for the port to be released.
+      local -i i
+      for (( i = 0; i < 10; i++ )); do
+        nc -z localhost ${local_port} 2>/dev/null || break
+        sleep 0.1
+      done
+    fi
+    if nc -z localhost ${local_port} 2>/dev/null; then
+      print -P "%F{red}✗ Port ${local_port} is already in use on localhost%f" >&2
+      return 1
+    fi
   fi
 
   # Redirect SSH stderr to a named temp file rather than letting it mix with our output.
