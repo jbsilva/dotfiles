@@ -113,6 +113,7 @@
       "wacom-tablet"
       "warp"
       "yubico-authenticator"
+      "zulip"
     ];
   };
 }
