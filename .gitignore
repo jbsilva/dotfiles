@@ -126,6 +126,7 @@
 .config/okularrc
 .config/openbox/
 .config/pcmanfm/
+.config/photo-tagger/logs
 .config/plasma-localerc
 .config/plasma-nm
 .config/plasma-org.kde.plasma.desktop-appletsrc
