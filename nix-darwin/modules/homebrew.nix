@@ -73,6 +73,7 @@
       "claude-code@latest"
       "cursor"
       "daisydisk"
+      "db-browser-for-sqlite"
       "discord"
       "docker/tap/sbx"
       "elgato-stream-deck"
