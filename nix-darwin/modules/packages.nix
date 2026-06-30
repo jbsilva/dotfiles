@@ -58,5 +58,6 @@
     wget
     # yt-dlp
     zellij
+    zoxide
   ];
 }
