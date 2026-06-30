@@ -362,6 +362,11 @@
       "organizationKey": "hoppe-marine",
       "region": "EU",
     },
+    {
+      "organizationKey": "jbsilva",
+      "connectionId": "photo-tagger",
+      "region": "EU",
+    },
   ],
   // =============================
   // Telemetry & privacy
