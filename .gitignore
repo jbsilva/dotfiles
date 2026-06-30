@@ -1,5 +1,6 @@
 *.pyc
 .config/.opengrep
+.config/.wrangler
 .config/akregatorrc
 .config/arkrc
 .config/baloofileinformationrc
@@ -125,6 +126,7 @@
 .config/okularpartrc
 .config/okularrc
 .config/openbox/
+.config/opencode/skills
 .config/pcmanfm/
 .config/photo-tagger/logs
 .config/plasma-localerc
