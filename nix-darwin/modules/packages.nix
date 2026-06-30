@@ -26,6 +26,7 @@
     jq
     loopwm
     mas
+    mosh
     neovim
     nil
     nixd
