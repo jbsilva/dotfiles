@@ -111,6 +111,7 @@
       "ubiquiti-unifi-controller"
       "visual-studio-code"
       "vivaldi"
+      # "voiceink"
       "wacom-tablet"
       "warp"
       "yubico-authenticator"
