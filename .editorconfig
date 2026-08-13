@@ -23,6 +23,6 @@ indent_size = 4
 indent_style = tab
 
 # Vendored and generated; not ours to reformat.
-[{linux/XCompose/**,.zsh/completions/**,.tmux/**}]
+[{linux/XCompose/**,.zsh/completions/**}]
 trim_trailing_whitespace = false
 insert_final_newline = false

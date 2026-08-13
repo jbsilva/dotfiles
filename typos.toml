@@ -18,7 +18,6 @@ extend-exclude = [
   # (e.g. "CAPTIAL") are not ours to fix here.
   "linux/XCompose/",
   # Git submodules, checked by their own upstreams.
-  ".tmux/",
   # Generated shell completions.
   ".zsh/completions/",
 ]

@@ -108,9 +108,21 @@
     "-workbench.action.quickOpenView",
   ],
   "terminal.integrated.defaultProfile.linux": "zsh",
-  "terminal.integrated.defaultProfile.osx": "bash",
+  // A profile so ctrl+shift+alt+t (keybindings.json) can open a multiplexer
+  // terminal. The session is named after the workspace, so reopening the folder
+  // reattaches instead of starting a second one.
+  "terminal.integrated.profiles.osx": {
+    "zsh": {
+      "path": "zsh",
+    },
+    "zellij": {
+      "path": "zellij",
+      "args": ["attach", "--create", "vscode"],
+    },
+  },
+  "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.enableImages": true,
-  "terminal.integrated.localEchoExcludePrograms": ["vim", "vi", "nano", "tmux", "nvim"],
+  "terminal.integrated.localEchoExcludePrograms": ["vim", "vi", "nano", "zellij", "nvim"],
   "terminal.integrated.scrollback": 50000,
   "terminal.integrated.stickyScroll.enabled": false,
   "terminal.integrated.suggest.cdPath": "off",

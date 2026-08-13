@@ -20,7 +20,6 @@ paths = [
   # (Portuguese for "YourPasswordHere"). Keep this so full scans stay clean.
   '''^old/''',
   # Vendored submodules and third-party themes.
-  '''^\.tmux/''',
   '''^\.config/kitty/kitty-themes/''',
   # Generated shell completion scripts.
   '''^\.zsh/completions/''',

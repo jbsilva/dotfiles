@@ -45,8 +45,6 @@
 !/.config/nvim/lazy-lock.json
 
 # Terminal / multiplexer
-!/.config/tmux/tmux.conf
-!/.config/tmux/tmux.conf.local
 
 # Tooling
 !/.config/gh/config.yml

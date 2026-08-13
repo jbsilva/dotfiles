@@ -7,5 +7,4 @@ exclude = [
     # Vendored from https://github.com/kragen/xcompose -- not ours to reformat.
     "linux/XCompose/**",
     # Submodule, formatted by its own upstream.
-    ".tmux/**",
 ]
