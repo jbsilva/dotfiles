@@ -54,6 +54,7 @@
 .config/gwenviewrc
 .config/hatch/
 .config/helm/
+.config/homebrew/trust.json.lock
 .config/htop/htoprc
 .config/ibus/
 .config/inkscape

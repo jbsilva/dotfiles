@@ -1,4 +1,7 @@
 {
+  config,
+  lib,
+  brewSrc,
   homebrewCore,
   homebrewCask,
   homebrewNikitabobko,
@@ -10,6 +13,12 @@
     enable = true;
     enableRosetta = true;
     user = "julio";
+    # Override nix-homebrew's built-in brew with the tag pinned in flake.nix so
+    # formulae/casks using newer DSL are readable. Keep in sync with brew-src.
+    package = brewSrc // {
+      name = "brew-6.0.15";
+      version = "6.0.15";
+    };
     taps = {
       "homebrew/homebrew-core" = homebrewCore;
       "homebrew/homebrew-cask" = homebrewCask;
@@ -30,7 +39,19 @@
       # without it, so authorize the uninstall explicitly here.
       extraFlags = [ "--force-cleanup" ];
     };
-    taps = [ ];
+    # `brew bundle cleanup` untaps every installed tap the Brewfile doesn't
+    # mention (only homebrew/core is exempt), and untapping homebrew/cask
+    # force-uninstalls all 47 casks that came from it. So mirror nix-homebrew's
+    # taps into the Brewfile. Homebrew normalises `owner/homebrew-repo` to
+    # `owner/repo` and cleanup compares those names literally, so strip the
+    # `homebrew-` prefix or the entries won't match and cleanup still untaps.
+    taps = lib.mapAttrsToList (
+      name: _:
+      let
+        parts = lib.splitString "/" name;
+      in
+      "${lib.head parts}/${lib.removePrefix "homebrew-" (lib.last parts)}"
+    ) config.nix-homebrew.taps;
     brews = [
       "colima"
       "docker"

@@ -1,0 +1,6 @@
+{
+  "trustedcasks": [
+    "docker/tap/sbx",
+    "nikitabobko/tap/aerospace"
+  ]
+}
