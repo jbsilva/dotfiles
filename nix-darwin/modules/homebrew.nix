@@ -81,6 +81,7 @@
       "sonar-scanner"
       "starship"
       "telnet"
+      "terminal-notifier"
       "yt-dlp"
     ];
     casks = [
