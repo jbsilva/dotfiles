@@ -28,20 +28,34 @@ require('lazy').setup({
 
   ----------------------------------------------------------
   --> Colorschemes
-  -- The active one loads at startup with high priority; the others stay
-  -- lazy so `:colorscheme` can still switch to them on demand.
+  --
+  -- tokyonight is the active theme; lualine's matching theme is selected in
+  -- plugins/config/lualine.lua. It must load eagerly (lazy = false) and early
+  -- (priority) so that the colorscheme is applied before anything draws, and
+  -- so lualine can find the theme module. Leaving it lazy is what produced
+  -- "theme 'tokyonight' not found, falling back to 'auto'".
+  --
+  -- The others stay lazy so `:colorscheme` can still switch to them on demand.
   ----------------------------------------------------------
   {
-    'projekt0n/github-nvim-theme',
+    'folke/tokyonight.nvim',
     lazy = false,
     priority = 1000,
-    config = function()
-      require('github-theme').setup({})
-      vim.cmd.colorscheme('github_dark')
+    opts = {
+      style = 'night', -- night | storm | moon | day
+      styles = {
+        comments = { italic = true },
+        keywords = { italic = true },
+      },
+    },
+    config = function(_, opts)
+      require('tokyonight').setup(opts)
+      vim.cmd.colorscheme('tokyonight-night')
     end,
   },
-  { 'folke/tokyonight.nvim', lazy = true },
+  { 'projekt0n/github-nvim-theme', lazy = true },
   { 'ellisonleao/gruvbox.nvim', lazy = true },
+  { 'catppuccin/nvim', name = 'catppuccin', lazy = true },
 
   ----------------------------------------------------------
   --> Icons
