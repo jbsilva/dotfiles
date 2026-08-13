@@ -16,6 +16,7 @@
           ./programs/gnupg.nix
           ./programs/git.nix
           ./programs/zsh.nix
+          ./programs/bash.nix
           ./programs/direnv.nix
           ./programs/atuin.nix
           ./activation/docker-plugins.nix

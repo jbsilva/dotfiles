@@ -151,6 +151,7 @@
     # macOS ships ancient BSD variants; these provide the GNU behaviour scripts
     # expect. Prezto's gnu-utility module exposes them with a `g` prefix.
     # -------------------------------------------------------------------------
+    bash # macOS ships 3.2.57 from 2007; this puts 5.x first on $PATH
     coreutils
     findutils
     gawk

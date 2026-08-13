@@ -1,0 +1,98 @@
+{ pkgs, lib, ... }:
+{
+  ###########################################################################
+  # Bash
+  #
+  # zsh is the interactive shell. This exists because bash is unavoidable: it
+  # is what `docker exec`, `sh -c`, CI images, install scripts and most remote
+  # boxes drop you into, and macOS still ships bash 3.2.57 from 2007 (Apple
+  # froze it at the last GPLv2 release), which has none of the niceties.
+  #
+  # `bash` from nixpkgs is in packages.nix, so /run/current-system/sw/bin/bash
+  # is 5.x and comes first on $PATH. /bin/bash stays untouched.
+  ###########################################################################
+  programs.bash = {
+    enable = true;
+    enableCompletion = true;
+
+    # HISTSIZE is the in-memory list, HISTFILESIZE the file. Unlike zsh's
+    # SAVEHIST, the file may hold more than memory, so it is set larger.
+    historySize = 10000;
+    historyFileSize = 100000;
+    historyControl = [
+      "ignoredups"
+      "ignorespace"
+    ];
+
+    shellOptions = [
+      "histappend" # merge sessions instead of the last one winning
+      "checkwinsize" # keep $LINES/$COLUMNS right after a resize
+      "extglob"
+      "globstar" # ** recurses, as it does in zsh
+      "cdspell" # fix small typos in `cd` arguments
+      "checkjobs" # warn about running jobs before exiting
+    ];
+
+    # Deliberately a small set: the ~100 aliases in .zshrc are full of zsh-only
+    # syntax (glob qualifiers, `noglob`, ${(s.:.)}). These are the ones worth
+    # having in a shell you land in rather than live in.
+    shellAliases = {
+      ll = "ls -lF";
+      la = "ls -AF";
+      lah = "ls -alh";
+      ".." = "cd ../";
+      "..." = "cd ../../";
+      gst = "git status";
+      k = "eza --long --header --group-directories-first --git";
+      cat = "bat --paging=never";
+    };
+
+    #########################################################################
+    # ble.sh -- Bash Line Editor
+    #
+    # Replaces GNU Readline outright and brings bash up to roughly zsh+plugins:
+    # syntax highlighting, autosuggestions, vim mode, menu completion.
+    #
+    # Loading is deliberately split in two, which is what upstream documents.
+    # bashrcExtra lands before home-manager's `[[ $- == *i* ]] || return`, and
+    # initExtra lands after everything else, including the bash integrations
+    # that atuin, starship, zoxide and direnv inject into initExtra:
+    #
+    #   source ble.sh --noattach   as early as possible
+    #   ble-attach                 as late as possible
+    #
+    # Attaching last matters. atuin drives bash through bash-preexec, and
+    # ble.sh provides its own preexec/precmd; attaching before atuin has
+    # installed its hooks is the documented way to end up with neither working.
+    #########################################################################
+    bashrcExtra = ''
+      # ble.sh must be sourced before anything else touches the line editor,
+      # and only for interactive shells. --noattach defers taking over until
+      # ble-attach at the very end of ~/.bashrc.
+      if [[ $- == *i* && -r ${pkgs.blesh}/share/blesh/ble.sh ]]; then
+        source ${pkgs.blesh}/share/blesh/ble.sh --noattach
+      fi
+    '';
+
+    # mkOrder 2000, not mkAfter: direnv's module also uses mkAfter (order 1500)
+    # for its `direnv hook bash`, and between two mkAfter blocks the winner is
+    # just definition order. ble-attach has to be after every PROMPT_COMMAND
+    # manipulation, so it needs a strictly higher order.
+    initExtra = lib.mkOrder 2000 ''
+      if [[ -n ''${BLE_VERSION-} ]]; then
+        # Match the zsh setup: vi keys. `default_keymap` is the real option
+        # name; ble.sh turns it into `set -o vi` internally.
+        bleopt default_keymap=vi
+        # Show the suggestion as dimmed text ahead of the cursor, like
+        # zsh-autosuggestions does.
+        bleopt complete_auto_complete=1
+        bleopt complete_auto_delay=100
+        # Do not beep on every ambiguous completion.
+        bleopt edit_abell=
+        bleopt edit_vbell=
+
+        ble-attach
+      fi
+    '';
+  };
+}
