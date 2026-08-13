@@ -142,7 +142,7 @@
     "when": "editorTextFocus && !operationInProgress && resourceScheme == 'file'"
   },
   {
-    "key": "ctrl+shift+alt+t", // Does not work on Windows because ctrl+alt=AltGr and AltGr+t=Þ
+    "key": "ctrl+shift+alt+z", // Does not work on Windows because ctrl+alt=AltGr and AltGr+t=Þ
     "command": "workbench.action.terminal.newWithProfile",
     "when": "terminalHasBeenCreated || terminalProcessSupported",
     "args": {

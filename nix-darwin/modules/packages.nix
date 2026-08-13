@@ -51,6 +51,13 @@
     # lazygit     # Fork is the git UI
     # difftastic  # delta is the configured diff renderer
     git-absorb # auto-routes fixups into the right commit during rebase
+    # Not enabled, but worth a look one day:
+    # jujutsu   # `jj`, a git-compatible VCS. Same repos and remotes, different
+    #           # model: no staging area, every working copy is a commit, and
+    #           # conflicts are recorded rather than blocking. `jj git clone`
+    #           # an existing repo to try it without converting anything.
+    # gh-dash   # TUI dashboard of your GitHub PRs and issues across repos,
+    #           # configurable per section. Uses the gh auth already set up.
 
     # -------------------------------------------------------------------------
     # Navigation & fuzzy finding

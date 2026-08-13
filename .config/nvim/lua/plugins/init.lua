@@ -35,6 +35,10 @@ require('lazy').setup({
       vim.cmd.colorscheme('tokyonight-night')
     end,
   },
+  -- These three are never selected -- tokyonight-night is set above and
+  -- nothing switches away from it. They are lazy, so they cost nothing at
+  -- startup, but they are still cloned and updated. Drop them if `:colorscheme`
+  -- really never gets used.
   { 'projekt0n/github-nvim-theme', lazy = true },
   { 'ellisonleao/gruvbox.nvim', lazy = true },
   { 'catppuccin/nvim', name = 'catppuccin', lazy = true },
@@ -42,6 +46,10 @@ require('lazy').setup({
   ----------------------------------------------------------
   --> Icons
   -- Required by lualine, bufferline, nvim-tree and telescope.
+  --
+  -- Alternative to consider: mini.icons  https://github.com/echasnovski/mini.icons
+  -- Lighter and faster, and can stand in for this one via
+  -- require('mini.icons').mock_nvim_web_devicons().
   ----------------------------------------------------------
   {
     'nvim-tree/nvim-web-devicons',
@@ -72,6 +80,10 @@ require('lazy').setup({
 
   ----------------------------------------------------------
   --> Bufferline: buffer tabs
+  --
+  --  Alternative to consider: mini.tabline
+  --  https://github.com/echasnovski/mini.tabline
+  --  Much smaller, if the extra bufferline features go unused.
   ----------------------------------------------------------
   {
     'akinsho/bufferline.nvim',
@@ -165,6 +177,10 @@ require('lazy').setup({
   ----------------------------------------------------------
   --> Nvim-tree: file explorer
   --  ,e toggles. netrw is disabled in options.lua, so this is the explorer.
+  --
+  --  Alternative to consider: oil.nvim  https://github.com/stevearc/oil.nvim
+  --  Edits the filesystem as a normal buffer -- rename/move/delete with the
+  --  usual editing commands, then :w. Both are healthy; pure preference.
   ----------------------------------------------------------
   {
     'nvim-tree/nvim-tree.lua',
@@ -182,6 +198,10 @@ require('lazy').setup({
   --> Telescope: fuzzy finder over lists
   --  Needs fd and ripgrep, both declared in nix-darwin/modules/packages.nix.
   --  <C-p> files, 'b buffers, 'r live grep, 'c git status, <leader>H help
+  --
+  --  Alternative to consider: fzf-lua  https://github.com/ibhagwan/fzf-lua
+  --  Faster, more actively developed, and drives the same fzf binary already
+  --  in packages.nix. Telescope keeps the larger extension ecosystem.
   ----------------------------------------------------------
   {
     'nvim-telescope/telescope.nvim',
@@ -722,6 +742,11 @@ require('lazy').setup({
   ----------------------------------------------------------
   --> Vim-visual-multi: multiple cursors
   --  https://github.com/mg979/vim-visual-multi/wiki/Quick-start
+  --
+  --  Alternative to consider: multicursor.nvim
+  --  https://github.com/jake-stewart/multicursor.nvim
+  --  Lua-native rather than VimL, which avoids visual-multi's long-standing
+  --  interaction quirks with other plugins.
   ----------------------------------------------------------
   {
     'mg979/vim-visual-multi',
