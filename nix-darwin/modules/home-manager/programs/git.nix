@@ -1,5 +1,4 @@
 {
-  pkgs,
   config,
   lib,
   ...
@@ -76,6 +75,40 @@
         aliases = "config --get-regexp alias";
         shove = "push --force-with-lease";
         unpushed = "cherry -v --abbrev";
+
+        # Inspection
+        type = "cat-file -t";
+        dump = "cat-file -p";
+        whatis = "show -s --pretty='tformat:%h (%s, %ad)' --date=short";
+        # Find the commit that first introduced a file (follows renames)
+        whatadded = "log --follow --diff-filter=A --find-renames=40%";
+        contains = "branch --contains";
+        cloneurl = "config --get remote.origin.url";
+        ls-ignored = "ls-files --exclude-standard --ignored --others";
+        show-tree = "log --all --graph --decorate --oneline --simplify-by-decoration";
+        lc = "log ORIG_HEAD.. --stat --no-merges";
+        # Commits created by the last command that moved this ref
+        new = "!sh -c 'git log $1@{1}..$1@{0} \"$@\"'";
+        # Branches already merged into the current branch
+        lurkers = "branch --merged";
+
+        # Conflict resolution
+        accept-ours = "!f() { git checkout --ours -- \"\${@:-.}\"; git add -u \"\${@:-.}\"; }; f";
+        accept-theirs = "!f() { git checkout --theirs -- \"\${@:-.}\"; git add -u \"\${@:-.}\"; }; f";
+
+        # Stash helpers
+        snapshot = "!git stash save \"snapshot: $(date)\" && git stash apply \"stash@{0}\"";
+        snapshots = "!git stash list --grep snapshot";
+        # Show the full diff of every stash entry
+        sll = "!f() { for s in $(git stash list --pretty=format:%gd); do git stash show -p $s; done; };f";
+
+        # Discard file-mode-only changes
+        permission-reset = "!git diff -p -R --no-ext-diff --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply";
+
+        # Interactive `git clean -df`
+        cl = "!f() { echo 'Remove following files?'; echo; git clean -dn; echo; echo 'Press ENTER to confirm'; read -p 'Press ^C to stop cleanup and exit' a && git clean -df; }; f";
+
+        prune-all = "!git remote | xargs -n 1 git remote prune";
       };
 
       core = {
@@ -96,6 +129,7 @@
       fetch = {
         prune = true;
         pruneTags = true;
+        all = true;
       };
 
       column.ui = "auto";
@@ -108,6 +142,7 @@
 
       merge = {
         conflictstyle = "zdiff3";
+        tool = "meld";
       };
 
       diff = {
@@ -115,6 +150,7 @@
         colorMoved = "plain";
         mnemonicPrefix = true;
         renames = true;
+        guitool = "meld";
       };
 
       rerere = {
@@ -132,13 +168,6 @@
       commit.verbose = true;
       credential.helper = "osxkeychain";
       gpg.program = "/opt/homebrew/bin/gpg";
-
-      gitbutler = {
-        aiModelProvider = "lmstudio";
-        aiLMStudioModelName = "default";
-        aiLMStudioEndpoint = "http://127.0.0.1:1234";
-        gitbutlerCommitter = "0";
-      };
     };
 
     # Conditional includes for per-directory Git config.
