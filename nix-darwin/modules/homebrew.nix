@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  brewSrc,
   homebrewCore,
   homebrewCask,
   homebrewNikitabobko,
@@ -13,12 +12,6 @@
     enable = true;
     enableRosetta = true;
     user = "julio";
-    # Override nix-homebrew's built-in brew with the tag pinned in flake.nix so
-    # formulae/casks using newer DSL are readable. Keep in sync with brew-src.
-    package = brewSrc // {
-      name = "brew-6.0.15";
-      version = "6.0.15";
-    };
     taps = {
       "homebrew/homebrew-core" = homebrewCore;
       "homebrew/homebrew-cask" = homebrewCask;
