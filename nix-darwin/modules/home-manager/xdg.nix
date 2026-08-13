@@ -41,8 +41,5 @@ in
 
     "pypoetry/config.toml".source = link "pypoetry/config.toml";
 
-    # tmux.conf is itself a symlink into the .tmux submodule; tmux follows it.
-    "tmux/tmux.conf".source = link "tmux/tmux.conf";
-    "tmux/tmux.conf.local".source = link "tmux/tmux.conf.local";
   };
 }

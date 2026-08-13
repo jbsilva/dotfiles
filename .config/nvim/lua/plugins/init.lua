@@ -135,21 +135,6 @@ require('lazy').setup({
   },
 
   ----------------------------------------------------------
-  --> Neogit: magit-style git interface
-  --  :Neogit, :Neogit commit, :Neogit kind=<kind>, :Neogit cwd=<cwd>
-  ----------------------------------------------------------
-  {
-    'NeogitOrg/neogit',
-    cmd = 'Neogit',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'sindrets/diffview.nvim',
-      'nvim-telescope/telescope.nvim',
-    },
-    opts = {},
-  },
-
-  ----------------------------------------------------------
   --> Suda: read/write files with sudo
   --  :SudaWrite, :SudaRead
   ----------------------------------------------------------
@@ -710,6 +695,7 @@ require('lazy').setup({
   -- 'easymotion/vim-easymotion' -- replaced by flash.nvim
   -- 'tpope/vim-surround'      -- replaced by kylechui/nvim-surround
   -- 'sbdchd/neoformat'        -- replaced by stevearc/conform.nvim
+  -- 'NeogitOrg/neogit'       -- Fork is the git UI here; gitsigns covers hunks
 }, {
   ----------------------------------------------------------
   --> lazy.nvim options

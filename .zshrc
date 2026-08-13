@@ -1072,14 +1072,6 @@ claude-session() {
 
 
 ###############################################################################
-#                               Tmux
-# Remember to symlink:
-# ln -sf ~/dotfiles/.tmux/.tmux.conf "$XDG_CONFIG_HOME/tmux/tmux.conf"
-# ln -sf ~/dotfiles/.tmux/.tmux.conf.local "$XDG_CONFIG_HOME/tmux/tmux.conf.local"
-###############################################################################
-
-
-###############################################################################
 #                                Nexus Tools
 ###############################################################################
 if [[ -d "$HOME/.nexus-tools" ]]; then

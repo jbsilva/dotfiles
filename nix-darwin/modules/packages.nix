@@ -47,9 +47,7 @@
     # -------------------------------------------------------------------------
     # Git
     # -------------------------------------------------------------------------
-    lazygit # terminal git UI; covers most of what Fork/GitKraken are used for
     delta # syntax-highlighted, side-by-side git diffs
-    difftastic # structural (AST-aware) diff: ignores pure reformatting
     git-absorb # auto-routes fixups into the right commit during rebase
 
     # -------------------------------------------------------------------------
@@ -107,7 +105,6 @@
     restic # fast deduplicating encrypted backups
     rclone # sync to and from cloud storage and the NAS
     croc # send a file between two machines with a one-time code
-    sesh # zellij/tmux session manager, fuzzy-picks sessions by project
 
     # -------------------------------------------------------------------------
     # Networking
@@ -175,9 +172,7 @@
     # -------------------------------------------------------------------------
     neovim
     tree-sitter # REQUIRED by nvim-treesitter's `main` branch to build parsers
-    tmux
     zellij
-    wezterm
     glow # render markdown in the terminal
     # ghostty-bin   # via Homebrew cask
 

@@ -4,6 +4,27 @@
   ...
 }:
 {
+  ###########################################################################
+  # delta: syntax-highlighted diffs for terminal git.
+  #
+  # delta has been in packages.nix for a while but nothing ever pointed git at
+  # it, so `git diff` was still plain. enableGitIntegration sets core.pager and
+  # the interactive.diffFilter, which is what actually makes it apply.
+  #
+  # Complementary to Fork, not competing with it: Fork is for browsing history
+  # and staging, this is for `git diff` and `git show` in the terminal.
+  ###########################################################################
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      navigate = true; # n / N jump between files, as in less
+      line-numbers = true;
+      hyperlinks = true; # file:line links Ghostty can open
+      syntax-theme = "TwoDark"; # close to the nvim tokyonight-night palette
+    };
+  };
+
   programs.git = {
     enable = true;
     signing = {
@@ -142,7 +163,9 @@
 
       merge = {
         conflictstyle = "zdiff3";
-        tool = "meld";
+        # nvim rather than meld: meld was a cask that is no longer installed,
+        # and nvim is already the editor, so it is always there.
+        tool = "nvimdiff";
       };
 
       diff = {
@@ -150,7 +173,6 @@
         colorMoved = "plain";
         mnemonicPrefix = true;
         renames = true;
-        guitool = "meld";
       };
 
       rerere = {
