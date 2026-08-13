@@ -113,18 +113,29 @@ if [[ -z "$XDG_CONFIG_HOME" ]]; then
   export XDG_CONFIG_HOME=$HOME/.config
 fi
 
-# `local` is only valid inside a function; at file scope zsh treats it as
-# `typeset`, which works but leaks the name. Use a plain assignment and unset.
-NVIM=nvim
+# Neovim exports $NVIM itself, set to its RPC socket, and that is how tools
+# detect "running inside a :terminal". So do not use NVIM as a scratch variable
+# here -- it made every shell look like a nested Neovim.
 export NVIM_PYTHON_LOG_FILE_PATH=~/.config/nvim/nvimlog
-export VISUAL=$NVIM
-export EDITOR=$NVIM
-export OS="$(uname -s)"
+export VISUAL=nvim
+export EDITOR=nvim
+
+# zsh sets $OSTYPE natively, so the common cases need no `uname` fork.
+case $OSTYPE in
+  darwin*) export OS=Darwin ;;
+  linux*) export OS=Linux ;;
+  *) export OS="$(uname -s)" ;;
+esac
+
 export USER_NAME='Julio'
 export USER_FULLNAME='Julio Batista Silva'
 export USER_EMAIL='julio@juliobs.com'
 export USER_GITHUB='jbsilva'
-export USER_COPYRIGHT="Copyright (c) $(date +%Y), $USER_FULLNAME"
+# strftime from zsh/datetime rather than a `date` fork.
+zmodload zsh/datetime
+strftime -s _year '%Y' $EPOCHSECONDS
+export USER_COPYRIGHT="Copyright (c) $_year, $USER_FULLNAME"
+unset _year
 
 # Colors
 export DEFAULT_FOREGROUND=006 DEFAULT_BACKGROUND=235
@@ -139,7 +150,11 @@ export LC_ALL='en_US.UTF-8'
 # Leave $TERM alone. Terminals set it themselves and ship matching terminfo
 # (ghostty -> xterm-ghostty, wezterm -> wezterm); overwriting it costs
 # truecolor and undercurl support.
-export term_emulator="${TERM_PROGRAM:-$(ps -o comm= -p $PPID 2>/dev/null)}"
+#
+# $term_emulator used to be derived here from $TERM_PROGRAM, falling back to a
+# `ps` on the parent pid. Nothing ever read it, and the fallback forked on every
+# shell that was not started by a terminal that sets $TERM_PROGRAM. Use
+# $TERM_PROGRAM directly if it is ever needed again.
 
 # Only provide a sane fallback when the terminal told us nothing useful.
 if [[ -z $TERM || $TERM == (dumb|unknown) ]]; then
@@ -668,7 +683,8 @@ setopt hist_verify            # Show `!!` expansions instead of running them.
 case $OS in
 Darwin)
   export DOTFILES_PLATFORM=macos
-  export MACOS_VERSION="$(sw_vers -productVersion)"
+  # $MACOS_VERSION was exported here from `sw_vers -productVersion`, ~6 ms of
+  # every shell start, and nothing read it. Run sw_vers directly when needed.
   [[ -f "$HOME/.zsh/zshrc_macos" ]] && source "$HOME/.zsh/zshrc_macos"
   ;;
 Linux)
