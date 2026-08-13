@@ -658,7 +658,10 @@ unsetopt check_jobs     # No "you have running jobs" nag on exit
 # History
 ###############################################################################
 HISTFILE=~/.zsh_history
-HISTSIZE=5000
+# HISTSIZE is the in-memory list, SAVEHIST is how much of it reaches HISTFILE,
+# so SAVEHIST can never exceed HISTSIZE. These were 5000/10000, which silently
+# capped the file at 5000 -- half of what SAVEHIST asked for.
+HISTSIZE=20000
 SAVEHIST=10000
 setopt append_history         # Dont overwrite history
 setopt extended_history       # Also record time and duration of commands.
