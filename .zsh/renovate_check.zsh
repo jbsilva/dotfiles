@@ -1,8 +1,15 @@
 #!/usr/bin/env zsh
 # Run Renovate against a local repo and print the pending dependency updates as a table.
-#   renovate-check [-d|--digests] [DIR]
-#     -d, --digests   also show the new git SHA (needed to apply digest-pinned actions)
-#     DIR             repo to check (default: current directory)
+#   renovate-check [DIR]
+#     DIR   repo to check (default: current directory)
+#
+# Updates Renovate is holding back under minimumReleaseAge (its own "pendingChecks" flag, meaning
+# it would NOT open a PR for them yet) are excluded from the table and instead summarized on a
+# separate line, unless they are security fixes (Renovate's isVulnerabilityAlert, which bypasses
+# minimumReleaseAge on its own): those always show in the table, flagged in the SECURITY column.
+#
+# The DIGEST column always shows Renovate's resolved newDigest ("-" when the manager doesn't pin by
+# digest), so digest-pinned deps (e.g. GitHub Actions pinned to a commit SHA) don't need a re-run.
 #
 # The GitHub token comes from `gh auth token`, so nothing secret lands in your shell history or
 # argv. Without gh (or when logged out) it still runs, but GitHub-sourced updates (actions,
@@ -14,12 +21,10 @@ renovate-check() {
   emulate -L zsh
   setopt local_options pipe_fail
 
-  local show_digests=""
   while [[ "$1" == -* ]]; do
     case "$1" in
-      -d|--digests) show_digests=1 ;;
       -h|--help)
-        print -r -- "usage: renovate-check [-d|--digests] [DIR]"
+        print -r -- "usage: renovate-check [DIR]"
         return 0 ;;
       *) print -ru2 -- "renovate-check: unknown option '$1'"; return 2 ;;
     esac
@@ -67,36 +72,48 @@ renovate-check() {
     return $rc
   fi
 
-  # Pull every dep that has a pending update out of the debug log. The `?` and `objects`
-  # guards skip the unrelated config dumps that also carry a top-level `.config` object.
+  # Pull every dep that has a pending, actionable update out of the debug log. The `?` and
+  # `objects` guards skip the unrelated config dumps that also carry a top-level `.config` object.
+  # An update with pendingChecks=true is one Renovate itself would NOT yet turn into a PR (it is
+  # waiting out minimumReleaseAge), so it is dropped here unless isVulnerabilityAlert overrides it.
   local rows
   rows="$(jq -r '
     select(.config | type == "object") | .config | to_entries[]
     | .key as $mgr | .value[]? | objects | .packageFile as $file
     | .deps[]? | select((.updates | length) > 0)
     | . as $d | .updates[]
+    | select((.pendingChecks // false) == false or (.isVulnerabilityAlert // false) == true)
     | [$mgr, $file, ($d.depName // $d.packageName), ($d.depType // "-"),
        ($d.currentValue // $d.currentVersion // "?"), .newValue,
-       (.newDigest // "-"), .updateType]
+       (.newDigest // "-"), .updateType,
+       (if (.isVulnerabilityAlert // false) then "security" else "-" end)]
     | @tsv
+  ' "$logfile" | sort -u)"
+
+  # Updates withheld solely by minimumReleaseAge: surfaced separately, not as actionable rows.
+  local held
+  held="$(jq -r '
+    select(.config | type == "object") | .config | to_entries[]
+    | .value[]? | objects
+    | .deps[]? | select((.updates | length) > 0)
+    | . as $d | .updates[]
+    | select((.pendingChecks // false) == true and (.isVulnerabilityAlert // false) == false)
+    | "  \($d.depName // $d.packageName) -> \(.newVersion // .newValue) (released \(.newVersionAgeInDays // 0)d ago)"
   ' "$logfile" | sort -u)"
 
   rm -f "$logfile"
 
   if [[ -z "$rows" ]]; then
     print -r -- "No pending updates."
-    return 0
-  fi
-
-  # Columns: 1 MANAGER 2 FILE 3 PACKAGE 4 TYPE 5 CURRENT 6 NEW 7 DIGEST 8 UPDATE.
-  local fields header
-  if [[ -n "$show_digests" ]]; then
-    fields='1-8'
-    header=$'MANAGER\tFILE\tPACKAGE\tTYPE\tCURRENT\tNEW\tDIGEST\tUPDATE'
   else
-    fields='1-6,8'
-    header=$'MANAGER\tFILE\tPACKAGE\tTYPE\tCURRENT\tNEW\tUPDATE'
+    { print -r -- $'MANAGER\tFILE\tPACKAGE\tTYPE\tCURRENT\tNEW\tDIGEST\tUPDATE\tSECURITY'
+      print -r -- "$rows"
+    } | column -t -s $'\t'
   fi
 
-  { print -r -- "$header"; print -r -- "$rows" | cut -f"$fields"; } | column -t -s $'\t'
+  if [[ -n "$held" ]]; then
+    print -r --
+    print -r -- "Held back by minimumReleaseAge (not yet actionable):"
+    print -r -- "$held"
+  fi
 }
