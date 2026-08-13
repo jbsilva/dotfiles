@@ -70,6 +70,10 @@
     # Development
     # -------------------------------------------------------------------------
     just # command runner; see the Justfile at the repo root
+    # Language server for justfiles. The VS Code extension recommended in
+    # .vscode/extensions.json looks for `just-lsp` on $PATH and never downloads
+    # anything itself, so pinning it here is what makes its LSP features work.
+    just-lsp
     watchexec # re-run a command when files change
     hyperfine # statistically sound benchmarking (used to measure zsh startup)
     tokei # lines-of-code stats

@@ -1,0 +1,13 @@
+{
+  // Suggested when this folder is opened. Nothing is installed automatically.
+  //
+  // nefrob.vscode-just-syntax rather than the two older Just extensions:
+  // skellock.just was last updated in 2017 and kokakiwi.vscode-just in 2020,
+  // both of which predate syntax this repo's Justfile already uses (default
+  // recipe parameters, and later: attributes, && dependencies, modules).
+  //
+  // It is also the safe one: MIT, mirrored on OpenVSX, no extensionDependencies
+  // and no binary downloading -- it shells out to `just` and `just-lsp` from
+  // $PATH, both of which are installed by nix-darwin/modules/packages.nix.
+  "recommendations": ["nefrob.vscode-just-syntax"]
+}
