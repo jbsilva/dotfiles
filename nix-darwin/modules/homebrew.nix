@@ -126,7 +126,7 @@
       "proton-mail-bridge"
       "protonvpn"
       "roon"
-      "spotify"
+      # "spotify"
       "stats"
       "steam"
       "tailscale-app"
