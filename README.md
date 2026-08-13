@@ -309,6 +309,38 @@ Set up for Python and JavaScript/TypeScript in particular:
 pyright and neotest both resolve the project virtualenv (`$VIRTUAL_ENV`,
 `.venv/`, `venv/`), so imports resolve without extra configuration.
 
+### Language toolchains
+
+| Language | Managed by | Why |
+| --- | --- | --- |
+| Python | `uv` | per-project interpreter versions |
+| Node | `mise` (Homebrew) | `.tool-versions` / `mise.toml`; supersedes nvm |
+| Rust | `rustup` | see below |
+| Go | nixpkgs | one version is enough here |
+
+Rust deliberately does **not** use a pinned nixpkgs toolchain. Unlike Python, a
+newer `rustc` still builds older crates — breaking changes are gated behind
+editions — so the need is toolchain *switching*, not version pinning. Only
+rustup honours `rust-toolchain.toml` (nixpkgs `cargo` ignores it **silently**,
+so a local build can differ from CI), provides nightly and extra targets, and
+keeps `clippy`/`rustfmt`/`rust-analyzer`/`rust-src` on the same toolchain so
+rust-analyzer never drifts out of sync with `rustc`.
+
+Nix pins only the `rustup` binary; the toolchains live in `~/.rustup`, outside
+Nix — the same trade `uv` makes for Python interpreters. Bootstrap once:
+
+```sh
+just rust-setup     # rustup default stable + components
+```
+
+> For a genuinely reproducible build of one project, use a per-project flake
+> (fenix/oxalica + crane) rather than the global toolchain.
+
+LSP servers come from Mason **except** those nixpkgs or rustup already provide
+(`nil` for Nix, `rust-analyzer` for Rust). Those are enabled directly when the
+binary is on `$PATH` — asking Mason for `nil` made it try to build from source
+with cargo, which failed on every startup.
+
 `nvim-treesitter` tracks its `main` branch, which needs the `tree-sitter` CLI to
 build parsers — it is declared in `packages.nix`.
 

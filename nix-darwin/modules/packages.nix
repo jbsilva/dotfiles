@@ -132,18 +132,28 @@
     go
     nodejs_24
 
-    # Rust. The toolchain comes from nixpkgs rather than rustup so it is pinned
-    # by flake.lock like everything else and needs no `rustup default stable`
-    # bootstrap step.
+    # Rust, via rustup rather than a pinned nixpkgs toolchain.
     #
-    # Swap to `rustup` if a project ever needs a rust-toolchain.toml pin or
-    # nightly; `mise use rust@…` also works now that mise is installed. Both
-    # manage ~/.cargo/bin, which .zshrc already puts on $PATH.
-    cargo
-    rustc
-    clippy
-    rustfmt
-    rust-analyzer # also fixes nvim: Mason has no prebuilt rust-analyzer here
+    # Rust does not need per-project versions for the reason Python does --
+    # the compiler is backwards compatible and breaking changes are gated
+    # behind editions, so a newer rustc still builds older crates. What it does
+    # need is toolchain *switching*, and rustup is the only thing that:
+    #
+    #   * honours rust-toolchain.toml. nixpkgs cargo ignores it silently, so a
+    #     local build can differ from CI without any warning.
+    #   * provides nightly (`cargo +nightly`) and extra targets
+    #     (`rustup target add wasm32-unknown-unknown`)
+    #   * keeps clippy/rustfmt/rust-analyzer/rust-src on the *same* toolchain,
+    #     so rust-analyzer never drifts out of sync with rustc
+    #
+    # Only the rustup binary is pinned here; the toolchains it downloads live in
+    # ~/.rustup and are deliberately outside Nix -- the same trade uv makes for
+    # Python interpreters. For a genuinely reproducible build of one project,
+    # use a per-project flake (fenix/oxalica + crane), not the global toolchain.
+    #
+    # Bootstrap once with `just rust-setup`.
+    # .zshrc already puts ~/.cargo/bin first, so the rustup shims win.
+    rustup
 
     # -------------------------------------------------------------------------
     # GNU userland

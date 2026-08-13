@@ -68,9 +68,10 @@ check-nix:
     statix check {{ flake }}
     deadnix --fail {{ flake }}
 
-# Run the shell config against WSL, Synology and bare-Linux containers
 # Needs docker (on this machine: `colima start`). Not part of `just check`,
 # which must stay fast and dependency-free.
+
+# Run the shell config against WSL, Synology and bare-Linux containers
 test-shell scenario="all":
     ./scripts/test-shell-docker.sh {{ scenario }}
 
@@ -96,9 +97,10 @@ check-shell:
 check-typos:
     typos
 
-# Scan the whole history for secrets
 # -c is explicit: gitleaks does not reliably auto-discover .gitleaks.toml in
 # `git` mode, and without it the known false positives come back.
+
+# Scan the whole history for secrets
 scan:
     gitleaks git -c .gitleaks.toml --no-banner --redact --verbose
 
@@ -130,6 +132,20 @@ fmt-lua:
 hooks:
     git config core.hooksPath .githooks
     @echo "pre-commit secret scanning enabled"
+
+# Nix provides only the rustup binary; the toolchains themselves live in
+# ~/.rustup so that rust-toolchain.toml, nightly and extra targets work.
+# rust-src and rust-analyzer come from the toolchain so they never drift out of
+# sync with rustc.
+
+# Install the default Rust toolchain and its components (run once)
+rust-setup:
+    rustup default stable
+    rustup component add rust-analyzer rust-src clippy rustfmt
+    @echo
+    @rustc --version
+    @cargo --version
+    @echo "rust-analyzer: $(rustup which rust-analyzer)"
 
 # Measure interactive shell startup time
 bench-shell:

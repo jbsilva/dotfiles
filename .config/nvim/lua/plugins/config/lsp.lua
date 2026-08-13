@@ -57,8 +57,11 @@ local servers = {
 --   Installation failed for Package(name=nil)
 -- They are enabled directly instead, since the binary is already on $PATH.
 local system_servers = {
-  nil_ls = 'nil', -- Nix
-  rust_analyzer = 'rust-analyzer', -- Rust; matches the nixpkgs toolchain
+  nil_ls = 'nil', -- Nix, from nixpkgs
+  -- Rust, from the rustup toolchain (`just rust-setup`). Taking it from the
+  -- toolchain rather than Mason or nixpkgs is what keeps it matched to rustc
+  -- and gives it rust-src for std-library navigation.
+  rust_analyzer = 'rust-analyzer',
 }
 
 function M.config()
