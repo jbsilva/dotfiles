@@ -866,6 +866,13 @@ fi
 ###############################################################################
 if (( $+commands[carapace] )); then
   export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
+
+  # carapace matches internally and does not consult zsh's matcher-list, so the
+  # case-insensitive completion configured above does not reach the ~400
+  # commands it claims via compdef (nvim, git, docker, ...). Without this,
+  # `nvim ~/dotfiles/justfi<TAB>` finds nothing while `cd ~/dev<TAB>`, handled
+  # by zsh's own completer, works.
+  export CARAPACE_MATCH=CASE_INSENSITIVE
   # Group headings are styled by the ':completion:*' formats set above.
   source <(carapace _carapace zsh)
 fi
