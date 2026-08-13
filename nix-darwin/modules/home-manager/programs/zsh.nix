@@ -53,8 +53,12 @@ in
 
     # ~/.zshenv, sourced before ~/.zshrc, so .zshrc can skip its own
     # plugin lookup.
+    #
+    # fzf-tab is passed as a path rather than sourced with the others: it has to
+    # load after compinit, which runs inside .zshrc, so .zshrc sources it there.
     envExtra = ''
       export DOTFILES_PLUGINS_FROM_NIX=1
+      export DOTFILES_FZF_TAB=${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
     '';
 
     initContent = lib.mkMerge [

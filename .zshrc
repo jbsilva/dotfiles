@@ -455,6 +455,49 @@ zstyle ':completion:*:manuals' separate-sections true
 # Internal helpers are noise.
 zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
 
+###############################################################################
+#                                  fzf-tab
+#
+# Replaces the completion menu with an fzf picker. It sits on top of zsh's own
+# completers, so everything above still applies -- the candidate list is built
+# by zsh with the matcher-list, fzf only chooses among it. `ls linux/Compose`
+# still finds XCompose.
+#
+# Must load after compinit and before zsh-syntax-highlighting. $DOTFILES_FZF_TAB
+# is exported from ~/.zshenv on the Nix machines; elsewhere it is looked up in
+# the usual package-manager prefixes.
+###############################################################################
+() {
+  local candidate
+  for candidate in \
+    "$DOTFILES_FZF_TAB" \
+    /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh \
+    /opt/homebrew/share/fzf-tab/fzf-tab.plugin.zsh \
+    /usr/share/fzf-tab/fzf-tab.plugin.zsh \
+    "$HOME/.local/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
+  do
+    [[ -n $candidate && -r $candidate ]] && { source "$candidate"; break }
+  done
+}
+
+if (( $+functions[fzf-tab-complete] )); then
+  # Keep the picker small and out of the way.
+  zstyle ':fzf-tab:*' fzf-flags --height=45% --layout=reverse --border
+  # Accept the current match with Enter; Space keeps filtering.
+  zstyle ':fzf-tab:*' continuous-trigger '/'
+  # Preview: directory listing for cd, file contents elsewhere.
+  if (( $+commands[eza] )); then
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons $realpath'
+    zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always --icons $realpath'
+  fi
+  if (( $+commands[bat] )); then
+    zstyle ':fzf-tab:complete:*:*' fzf-preview \
+      '[[ -d $realpath ]] && ls -1 "$realpath" || bat --color=always --style=plain --line-range=:100 "$realpath" 2>/dev/null'
+  fi
+  # fzf-tab draws the list itself, so zsh should not also open its own menu.
+  zstyle ':completion:*' menu no
+fi
+
 
 ###############################################################################
 #                                 Keybindings
