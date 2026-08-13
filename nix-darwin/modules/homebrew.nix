@@ -133,7 +133,6 @@
       "telegram"
       "thaw"
       "thunderbird"
-      "transmission-remote-gui"
       "visual-studio-code"
       "vivaldi"
       # "voiceink"
