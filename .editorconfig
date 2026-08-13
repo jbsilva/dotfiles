@@ -1,0 +1,28 @@
+# Neovim honours this natively, and so do stylua, prettier and most editors, so
+# one file keeps the editor and the formatters agreeing on indent width.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{lua,nix,json,jsonc,yml,yaml,md,js,jsx,ts,tsx,css,scss,html}]
+indent_size = 2
+
+[*.{zsh,sh,bash}]
+indent_size = 2
+
+[Justfile]
+indent_size = 4
+
+[Makefile]
+indent_style = tab
+
+# Vendored and generated; not ours to reformat.
+[{linux/XCompose/**,.zsh/completions/**,.tmux/**}]
+trim_trailing_whitespace = false
+insert_final_newline = false

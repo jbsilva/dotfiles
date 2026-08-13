@@ -15,13 +15,9 @@ require('lazy').setup({
   ----------------------------------------------------------
   --> Colorschemes
   --
-  -- tokyonight is the active theme; lualine's matching theme is selected in
-  -- plugins/config/lualine.lua. It must load eagerly (lazy = false) and early
-  -- (priority) so that the colorscheme is applied before anything draws, and
-  -- so lualine can find the theme module. Leaving it lazy is what produced
-  -- "theme 'tokyonight' not found, falling back to 'auto'".
-  --
-  -- The others stay lazy so `:colorscheme` can still switch to them on demand.
+  -- tokyonight loads eagerly and early so the colorscheme is applied before
+  -- anything draws, and so lualine can resolve its matching theme.
+  -- The others stay lazy; `:colorscheme` switches to them on demand.
   ----------------------------------------------------------
   {
     'folke/tokyonight.nvim',
@@ -557,6 +553,57 @@ require('lazy').setup({
   { 'tpope/vim-speeddating', event = 'VeryLazy' },
 
   ----------------------------------------------------------
+  --> Trouble: diagnostics, references and quickfix in one list
+  --  <leader>xx  diagnostics for the buffer   <leader>xX  for the workspace
+  --  <leader>xs  document symbols             <leader>xl  LSP references
+  --  <leader>xq  quickfix list
+  ----------------------------------------------------------
+  {
+    'folke/trouble.nvim',
+    cmd = 'Trouble',
+    opts = {},
+    keys = {
+      {
+        '<leader>xx',
+        '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
+        desc = 'Diagnostics (buffer)',
+      },
+      { '<leader>xX', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (workspace)' },
+      { '<leader>xs', '<cmd>Trouble symbols toggle<cr>', desc = 'Symbols' },
+      { '<leader>xl', '<cmd>Trouble lsp toggle<cr>', desc = 'LSP references/definitions' },
+      { '<leader>xq', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix list' },
+    },
+  },
+
+  ----------------------------------------------------------
+  --> Todo-comments: highlight TODO/FIXME/HACK and search them
+  --  <leader>xt lists them, ]t / [t jump between them
+  ----------------------------------------------------------
+  {
+    'folke/todo-comments.nvim',
+    event = { 'BufReadPost', 'BufNewFile' },
+    dependencies = 'nvim-lua/plenary.nvim',
+    opts = { signs = false },
+    keys = {
+      { '<leader>xt', '<cmd>Trouble todo toggle<cr>', desc = 'Todo list' },
+      {
+        ']t',
+        function()
+          require('todo-comments').jump_next()
+        end,
+        desc = 'Next todo',
+      },
+      {
+        '[t',
+        function()
+          require('todo-comments').jump_prev()
+        end,
+        desc = 'Previous todo',
+      },
+    },
+  },
+
+  ----------------------------------------------------------
   --> nvim-spider: subword motions, replaces bkad/CamelCaseMotion
   --
   --  Moves by camelCase and snake_case segments, which is most of the value
@@ -622,7 +669,10 @@ require('lazy').setup({
   ----------------------------------------------------------
   --> lazy.nvim options
   ----------------------------------------------------------
-  install = { colorscheme = { 'github_dark', 'habamax' } },
+  install = { colorscheme = { 'tokyonight-night', 'habamax' } },
+  -- No plugin here needs luarocks, and leaving it on makes :checkhealth
+  -- complain about a missing hererocks install.
+  rocks = { enabled = false },
   checker = {
     -- Check for updates in the background, but never install automatically.
     enabled = true,

@@ -128,6 +128,33 @@ o.swapfile = false
 o.splitright = true
 o.splitbelow = true
 
+-- Keep the text under the cursor in place when a split opens or closes.
+o.splitkeep = 'screen'
+
+------------------------------------------------------------------------------
+--> Editing
+------------------------------------------------------------------------------
+-- Live preview of :s/:g results in a split while typing the command.
+o.inccommand = 'split'
+
+-- Ask to save instead of failing on :q with unsaved changes.
+o.confirm = true
+
+-- Let visual block selection extend past end-of-line.
+o.virtualedit = 'block'
+
+-- Scroll by screen line rather than jumping a whole wrapped line.
+o.smoothscroll = true
+
+-- Keep the jumplist a stack, so <C-o> after a jump does not lose entries.
+o.jumpoptions = 'stack'
+
+-- Rounded borders for every floating window (hover, diagnostics, LSP).
+-- Neovim 0.11+; guarded so an older nvim on another machine still works.
+if vim.fn.has('nvim-0.11') == 1 then
+  o.winborder = 'rounded'
+end
+
 ------------------------------------------------------------------------------
 --> Custom filetypes
 ------------------------------------------------------------------------------
