@@ -55,7 +55,7 @@ require('lazy').setup({
   {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
-    dependencies = { 'f-person/git-blame.nvim', 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'lewis6991/gitsigns.nvim', 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('plugins.config.lualine').config()
     end,
@@ -100,6 +100,13 @@ require('lazy').setup({
     'lewis6991/gitsigns.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
+      -- Populates b:gitsigns_blame_line for the lualine section. virt_text is
+      -- off so the blame shows in the statusline only, not as inline text.
+      current_line_blame = true,
+      current_line_blame_opts = {
+        virt_text = false,
+        delay = 300,
+      },
       on_attach = function(bufnr)
         local gs = require('gitsigns')
         local function map(mode, lhs, rhs, desc)
@@ -737,6 +744,7 @@ require('lazy').setup({
   -- 'sbdchd/neoformat'        -- replaced by stevearc/conform.nvim
   -- 'NeogitOrg/neogit'       -- Fork is the git UI here; gitsigns covers hunks
   -- 'antoinemadec/FixCursorHold.nvim' -- its README: not needed after neovim#20198 (0.9)
+  -- 'f-person/git-blame.nvim' -- gitsigns' b:gitsigns_blame_line feeds lualine
 }, {
   ----------------------------------------------------------
   --> lazy.nvim options

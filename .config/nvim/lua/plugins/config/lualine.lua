@@ -1,10 +1,6 @@
 local M = {}
 
 function M.config()
-  -- git-blame draws into the statusline instead of as virtual text.
-  vim.g.gitblame_display_virtual_text = 0
-  local git_blame = require('gitblame')
-
   require('lualine').setup({
     options = {
       -- Derives the statusline colours from the active colorscheme, so
@@ -13,12 +9,23 @@ function M.config()
       globalstatus = true,
     },
     sections = {
-      -- Filename, then the blame text for the current line.
+      -- Filename, then the blame for the current line.
+      --
+      -- The blame text comes from gitsigns, which sets b:gitsigns_blame_line
+      -- whenever current_line_blame is on. It populates that variable before it
+      -- decides whether to draw virtual text, so current_line_blame_opts.
+      -- virt_text = false (see the gitsigns spec) gives the statusline the
+      -- string without also annotating the buffer. That is what git-blame.nvim
+      -- was here for.
       lualine_c = {
         { 'filename', path = 1 },
         {
-          git_blame.get_current_blame_text,
-          cond = git_blame.is_blame_text_available,
+          function()
+            return vim.b.gitsigns_blame_line or ''
+          end,
+          cond = function()
+            return vim.b.gitsigns_blame_line ~= nil and vim.b.gitsigns_blame_line ~= ''
+          end,
         },
       },
     },
