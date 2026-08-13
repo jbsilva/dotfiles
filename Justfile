@@ -56,7 +56,11 @@ gc:
 # ---------------------------------------------------------------------------
 
 # Run every check
-check: check-nix check-shell check-typos scan
+check: check-nix check-shell check-actions check-typos scan
+
+# Lint the GitHub Actions workflows
+check-actions:
+    actionlint .github/workflows/*.yml
 
 # Evaluate the flake and lint the Nix files
 check-nix:

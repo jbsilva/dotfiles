@@ -58,6 +58,9 @@ jobs:
       - name: stylua --check
         run: nix run nixpkgs#stylua -- --check .config/nvim || true
 
+      - name: actionlint
+        run: nix shell nixpkgs#just nixpkgs#actionlint --command just check-actions
+
   # ---------------------------------------------------------------------------
   # Nix. Evaluated on arm64 macOS because the flake is aarch64-darwin only.
   # ---------------------------------------------------------------------------

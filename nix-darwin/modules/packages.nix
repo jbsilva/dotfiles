@@ -75,6 +75,7 @@
     stylua # Lua formatter, used by conform.nvim for this nvim config
     ruff # Python linter/formatter, used by conform.nvim
     typos # source-code spell checker (this repo already has typos.toml)
+    actionlint # linter for GitHub Actions workflows
     ast-grep # structural search & rewrite, by syntax tree rather than regex
     tealdeer # `tldr` client: practical examples instead of full man pages
     uv # fast Python package/venv manager (was installed out-of-band)
