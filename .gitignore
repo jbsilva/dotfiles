@@ -34,12 +34,8 @@
 
 # Editors
 !/.config/nvim/**/*.lua
-!/.config/lvim/config.lua
 
 # Terminal / multiplexer
-!/.config/kitty/kitty.conf
-!/.config/kitty/kittens/*.py
-!/.config/kitty/kitty-themes
 !/.config/tmux/tmux.conf
 !/.config/tmux/tmux.conf.local
 
@@ -48,12 +44,6 @@
 !/.config/gh/hosts.yml
 !/.config/homebrew/trust.json
 !/.config/pypoetry/config.toml
-
-# Linux desktop
-!/.config/autostart/*.desktop
-!/.config/plasma_calendar_holiday_regions
-!/.config/user-dirs.dirs
-!/.config/user-dirs.locale
 
 # -----------------------------------------------------------------------------
 # .config — re-ignore heavy runtime dirs
@@ -65,10 +55,7 @@
 /.config/raycast/
 /.config/opencode/
 /.config/Transmission Remote GUI/
-/.config/nvim/plugged/
-/.config/nvim/autoload/
 /.config/nvim/spell/
-/.config/nvim/plugin/packer_compiled.lua
 /.config/nvim/.netrwhist
 /.config/photo-tagger/logs/
 
