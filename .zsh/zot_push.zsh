@@ -129,6 +129,8 @@ zot-push() {
   local -i SSH_PID=0
   # Initialized to empty so TRAPEXIT can safely test it even if mktemp has not run
   local docker_host ssh_err=''
+  local policy_file=''
+  local -a skopeo_policy_args
   # Timeout derived from these two values: max_attempts x 0.2s = timeout_secs
   # Changing max_attempts automatically updates the timeout message below
   local -i max_attempts=150 attempts=0
@@ -181,6 +183,24 @@ zot-push() {
     (( ${+commands[$cmd]} )) \
       || { print -P "%F{red}✗ Required command not found: ${cmd}%f" >&2; return 1 }
   done
+
+  # skopeo copy requires a containers trust policy file. Docker Desktop and many
+  # Linux distros provide one by default, but minimal macOS setups often do not.
+  # Fall back to --insecure-policy when none is found so this helper works out
+  # of the box; the tunnel is localhost-only and already authenticated by SSH.
+  if [[ -f "${HOME}/.config/containers/policy.json" ]]; then
+    policy_file="${HOME}/.config/containers/policy.json"
+  elif [[ -f "/etc/containers/policy.json" ]]; then
+    policy_file="/etc/containers/policy.json"
+  elif [[ -f "/usr/share/containers/policy.json" ]]; then
+    policy_file="/usr/share/containers/policy.json"
+  fi
+  if [[ -n ${policy_file} ]]; then
+    skopeo_policy_args=(--policy "${policy_file}")
+  else
+    skopeo_policy_args=(--insecure-policy)
+    print -P "%F{yellow}⚠ No containers policy.json found; using insecure policy for this push only%f"
+  fi
 
   # Resolve the Docker socket using the first available source:
   #   1. --colima-profile flag: constructs the socket path for the named Colima
@@ -329,6 +349,7 @@ zot-push() {
     --src-daemon-host "${docker_host}" \
     --dest-tls-verify=false \
     --dest-precompute-digests \
+    "${skopeo_policy_args[@]}" \
     "docker-daemon:${image}" \
     "docker://localhost:${local_port}/${image}" \
     || { print -P "%F{red}✗ Image push failed%f" >&2; return 1 }
