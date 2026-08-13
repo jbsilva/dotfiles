@@ -367,11 +367,29 @@ if [[ $OS == Linux ]] && (( ! $+commands[pbcopy] )); then
   fi
 fi
 
-# --- dircolors-solarized: replaced by vivid, a maintained LS_COLORS generator
+# --- LS_COLORS: one palette, read by both GNU ls and eza ---------------------
+# vivid generates it from a named theme; `vivid themes` lists the alternatives.
+# dircolors is the fallback where vivid is not installed.
 if (( $+commands[vivid] )); then
   export LS_COLORS="$(vivid generate one-dark 2>/dev/null)"
 elif (( $+commands[dircolors] )); then
   eval "$(dircolors -b)"
+fi
+
+# ls defaults to no colour and has to be asked for it. Recent GNU and BSD ls
+# both take --color; older BSD and busybox (the NAS) only honour CLICOLOR.
+# Only GNU ls reads LS_COLORS -- BSD falls back to its own palette via LSCOLORS.
+if ls --color=auto /dev/null >/dev/null 2>&1; then
+  alias ls='ls --color=auto'
+else
+  export CLICOLOR=1
+fi
+
+# `auto` means colour only when stdout is a terminal, so pipes stay clean.
+if echo | grep --color=auto '' >/dev/null 2>&1; then
+  alias grep='grep --color=auto'
+  alias egrep='egrep --color=auto'
+  alias fgrep='fgrep --color=auto'
 fi
 
 
