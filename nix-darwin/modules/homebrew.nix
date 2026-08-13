@@ -21,6 +21,11 @@
     mutableTaps = false;
   };
 
+  # Homebrew 6 turned on HOMEBREW_REQUIRE_TAP_TRUST, which refuses formulae and
+  # casks from non-official taps that aren't trusted. nix-darwin handles that
+  # declaratively: every brew/cask entry it generates carries `trusted: true`,
+  # which covers the fully-qualified ones below (docker/tap/sbx,
+  # nikitabobko/tap/aerospace). Nothing needs to write ~/.homebrew/trust.json.
   homebrew = {
     enable = true;
     onActivation = {
