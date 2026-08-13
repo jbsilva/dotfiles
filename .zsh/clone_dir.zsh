@@ -33,6 +33,7 @@ EOF
     fi
 
 
+    local -a args
     args=()
     args+=(--recursive)         # Copy directories recursively
     args+=(--links)             # Copy symlinks as symlinks
@@ -61,7 +62,7 @@ EOF
     #args+=(--dry-run)           # Dry-run
     #args+=(--rsh="ssh -T -c arcfour -o Compression=no -x") # No SSH compression
 
-    clean=0
+    local clean=0
     if [[ "$1" == "-c" || "$1" == "--clean" ]]; then
       clean=1
       shift
@@ -92,9 +93,9 @@ EOF
 
     # Uses environment variable $SSHPASS for auth if it is set
     if [[ -v SSHPASS ]]; then
-        sshpass -e rsync ${args[*]} "$ORIGEM" "$DESTINO"
+        sshpass -e rsync "${args[@]}" "$ORIGEM" "$DESTINO"
     else
-        rsync ${args[*]} "$ORIGEM" "$DESTINO"
+        rsync "${args[@]}" "$ORIGEM" "$DESTINO"
         #find ${ORIGEM} -type f > /tmp/backup.txt
         #cat /tmp/backup.txt | parallel -j 8 rsync ${args[*]} {} "$DESTINO"
     fi
