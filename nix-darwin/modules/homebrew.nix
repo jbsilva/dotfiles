@@ -111,6 +111,7 @@
       "lulu"
       "maccy"
       "mactex"
+      "meld"
       "microsoft-office"
       "nikitabobko/tap/aerospace"
       "notunes"
