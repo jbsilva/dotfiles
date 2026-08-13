@@ -34,11 +34,12 @@
     sd # sed for humans: literal strings by default, no escaping hell
     dust # visual `du` (replaces the `list`/`listh` aliases)
     duf # readable `df`
-    btop # much better `htop`
+    btop # replaces htop; .zshrc aliases htop -> btop
     procs # `ps` with colour, tree view and search
     ripgrep # fast grep (already relied on by nvim/telescope)
-    htop # kept: familiar, and some scripts expect it
-    tree # kept: `eza --tree` covers it, but muscle memory and scripts use tree
+    dua # interactive disk usage browser -- the terminal DaisyDisk
+    ouch # one command to (de)compress any archive format
+    hexyl # hex viewer
 
     # -------------------------------------------------------------------------
     # Git
@@ -63,6 +64,7 @@
     yq-go # the same for YAML/XML/TOML
     jless # pager for large JSON, like `less` for structured data
     gron # flattens JSON into greppable lines
+    miller # awk/sed/cut for CSV, TSV and JSON, keeping the structure
 
     # -------------------------------------------------------------------------
     # Development
@@ -79,15 +81,32 @@
     ast-grep # structural search & rewrite, by syntax tree rather than regex
     tealdeer # `tldr` client: practical examples instead of full man pages
     uv # fast Python package/venv manager (was installed out-of-band)
+    # Not installed here on purpose: `mise` would supersede the nvm block still
+    # in .zshrc (one tool for node/python/go versions, .tool-versions,
+    # per-directory activation), but nixpkgs has no darwin binary cached at the
+    # pinned revision, so it compiles for ~20 min on every flake update.
+    # Add it when the nvm block actually gets in the way.
     prettier
     openapi-generator-cli
     hclfmt
 
     # -------------------------------------------------------------------------
     # Containers
+    # Most of what runs on the Synology is dockerized, so these are aimed at
+    # driving it over SSH as much as at local work.
     # -------------------------------------------------------------------------
     lazydocker # terminal UI for docker/compose
     dive # inspect a container image layer by layer
+    ctop # top-like live metrics per container
+    lnav # log navigator: merges/parses container and system logs
+
+    # -------------------------------------------------------------------------
+    # Synology / remote
+    # -------------------------------------------------------------------------
+    restic # fast deduplicating encrypted backups
+    rclone # sync to and from cloud storage and the NAS
+    croc # send a file between two machines with a one-time code
+    sesh # zellij/tmux session manager, fuzzy-picks sessions by project
 
     # -------------------------------------------------------------------------
     # Networking
