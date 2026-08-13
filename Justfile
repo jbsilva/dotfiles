@@ -75,11 +75,11 @@ check-shell:
     # shellcheck only understands sh/bash/dash/ksh, so route by actual shell.
     shellcheck \
         .githooks/pre-commit \
-        hosts.sh \
-        Xsetup \
-        bin/nvidia-force_comp_pipeline.sh
-    # zsh scripts get a parse check instead (bin/keyboards.sh is zsh too).
-    for f in .zshrc .zshrc_light .zsh/*.zsh .zsh/zshrc_* bin/keyboards.sh; do
+        scripts/hosts.sh \
+        linux/Xsetup \
+        linux/bin/nvidia-force_comp_pipeline.sh
+    # zsh scripts get a parse check instead (linux/bin/keyboards.sh is zsh too).
+    for f in .zshrc .zshrc_light .zsh/*.zsh .zsh/zshrc_* linux/bin/keyboards.sh; do
         [ -e "$f" ] || continue
         zsh -n "$f" || { echo "syntax error: $f" >&2; exit 1; }
     done

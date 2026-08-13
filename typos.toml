@@ -7,7 +7,7 @@ extend-exclude = [
   # character data and compose-sequence tokens, so nearly every short token
   # ("BA", "DAA", "Nd", ...) reads as a misspelling. Upstream's own typos
   # (e.g. "CAPTIAL") are not ours to fix here.
-  "XCompose/",
+  "linux/XCompose/",
   # Git submodules, checked by their own upstreams.
   ".tmux/",
   ".config/kitty/kitty-themes/",
