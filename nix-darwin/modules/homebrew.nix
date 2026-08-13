@@ -103,7 +103,7 @@
       "firefox"
       "fork"
       "ghostty"
-      "gitbutler"
+      # "gitbutler"
       "gitkraken"
       "insta360-link-controller"
       "keyboard-maestro"
