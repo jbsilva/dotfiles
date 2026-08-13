@@ -59,7 +59,12 @@ function M.config()
   --> Diagnostics
   ---------------------------------------------------------------------------
   vim.diagnostic.config({
-    virtual_text = { spacing = 2, prefix = '●' },
+    -- Compact markers on every line with a diagnostic, and the full message
+    -- rendered underneath the line the cursor is on. virtual_lines landed in
+    -- 0.11 and is the fix for long TypeScript union errors and Rust borrow
+    -- messages, which virtual_text truncates at the window edge.
+    virtual_text = { spacing = 2, prefix = '●', current_line = false },
+    virtual_lines = { current_line = true },
     signs = true,
     underline = true,
     update_in_insert = false,

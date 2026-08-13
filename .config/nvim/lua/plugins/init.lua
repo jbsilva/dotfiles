@@ -368,7 +368,6 @@ require('lazy').setup({
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-neotest/nvim-nio',
-      'antoinemadec/FixCursorHold.nvim',
       'nvim-treesitter/nvim-treesitter',
       -- Language adapters, matching what is actually written here.
       'nvim-neotest/neotest-python',
@@ -737,6 +736,7 @@ require('lazy').setup({
   -- 'tpope/vim-surround'      -- replaced by kylechui/nvim-surround
   -- 'sbdchd/neoformat'        -- replaced by stevearc/conform.nvim
   -- 'NeogitOrg/neogit'       -- Fork is the git UI here; gitsigns covers hunks
+  -- 'antoinemadec/FixCursorHold.nvim' -- its README: not needed after neovim#20198 (0.9)
 }, {
   ----------------------------------------------------------
   --> lazy.nvim options
