@@ -1,51 +1,40 @@
 local M = {}
 
+---------------------------------------------------------------------------
+--> Pickers
+--
+-- These are called from the `keys` table in the plugin spec rather than
+-- mapped here, so telescope stays lazy: lazy.nvim binds a stub and only
+-- loads the plugin on the first press. Mapping inside config() is what
+-- forced `event = 'VeryLazy'`, which loaded telescope, plenary,
+-- fzf-native, file-browser and devicons during every startup.
+--
+-- Stepping out of the tree first: a picker opened while the cursor is in
+-- NvimTree would otherwise open the file in the tree's own window.
+---------------------------------------------------------------------------
+local function leave_tree()
+  if vim.bo.filetype == 'NvimTree' then
+    vim.cmd.wincmd('l')
+  end
+end
+
+function M.pick(name, opts)
+  leave_tree()
+  require('telescope.builtin')[name](opts)
+end
+
+-- Ctrl-p: tracked + untracked files in a repo, every file outside one.
+function M.project_files()
+  leave_tree()
+  local builtin = require('telescope.builtin')
+  if not pcall(builtin.git_files, { show_untracked = true }) then
+    builtin.find_files()
+  end
+end
+
 function M.config()
   local actions = require('telescope.actions')
-  local finders = require('telescope.builtin')
 
-  -- Finders
-  local Telescope = setmetatable({}, {
-    __index = function(_, k)
-      if vim.bo.filetype == 'NvimTree' then
-        vim.cmd.wincmd('l')
-      end
-      return finders[k]
-    end,
-  })
-
-  ---------------------------------------------------------------------------
-  --> Keymaps
-  ---------------------------------------------------------------------------
-  local remap = require('mapmodes')
-  local nnoremap = remap.nnoremap
-
-  -- Ctrl-p = fuzzy finder
-  nnoremap('<C-p>', function()
-    local ok = pcall(Telescope.git_files, { show_untracked = true })
-    if not ok then
-      Telescope.find_files()
-    end
-  end)
-
-  -- Get :help. Capital H
-  nnoremap('<leader>H', Telescope.help_tags)
-
-  -- Fuzzy find active buffers
-  nnoremap("'b", Telescope.buffers)
-
-  -- Search for string
-  nnoremap("'r", Telescope.live_grep)
-
-  -- Fuzzy find changed files in git
-  nnoremap("'c", Telescope.git_status)
-
-  -- Open file browser
-  nnoremap('<leader>fb', ':Telescope file_browser<cr>')
-
-  ---------------------------------------------------------------------------
-  --> Setup
-  ---------------------------------------------------------------------------
   require('telescope').setup({
     defaults = {
       prompt_prefix = ' ❯ ',

@@ -179,7 +179,48 @@ require('lazy').setup({
   {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
-    event = 'VeryLazy',
+    -- Declared here rather than mapped inside config(), so lazy.nvim can bind
+    -- a stub and defer the plugin (plus plenary, fzf-native, file-browser and
+    -- devicons) until the first press. Mapping in config() is why this used to
+    -- carry `event = 'VeryLazy'` and load on every startup.
+    keys = {
+      {
+        '<C-p>',
+        function()
+          require('plugins.config.telescope').project_files()
+        end,
+        desc = 'Find files (git-aware)',
+      },
+      {
+        "'b",
+        function()
+          require('plugins.config.telescope').pick('buffers')
+        end,
+        desc = 'Find buffers',
+      },
+      {
+        "'r",
+        function()
+          require('plugins.config.telescope').pick('live_grep')
+        end,
+        desc = 'Live grep',
+      },
+      {
+        "'c",
+        function()
+          require('plugins.config.telescope').pick('git_status')
+        end,
+        desc = 'Changed files (git)',
+      },
+      {
+        '<leader>H',
+        function()
+          require('plugins.config.telescope').pick('help_tags')
+        end,
+        desc = 'Help tags',
+      },
+      { '<leader>fb', '<cmd>Telescope file_browser<cr>', desc = 'File browser' },
+    },
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-tree/nvim-web-devicons',
