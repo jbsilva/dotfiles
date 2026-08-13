@@ -185,4 +185,5 @@
 .config/xsettingsd/
 .config/zellij/config.kdl.bak
 .github/instructions/codacy.instructions.md
+.config/marimo/marimo.toml
 .config/photo-tagger/config.toml
