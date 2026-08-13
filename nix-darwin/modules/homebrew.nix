@@ -93,7 +93,7 @@
       "bruno"
       "canon-eos-utility"
       "claude-code@latest"
-      "cursor"
+      # "cursor"
       "daisydisk"
       "db-browser-for-sqlite"
       "discord"
