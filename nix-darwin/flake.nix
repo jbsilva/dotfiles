@@ -9,6 +9,11 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Prebuilt nix-index database, refreshed weekly upstream. Without it,
+    # `nix-index` has to crawl all of nixpkgs locally, which takes hours.
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
     # nix-homebrew pins the brew release itself and keeps up with the floating
     # homebrew-core/-cask snapshots, so its default is used as-is.
     #
@@ -47,6 +52,7 @@
       nix-darwin,
       nix-homebrew,
       home-manager,
+      nix-index-database,
       homebrew-core,
       homebrew-cask,
       homebrew-nikitabobko,
@@ -72,6 +78,7 @@
           ./modules
           nix-homebrew.darwinModules.nix-homebrew
           home-manager.darwinModules.home-manager
+          nix-index-database.darwinModules.nix-index
         ];
       };
     };

@@ -65,7 +65,9 @@
     jq # JSON processor
     yq-go # the same for YAML/XML/TOML
     jless # pager for large JSON, like `less` for structured data
+    jnv # interactive jq: build the filter with live preview of the result
     gron # flattens JSON into greppable lines
+    csvlens # `less` for CSV -- paging, column align, search, no spreadsheet
     miller # awk/sed/cut for CSV, TSV and JSON, keeping the structure
 
     # -------------------------------------------------------------------------
@@ -74,6 +76,7 @@
     just # command runner; see the Justfile at the repo root
     just-lsp # language server; the VS Code extension expects it on $PATH
     watchexec # re-run a command when files change
+    mprocs # run several long-running commands side by side in one terminal
     hyperfine # statistically sound benchmarking
     tokei # lines-of-code stats
     shfmt # shell script formatter
@@ -112,6 +115,8 @@
     # Networking
     # -------------------------------------------------------------------------
     xh # ergonomic HTTP client (HTTPie-compatible, Rust-fast)
+    hurl # HTTP requests as plain text files: chain, assert, run in CI
+    trippy # traceroute and ping in one TUI; the tool for "why is the NAS slow"
     curlFull
     wget
     mosh # SSH that survives roaming and suspend

@@ -1,5 +1,17 @@
 { nixpkgs, pkgs, ... }:
 {
+  ###########################################################################
+  # nix-index / comma
+  #
+  # `nix-locate bin/rg` answers "which package provides this file", and
+  # `, some-tool` runs a program straight from nixpkgs without installing it --
+  # the fix for "I need cowsay exactly once". The database comes prebuilt from
+  # the nix-index-database flake input; generating it locally crawls all of
+  # nixpkgs and takes hours.
+  ###########################################################################
+  programs.nix-index.enable = true;
+  programs.nix-index-database.comma.enable = true;
+
   nix = {
     # Nix itself. nix-darwin owns the daemon here (nix.enable is true), so this
     # is what actually gets installed -- the version the Determinate Systems
