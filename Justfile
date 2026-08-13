@@ -101,6 +101,40 @@ hooks:
     prek install
     @echo "prek hooks installed"
 
+# Refresh the completion dumps committed in .zsh/completions/
+#
+# These are checked in rather than generated at shell startup: the tools are not
+# on every machine, and `pants complete` is interactive -- run outside a Pants
+# project it prompts "Would you like to configure . as a Pants project?", which
+# would hang a shell start. Tools that generate cleanly and fast (uv, uvx, pixi)
+# are cached automatically instead; see the Completions section of .zshrc.
+#
+# pants must run from inside a Pants project, so point this at one:
+#   just completions ~/Dev/Hoppe/fleet-connect-serverless
+completions pants_dir="":
+    #!/usr/bin/env zsh
+    set -uo pipefail
+    cd {{ justfile_directory() }}
+    out=.zsh/completions
+    # ${=2} forces word splitting: zsh does not split unquoted parameters the
+    # way bash does, so "$2" alone would be run as one long command name.
+    gen() { print -n "  $1 ... "; if ${=2} > "$out/_$1.tmp" 2>/dev/null && [[ -s $out/_$1.tmp ]]; then mv "$out/_$1.tmp" "$out/_$1"; print ok; else rm -f "$out/_$1.tmp"; print "skipped (not installed or failed)"; fi }
+    (( $+commands[hugo] ))    && gen hugo    "hugo completion zsh"
+    (( $+commands[ruff] ))    && gen ruff    "ruff generate-shell-completion zsh"
+    (( $+commands[zellij] ))  && gen zellij  "zellij setup --generate-completion zsh"
+    (( $+commands[poetry] ))  && gen poetry  "poetry completions zsh"
+    if [[ -n "{{ pants_dir }}" ]]; then
+      print -n "  pants ... "
+      if (cd "{{ pants_dir }}" && pants complete --shell=zsh) > "$out/_pants.tmp" 2>/dev/null && [[ -s $out/_pants.tmp ]]; then
+        mv "$out/_pants.tmp" "$out/_pants"; print ok
+      else
+        rm -f "$out/_pants.tmp"; print "failed -- is {{ pants_dir }} a Pants project?"
+      fi
+    else
+      print "  pants ... skipped (pass a Pants project dir to refresh it)"
+    fi
+    print "\nReview with 'git diff .zsh/completions' before committing."
+
 # Install the default Rust toolchain and its components (run once)
 rust-setup:
     rustup default stable
