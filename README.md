@@ -124,6 +124,42 @@ ZDOTDIR=/tmp/zt zsh -i
 
 ---
 
+## Zsh
+
+Plugins are **Nix packages**, declared in
+`nix-darwin/modules/home-manager/programs/zsh.nix` and sourced straight out of
+`/nix/store`. There is no plugin manager: zplug used to `git clone` itself from
+inside `.zshrc`, so shell startup could hit the network and nothing was pinned.
+
+| Was (zplug) | Now |
+| --- | --- |
+| Prezto `autosuggestions` / `syntax-highlighting` / `history-substring-search` | home-manager's built-in options (it gets the load order right) |
+| Prezto `editor` (vi keys) | `defaultKeymap = "viins"` |
+| Prezto `completion` | `enableCompletion` + `zsh-completions` |
+| Prezto `fasd` | zoxide |
+| Prezto `terminal` / `archive` / `utility` | ~40 lines of plain zsh in `.zshrc` |
+| `djui/alias-tips` | `zsh-you-should-use` |
+| `zdharma-continuum/history-search-multi-word` | same, from nixpkgs |
+| `hlissner/zsh-autopair` | same, from nixpkgs |
+| `seebi/dircolors-solarized` | `vivid` |
+| `supercrabtree/k` | `eza` |
+| `z-shell/zsh-diff-so-fancy` | `delta` |
+| `b4b4r07/emoji-cli` | pinned `fetchFromGitHub` (unmaintained since 2017) |
+
+Startup went from **1.80 s to 0.45 s** (`just bench-shell`).
+
+> `programs.zsh.plugins` is deliberately *not* used. That option materialises
+> plugins under `~/.zsh/plugins`, and `~/.zsh` is a symlink into this repo, so
+> it would write generated store symlinks into your working tree.
+
+**`.zshrc` stays self-contained** so the Arch and WSL machines still work: it
+holds its own history, options, aliases and keybindings, and falls back to
+zplug + Prezto when `DOTFILES_PLUGINS_FROM_NIX` is unset (exported from
+`~/.zshenv` by home-manager). `.zsh/zplug.zsh` is that fallback's plugin list
+and is still live for those machines.
+
+---
+
 ## Neovim
 
 lazy.nvim, with Neovim 0.11+ native LSP (`vim.lsp.config`/`vim.lsp.enable`) —

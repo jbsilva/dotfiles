@@ -149,7 +149,13 @@ fi
 ###############################################################################
 #                                Completions
 ###############################################################################
-fpath=(/usr/local/share/zsh-completions $fpath)
+# /usr/local is Intel Homebrew's prefix; Apple Silicon uses /opt/homebrew. On
+# the Nix machines zsh-completions comes from nixpkgs (see the home-manager zsh
+# module), so this is only for the non-Nix ones.
+for _fp in /usr/local/share/zsh-completions /opt/homebrew/share/zsh-completions; do
+  [[ -d $_fp ]] && fpath=($_fp $fpath)
+done
+unset _fp
 fpath=($HOME/.zsh/completions $fpath)
 
 # compinit is the single most expensive step in zsh startup because it stats
@@ -215,27 +221,122 @@ unset _f
 
 
 ###############################################################################
-#                                    Zplug
-# Plugin manager for zsh (https://github.com/zplug/zplug)
-# Do not install with homebrew
+#                                   Plugins
+#
+# On the Nix machines, plugins are installed by home-manager
+# (nix-darwin/modules/home-manager/programs/zsh.nix) and have already been
+# sourced by the time this file runs. ~/.zshenv exports
+# DOTFILES_PLUGINS_FROM_NIX=1 to say so.
+#
+# Everywhere else (Arch, WSL) fall back to zplug + Prezto as before. zplug is
+# unmaintained and clones itself over the network on first run, which is
+# exactly why the Nix machines no longer use it.
 ###############################################################################
-# Install zplug if necessary and start it
-export ZPLUG_HOME="${ZDOTDIR:-$HOME}/.zplug"
-test -e $ZPLUG_HOME || git clone https://github.com/zplug/zplug $ZPLUG_HOME
-export ZPLUG_LOADFILE="$HOME/.zsh/zplug.zsh"
-source "${ZPLUG_HOME}/init.zsh"
+if [[ -z $DOTFILES_PLUGINS_FROM_NIX ]]; then
+  export ZPLUG_HOME="${ZDOTDIR:-$HOME}/.zplug"
+  test -e $ZPLUG_HOME || git clone https://github.com/zplug/zplug $ZPLUG_HOME
+  export ZPLUG_LOADFILE="$HOME/.zsh/zplug.zsh"
+  source "${ZPLUG_HOME}/init.zsh"
 
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-  printf "Install? [y/N]: "
-  if read -q; then
-    echo
-    zplug install
+  # Install plugins if there are plugins that have not been installed
+  if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+      echo
+      zplug install
+    fi
+  fi
+
+  # Then, source plugins and add commands to $PATH
+  zplug load
+fi
+
+
+###############################################################################
+#                        Prezto replacements (Nix machines)
+#
+# Prezto came with zplug and provided a lot of small things besides the plugins
+# that are now Nix packages. These are the pieces worth keeping, written out
+# natively so they work with or without a framework.
+###############################################################################
+
+# --- editor: edit the current command line in $EDITOR (bound to `vv` below) ---
+autoload -Uz edit-command-line
+zle -N edit-command-line
+
+# --- terminal: set the window/tab title to the running command and cwd -------
+if [[ -z $DOTFILES_DISABLE_AUTO_TITLE ]]; then
+  function _set_terminal_title() { print -Pn "\e]0;$1\a" }
+  function _title_precmd()  { _set_terminal_title "%~" }
+  function _title_preexec() { _set_terminal_title "${1%% *} | %~" }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd  _title_precmd
+  add-zsh-hook preexec _title_preexec
+fi
+
+# --- archive: extract any archive with one command --------------------------
+function extract() {
+  if (( $# == 0 )); then
+    print "Usage: extract FILE..." >&2
+    return 1
+  fi
+  local f
+  for f in "$@"; do
+    if [[ ! -f $f ]]; then
+      print "extract: no such file: $f" >&2
+      continue
+    fi
+    case $f in
+      *.tar.bz2|*.tbz2) tar xjf   "$f" ;;
+      *.tar.gz|*.tgz)   tar xzf   "$f" ;;
+      *.tar.xz|*.txz)   tar xJf   "$f" ;;
+      *.tar.zst)        tar --zstd -xf "$f" ;;
+      *.tar)            tar xf    "$f" ;;
+      *.bz2)            bunzip2   "$f" ;;
+      *.gz)             gunzip    "$f" ;;
+      *.xz)             unxz      "$f" ;;
+      *.zip)            unzip     "$f" ;;
+      *.7z)             7z x      "$f" ;;
+      *.rar)            unrar x   "$f" ;;
+      *.Z)              uncompress "$f" ;;
+      *) print "extract: unknown archive type: $f" >&2 ;;
+    esac
+  done
+}
+alias x=extract
+
+# --- zsh-bd: jump back to a named parent directory, e.g. `bd src` -----------
+function bd() {
+  if (( $# == 0 )); then
+    cd ..
+    return
+  fi
+  local target="${PWD%/${1}/*}/${1}"
+  if [[ -d $target && $target != $PWD ]]; then
+    cd "$target"
+  else
+    print "bd: no parent directory named '$1'" >&2
+    return 1
+  fi
+}
+
+# --- utility: pbcopy/pbpaste on Linux, which macOS provides natively --------
+if [[ $OS == Linux ]] && (( ! $+commands[pbcopy] )); then
+  if (( $+commands[wl-copy] )); then
+    alias pbcopy='wl-copy'
+    alias pbpaste='wl-paste'
+  elif (( $+commands[xclip] )); then
+    alias pbcopy='xclip -selection clipboard -in'
+    alias pbpaste='xclip -selection clipboard -out'
   fi
 fi
 
-# Then, source plugins and add commands to $PATH
-zplug load
+# --- dircolors-solarized: replaced by vivid, a maintained LS_COLORS generator
+if (( $+commands[vivid] )); then
+  export LS_COLORS="$(vivid generate one-dark 2>/dev/null)"
+elif (( $+commands[dircolors] )); then
+  eval "$(dircolors -b)"
+fi
 
 
 ###############################################################################
@@ -244,17 +345,27 @@ zplug load
 # bindkey -M <keymap> will list all the bindings in a given keymap.
 # zle -al lists all registered zle commands
 ###############################################################################
-for keymap in 'emacs' 'viins' 'vicmd'; do
-  # Requires zdharma-continuum/history-search-multi-word plugin
-  bindkey -M $keymap '^r' history-search-multi-word
-done
-unset keymap
+# Bind only widgets that actually exist: binding a missing widget makes zsh
+# print an error on every shell start, and which plugins are present differs
+# between the Nix machines and the zplug ones.
+function _bindkey_if_widget() {
+  local widget="$1" key="$2" keymap
+  (( $+widgets[$widget] )) || return 0
+  for keymap in "${@:3}"; do
+    bindkey -M "$keymap" "$key" "$widget"
+  done
+}
 
-# Requires b4b4r07/emoji-cli plugin
-bindkey -M viins '^s' emoji::cli
+# Ctrl-R: multi-word history search (zsh-history-search-multi-word).
+_bindkey_if_widget history-search-multi-word '^r' emacs viins vicmd
 
-# Press vv to edit command in an external editor
-bindkey -M vicmd "vv" edit-command-line
+# Ctrl-S: emoji picker (emoji-cli). Note that some terminals swallow Ctrl-S as
+# XOFF flow control; `stty -ixon` frees it up.
+_bindkey_if_widget emoji::cli '^s' viins
+
+# Press vv to edit the command line in $EDITOR (zsh's own edit-command-line,
+# autoloaded above; used to come from Prezto's editor module).
+_bindkey_if_widget edit-command-line 'vv' vicmd
 
 
 ###############################################################################
@@ -378,7 +489,7 @@ if (( $+commands[eza] )); then
 fi
 
 # Paste clipboard in new vim file
-# On Linux, install xclip and xsel. Prezto's utlity module defines pbpaste.
+# On Linux, pbcopy/pbpaste are aliased to wl-copy/xclip further up.
 alias paste2vim='pbpaste | nvim -'
 
 # Open AuTHentication (OATH) one-time password
