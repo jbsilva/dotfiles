@@ -1,171 +1,156 @@
+-------------------------------------------------------------------------------
+--> Treesitter
+--
+-- Rewritten for the nvim-treesitter `main` branch. The previous config used
+-- `require('nvim-treesitter.configs').setup{...}`, which only exists on the old
+-- `master` branch. On main:
+--
+--   * parsers are installed with require('nvim-treesitter').install(...)
+--     or :TSInstall, and updated with :TSUpdate
+--   * highlighting is started per buffer with vim.treesitter.start()
+--     instead of a `highlight = { enable = true }` table
+--   * the bundled `playground`, `refactor` and `autotag` modules are gone
+--     (:InspectTree and :EditQuery are in core now; nvim-ts-autotag is a
+--     separate plugin if HTML tag renaming is wanted again)
+--   * textobjects moved to its own setup call, see M.textobjects() below
+--
+-- Neovim ships parsers for c, lua, markdown, query, vim and vimdoc, so those
+-- work with no install.
+-------------------------------------------------------------------------------
 local M = {}
 
+-- Parsers to keep installed.
+local ensure_installed = {
+  'bash',
+  'c',
+  'css',
+  'diff',
+  'dockerfile',
+  'git_config',
+  'gitcommit',
+  'gitignore',
+  'go',
+  'hcl',
+  'html',
+  'javascript',
+  'json',
+  'lua',
+  'luadoc',
+  'markdown',
+  'markdown_inline',
+  'nix',
+  'python',
+  'query',
+  'regex',
+  'rust',
+  'terraform',
+  'toml',
+  'typescript',
+  'vim',
+  'vimdoc',
+  'yaml',
+}
+
 function M.config()
-  require 'nvim-treesitter.configs'.setup {
-    ---------------------------------------------------------------------------
-    --> nvim-treesitter/nvim-treesitter
-    ---------------------------------------------------------------------------
+  require('nvim-treesitter').setup({})
 
-    -- A list of parser names, or "all"
-    ensure_installed = {
-      'bash',
-      'c',
-      'css',
-      'html',
-      'json',
-      'lua',
-      'markdown',
-      'python',
-      'rust',
+  -- install() is async and a no-op for parsers already present.
+  require('nvim-treesitter').install(ensure_installed)
+
+  ---------------------------------------------------------------------------
+  --> Enable highlighting and treesitter indentation per buffer
+  --
+  -- vim.treesitter.start() throws when no parser is available for the
+  -- language, which is normal for filetypes not in the list above, so it is
+  -- wrapped in pcall rather than guarded by a pattern list.
+  ---------------------------------------------------------------------------
+  vim.api.nvim_create_autocmd('FileType', {
+    group = vim.api.nvim_create_augroup('TreesitterStart', { clear = true }),
+    callback = function(args)
+      local lang = vim.treesitter.language.get_lang(args.match)
+      if not lang then
+        return
+      end
+
+      if pcall(vim.treesitter.start, args.buf, lang) then
+        -- Use treesitter for the `=` operator.
+        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end
+    end,
+  })
+end
+
+-------------------------------------------------------------------------------
+--> Text objects
+--
+-- On main, nvim-treesitter-textobjects exposes Lua functions instead of
+-- generating mappings from a config table, so the keymaps from the old
+-- `textobjects = { select/swap/move }` blocks are declared explicitly here.
+-------------------------------------------------------------------------------
+function M.textobjects()
+  require('nvim-treesitter-textobjects').setup({
+    select = {
+      -- Jump forward to the text object if the cursor is not inside one.
+      lookahead = true,
     },
-
-    -- Automatically install missing parsers when entering buffer
-    auto_install = true,
-
-    highlight = {
-      enable = true,
-      -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-      -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-      -- Using this option may slow down your editor, and you may see some duplicate highlights.
-      -- Instead of true it can also be a list of languages
-      additional_vim_regex_highlighting = false,
+    move = {
+      set_jumps = true,
     },
+  })
 
-    -- Indentation based on treesitter for the = operator
-    indent = {
-      enable = true,
-    },
+  local select = require('nvim-treesitter-textobjects.select')
+  local swap = require('nvim-treesitter-textobjects.swap')
+  local move = require('nvim-treesitter-textobjects.move')
 
-    -- Incremental selection based on the named nodes from the grammar
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = 'gnn',
-        node_incremental = 'grn',
-        scope_incremental = 'grc',
-        node_decremental = 'grm',
-      },
-    },
-
-    ---------------------------------------------------------------------------
-    --> nvim-treesitter/nvim-treesitter-textobjects
-    -- Syntax aware text-objects, select, move, swap, and peek support
-    ---------------------------------------------------------------------------
-    textobjects = {
-
-      select = {
-        enable = true,
-
-        -- Automatically jump forward to textobj, similar to targets.vim
-        lookahead = true,
-
-        keymaps = {
-          -- You can use the capture groups defined in textobjects.scm
-          ['af'] = '@function.outer',
-          ['if'] = '@function.inner',
-          ['ac'] = '@class.outer',
-          ['ic'] = '@class.inner',
-          ['al'] = '@loop.outer',
-          ['il'] = '@loop.inner',
-          ['aa'] = '@parameter.outer',
-          ['ia'] = '@parameter.inner',
-          ['uc'] = '@comment.outer',
-        },
-      },
-
-      -- Swap the node under the cursor with the next or previous one
-      swap = {
-        enable = true,
-        swap_next = {
-          ['<leader>a'] = '@parameter.inner',
-          -- ['<leader>f'] = '@function.outer',
-          -- ['<leader>l'] = '@element',
-        },
-        swap_previous = {
-          ['<leader>A'] = '@parameter.inner',
-          -- ['<leader>F'] = '@function.outer',
-          -- ['<leader>E'] = '@element',
-        },
-      },
-
-      -- Jump to the next or previous text object
-      move = {
-        enable = true,
-        set_jumps = true, -- whether to set jumps in the jumplist
-        goto_next_start = {
-          [']f'] = '@function.outer',
-          [']]'] = { query = "@class.outer", desc = "Next class start" },
-          [']b'] = '@block.outer',
-        },
-        goto_next_end = {
-          [']F'] = '@function.outer',
-          [']['] = '@class.outer',
-          [']B'] = '@block.outer',
-        },
-        goto_previous_start = {
-          ['[f'] = '@function.outer',
-          ['[['] = '@class.outer',
-          ['[b'] = '@block.outer',
-        },
-        goto_previous_end = {
-          ['[F'] = '@function.outer',
-          ['[]'] = '@class.outer',
-          ['[B'] = '@block.outer',
-        },
-      },
-
-      -- peek_definition_code: show textobject surrounding definition as determined
-      -- using Neovim's built-in LSP in a floating window. Press the shortcut twice
-      -- to enter the floating window
-      lsp_interop = {
-        enable = true,
-        border = 'none',
-        peek_definition_code = {
-          ["<leader>df"] = "@function.outer",
-          ["<leader>dF"] = "@class.outer",
-        },
-      },
-
-    },  -- End textobjects
-
-    ---------------------------------------------------------------------------
-    --> windwp/nvim-ts-autotag
-    -- Use treesitter to auto close and auto rename html tag
-    ---------------------------------------------------------------------------
-    autotag = {
-      enable = true,
-    },
-
-    ---------------------------------------------------------------------------
-    --> nvim-treesitter/playground
-    -- View treesitter information directly in Neovim!
-    ---------------------------------------------------------------------------
-    playground = {
-      enable = true,
-      disable = {},
-      updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-      persist_queries = false, -- Whether the query persists across vim sessions
-    },
-
-    ---------------------------------------------------------------------------
-    --> nvim-treesitter/nvim-treesitter-refactor
-    -- Refactor modules for nvim-treesitter
-    ---------------------------------------------------------------------------
-    refactor = {
-      -- Highlights definition and usages of the current symbol under the cursor
-      highlight_definitions = {
-        enable = true
-      },
-
-      -- Renames the symbol under the cursor within the current scope (and current file)
-      smart_rename = {
-        enable = true,
-        keymaps = {
-          smart_rename = "grr",
-        },
-      },
-    },
+  ---------------------------------------------------------------------------
+  --> Select: af/if function, ac/ic class, al/il loop, aa/ia parameter
+  ---------------------------------------------------------------------------
+  local selections = {
+    ['af'] = '@function.outer',
+    ['if'] = '@function.inner',
+    ['ac'] = '@class.outer',
+    ['ic'] = '@class.inner',
+    ['al'] = '@loop.outer',
+    ['il'] = '@loop.inner',
+    ['aa'] = '@parameter.outer',
+    ['ia'] = '@parameter.inner',
+    ['uc'] = '@comment.outer',
   }
+
+  for keys, query in pairs(selections) do
+    vim.keymap.set({ 'x', 'o' }, keys, function()
+      select.select_textobject(query, 'textobjects')
+    end, { desc = 'Select ' .. query })
+  end
+
+  ---------------------------------------------------------------------------
+  --> Swap the parameter under the cursor with the next/previous one
+  ---------------------------------------------------------------------------
+  vim.keymap.set('n', '<leader>a', function()
+    swap.swap_next('@parameter.inner')
+  end, { desc = 'Swap parameter with next' })
+
+  vim.keymap.set('n', '<leader>A', function()
+    swap.swap_previous('@parameter.inner')
+  end, { desc = 'Swap parameter with previous' })
+
+  ---------------------------------------------------------------------------
+  --> Move between functions, classes and blocks
+  ---------------------------------------------------------------------------
+  local moves = {
+    goto_next_start = { [']f'] = '@function.outer', [']]'] = '@class.outer', [']b'] = '@block.outer' },
+    goto_next_end = { [']F'] = '@function.outer', [']['] = '@class.outer', [']B'] = '@block.outer' },
+    goto_previous_start = { ['[f'] = '@function.outer', ['[['] = '@class.outer', ['[b'] = '@block.outer' },
+    goto_previous_end = { ['[F'] = '@function.outer', ['[]'] = '@class.outer', ['[B'] = '@block.outer' },
+  }
+
+  for fn, keymaps in pairs(moves) do
+    for keys, query in pairs(keymaps) do
+      vim.keymap.set({ 'n', 'x', 'o' }, keys, function()
+        move[fn](query, 'textobjects')
+      end, { desc = fn .. ' ' .. query })
+    end
+  end
 end
 
 return M

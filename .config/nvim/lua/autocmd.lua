@@ -13,8 +13,10 @@ autocmd(
     group = yank_group,
     pattern = '*',
     callback = function()
-      vim.highlight.on_yank(
-      {
+      -- vim.highlight was renamed to vim.hl in Neovim 0.11; the old name is
+      -- deprecated and slated for removal.
+      local hl = vim.hl or vim.highlight
+      hl.on_yank({
         higroup = 'IncSearch',
         timeout = 200,
       })
@@ -63,16 +65,12 @@ autocmd(
 -- )
 
 -------------------------------------------------------------------------------
---> Automatically run :PackerCompile whenever plugins.lua is updated
+--> Plugin changes
+--
+-- The old :PackerCompile autocmd is gone: lazy.nvim has no compile step and
+-- picks up spec changes itself (change_detection). Run :Lazy sync after
+-- editing lua/plugins/init.lua.
 -------------------------------------------------------------------------------
-autocmd(
-  'BufWritePost',
-  {
-    group = augroup('Packer', { clear = true }),
-    pattern = 'init.lua',
-    command = 'source <afile> | PackerCompile',
-  }
-)
 
 -------------------------------------------------------------------------------
 --> Text files
