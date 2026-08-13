@@ -86,12 +86,14 @@ check-typos:
     typos
 
 # Scan the whole history for secrets
+# -c is explicit: gitleaks does not reliably auto-discover .gitleaks.toml in
+# `git` mode, and without it the known false positives come back.
 scan:
-    gitleaks git --no-banner --redact --verbose
+    gitleaks git -c .gitleaks.toml --no-banner --redact --verbose
 
 # Scan only what is currently staged (what the pre-commit hook runs)
 scan-staged:
-    gitleaks git --staged --no-banner --redact --verbose
+    gitleaks git --staged -c .gitleaks.toml --no-banner --redact --verbose
 
 # ---------------------------------------------------------------------------
 # Formatting

@@ -32,8 +32,19 @@ fi
 
 echo "pre-commit: scanning staged changes for secrets..." >&2
 
+# Pass the config explicitly. gitleaks documents "(target path)/.gitleaks.toml"
+# as a fallback, but it is not picked up reliably in `git` mode, and silently
+# falling back to the default ruleset would resurrect the known false positives.
+repo_root="$(git rev-parse --show-toplevel)"
+config="$repo_root/.gitleaks.toml"
+
+gitleaks_args=(git --staged --no-banner --redact --verbose)
+if [ -f "$config" ]; then
+  gitleaks_args+=(--config "$config")
+fi
+
 # `git` mode with --staged scans only what is about to be committed.
-if ! gitleaks git --staged --no-banner --redact --verbose; then
+if ! gitleaks "${gitleaks_args[@]}"; then
   cat >&2 <<'EOF'
 
 pre-commit: potential secrets found in staged changes -- commit aborted.
