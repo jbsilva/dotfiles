@@ -357,7 +357,11 @@ function _bindkey_if_widget() {
 }
 
 # Ctrl-R: multi-word history search (zsh-history-search-multi-word).
-_bindkey_if_widget history-search-multi-word '^r' emacs viins vicmd
+# Skipped when Atuin is installed, since Atuin takes Ctrl-R further down and
+# supersedes this. Binding it here anyway would just be dead configuration.
+if (( ! $+commands[atuin] )); then
+  _bindkey_if_widget history-search-multi-word '^r' emacs viins vicmd
+fi
 
 # Ctrl-S: emoji picker (emoji-cli). Note that some terminals swallow Ctrl-S as
 # XOFF flow control; `stty -ixon` frees it up.
@@ -571,6 +575,26 @@ fi
 ###############################################################################
 if (( $+commands[zoxide] )); then
   eval "$(zoxide init zsh)"
+fi
+
+
+###############################################################################
+#                                Atuin
+# SQLite-backed shell history: records exit code, duration, cwd and session,
+# and gives Ctrl-R a fuzzy search over all of it.
+#
+# Configured declaratively on the Nix machines, see
+# nix-darwin/modules/home-manager/programs/atuin.nix
+#
+# Initialised here rather than by home-manager so it runs *after* the
+# keybindings section above and therefore wins Ctrl-R, and so the non-Nix
+# machines pick it up as soon as the binary is on PATH.
+#
+# --disable-up-arrow keeps Up bound to zsh-history-substring-search, which
+# matches on the prefix already typed. Ctrl-R is the full search.
+###############################################################################
+if (( $+commands[atuin] )); then
+  eval "$(atuin init zsh --disable-up-arrow)"
 fi
 
 

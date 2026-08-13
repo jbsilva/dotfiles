@@ -11,6 +11,7 @@
           ./programs/git.nix
           ./programs/zsh.nix
           ./programs/direnv.nix
+          ./programs/atuin.nix
           ./activation/docker-plugins.nix
           ./activation/default-apps.nix
           ./activation/remove-lm-studio-login-item.nix

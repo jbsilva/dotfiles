@@ -146,11 +146,33 @@ inside `.zshrc`, so shell startup could hit the network and nothing was pinned.
 | `z-shell/zsh-diff-so-fancy` | `delta` |
 | `b4b4r07/emoji-cli` | pinned `fetchFromGitHub` (unmaintained since 2017) |
 
-Startup went from **1.80 s to 0.45 s** (`just bench-shell`).
+Startup went from **1.71 s to 0.48 s** (`just bench-shell`).
 
 > `programs.zsh.plugins` is deliberately *not* used. That option materialises
 > plugins under `~/.zsh/plugins`, and `~/.zsh` is a symlink into this repo, so
 > it would write generated store symlinks into your working tree.
+
+### History: Atuin
+
+[Atuin] replaces the flat `~/.zsh_history` with SQLite, recording exit code,
+duration, cwd and session for every command. Configured declaratively in
+`nix-darwin/modules/home-manager/programs/atuin.nix`.
+
+| Key | Does |
+| --- | --- |
+| `Ctrl-R` | Atuin fuzzy search over all history |
+| `Up` | zsh-history-substring-search on what you have typed (deliberately *not* given to Atuin) |
+
+Import the existing history once, after the first `just switch`:
+
+```sh
+atuin import auto
+```
+
+`enter_accept = false`, so a selected command lands on the command line to be
+edited rather than executing immediately. Sync is off — it needs an account;
+see the comments in the module. `secrets_filter` plus a `history_filter` list
+keep tokens out of the database.
 
 **`.zshrc` stays self-contained** so the Arch and WSL machines still work: it
 holds its own history, options, aliases and keybindings, and falls back to
@@ -220,3 +242,5 @@ file, and `.zshrc` (or `.zshrc_light`) is symlinked from `$HOME` directly.
 [gitleaks]: https://github.com/gitleaks/gitleaks
 [kragen/xcompose]: https://github.com/kragen/xcompose
 [gpakosz/.tmux]: https://github.com/gpakosz/.tmux
+
+[Atuin]: https://atuin.sh
