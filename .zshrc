@@ -42,9 +42,32 @@ fi
 
 ###############################################################################
 # FZF - Command-line fuzzy finder
-# If installed with Homebrew, run `/usr/local/opt/fzf/install`
+#
+# fzf is declared in nix-darwin/modules/packages.nix. Since fzf 0.48 the shell
+# integration (Ctrl-T files, Ctrl-R history, Alt-C cd, ** completion) is emitted
+# by `fzf --zsh`, so no install script or generated ~/.fzf.zsh is needed.
 ###############################################################################
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if (( $+commands[fzf] )); then
+  source <(fzf --zsh)
+
+  # Use fd for traversal: respects .gitignore and is much faster than find.
+  if (( $+commands[fd] )); then
+    export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+  fi
+
+  # Preview file contents with bat, directory contents with eza.
+  if (( $+commands[bat] )); then
+    export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:200 {}'"
+  fi
+  if (( $+commands[eza] )); then
+    export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --color=always {}'"
+  fi
+elif [[ -f ~/.fzf.zsh ]]; then
+  # Fallback for machines still using the old fzf install script.
+  source ~/.fzf.zsh
+fi
 
 
 ###############################################################################
@@ -84,7 +107,9 @@ if [[ -z "$XDG_CONFIG_HOME" ]]; then
   export XDG_CONFIG_HOME=$HOME/.config
 fi
 
-local NVIM=nvim
+# `local` is only valid inside a function; at file scope zsh treats it as
+# `typeset`, which works but leaks the name. Use a plain assignment and unset.
+NVIM=nvim
 export NVIM_PYTHON_LOG_FILE_PATH=~/.config/nvim/nvimlog
 export VISUAL=$NVIM
 export EDITOR=$NVIM
@@ -104,11 +129,19 @@ export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
 # Terminal Emulator
-export term_emulator=$(ps -h -o comm -p $PPID)
+#
+# Do NOT overwrite $TERM here. Every modern terminal sets it correctly and
+# ships its own terminfo (ghostty -> xterm-ghostty, kitty -> xterm-kitty,
+# wezterm -> wezterm). Forcing xterm-256color throws away truecolor, undercurl
+# and styled-underline support.
+#
+# (The previous version detected the parent process with `ps -h -o comm`, but
+# BSD/macOS ps has no -h, so it kept the "COMM" header line, never matched
+# kitty, and unconditionally fell through to xterm-256color.)
+export term_emulator="${TERM_PROGRAM:-$(ps -o comm= -p $PPID 2>/dev/null)}"
 
-if [[ $term_emulator == *"kitty"* ]]; then
-  export TERM="xterm-kitty"
-else
+# Only provide a sane fallback when the terminal told us nothing useful.
+if [[ -z $TERM || $TERM == (dumb|unknown) ]]; then
   export TERM="xterm-256color"
 fi
 
@@ -118,7 +151,23 @@ fi
 ###############################################################################
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.zsh/completions $fpath)
-autoload -Uz compinit && compinit
+
+# compinit is the single most expensive step in zsh startup because it stats
+# every file in $fpath. Rebuild the dump at most once a day and use the cached
+# dump (-C skips the security audit) the rest of the time.
+autoload -Uz compinit
+_zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
+mkdir -p "${_zcompdump:h}"
+# glob qualifiers: N = null_glob, mh-24 = modified less than 24 hours ago
+if [[ -n ${_zcompdump}(#qN.mh-24) ]]; then
+  compinit -C -d "$_zcompdump"
+else
+  compinit -d "$_zcompdump"
+  # Compile the dump so subsequent shells load bytecode instead of parsing it.
+  { zcompile -R -- "$_zcompdump" } &!
+fi
+unset _zcompdump
+
 autoload -Uz bashcompinit && bashcompinit
 
 
@@ -152,19 +201,17 @@ function iFinishStep() { echo -e "  \033[1;32m✔\033[0m $@"; }
 function iGood()       { echo -e "    \033[1;32m✔\033[0m $@"; }
 function iBad()        { echo -e "    \033[1;31m✖\033[0m $@"; }
 
-# More functions
-[[ -f "$HOME/.zsh/baixa_dir.zsh" ]] && source "$HOME/.zsh/baixa_dir.zsh"
-[[ -f "$HOME/.zsh/cleand.zsh" ]] && source "$HOME/.zsh/cleand.zsh"
-[[ -f "$HOME/.zsh/clone_dir.zsh" ]] && source "$HOME/.zsh/clone_dir.zsh"
-[[ -f "$HOME/.zsh/git_retime.zsh" ]] && source "$HOME/.zsh/git_retime.zsh"
-[[ -f "$HOME/.zsh/mount_share.zsh" ]] && source "$HOME/.zsh/mount_share.zsh"
-[[ -f "$HOME/.zsh/my_ip.zsh" ]] && source "$HOME/.zsh/my_ip.zsh"
-[[ -f "$HOME/.zsh/python_server.zsh" ]] && source "$HOME/.zsh/python_server.zsh"
-[[ -f "$HOME/.zsh/renovate_check.zsh" ]] && source "$HOME/.zsh/renovate_check.zsh"
-[[ -f "$HOME/.zsh/rm_empty_dirs.zsh" ]] && source "$HOME/.zsh/rm_empty_dirs.zsh"
-[[ -f "$HOME/.zsh/rm_empty_files.zsh" ]] && source "$HOME/.zsh/rm_empty_files.zsh"
-[[ -f "$HOME/.zsh/rm_regex.zsh" ]] && source "$HOME/.zsh/rm_regex.zsh"
-[[ -f "$HOME/.zsh/zot_push.zsh" ]] && source "$HOME/.zsh/zot_push.zsh"
+# More functions. Every *.zsh in ~/.zsh is sourced, so dropping a new helper in
+# that directory is enough -- no need to add a line here.
+# Glob qualifiers: N = null_glob (no error when nothing matches), . = plain files.
+for _f in "$HOME"/.zsh/*.zsh(N.); do
+  case "${_f:t}" in
+    # zplug loadfiles: consumed by `zplug load` below, not sourced directly.
+    zplug.zsh | zplug_light.zsh) continue ;;
+  esac
+  source "$_f"
+done
+unset _f
 
 
 ###############################################################################
@@ -185,11 +232,6 @@ if ! zplug check --verbose; then
     echo
     zplug install
   fi
-  printf "Install? [y/N]: "
-  if read -q; then
-    echo
-    zplug install
-  fi
 fi
 
 # Then, source plugins and add commands to $PATH
@@ -203,9 +245,7 @@ zplug load
 # zle -al lists all registered zle commands
 ###############################################################################
 for keymap in 'emacs' 'viins' 'vicmd'; do
-  # Requires zdharma/history-search-multi-word plugin
-  bindkey -M $keymap '^r' history-search-multi-word
-  # Requires zdharma/history-search-multi-word plugin
+  # Requires zdharma-continuum/history-search-multi-word plugin
   bindkey -M $keymap '^r' history-search-multi-word
 done
 unset keymap
@@ -271,7 +311,7 @@ alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
-alias .....='cd ../../../../../'
+alias ......='cd ../../../../../'
 
 alias dir='ls -1'           # Show one entry per line
 alias lah='ls -alh'         # Show all human-readable
@@ -318,13 +358,24 @@ alias git-remove-merged='git branch --merged master | grep -E -v "(^\*|master|ma
 alias git-remove-remote-merged-to-master-keep='git fetch --prune origin && git branch -r --merged | grep -E -v "(^\*|master|main|dev|develop|testing)" | sed "s/origin\///" | xargs -n 1 git push --delete origin'
 alias git-remove-remote-merged-to-master='git fetch --prune origin && git branch -r --merged | grep -E -v "(^\*|master|main)" | sed "s/origin\///" | xargs -n 1 git push --delete origin'
 
-# Supercrabtree/k
-# _k: original k
-#  k: human readable, without Git (faster)
-# kk: human readable, with Git
-eval "$(echo "_k() {"; declare -f k | tail -n +2)"
-alias kk="_k --human --group-directories-first"
-alias k="_k --human --group-directories-first --no-vcs"
+# Supercrabtree/k (unmaintained since 2019) -- superseded by eza below.
+# Kept behind a guard so the aliases still work if the zplug plugin is present.
+if (( $+functions[k] )); then
+  # _k: original k
+  #  k: human readable, without Git (faster)
+  # kk: human readable, with Git
+  eval "$(echo "_k() {"; declare -f k | tail -n +2)"
+  alias kk="_k --human --group-directories-first"
+  alias k="_k --human --group-directories-first --no-vcs"
+fi
+
+# eza: actively maintained ls replacement. Overrides k/kk when available.
+# `tree` and `lt` are deliberately left alone (lt is `ls -ltr` above).
+if (( $+commands[eza] )); then
+  alias k='eza --long --header --group-directories-first --git'
+  alias kk='eza --long --header --group-directories-first --git --all'
+  alias ltree='eza --tree --level=3'
+fi
 
 # Paste clipboard in new vim file
 # On Linux, install xclip and xsel. Prezto's utlity module defines pbpaste.
@@ -367,8 +418,12 @@ alias clipboard='if [ -p /dev/stdin ]; then pbcopy &> /dev/null; fi; pbpaste'
 alias split_80_20='gawk '"'"'BEGIN {srand()} {f = FILENAME (rand() <= 0.8 ? ".80" : ".20"); print > f}'"'"''
 alias split_70_30='gawk '"'"'BEGIN {srand()} {f = FILENAME (rand() <= 0.7 ? ".70" : ".30"); print > f}'"'"''
 
-# See open ports
-alias open_ports='sudo ss -tulpn | grep LISTEN'
+# See open ports. `ss` is Linux-only; macOS needs lsof.
+if (( $+commands[ss] )); then
+  alias open_ports='sudo ss -tulpn | grep LISTEN'
+else
+  alias open_ports='sudo lsof -nP -iTCP -sTCP:LISTEN'
+fi
 
 
 ###############################################################################
@@ -395,6 +450,27 @@ alias CAT='echo "=^.^=\n"'
 ###############################################################################
 if (( $+commands[starship] )); then
   eval "$(starship init zsh)"
+fi
+
+
+###############################################################################
+#                                Zoxide
+# Smarter cd that learns your habits. `z foo` jumps, `zi` picks interactively.
+# Loaded after compinit so its completions register correctly.
+###############################################################################
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
+fi
+
+
+###############################################################################
+#                                Carapace
+# Multi-shell completion engine covering hundreds of CLIs that ship none.
+###############################################################################
+if (( $+commands[carapace] )); then
+  export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
+  zstyle ':completion:*' format $'\e[2m%d\e[0m'
+  source <(carapace _carapace zsh)
 fi
 
 
