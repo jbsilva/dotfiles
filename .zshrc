@@ -862,20 +862,20 @@ fi
 
 ###############################################################################
 #                                Carapace
-# Multi-shell completion engine covering hundreds of CLIs that ship none.
+#
+# Deliberately not enabled globally. `carapace _carapace zsh` compdefs itself
+# onto ~400 commands, and it matches prefixes internally rather than consulting
+# zsh's matcher-list, so those commands lose the case-insensitive, partial-word
+# and substring matching configured in the completion section above --
+# `ls linux/Compose<TAB>` no longer finds XCompose. Prefix-only is the best it
+# offers; CARAPACE_MATCH=CASE_INSENSITIVE recovers case but not substring.
+#
+# Almost everything worth completing already ships a zsh function (_ls, _git,
+# _docker, _gh, _just, _cargo ...), which the matcher-list does apply to.
+#
+# For a tool that genuinely has no completion, enable it for that command only:
+#   source <(carapace some-tool zsh)
 ###############################################################################
-if (( $+commands[carapace] )); then
-  export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
-
-  # carapace matches internally and does not consult zsh's matcher-list, so the
-  # case-insensitive completion configured above does not reach the ~400
-  # commands it claims via compdef (nvim, git, docker, ...). Without this,
-  # `nvim ~/dotfiles/justfi<TAB>` finds nothing while `cd ~/dev<TAB>`, handled
-  # by zsh's own completer, works.
-  export CARAPACE_MATCH=CASE_INSENSITIVE
-  # Group headings are styled by the ':completion:*' formats set above.
-  source <(carapace _carapace zsh)
-fi
 
 
 ###############################################################################

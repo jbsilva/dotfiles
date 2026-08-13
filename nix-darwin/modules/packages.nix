@@ -54,7 +54,6 @@
     fzf # fuzzy finder
     zoxide # frecency-based cd; initialised in .zshrc
     yazi # fast terminal file manager with previews
-    carapace # completions for hundreds of CLIs; initialised in .zshrc
 
     # -------------------------------------------------------------------------
     # Data wrangling
