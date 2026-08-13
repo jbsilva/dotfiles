@@ -85,7 +85,7 @@
       "yt-dlp"
     ];
     casks = [
-      "adobe-acrobat-reader"
+      # "adobe-acrobat-reader"
       "adobe-creative-cloud"
       "bambu-studio"
       "betterdisplay"
