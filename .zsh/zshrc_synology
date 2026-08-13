@@ -1,0 +1,87 @@
+# Synology DSM only (RS2423+, DSM 7.x)
+#
+# Sourced from .zshrc when /etc/synoinfo.conf exists. Loaded *before*
+# zshrc_linux, which also runs on this box.
+#
+# Packages come from two places:
+#   Entware        opkg, installs under /opt          -- CLI tools
+#   SynoCommunity  packages.synocommunity.com          -- DSM packages
+#
+# DSM resets a lot on upgrade. Anything here must degrade gracefully: check for
+# the binary before using it, never assume a path exists.
+if [[ ! -f /etc/synoinfo.conf ]]; then
+  return 1
+fi
+
+###############################################################################
+# Entware
+#
+# Entware lives entirely under /opt and is not on DSM's default PATH. Put it
+# first so its coreutils/zsh/git win over DSM's older busybox-ish versions.
+###############################################################################
+if [[ -d /opt/bin ]]; then
+  addToPathStart /opt/sbin
+  addToPathStart /opt/bin
+
+  # Entware ships its own terminfo; without this, anything full-screen
+  # (zellij, nvim, htop) misrenders over SSH.
+  [[ -d /opt/share/terminfo ]] && export TERMINFO=/opt/share/terminfo
+fi
+
+# SynoCommunity packages install under /var/packages/<name>/target.
+[[ -d /var/packages/git/target/bin ]] && addToPathEnd /var/packages/git/target/bin
+
+###############################################################################
+# DSM specifics
+###############################################################################
+
+# DSM has no /etc/localtime-driven TZ for non-login shells.
+[[ -z $TZ && -r /etc/TZ ]] && export TZ="$(< /etc/TZ)"
+
+# Volumes. Adjust to match the actual volume layout.
+export SYNO_VOLUME="${SYNO_VOLUME:-/volume1}"
+
+###############################################################################
+# Aliases
+###############################################################################
+
+# Package management
+if (( $+commands[opkg] )); then
+  alias opkgu='opkg update'
+  alias opkgi='opkg install'
+  alias opkgl='opkg list-installed'
+fi
+
+# DSM service control
+alias syno-services='sudo synosystemctl get-active-list'
+alias syno-restart='sudo synosystemctl restart'
+alias syno-status='sudo synosystemctl get-active-status'
+
+# Storage
+alias syno-raid='cat /proc/mdstat'
+alias syno-smart='sudo smartctl -a'
+alias syno-temp='sudo synonvme --get-location 2>/dev/null; sudo hdparm -H /dev/sata1 2>/dev/null'
+
+# Most of what runs here is dockerized. DSM calls it "Container Manager" but the
+# CLI is still docker.
+if (( $+commands[docker] )); then
+  alias dps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
+  alias dcu='docker compose up -d'
+  alias dcd='docker compose down'
+  alias dcl='docker compose logs -f --tail=100'
+  alias dcr='docker compose restart'
+  # Compose stacks created through DSM's UI live here.
+  alias cdstacks='cd /volume1/docker'
+fi
+
+###############################################################################
+# Notes
+#
+# Nix on DSM: possible but awkward. There is no systemd, so the multi-user
+# daemon install does not apply, and /nix must live on a volume that survives
+# DSM upgrades (e.g. /volume1/nix bind-mounted to /nix from a boot-up task).
+# A single-user install works:
+#   sh <(curl -L https://nixos.org/nix/install) --no-daemon
+# Given most workloads here are containers, Entware plus a toolbox container is
+# usually less maintenance.
+###############################################################################

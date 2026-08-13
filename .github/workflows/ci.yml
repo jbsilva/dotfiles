@@ -87,6 +87,23 @@ jobs:
             ./nix-darwin#darwinConfigurations.M4.system.drvPath
 
   # ---------------------------------------------------------------------------
+  # The shell config on the platforms this MacBook cannot be: WSL, Synology
+  # DSM and a bare Linux with no zsh plugins installed at all.
+  # ---------------------------------------------------------------------------
+  shell-platforms:
+    name: Shell (${{ matrix.scenario }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario: [wsl, synology, bare]
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Self-test in a container
+        run: ./scripts/test-shell-docker.sh ${{ matrix.scenario }}
+
+  # ---------------------------------------------------------------------------
   # Neovim: prove the lazy.nvim spec still resolves and every config module
   # loads. This is the check that would have caught the treesitter `main`
   # branch needing the tree-sitter CLI.

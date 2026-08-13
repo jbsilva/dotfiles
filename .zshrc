@@ -211,10 +211,6 @@ function iBad()        { echo -e "    \033[1;31m✖\033[0m $@"; }
 # that directory is enough -- no need to add a line here.
 # Glob qualifiers: N = null_glob (no error when nothing matches), . = plain files.
 for _f in "$HOME"/.zsh/*.zsh(N.); do
-  case "${_f:t}" in
-    # zplug loadfiles: consumed by `zplug load` below, not sourced directly.
-    zplug.zsh | zplug_light.zsh) continue ;;
-  esac
   source "$_f"
 done
 unset _f
@@ -223,41 +219,85 @@ unset _f
 ###############################################################################
 #                                   Plugins
 #
-# On the Nix machines, plugins are installed by home-manager
-# (nix-darwin/modules/home-manager/programs/zsh.nix) and have already been
-# sourced by the time this file runs. ~/.zshenv exports
-# DOTFILES_PLUGINS_FROM_NIX=1 to say so.
+# There is no plugin manager. On the Nix machines home-manager has already
+# sourced everything by the time this file runs (~/.zshenv exports
+# DOTFILES_PLUGINS_FROM_NIX=1). Everywhere else the plugins come from the
+# system package manager and are sourced from wherever it put them.
 #
-# Everywhere else (Arch, WSL) fall back to zplug + Prezto as before. zplug is
-# unmaintained and clones itself over the network on first run, which is
-# exactly why the Nix machines no longer use it.
+# This replaced zplug + Prezto, which cloned themselves over the network from
+# inside this file on first run, pinned nothing, and have both been unmaintained
+# for years.
+#
+# Install the plugins with the native package manager:
+#   Arch      pacman -S zsh-autosuggestions zsh-syntax-highlighting \
+#                       zsh-history-substring-search zsh-completions
+#   Debian    apt install zsh-autosuggestions zsh-syntax-highlighting
+#   Synology  opkg install zsh-autosuggestions zsh-syntax-highlighting  (Entware)
+#
+# Anything not found is simply skipped, so a machine with none of them still
+# gets a working shell.
 ###############################################################################
 if [[ -z $DOTFILES_PLUGINS_FROM_NIX ]]; then
-  export ZPLUG_HOME="${ZDOTDIR:-$HOME}/.zplug"
-  test -e $ZPLUG_HOME || git clone https://github.com/zplug/zplug $ZPLUG_HOME
-  export ZPLUG_LOADFILE="$HOME/.zsh/zplug.zsh"
-  source "${ZPLUG_HOME}/init.zsh"
+  # Source the first candidate that exists. Order matters: syntax highlighting
+  # wraps ZLE widgets and must come after anything else that does.
+  function _load_plugin() {
+    local candidate
+    for candidate in "$@"; do
+      if [[ -r $candidate ]]; then
+        source "$candidate"
+        return 0
+      fi
+    done
+    return 1
+  }
 
-  # Install plugins if there are plugins that have not been installed
-  if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-      echo
-      zplug install
-    fi
+  # Prefixes to search, covering Arch, Debian/Ubuntu, Homebrew (Intel and Apple
+  # Silicon), Entware on Synology, and a manual ~/.local install.
+  _plug_dirs=(
+    /usr/share/zsh/plugins
+    /usr/share/zsh/vendor-completions
+    /usr/share
+    /opt/share            # Entware
+    /opt/homebrew/share
+    /usr/local/share
+    "$HOME/.local/share/zsh/plugins"
+  )
+
+  for _p in $_plug_dirs; do
+    _load_plugin \
+      "$_p/zsh-autosuggestions/zsh-autosuggestions.zsh" && break
+  done
+
+  for _p in $_plug_dirs; do
+    _load_plugin \
+      "$_p/zsh-history-substring-search/zsh-history-substring-search.zsh" && break
+  done
+
+  # Last, for the reason above.
+  for _p in $_plug_dirs; do
+    _load_plugin \
+      "$_p/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" && break
+  done
+
+  unset _p _plug_dirs
+  unfunction _load_plugin
+
+  # history-substring-search binds nothing by itself.
+  if (( $+widgets[history-substring-search-up] )); then
+    bindkey '^[[A' history-substring-search-up
+    bindkey '^[[B' history-substring-search-down
+    bindkey -M vicmd 'k' history-substring-search-up
+    bindkey -M vicmd 'j' history-substring-search-down
   fi
-
-  # Then, source plugins and add commands to $PATH
-  zplug load
 fi
 
 
 ###############################################################################
-#                        Prezto replacements (Nix machines)
+#                             Prezto replacements
 #
-# Prezto came with zplug and provided a lot of small things besides the plugins
-# that are now Nix packages. These are the pieces worth keeping, written out
-# natively so they work with or without a framework.
+# Prezto came with zplug and provided a lot of small things besides the plugins.
+# These are the pieces worth keeping, written out natively so they work on every
+# machine with or without a framework.
 ###############################################################################
 
 # --- editor: edit the current command line in $EDITOR (bound to `vv` below) ---
@@ -275,10 +315,17 @@ if [[ -z $DOTFILES_DISABLE_AUTO_TITLE ]]; then
 fi
 
 # --- archive: extract any archive with one command --------------------------
+# Prefers ouch (installed via Nix) which handles every format and shows
+# progress; falls back to the hand-rolled case statement on machines that only
+# have the base utilities, such as the NAS.
 function extract() {
   if (( $# == 0 )); then
     print "Usage: extract FILE..." >&2
     return 1
+  fi
+  if (( $+commands[ouch] )); then
+    ouch decompress "$@"
+    return
   fi
   local f
   for f in "$@"; do
@@ -397,13 +444,34 @@ setopt hist_save_no_dups      # Omit older commands in favor of newer ones.
 ###############################################################################
 # OS specific stuff
 ###############################################################################
+#
+# $DOTFILES_PLATFORM is set to one of: macos, synology, wsl, linux.
+# Scripts and prompts can branch on it instead of re-detecting.
+#
 case $OS in
 Darwin)
+  export DOTFILES_PLATFORM=macos
   export MACOS_VERSION="$(sw_vers -productVersion)"
   [[ -f "$HOME/.zsh/zshrc_macos" ]] && source "$HOME/.zsh/zshrc_macos"
   ;;
 Linux)
+  # Synology DSM: /etc/synoinfo.conf is present on every DSM install and on
+  # nothing else. Checked before WSL because DSM is never WSL.
+  if [[ -f /etc/synoinfo.conf ]]; then
+    export DOTFILES_PLATFORM=synology
+    [[ -f "$HOME/.zsh/zshrc_synology" ]] && source "$HOME/.zsh/zshrc_synology"
+  # WSL sets $WSL_DISTRO_NAME; the osrelease check covers older builds.
+  elif [[ -n $WSL_DISTRO_NAME ]] || grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null; then
+    export DOTFILES_PLATFORM=wsl
+    [[ -f "$HOME/.zsh/zshrc_wsl" ]] && source "$HOME/.zsh/zshrc_wsl"
+  else
+    export DOTFILES_PLATFORM=linux
+  fi
+  # The generic Linux file loads on every Linux, including WSL and DSM.
   [[ -f "$HOME/.zsh/zshrc_linux" ]] && source "$HOME/.zsh/zshrc_linux"
+  ;;
+*)
+  export DOTFILES_PLATFORM=unknown
   ;;
 esac
 
@@ -481,11 +549,18 @@ if (( $+functions[k] )); then
 fi
 
 # eza: actively maintained ls replacement. Overrides k/kk when available.
-# `tree` and `lt` are deliberately left alone (lt is `ls -ltr` above).
+# `lt` is deliberately left alone (it is `ls -ltr` above).
 if (( $+commands[eza] )); then
   alias k='eza --long --header --group-directories-first --git'
   alias kk='eza --long --header --group-directories-first --git --all'
   alias ltree='eza --tree --level=3'
+  # tree is no longer installed; eza does it better and respects .gitignore.
+  (( ! $+commands[tree] )) && alias tree='eza --tree'
+fi
+
+# btop replaces htop. Keep the old name working out of muscle memory.
+if (( $+commands[btop] )) && (( ! $+commands[htop] )); then
+  alias htop='btop'
 fi
 
 # Paste clipboard in new vim file
@@ -607,15 +682,32 @@ fi
 
 ###############################################################################
 #                                Zellij
+#
+# Auto-attach on incoming SSH, so reconnecting to a box (the NAS in particular)
+# lands back in the same session with everything still running.
+#
+# The session is named after the host, so `zellij ls` from anywhere is readable
+# and two different servers never collide.
+#
+# Deliberately NOT `exec zellij`: if zellij is broken or the terminfo is wrong,
+# exec would kill the login shell and lock you out of a headless box over SSH.
+# Falling through to a normal shell is the safe failure mode.
+#
+# Escape hatches:
+#   DOTFILES_NO_ZELLIJ=1 ssh host    skip it for one connection
+#   ssh host -t 'zsh -l'             same, if the variable cannot be passed
 ###############################################################################
-if [[ -z "$ZELLIJ" &&
-  -z "$EMACS" &&
-  -z "$VIM" &&
-  -z "$INSIDE_EMACS" &&
-  -n "$SSH_TTY" &&
-  "$TERM_PROGRAM" != "vscode" &&
-  "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
-  zellij attach -c
+if (( $+commands[zellij] )) &&
+  [[ -z "$ZELLIJ" &&
+    -z "$DOTFILES_NO_ZELLIJ" &&
+    -z "$EMACS" &&
+    -z "$VIM" &&
+    -z "$INSIDE_EMACS" &&
+    -n "$SSH_TTY" &&
+    -o interactive &&
+    "$TERM_PROGRAM" != "vscode" &&
+    "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
+  zellij attach --create "${HOST%%.*}"
 fi
 
 

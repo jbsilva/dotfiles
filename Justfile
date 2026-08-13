@@ -68,6 +68,12 @@ check-nix:
     statix check {{ flake }}
     deadnix --fail {{ flake }}
 
+# Run the shell config against WSL, Synology and bare-Linux containers
+# Needs docker (on this machine: `colima start`). Not part of `just check`,
+# which must stay fast and dependency-free.
+test-shell scenario="all":
+    ./scripts/test-shell-docker.sh {{ scenario }}
+
 # Lint shell scripts
 check-shell:
     #!/usr/bin/env bash
@@ -76,10 +82,11 @@ check-shell:
     shellcheck \
         .githooks/pre-commit \
         scripts/hosts.sh \
+        scripts/test-shell-docker.sh \
         linux/Xsetup \
         linux/bin/nvidia-force_comp_pipeline.sh
     # zsh scripts get a parse check instead (linux/bin/keyboards.sh is zsh too).
-    for f in .zshrc .zshrc_light .zsh/*.zsh .zsh/zshrc_* linux/bin/keyboards.sh; do
+    for f in .zshrc .zsh/*.zsh .zsh/zshrc_* scripts/shell-selftest.zsh linux/bin/keyboards.sh; do
         [ -e "$f" ] || continue
         zsh -n "$f" || { echo "syntax error: $f" >&2; exit 1; }
     done

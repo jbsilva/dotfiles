@@ -1,0 +1,80 @@
+# WSL only (Ubuntu 26.04 on the work machine)
+#
+# Sourced from .zshrc when $WSL_DISTRO_NAME is set. Loaded *before* zshrc_linux,
+# which also runs here.
+if [[ -z $WSL_DISTRO_NAME ]] && ! grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null; then
+  return 1
+fi
+
+###############################################################################
+# Interop with Windows
+###############################################################################
+
+# Open URLs in the Windows browser. `wslview` comes from wslu:
+#   sudo apt install wslu
+if (( $+commands[wslview] )); then
+  export BROWSER=wslview
+fi
+
+# Clipboard. Windows' clip.exe only goes one way, so pair it with powershell for
+# paste. These are the same names macOS uses, so scripts stay portable.
+if (( ! $+commands[pbcopy] )); then
+  if (( $+commands[clip.exe] )); then
+    alias pbcopy='clip.exe'
+  fi
+  if (( $+commands[powershell.exe] )); then
+    # Strip the CR that PowerShell adds to every line.
+    alias pbpaste='powershell.exe -NoProfile -Command Get-Clipboard | tr -d "\r"'
+  fi
+fi
+
+# Windows drives and the Windows home directory.
+if [[ -d /mnt/c ]]; then
+  export WIN_C=/mnt/c
+  # $USERPROFILE via cmd is slow and noisy; derive it from the username instead.
+  if [[ -z $WIN_HOME && -n $WSL_USER_PROFILE ]]; then
+    export WIN_HOME="$WSL_USER_PROFILE"
+  fi
+  alias cdwin='cd "$WIN_HOME"'
+  alias cdc='cd /mnt/c'
+fi
+
+###############################################################################
+# Fixes for WSL quirks
+###############################################################################
+
+# Windows PATH entries are appended to $PATH by default. They make completion
+# and `command -v` noticeably slower, and shadow Linux binaries with .exe ones.
+# Drop everything under /mnt/ from PATH but keep the interop binaries that are
+# actually useful.
+if [[ -z $DOTFILES_KEEP_WINDOWS_PATH ]]; then
+  local -a _keep _new
+  _keep=(
+    /mnt/c/Windows/System32
+    /mnt/c/Windows
+  )
+  for _d in $path; do
+    if [[ $_d == /mnt/* ]]; then
+      (( ${_keep[(I)$_d]} )) && _new+=("$_d")
+    else
+      _new+=("$_d")
+    fi
+  done
+  path=($_new)
+  unset _d _keep _new
+fi
+
+# Files created on /mnt/c default to 777, which makes `ls` a wall of green.
+# This only affects the shell's own umask, not the mount options.
+umask 022
+
+# WSLg sets $DISPLAY; without it, X11 apps hang instead of failing fast.
+if [[ -z $DISPLAY && -d /mnt/wslg ]]; then
+  export DISPLAY=:0
+fi
+
+###############################################################################
+# Aliases
+###############################################################################
+alias explorer='explorer.exe .'
+alias wslrestart='powershell.exe -NoProfile -Command "wsl --shutdown"'
