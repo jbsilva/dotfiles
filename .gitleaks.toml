@@ -1,0 +1,31 @@
+# gitleaks configuration for this dotfiles repo.
+# Docs: https://github.com/gitleaks/gitleaks#configuration
+#
+# Extend the bundled ruleset rather than replacing it, so new upstream rules are
+# picked up automatically.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Dotfiles-specific false positives"
+
+# Keep this list narrow and justified. Prefer scoping by path + regex over
+# disabling a rule outright, so a real secret in the same file is still caught.
+paths = [
+  # Editor keybindings use a "key" field for keyboard shortcuts ("ctrl+alt+k"),
+  # which the generic-api-key rule reads as a secret assignment.
+  '''\.config/Code/User/keybindings\.json$''',
+  # Legacy reference configs kept for history; contain only placeholder values
+  # such as "SuaSenhaAqui" (Portuguese for "YourPasswordHere").
+  '''^old/''',
+  # Vendored submodules and third-party themes.
+  '''^\.tmux/''',
+  '''^\.config/kitty/kitty-themes/''',
+  # Generated shell completion scripts.
+  '''^\.zsh/completions/''',
+]
+
+regexes = [
+  # Obvious placeholders that should never be treated as live credentials.
+  '''(?i)(SuaSenhaAqui|YourPasswordHere|changeme|xxxxx+|placeholder|example\.com)''',
+]

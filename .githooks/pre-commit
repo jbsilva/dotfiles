@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+#
+# Pre-commit secret scan.
+#
+# ~/.config is a symlink into this repo, so every application on this machine
+# writes into a tracked directory. .gitignore uses an allow-list to make that
+# safe, but this hook is the second line of defence: it scans what is actually
+# staged, so a file deliberately force-added (`git add -f`) is still checked.
+#
+# Enable (once per clone):
+#   git config core.hooksPath .githooks
+#
+# Bypass for a single commit (use sparingly, and know what you are committing):
+#   git commit --no-verify
+
+set -euo pipefail
+
+# Nothing staged: nothing to scan.
+if git diff --cached --quiet; then
+  exit 0
+fi
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  cat >&2 <<'EOF'
+pre-commit: gitleaks not found, skipping secret scan.
+            Install it so this hook can protect you:
+              nix profile install nixpkgs#gitleaks
+            (it is also declared in nix-darwin/modules/packages.nix)
+EOF
+  exit 0
+fi
+
+echo "pre-commit: scanning staged changes for secrets..." >&2
+
+# `git` mode with --staged scans only what is about to be committed.
+if ! gitleaks git --staged --no-banner --redact --verbose; then
+  cat >&2 <<'EOF'
+
+pre-commit: potential secrets found in staged changes -- commit aborted.
+
+  * If these are real credentials: unstage them, rotate the credential, and
+    add the path to .gitignore.
+  * If this is a false positive: add a narrowly scoped rule to .gitleaks.toml
+    (prefer a path/regex allowlist over disabling the rule).
+  * To commit anyway: git commit --no-verify
+
+EOF
+  exit 1
+fi
+
+echo "pre-commit: no secrets detected." >&2
