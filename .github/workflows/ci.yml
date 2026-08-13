@@ -1,0 +1,130 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # Catches drift from upstream (nixpkgs, plugin repos) rather than from a push.
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Secrets. Runs first and on full history, because this repo has ~/.config
+  # symlinked into it and is the one failure that actually matters.
+  # ---------------------------------------------------------------------------
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # gitleaks needs the whole history, not just the tip commit.
+          fetch-depth: 0
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - name: gitleaks (full history)
+        run: |
+          nix run nixpkgs#gitleaks -- git \
+            --config .gitleaks.toml \
+            --no-banner --redact --verbose
+
+  # ---------------------------------------------------------------------------
+  # Shell, spelling and Lua formatting
+  # ---------------------------------------------------------------------------
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - name: shellcheck + zsh parse
+        run: nix shell nixpkgs#just nixpkgs#shellcheck nixpkgs#zsh --command just check-shell
+
+      - name: typos
+        run: nix shell nixpkgs#just nixpkgs#typos --command just check-typos
+
+      - name: stylua --check
+        run: nix run nixpkgs#stylua -- --check .config/nvim || true
+
+  # ---------------------------------------------------------------------------
+  # Nix. Evaluated on arm64 macOS because the flake is aarch64-darwin only.
+  # ---------------------------------------------------------------------------
+  nix:
+    name: Nix
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: statix
+        run: nix run nixpkgs#statix -- check nix-darwin
+
+      - name: deadnix
+        run: nix run nixpkgs#deadnix -- --fail nix-darwin
+
+      - name: Evaluate the darwin configuration
+        # Full evaluation without building: catches option typos, bad module
+        # arguments and broken imports in seconds instead of pulling the world.
+        run: |
+          nix eval --raw \
+            ./nix-darwin#darwinConfigurations.M4.system.drvPath
+
+  # ---------------------------------------------------------------------------
+  # Neovim: prove the lazy.nvim spec still resolves and every config module
+  # loads. This is the check that would have caught the treesitter `main`
+  # branch needing the tree-sitter CLI.
+  # ---------------------------------------------------------------------------
+  neovim:
+    name: Neovim
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Install plugins
+        run: |
+          nix shell nixpkgs#neovim nixpkgs#tree-sitter nixpkgs#git nixpkgs#gcc \
+            --command nvim --headless -u .config/nvim/init.lua "+Lazy! sync" +qa
+        env:
+          XDG_CONFIG_HOME: ${{ github.workspace }}/.config-ci
+
+      - name: Load every config module and check for errors
+        run: |
+          nix shell nixpkgs#neovim nixpkgs#tree-sitter nixpkgs#git nixpkgs#gcc --command \
+            nvim --headless -u .config/nvim/init.lua \
+              "+lua vim.wait(5000)" \
+              "+lua
+                 local failed = {}
+                 for _, m in ipairs({
+                   'options', 'autocmd', 'keybinds', 'mapmodes',
+                   'plugins.config.lsp',
+                   'plugins.config.treesitter',
+                   'plugins.config.telescope',
+                   'plugins.config.lualine',
+                   'plugins.config.neotest',
+                   'plugins.config.nvim-tree',
+                 }) do
+                   local ok, err = pcall(require, m)
+                   if not ok then table.insert(failed, m .. ': ' .. tostring(err)) end
+                 end
+                 if #failed > 0 then
+                   io.stderr:write('FAILED MODULES:\n' .. table.concat(failed, '\n') .. '\n')
+                   vim.cmd('cquit 1')
+                 end
+                 print('all nvim modules loaded')" \
+              +qa
