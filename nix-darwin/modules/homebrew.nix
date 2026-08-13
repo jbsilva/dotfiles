@@ -69,7 +69,7 @@
       "libpq"
       "libraqm"
       "lima-additional-guestagents"
-      "llmfit"
+      # "llmfit"
       "nginx"
       "openjdk"
       "openssl"
