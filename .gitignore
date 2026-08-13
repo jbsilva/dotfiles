@@ -186,4 +186,5 @@
 .config/zellij/config.kdl.bak
 .github/instructions/codacy.instructions.md
 .config/marimo/marimo.toml
+.config/htop/htop_history
 .config/photo-tagger/config.toml
