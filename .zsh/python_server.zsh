@@ -17,4 +17,3 @@ function py_server()
     fi
     python3 -m http.server "$port"
 }
-

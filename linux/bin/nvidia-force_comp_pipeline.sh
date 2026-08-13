@@ -15,4 +15,3 @@ if [[ "${s}" != "" ]]; then
     nvidia-settings -a CurrentMetaMode="${s//\}/, ForceCompositionPipeline=On\}}"
   fi
 fi
-

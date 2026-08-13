@@ -97,7 +97,7 @@ o.softtabstop = 4
 --> Represent tabs, trailing spaces and non-breakable space characters
 ------------------------------------------------------------------------------
 o.list = true
-vim.opt.listchars:append {
+vim.opt.listchars:append({
   -- space = '·',
   trail = '·',
   nbsp = '◇',
@@ -105,7 +105,7 @@ vim.opt.listchars:append {
   extends = '▸',
   precedes = '◂',
   -- eol = '↴',
-}
+})
 
 ------------------------------------------------------------------------------
 --> Searching
@@ -147,4 +147,3 @@ vim.filetype.add({
     ['yup.lock'] = 'yaml',
   },
 })
-

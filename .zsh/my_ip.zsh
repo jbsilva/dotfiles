@@ -5,4 +5,3 @@ if (( $+commands[lynx] )); then
 else
     alias myip="curl -s -m 8 https://ipinfo.io/ip || curl -s -m 8 eth0.me || curl -s -m 5 ifconfig.me || curl -s -m 5 icanhazip.com"
 fi
-

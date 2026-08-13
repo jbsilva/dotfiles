@@ -1,0 +1,105 @@
+# Run with `just hooks` to install, `just lint` to run everything once.
+#
+# Executed by prek (https://github.com/j178/prek), a drop-in pre-commit
+# replacement in Rust: same config format, no Python environment to manage.
+#
+# Paths excluded everywhere: vendored trees and generated files. They are not
+# ours to reformat, and rewriting them would produce enormous diffs against
+# upstream.
+exclude: |
+  (?x)^(
+      linux/XCompose/.*
+    | \.zsh/completions/.*
+    | windows/.*
+    | \.tmux/.*
+  )$
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+      # Every shell script here is expected to be directly runnable.
+      - id: check-executables-have-shebangs
+
+  - repo: https://github.com/hukkin/mdformat
+    rev: 1.0.0
+    hooks:
+      - id: mdformat # config in .mdformat.toml
+        additional_dependencies:
+          - mdformat-gfm # GitHub Flavored Markdown (tables, strikethrough)
+          - mdformat-frontmatter # Don't mess with YAML front matter blocks
+
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.49.0
+    hooks:
+      - id: typos # config in typos.toml
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
+  # Nix. These are `local` because they are already installed by
+  # nix-darwin/modules/packages.nix, so there is nothing to fetch.
+  - repo: local
+    hooks:
+      - id: nixfmt
+        name: nixfmt
+        entry: nixfmt
+        language: system
+        types: [nix]
+
+      - id: statix
+        name: statix
+        entry: statix check
+        language: system
+        pass_filenames: false
+        files: \.nix$
+
+      - id: deadnix
+        name: deadnix
+        entry: deadnix --fail
+        language: system
+        types: [nix]
+
+      - id: shellcheck
+        name: shellcheck
+        entry: shellcheck
+        language: system
+        types: [shell]
+        # shellcheck only understands sh/bash/dash/ksh. zsh files go to the
+        # zsh-syntax hook below.
+        exclude_types: [zsh]
+
+      - id: zsh-syntax
+        name: zsh -n (parse check)
+        entry: zsh -n
+        language: system
+        types: [zsh]
+        # .zsh/zshrc_macos and friends have neither an extension nor a shebang,
+        # so identify tags them only as "text"; match them by path as well.
+        files: (\.zsh$|^\.zshrc$|^\.zsh/zshrc_)
+
+      - id: stylua
+        name: stylua
+        entry: stylua
+        language: system
+        types: [lua]
+
+      # Secret scan. Kept as a local hook rather than the upstream gitleaks one
+      # so it passes --config explicitly: gitleaks does not reliably
+      # auto-discover .gitleaks.toml in `git` mode, and silently falling back to
+      # the default ruleset would resurrect the known false positives.
+      - id: gitleaks
+        name: gitleaks (staged changes)
+        entry: scripts/gitleaks-staged.sh
+        language: script
+        pass_filenames: false
+        always_run: true

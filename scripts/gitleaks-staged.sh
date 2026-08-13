@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 #
-# Pre-commit secret scan.
+# Secret scan over staged changes. Run as a local hook from
+# .pre-commit-config.yaml; enable with `just hooks`.
 #
-# ~/.config is a symlink into this repo, so every application on this machine
-# writes into a tracked directory. .gitignore uses an allow-list to make that
-# safe, but this hook is the second line of defence: it scans what is actually
-# staged, so a file deliberately force-added (`git add -f`) is still checked.
-#
-# Enable (once per clone):
-#   git config core.hooksPath .githooks
+# Files linked out of this repo into ~/.config are written to by the
+# applications themselves, and .gitignore uses an allow-list to keep the rest
+# out. This is the second line of defence: it scans what is actually staged, so
+# a file deliberately force-added (`git add -f`) is still checked.
 #
 # Bypass for a single commit (use sparingly, and know what you are committing):
 #   git commit --no-verify

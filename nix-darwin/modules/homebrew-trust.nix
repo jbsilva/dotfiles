@@ -15,13 +15,9 @@ let
   # nix-darwin normalises homebrew.casks into attrsets, so match on .name.
   # Deriving the list means adding a third-party cask is a one-line change
   # instead of also remembering to run `brew trust`.
-  trustedCasks = map (c: c.name) (
-    lib.filter (c: lib.hasInfix "/" c.name) config.homebrew.casks
-  );
+  trustedCasks = map (c: c.name) (lib.filter (c: lib.hasInfix "/" c.name) config.homebrew.casks);
 
-  trustFile = pkgs.writeText "homebrew-trust.json" (
-    builtins.toJSON { trustedcasks = trustedCasks; }
-  );
+  trustFile = pkgs.writeText "homebrew-trust.json" (builtins.toJSON { trustedcasks = trustedCasks; });
 in
 {
   ###########################################################################

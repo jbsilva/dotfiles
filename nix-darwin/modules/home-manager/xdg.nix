@@ -48,7 +48,6 @@ in
     "gh/config.yml".source = link "gh/config.yml";
     "gh/hosts.yml".source = link "gh/hosts.yml";
 
-
     "pypoetry/config.toml".source = link "pypoetry/config.toml";
 
     # tmux.conf is itself a symlink into the .tmux submodule; tmux follows it.

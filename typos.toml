@@ -2,7 +2,16 @@
 # Run with `just check-typos`.
 
 [files]
+# This is a dotfiles repo: .zshrc, .zsh/, .config/ and .github/ are the bulk of
+# it. typos skips hidden paths by default, so without this the repo-wide walk
+# was silently checking almost nothing. (pre-commit passes explicit filenames,
+# which is how the gap surfaced.)
+ignore-hidden = false
+
 extend-exclude = [
+  # With ignore-hidden off, the walker would otherwise descend into .git and
+  # "spell check" binary objects.
+  ".git/",
   # Vendored from https://github.com/kragen/xcompose. These files are Unicode
   # character data and compose-sequence tokens, so nearly every short token
   # ("BA", "DAA", "Nd", ...) reads as a misspelling. Upstream's own typos
@@ -19,3 +28,8 @@ extend-exclude = [
 [default.extend-words]
 # "Pn" is a valid identifier, not a misspelling of "PIN"/"Pan".
 Pn = "Pn"
+# `cleand` is the name of the clean-directory helper in .zsh/cleand.zsh, not a
+# misspelling of "cleaned".
+cleand = "cleand"
+# `ba` is a sed branch label in .zsh/mount_share.zsh (`:a;N;$!ba`).
+ba = "ba"

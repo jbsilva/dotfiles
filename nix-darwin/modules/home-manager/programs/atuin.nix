@@ -52,7 +52,7 @@
 
       # Never record these, regardless of secrets_filter.
       history_filter = [
-        "^\\s"          # a leading space still means "do not record"
+        "^\\s" # a leading space still means "do not record"
         "^kubectl.*--token"
         "^aws .*secret"
         "^export .*(TOKEN|SECRET|PASSWORD|KEY)="

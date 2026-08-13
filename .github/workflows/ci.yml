@@ -39,7 +39,10 @@ jobs:
             --no-banner --redact --verbose
 
   # ---------------------------------------------------------------------------
-  # Shell, spelling and Lua formatting
+  # Formatting and linting, via the same hooks that run on commit.
+  #
+  # One job rather than a step per tool: prek reads .pre-commit-config.yaml, so
+  # CI and the local hooks can never drift apart.
   # ---------------------------------------------------------------------------
   lint:
     name: Lint
@@ -49,17 +52,20 @@ jobs:
 
       - uses: DeterminateSystems/nix-installer-action@main
 
-      - name: shellcheck + zsh parse
-        run: nix shell nixpkgs#just nixpkgs#shellcheck nixpkgs#zsh --command just check-shell
-
-      - name: typos
-        run: nix shell nixpkgs#just nixpkgs#typos --command just check-typos
-
-      - name: stylua --check
-        run: nix run nixpkgs#stylua -- --check .config/nvim || true
-
-      - name: actionlint
-        run: nix shell nixpkgs#just nixpkgs#actionlint --command just check-actions
+      - name: prek run --all-files
+        # The `local` hooks call tools straight off $PATH, so they have to be in
+        # the shell prek runs under.
+        run: |
+          nix shell \
+            nixpkgs#prek \
+            nixpkgs#nixfmt \
+            nixpkgs#statix \
+            nixpkgs#deadnix \
+            nixpkgs#shellcheck \
+            nixpkgs#zsh \
+            nixpkgs#stylua \
+            nixpkgs#gitleaks \
+            --command prek run --all-files --show-diff-on-failure
 
   # ---------------------------------------------------------------------------
   # Nix. Evaluated on arm64 macOS because the flake is aarch64-darwin only.
@@ -73,12 +79,8 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: statix
-        run: nix run nixpkgs#statix -- check nix-darwin
-
-      - name: deadnix
-        run: nix run nixpkgs#deadnix -- --fail nix-darwin
-
+      # statix/deadnix/nixfmt run in the lint job via prek; this job only does
+      # what needs an aarch64-darwin runner.
       - name: Evaluate the darwin configuration
         # Full evaluation without building: catches option typos, bad module
         # arguments and broken imports in seconds instead of pulling the world.

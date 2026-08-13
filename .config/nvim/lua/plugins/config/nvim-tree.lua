@@ -1,7 +1,7 @@
 local M = {}
 
 function M.config()
-  require('nvim-tree').setup{
+  require('nvim-tree').setup({
     diagnostics = {
       enable = true,
     },
@@ -41,7 +41,7 @@ function M.config()
         enable = true,
       },
     },
-  }
+  })
 
   ---------------------------------------------------------------------------
   --> Never wrap lines in the tree window
@@ -49,16 +49,14 @@ function M.config()
   -- The ,e keymap lives in the lazy.nvim spec (lua/plugins/init.lua) so the
   -- plugin can stay lazy-loaded until the key is pressed.
   ---------------------------------------------------------------------------
-  vim.api.nvim_create_autocmd(
-    'FileType',
-    {
-      group = vim.api.nvim_create_augroup('NVIM_TREE', { clear = true }),
-      pattern = 'NvimTree',
-      callback = function()
-        -- nvim_win_set_option is deprecated since 0.10; vim.wo is the
-        -- supported way to set a window-local option.
-        vim.wo[0].wrap = false
-      end,
+  vim.api.nvim_create_autocmd('FileType', {
+    group = vim.api.nvim_create_augroup('NVIM_TREE', { clear = true }),
+    pattern = 'NvimTree',
+    callback = function()
+      -- nvim_win_set_option is deprecated since 0.10; vim.wo is the
+      -- supported way to set a window-local option.
+      vim.wo[0].wrap = false
+    end,
   })
 end
 

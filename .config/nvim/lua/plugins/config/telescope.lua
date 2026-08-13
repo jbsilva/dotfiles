@@ -17,18 +17,16 @@ function M.config()
   ---------------------------------------------------------------------------
   --> Keymaps
   ---------------------------------------------------------------------------
-  local remap = require("mapmodes")
+  local remap = require('mapmodes')
   local nnoremap = remap.nnoremap
 
   -- Ctrl-p = fuzzy finder
-  nnoremap('<C-p>',
-    function()
-      local ok = pcall(Telescope.git_files, { show_untracked = true })
-      if not ok then
-        Telescope.find_files()
-      end
+  nnoremap('<C-p>', function()
+    local ok = pcall(Telescope.git_files, { show_untracked = true })
+    if not ok then
+      Telescope.find_files()
     end
-  )
+  end)
 
   -- Get :help. Capital H
   nnoremap('<leader>H', Telescope.help_tags)
@@ -48,7 +46,7 @@ function M.config()
   ---------------------------------------------------------------------------
   --> Setup
   ---------------------------------------------------------------------------
-  require('telescope').setup {
+  require('telescope').setup({
     defaults = {
       prompt_prefix = ' ❯ ',
       initial_mode = 'insert',
@@ -75,11 +73,11 @@ function M.config()
         case_mode = 'smart_case',
       },
       file_browser = {
-        theme = "ivy",
+        theme = 'ivy',
         hijack_netrw = false,
-      }
+      },
     },
-  }
+  })
 end
 
 return M

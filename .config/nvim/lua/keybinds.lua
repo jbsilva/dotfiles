@@ -1,10 +1,10 @@
 -------------------------------------------------------------------------------
 -- Keybinds
--- 
+--
 --  Use `:verbose map <KEYS>` to check if/where a shortcut is already in use
 -------------------------------------------------------------------------------
 
-local remap = require("mapmodes")
+local remap = require('mapmodes')
 local noremap = remap.noremap
 local inoremap = remap.inoremap
 local vnoremap = remap.vnoremap
@@ -43,7 +43,7 @@ nnoremap('<tab>', '<CMD>bnext<CR>')
 -------------------------------------------------------------------------------
 --> Move to last buffer
 -------------------------------------------------------------------------------
-nnoremap(";;", '<CMD>b#<CR>')
+nnoremap(';;', '<CMD>b#<CR>')
 
 -------------------------------------------------------------------------------
 --> Switching windows
@@ -162,14 +162,13 @@ nnoremap('<leader>P', '"+P')
 nnoremap(',,y', '"Ayy')
 nnoremap(',,p', '"ap')
 
-
--- Make p paste from "0 (what was yanked without specifiying a register)
+-- Make p paste from "0 (what was yanked without specifying a register)
 -- instead of from the unnamed register ("").
 --
 -- The unnamed register ("") points to the last used register ("+ in the
 -- commands above), except when using the black hole register ("_).
 --
--- The loop below is necessary to recover the hability to use p with other
+-- The loop below is necessary to recover the ability to use p with other
 -- registers.
 -- noremap('p', '"0p')
 -- noremap('P', '"0P')

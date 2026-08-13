@@ -26,7 +26,7 @@ let
 
   sourcePlugins = ''
     # Zsh plugins, pinned by flake.lock and sourced from the Nix store.
-    ${lib.concatMapStringsSep "\n" (f: ''source ${f}'') pluginFiles}
+    ${lib.concatMapStringsSep "\n" (f: "source ${f}") pluginFiles}
   '';
 in
 {

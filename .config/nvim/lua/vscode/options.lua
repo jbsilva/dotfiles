@@ -13,4 +13,3 @@ g.maplocalleader = ' '
 ------------------------------------------------------------------------------
 o.ignorecase = true
 o.smartcase = true
-

@@ -14,7 +14,7 @@
 -- ===================================================================
 
 if vim.g.vscode then
-  require("vscode")
+  require('vscode')
 else
   require('options')
   require('autocmd')

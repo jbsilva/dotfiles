@@ -35,4 +35,3 @@ do
               -option compose:rctrl   \
               -option caps:swapescape
 done
-

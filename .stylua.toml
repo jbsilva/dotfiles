@@ -1,0 +1,10 @@
+# stylua config (see the stylua hook in .pre-commit-config.yaml).
+#
+# Matches the style the Neovim config is already written in. stylua's defaults
+# are tabs and double quotes, which would rewrite every file here for no reason.
+column_width = 100
+indent_type = "Spaces"
+indent_width = 2
+quote_style = "AutoPreferSingle"
+call_parentheses = "Always"
+collapse_simple_statement = "Never"

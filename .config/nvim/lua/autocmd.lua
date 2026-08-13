@@ -7,22 +7,19 @@ local command = vim.api.nvim_create_user_command
 -------------------------------------------------------------------------------
 local yank_group = augroup('HighlightYank', {})
 
-autocmd(
-  'TextYankPost',
-  {
-    group = yank_group,
-    pattern = '*',
-    callback = function()
-      -- vim.highlight was renamed to vim.hl in Neovim 0.11; the old name is
-      -- deprecated and slated for removal.
-      local hl = vim.hl or vim.highlight
-      hl.on_yank({
-        higroup = 'IncSearch',
-        timeout = 200,
-      })
-    end,
-  }
-)
+autocmd('TextYankPost', {
+  group = yank_group,
+  pattern = '*',
+  callback = function()
+    -- vim.highlight was renamed to vim.hl in Neovim 0.11; the old name is
+    -- deprecated and slated for removal.
+    local hl = vim.hl or vim.highlight
+    hl.on_yank({
+      higroup = 'IncSearch',
+      timeout = 200,
+    })
+  end,
+})
 
 -------------------------------------------------------------------------------
 --> Hybrid relative line numbers
@@ -30,23 +27,17 @@ autocmd(
 -------------------------------------------------------------------------------
 local number_group = augroup('numberToggle', { clear = true })
 
-autocmd(
-  { 'BufEnter', 'FocusGained', 'InsertLeave', 'WinEnter' },
-  {
-    group = number_group,
-    pattern = { '*' },
-    command = "if &nu && mode() != 'i' | set rnu | endif",
-  }
-)
+autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'WinEnter' }, {
+  group = number_group,
+  pattern = { '*' },
+  command = "if &nu && mode() != 'i' | set rnu | endif",
+})
 
-autocmd(
-  { 'BufLeave', 'FocusLost', 'InsertEnter', 'WinLeave' },
-  {
-    group = number_group,
-    pattern = { '*' },
-    command = 'if &nu | set nornu | endif',
-  }
-)
+autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'WinLeave' }, {
+  group = number_group,
+  pattern = { '*' },
+  command = 'if &nu | set nornu | endif',
+})
 
 -------------------------------------------------------------------------------
 --> Remember last cursor position
@@ -80,17 +71,13 @@ autocmd(
 --   * Commands (`:help spell`):  `[s`, `]s`, `z=`, `zg`, `zw`, `:spellr`
 -- * Text with: 80 columns
 -------------------------------------------------------------------------------
-autocmd(
-  { 'BufEnter', 'BufWinEnter', 'TabEnter' },
-  {
-    group = augroup('Text', { clear = true }),
-    pattern = '*.txt',
-    command = 'setlocal textwidth=80 spell spelllang=en_us',
-  }
-)
+autocmd({ 'BufEnter', 'BufWinEnter', 'TabEnter' }, {
+  group = augroup('Text', { clear = true }),
+  pattern = '*.txt',
+  command = 'setlocal textwidth=80 spell spelllang=en_us',
+})
 
 -------------------------------------------------------------------------------
 --> Remove trailing whitespaces
 -------------------------------------------------------------------------------
 command('FixWhitespace', ':%s/\\s\\+$//e', { desc = 'Remove trailing whitespaces' })
-

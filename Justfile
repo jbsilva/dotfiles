@@ -55,18 +55,24 @@ gc:
 # Quality
 # ---------------------------------------------------------------------------
 
-# Run every check
-check: check-nix check-shell check-actions check-typos scan
+# Run every check: the hooks, plus the two things they cannot do
+check: lint check-flake scan
 
-# Lint the GitHub Actions workflows
-check-actions:
-    actionlint .github/workflows/*.yml
+# Run every hook over the whole repo (format, lint and spell check)
+lint:
+    prek run --all-files
 
-# Evaluate the flake and lint the Nix files
-check-nix:
+# Evaluate the whole darwin configuration. Not a prek hook: it is far slower
+# than the rest and only makes sense on the flake as a whole, not per file.
+check-flake:
     nix flake check {{ flake }}
-    statix check {{ flake }}
-    deadnix --fail {{ flake }}
+
+# -c is explicit: gitleaks does not reliably auto-discover .gitleaks.toml in
+# `git` mode, and without it the known false positives come back.
+
+# Scan the whole history for secrets (the hook only sees staged changes)
+scan:
+    gitleaks git -c .gitleaks.toml --no-banner --redact --verbose
 
 # Needs docker (on this machine: `colima start`). Not part of `just check`,
 # which must stay fast and dependency-free.
@@ -75,63 +81,26 @@ check-nix:
 test-shell scenario="all":
     ./scripts/test-shell-docker.sh {{ scenario }}
 
-# Lint shell scripts
-check-shell:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    # shellcheck only understands sh/bash/dash/ksh, so route by actual shell.
-    shellcheck \
-        .githooks/pre-commit \
-        scripts/hosts.sh \
-        scripts/test-shell-docker.sh \
-        linux/Xsetup \
-        linux/bin/nvidia-force_comp_pipeline.sh
-    # zsh scripts get a parse check instead (linux/bin/keyboards.sh is zsh too).
-    for f in .zshrc .zsh/*.zsh .zsh/zshrc_* scripts/shell-selftest.zsh linux/bin/keyboards.sh; do
-        [ -e "$f" ] || continue
-        zsh -n "$f" || { echo "syntax error: $f" >&2; exit 1; }
-    done
-    echo "shell OK"
-
-# Spell-check the repo (configured by typos.toml)
-check-typos:
-    typos
-
-# -c is explicit: gitleaks does not reliably auto-discover .gitleaks.toml in
-# `git` mode, and without it the known false positives come back.
-
-# Scan the whole history for secrets
-scan:
-    gitleaks git -c .gitleaks.toml --no-banner --redact --verbose
-
-# Scan only what is currently staged (what the pre-commit hook runs)
-scan-staged:
-    gitleaks git --staged -c .gitleaks.toml --no-banner --redact --verbose
-
 # ---------------------------------------------------------------------------
 # Formatting
 # ---------------------------------------------------------------------------
 
-# Format everything
-fmt: fmt-nix fmt-shell fmt-lua
-
-fmt-nix:
-    nixfmt {{ flake }}
-
-fmt-shell:
-    shfmt -w -i 2 -ci .githooks/pre-commit hosts.sh
-
-fmt-lua:
-    stylua .config/nvim
+# Format everything. Same hooks as `just lint`: the formatting ones rewrite
+# files in place, so there is no separate format-only pass.
+fmt: lint
 
 # ---------------------------------------------------------------------------
 # Setup
 # ---------------------------------------------------------------------------
 
-# Enable the repo-local git hooks (run once per clone)
+# Install the git hooks (run once per clone)
 hooks:
-    git config core.hooksPath .githooks
-    @echo "pre-commit secret scanning enabled"
+    # An earlier version of this repo pointed core.hooksPath at .githooks/.
+    # prek installs into .git/hooks/, which git ignores while hooksPath is set,
+    # so clear it or the hooks silently never run.
+    -git config --unset core.hooksPath
+    prek install
+    @echo "prek hooks installed"
 
 # Nix provides only the rustup binary; the toolchains themselves live in
 # ~/.rustup so that rust-toolchain.toml, nightly and extra targets work.

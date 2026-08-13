@@ -138,10 +138,22 @@ function M.textobjects()
   --> Move between functions, classes and blocks
   ---------------------------------------------------------------------------
   local moves = {
-    goto_next_start = { [']f'] = '@function.outer', [']]'] = '@class.outer', [']b'] = '@block.outer' },
+    goto_next_start = {
+      [']f'] = '@function.outer',
+      [']]'] = '@class.outer',
+      [']b'] = '@block.outer',
+    },
     goto_next_end = { [']F'] = '@function.outer', [']['] = '@class.outer', [']B'] = '@block.outer' },
-    goto_previous_start = { ['[f'] = '@function.outer', ['[['] = '@class.outer', ['[b'] = '@block.outer' },
-    goto_previous_end = { ['[F'] = '@function.outer', ['[]'] = '@class.outer', ['[B'] = '@block.outer' },
+    goto_previous_start = {
+      ['[f'] = '@function.outer',
+      ['[['] = '@class.outer',
+      ['[b'] = '@block.outer',
+    },
+    goto_previous_end = {
+      ['[F'] = '@function.outer',
+      ['[]'] = '@class.outer',
+      ['[B'] = '@block.outer',
+    },
   }
 
   for fn, keymaps in pairs(moves) do

@@ -289,13 +289,49 @@ require('lazy').setup({
   {
     'mfussenegger/nvim-dap',
     keys = {
-      { '<leader>db', function() require('dap').toggle_breakpoint() end, desc = 'DAP breakpoint' },
-      { '<leader>dc', function() require('dap').continue() end, desc = 'DAP continue' },
-      { '<leader>do', function() require('dap').step_over() end, desc = 'DAP step over' },
-      { '<leader>di', function() require('dap').step_into() end, desc = 'DAP step into' },
-      { '<leader>dt', function() require('dapui').toggle() end, desc = 'DAP UI toggle' },
+      {
+        '<leader>db',
+        function()
+          require('dap').toggle_breakpoint()
+        end,
+        desc = 'DAP breakpoint',
+      },
+      {
+        '<leader>dc',
+        function()
+          require('dap').continue()
+        end,
+        desc = 'DAP continue',
+      },
+      {
+        '<leader>do',
+        function()
+          require('dap').step_over()
+        end,
+        desc = 'DAP step over',
+      },
+      {
+        '<leader>di',
+        function()
+          require('dap').step_into()
+        end,
+        desc = 'DAP step into',
+      },
+      {
+        '<leader>dt',
+        function()
+          require('dapui').toggle()
+        end,
+        desc = 'DAP UI toggle',
+      },
       -- Python: debug just the test/class/method under the cursor
-      { '<leader>dm', function() require('dap-python').test_method() end, desc = 'DAP python test method' },
+      {
+        '<leader>dm',
+        function()
+          require('dap-python').test_method()
+        end,
+        desc = 'DAP python test method',
+      },
     },
     dependencies = {
       -- Repository moved from jayp0521/ to jay-babu/.
@@ -327,11 +363,41 @@ require('lazy').setup({
       'nvim-neotest/neotest-jest',
     },
     keys = {
-      { '<leader>tt', function() require('neotest').run.run(vim.fn.expand('%')) end, desc = 'Test file' },
-      { '<leader>tn', function() require('neotest').run.run() end, desc = 'Test nearest' },
-      { '<leader>td', function() require('neotest').run.run({ strategy = 'dap' }) end, desc = 'Debug nearest test' },
-      { '<leader>ts', function() require('neotest').summary.toggle() end, desc = 'Test summary' },
-      { '<leader>to', function() require('neotest').output.open({ enter = true }) end, desc = 'Test output' },
+      {
+        '<leader>tt',
+        function()
+          require('neotest').run.run(vim.fn.expand('%'))
+        end,
+        desc = 'Test file',
+      },
+      {
+        '<leader>tn',
+        function()
+          require('neotest').run.run()
+        end,
+        desc = 'Test nearest',
+      },
+      {
+        '<leader>td',
+        function()
+          require('neotest').run.run({ strategy = 'dap' })
+        end,
+        desc = 'Debug nearest test',
+      },
+      {
+        '<leader>ts',
+        function()
+          require('neotest').summary.toggle()
+        end,
+        desc = 'Test summary',
+      },
+      {
+        '<leader>to',
+        function()
+          require('neotest').output.open({ enter = true })
+        end,
+        desc = 'Test output',
+      },
     },
     config = function()
       require('plugins.config.neotest').config()
@@ -344,7 +410,16 @@ require('lazy').setup({
   ----------------------------------------------------------
   {
     'windwp/nvim-ts-autotag',
-    ft = { 'html', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'markdown' },
+    ft = {
+      'html',
+      'javascript',
+      'javascriptreact',
+      'typescript',
+      'typescriptreact',
+      'vue',
+      'svelte',
+      'markdown',
+    },
     opts = {},
   },
 
@@ -358,8 +433,20 @@ require('lazy').setup({
     event = { 'BufRead package.json' },
     opts = {},
     keys = {
-      { '<leader>ns', function() require('package-info').show() end, desc = 'Show package versions' },
-      { '<leader>nu', function() require('package-info').update() end, desc = 'Update package' },
+      {
+        '<leader>ns',
+        function()
+          require('package-info').show()
+        end,
+        desc = 'Show package versions',
+      },
+      {
+        '<leader>nu',
+        function()
+          require('package-info').update()
+        end,
+        desc = 'Update package',
+      },
     },
   },
 
@@ -419,9 +506,30 @@ require('lazy').setup({
       },
     },
     keys = {
-      { 's', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'Flash jump' },
-      { 'S', mode = { 'n', 'x', 'o' }, function() require('flash').treesitter() end, desc = 'Flash treesitter' },
-      { 'r', mode = 'o', function() require('flash').remote() end, desc = 'Remote flash' },
+      {
+        's',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').jump()
+        end,
+        desc = 'Flash jump',
+      },
+      {
+        'S',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').treesitter()
+        end,
+        desc = 'Flash treesitter',
+      },
+      {
+        'r',
+        mode = 'o',
+        function()
+          require('flash').remote()
+        end,
+        desc = 'Remote flash',
+      },
     },
   },
 
@@ -474,9 +582,30 @@ require('lazy').setup({
   {
     'chrisgrieser/nvim-spider',
     keys = {
-      { '<leader>w', function() require('spider').motion('w') end, mode = { 'n', 'o', 'x' }, desc = 'Subword forward' },
-      { '<leader>e', function() require('spider').motion('e') end, mode = { 'n', 'o', 'x' }, desc = 'Subword end' },
-      { '<leader>b', function() require('spider').motion('b') end, mode = { 'n', 'o', 'x' }, desc = 'Subword back' },
+      {
+        '<leader>w',
+        function()
+          require('spider').motion('w')
+        end,
+        mode = { 'n', 'o', 'x' },
+        desc = 'Subword forward',
+      },
+      {
+        '<leader>e',
+        function()
+          require('spider').motion('e')
+        end,
+        mode = { 'n', 'o', 'x' },
+        desc = 'Subword end',
+      },
+      {
+        '<leader>b',
+        function()
+          require('spider').motion('b')
+        end,
+        mode = { 'n', 'o', 'x' },
+        desc = 'Subword back',
+      },
     },
     opts = {},
   },
@@ -504,7 +633,6 @@ require('lazy').setup({
   -- 'easymotion/vim-easymotion' -- replaced by flash.nvim
   -- 'tpope/vim-surround'      -- replaced by kylechui/nvim-surround
   -- 'sbdchd/neoformat'        -- replaced by stevearc/conform.nvim
-
 }, {
   ----------------------------------------------------------
   --> lazy.nvim options
