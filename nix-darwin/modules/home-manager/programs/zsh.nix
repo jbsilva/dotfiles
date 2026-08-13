@@ -23,6 +23,32 @@ let
     # Zsh plugins, pinned by flake.lock and sourced from the Nix store.
     ${lib.concatMapStringsSep "\n" (f: "source ${f}") pluginFiles}
   '';
+
+  ###########################################################################
+  # Syntax highlighting: zsh-patina rather than zsh-syntax-highlighting.
+  #
+  # z-sy-h costs 66 ms to source in every shell, measured by A/B'ing the
+  # generated .zshrc with hyperfine -- the largest single item left in startup
+  # after the completion caching. patina does the highlighting in a Rust daemon
+  # instead, so the shell side is small, and it is also faster per keystroke
+  # (its published benchmark: 0.197 ms vs 0.528 ms for z-sy-h).
+  #
+  # It attaches through add-zle-hook-widget on zle-line-pre-redraw rather than
+  # by wrapping widgets, so it does not care where it sits relative to
+  # autosuggestions, autopair or fzf-tab. Loaded last anyway, out of caution.
+  #
+  # `activate` is eval'd rather than cached: the generated snippet bakes in a
+  # $TMPDIR socket path, and upstream explicitly says not to cache it. It costs
+  # ~3 ms.
+  #
+  # Only the Nix machines get this. .zshrc still looks for the distro's
+  # zsh-syntax-highlighting everywhere else.
+  ###########################################################################
+  patinaInit = ''
+    if [[ -x ${pkgs.zsh-patina}/bin/zsh-patina ]]; then
+      eval "$(${pkgs.zsh-patina}/bin/zsh-patina activate)"
+    fi
+  '';
 in
 {
   ###########################################################################
@@ -40,7 +66,8 @@ in
     # home-manager sources these in the order they require: syntax
     # highlighting last, substring search after it.
     autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
+    # Off: zsh-patina replaces it, wired up in initContent below.
+    syntaxHighlighting.enable = false;
     historySubstringSearch.enable = true;
 
     defaultKeymap = "viins";
@@ -64,6 +91,7 @@ in
     initContent = lib.mkMerge [
       (lib.mkOrder 900 sourcePlugins)
       (lib.mkOrder 1000 (builtins.readFile ../../../../.zshrc))
+      (lib.mkOrder 1500 patinaInit)
     ];
   };
 }

@@ -39,6 +39,7 @@
     dua # interactive disk usage browser -- the terminal DaisyDisk
     ouch # one command to (de)compress any archive format
     hexyl # hex viewer
+    zsh-patina # syntax highlighter used by the shell; CLI for themes and `check`
     vivid # generates LS_COLORS from a theme; .zshrc prefers it over dircolors
     chafa # renders images in the terminal; backs the `icat` alias under Ghostty
     oath-toolkit # provides oathtool, behind the otp/otp8/otp8hex aliases
