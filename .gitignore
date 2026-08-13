@@ -34,6 +34,9 @@
 
 # Editors
 !/.config/nvim/**/*.lua
+# lazy.nvim writes its plugin lockfile into the config dir; it pins versions
+# and belongs in git.
+!/.config/nvim/lazy-lock.json
 
 # Terminal / multiplexer
 !/.config/tmux/tmux.conf

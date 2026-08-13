@@ -69,6 +69,11 @@
       "libpq"
       "libraqm"
       "lima-additional-guestagents"
+      # mise: node/python/go toolchain versions, replaces nvm and asdf.
+      # Homebrew rather than nixpkgs on purpose -- nixpkgs has no cached darwin
+      # build at the pinned revision, so it compiles for ~20 min on every
+      # flake update. Homebrew ships a bottle and tracks releases faster.
+      "mise"
       # "llmfit"
       "nginx"
       "openjdk"

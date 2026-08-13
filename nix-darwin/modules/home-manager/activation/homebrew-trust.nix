@@ -12,8 +12,13 @@ let
   # A single-hop symlink is deliberate: brew resolves the link before writing, so
   # `brew trust` from either environment updates the tracked file. It refuses to
   # write through a symlink whose target is itself a symlink or lives in a
-  # root-owned directory, which rules out home.file/mkOutOfStoreSymlink here.
-  trustStore = "${config.home.homeDirectory}/.config/homebrew/trust.json";
+  # root-owned directory.
+  #
+  # Points straight at the file in the repo, NOT at ~/.config/homebrew/trust.json.
+  # Since ~/.config became a real directory (see ../xdg.nix), that path is itself
+  # an out-of-store symlink into the repo, so going through it would give brew
+  # the symlink-to-a-symlink it refuses to write through.
+  trustStore = "${config.home.homeDirectory}/dotfiles/.config/homebrew/trust.json";
 in
 {
   home.activation.homebrewTrustStore = ''

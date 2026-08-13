@@ -65,11 +65,11 @@ alias syno-temp='sudo synonvme --get-location 2>/dev/null; sudo hdparm -H /dev/s
 # Most of what runs here is dockerized. DSM calls it "Container Manager" but the
 # CLI is still docker.
 if (( $+commands[docker] )); then
-  alias dps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
-  alias dcu='docker compose up -d'
-  alias dcd='docker compose down'
-  alias dcl='docker compose logs -f --tail=100'
-  alias dcr='docker compose restart'
+  # dps/dc* are defined in .zshrc for every platform. Only the DSM-specific
+  # extras belong here.
+  #
+  # dpst: the columns that matter when checking on a NAS at a glance.
+  alias dpst='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
   # Compose stacks created through DSM's UI live here.
   alias cdstacks='cd /volume1/docker'
 fi

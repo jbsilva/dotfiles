@@ -7,6 +7,7 @@
       { ... }:
       {
         imports = [
+          ./xdg.nix
           ./programs/gnupg.nix
           ./programs/git.nix
           ./programs/zsh.nix

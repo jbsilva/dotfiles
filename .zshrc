@@ -585,16 +585,69 @@ alias exif_move="exiftool -P -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN'
 alias exif_rename="exiftool -P -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN' -d '%Y%m%d_%H%M%S' '-filename<%f-\${ImageSize}%-03c.%le' '-filename<\${CreateDate}%-03c.%le' '-filename<\${DateTimeOriginal}%-03c.%le' ."
 alias exif_copyright="exiftool -G1 -Artist -Copyright -IPTC:By-line -IPTC:CopyrightNotice -IPTC:Credit -XMP-dc:Creator -XMP-dc:Rights -XMP-iptcCore:CreatorWorkEmail -XMP-iptcCore:CreatorWorkURL -XMP-plus:CopyrightOwnerName -XMP-plus:CopyrightStatus -XMP-plus:ImageCreatorName -XMP-plus:LicensorName -XMP-xmpRights:Marked -XMP-xmpRights:Owner -XMP-xmpRights:UsageTerms"
 
+###############################################################################
 # Docker
+#
+# Inspiration: https://github.com/webyneter/docker-aliases
+###############################################################################
+
+# --- Images ---
+alias di='docker images'
+alias dbu='docker build'
+alias drmi='docker rmi'
+alias drmi_all='docker rmi $* $(docker images -a -q)'
+alias drmi_dang='docker rmi $* $(docker images -q -f "dangling=true")'
+alias dhi='docker history $*'
+
+# Layers of an image, largest first.
+dhi_neat() {
+  docker history "${1}" \
+    --format "{{ .Size }}\t{{ .CreatedBy }}" \
+    ${2:-} |
+    sort --key=1 --human-numeric-sort --reverse
+}
+
+# --- Containers ---
+alias dps='docker ps'
+alias dpsa='docker ps -a'
+alias drit='docker run -it'
+alias deit='docker exec -it'
+alias dlog='docker logs'
+alias dip='docker inspect --format "{{ .NetworkSettings.IPAddress }}" $*'
+alias dstop_all='docker stop $* $(docker ps -q -f "status=running")'
+alias drm='docker rm'
+alias drm_stopped='docker rm $* $(docker ps -q -f "status=exited")'
+alias drmv_stopped='docker rm -v $* $(docker ps -q -f "status=exited")'
+alias drm_all='docker rm $* $(docker ps -a -q)'
+alias drmv_all='docker rm -v $* $(docker ps -a -q)'
+
+# --- Volumes ---
+alias dvls='docker volume ls $*'
+alias dvrm_all='docker volume rm $(docker volume ls -q)'
+alias dvrm_dang='docker volume rm $(docker volume ls -q -f "dangling=true")'
+
+# --- Housekeeping ---
 alias dnorestart='docker update --restart=no $* $(docker ps -q)'
 alias dprune='docker system prune --volumes'
-alias dpsa='docker ps -a'
 alias dupgrade="docker images | awk '{print $1}' | grep -v 'none' | grep -iv 'repo' | xargs -n1 docker pull"
 
-# Kitty terminal
-alias icat='kitty +kitten icat'
-alias kssh='kitty +kitten ssh'
-alias kkssh='TERM="xterm-256color" ssh'
+# --- Compose ---
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
+alias dcl='docker compose logs -f --tail=100'
+alias dcr='docker compose restart'
+
+###############################################################################
+# Terminal images
+#
+# Ghostty replaced kitty, so `kitty +kitten icat` is gone. Ghostty speaks the
+# same graphics protocol, and timg/chafa render images over it.
+###############################################################################
+if (( $+commands[timg] )); then
+  alias icat='timg'
+elif (( $+commands[chafa] )); then
+  alias icat='chafa'
+fi
 
 # Clipboard
 # Prezto already defined the pbcopy and pbpaste aliases
@@ -770,9 +823,22 @@ fi
 
 
 ###############################################################################
-#                                NVM
+#                       Toolchain versions: mise, else nvm
+#
+# mise (https://mise.jdx.dev) manages node, python, go and the rest from a
+# single .tool-versions/mise.toml, and activates per directory. It supersedes
+# both nvm and asdf, so it is tried first and nvm is only loaded when mise is
+# absent -- running both would give two things fighting over the node on $PATH.
+#
+# Installed via Homebrew (see nix-darwin/modules/homebrew.nix), which ships a
+# bottle and tracks upstream releases faster than nixpkgs does.
+#
+# Migrating off nvm:
+#   mise use --global node@lts      # then remove ~/.config/nvm
 ###############################################################################
-if [[ -d "$HOME/.config/nvm" ]]; then
+if (( $+commands[mise] )); then
+  eval "$(mise activate zsh)"
+elif [[ -d "$HOME/.config/nvm" ]]; then
   export NVM_DIR="$HOME/.config/nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

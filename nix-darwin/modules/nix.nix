@@ -1,6 +1,15 @@
-{ nixpkgs, ... }:
+{ nixpkgs, pkgs, ... }:
 {
   nix = {
+    # Nix itself. nix-darwin owns the daemon here (nix.enable is true), so this
+    # is what actually gets installed -- the version the Determinate Systems
+    # installer originally laid down is irrelevant after the first switch.
+    #
+    # Pinned to an explicit minor rather than `nixVersions.latest`, which floats
+    # and would silently jump major versions on a `nix flake update`. Bump this
+    # deliberately, and check the release notes: this is the package manager.
+    package = pkgs.nixVersions.nix_2_35;
+
     settings = {
       experimental-features = "nix-command flakes";
       extra-nix-path = "nixpkgs=flake:nixpkgs";
