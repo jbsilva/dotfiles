@@ -1,0 +1,17 @@
+# Configuration for `statix` (https://github.com/oppiliappan/statix).
+# Run with `just check-nix`.
+
+disabled = [
+  # "empty_pattern": statix wants `_:` instead of `{ ... }:` for modules that
+  # use none of their arguments. `{ ... }:` is the conventional signature for a
+  # NixOS/nix-darwin module -- it documents that the file *is* a module taking
+  # the usual attrset, and it keeps the diff small when an argument is later
+  # needed. Keeping it consistent across all modules matters more here.
+  "empty_pattern",
+
+  # "repeated_keys": statix wants `system = { primaryUser = ...; ... }` instead
+  # of three `system.foo = ...` lines. Dotted attribute paths are the style used
+  # throughout the nix-darwin and home-manager option documentation, so keeping
+  # them makes it easy to match a line here against the docs for that option.
+  "repeated_keys",
+]

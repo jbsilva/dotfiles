@@ -9,7 +9,7 @@
     hostPlatform = "aarch64-darwin";
 
     overlays = [
-      (final: prev: {
+      (_final: prev: {
         # direnv 2.37.1 uses -linkmode=external but CGO is disabled on darwin.
         direnv = prev.direnv.overrideAttrs (old: {
           env = (old.env or { }) // {

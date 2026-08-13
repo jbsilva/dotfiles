@@ -11,5 +11,8 @@ xrandr --setprovideroutputsource modesetting NVIDIA-0
 xrandr --auto
 
 # Force Composition Pipeline
+#
+# Executed, not sourced: the script needs bash (see its shebang) and sets
+# nothing this shell needs, so sourcing it from /bin/sh would just break.
 nfcp_script="/home/julio/bin/nvidia-force_comp_pipeline.sh"
-[ -s "$nfcp_script" ] && \. "$nfcp_script"
+[ -x "$nfcp_script" ] && "$nfcp_script"
