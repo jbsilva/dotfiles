@@ -374,4 +374,5 @@
   "dotnetAcquisitionExtension.enableTelemetry": false,
   "telemetry.feedback.enabled": false,
   "telemetry.telemetryLevel": "off",
+  "python.languageServer": "Default",
 }
