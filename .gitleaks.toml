@@ -15,8 +15,9 @@ paths = [
   # Editor keybindings use a "key" field for keyboard shortcuts ("ctrl+alt+k"),
   # which the generic-api-key rule reads as a secret assignment.
   '''\.config/Code/User/keybindings\.json$''',
-  # Legacy reference configs kept for history; contain only placeholder values
-  # such as "SuaSenhaAqui" (Portuguese for "YourPasswordHere").
+  # The old/ directory was deleted, but `gitleaks git` scans all history, where
+  # old/mpd.conf.old still contains the placeholder "SuaSenhaAqui"
+  # (Portuguese for "YourPasswordHere"). Keep this so full scans stay clean.
   '''^old/''',
   # Vendored submodules and third-party themes.
   '''^\.tmux/''',
