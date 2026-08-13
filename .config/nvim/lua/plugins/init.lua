@@ -248,6 +248,9 @@ require('lazy').setup({
     dependencies = {
       { 'mason-org/mason.nvim', opts = {} },
       'mason-org/mason-lspconfig.nvim',
+      -- Schemas for jsonls and yamlls: package.json, tsconfig, GitHub
+      -- workflows, docker-compose and friends get validation and completion.
+      'b0o/SchemaStore.nvim',
     },
     config = function()
       require('plugins.config.lsp').config()
@@ -318,6 +321,9 @@ require('lazy').setup({
       { 'jay-babu/mason-nvim-dap.nvim', dependencies = 'mason-org/mason.nvim' },
       -- Debugger UI: scopes, breakpoints, stacks, watches, REPL.
       { 'rcarriga/nvim-dap-ui', dependencies = 'nvim-neotest/nvim-nio', opts = {} },
+      -- Shows each variable's current value inline next to its declaration
+      -- while stopped, instead of only in the scopes pane.
+      { 'theHamsta/nvim-dap-virtual-text', opts = {} },
       -- Python adapter (debugpy), installed by mason-nvim-dap above.
       'mfussenegger/nvim-dap-python',
     },
@@ -550,6 +556,46 @@ require('lazy').setup({
   --> Vim-speeddating: CTRL-A/CTRL-X on dates and times
   ----------------------------------------------------------
   { 'tpope/vim-speeddating', event = 'VeryLazy' },
+
+  ----------------------------------------------------------
+  --> lazydev: Neovim API types for lua_ls, loaded on demand
+  --
+  --  Only for Lua that is editing Neovim itself, which here means this config.
+  --  Gives completion and signatures for vim.* and for plugin modules without
+  --  lua_ls indexing every installed plugin at startup.
+  ----------------------------------------------------------
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {
+      library = {
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      },
+    },
+  },
+
+  ----------------------------------------------------------
+  --> Treesitter context: keeps the enclosing function/class header pinned
+  --  to the top of the window while scrolling through a long body.
+  ----------------------------------------------------------
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    event = { 'BufReadPost', 'BufNewFile' },
+    opts = {
+      max_lines = 3,
+      multiline_threshold = 1,
+    },
+    keys = {
+      {
+        -- Not [c: gitsigns already uses ]c/[c for hunks.
+        '[x',
+        function()
+          require('treesitter-context').go_to_context(vim.v.count1)
+        end,
+        desc = 'Jump to enclosing context',
+      },
+    },
+  },
 
   ----------------------------------------------------------
   --> Trouble: diagnostics, references and quickfix in one list

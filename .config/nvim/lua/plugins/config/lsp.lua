@@ -83,20 +83,47 @@ function M.config()
   ---------------------------------------------------------------------------
   --> Per-server overrides
   ---------------------------------------------------------------------------
+  -- Types for the Neovim API and for plugins come from lazydev, which loads
+  -- them on demand. Listing the whole runtimepath as `workspace.library`
+  -- instead makes lua_ls index every plugin on every start.
   vim.lsp.config('lua_ls', {
     settings = {
       Lua = {
         runtime = { version = 'LuaJIT' },
-        -- Stop lua_ls asking about `vim` in every config file.
         diagnostics = { globals = { 'vim' } },
-        workspace = {
-          library = vim.api.nvim_get_runtime_file('', true),
-          checkThirdParty = false,
-        },
+        workspace = { checkThirdParty = false },
         telemetry = { enable = false },
       },
     },
   })
+
+  -------------------------------------------------------------------------
+  --> JSON and YAML schemas
+  --
+  -- Without a schema catalogue these two servers only check syntax. With one
+  -- they validate and complete package.json, tsconfig.json, GitHub workflow
+  -- files, docker-compose and the rest against their published schemas.
+  -------------------------------------------------------------------------
+  local ok_schemas, schemastore = pcall(require, 'schemastore')
+  if ok_schemas then
+    vim.lsp.config('jsonls', {
+      settings = {
+        json = {
+          schemas = schemastore.json.schemas(),
+          validate = { enable = true },
+        },
+      },
+    })
+
+    vim.lsp.config('yamlls', {
+      settings = {
+        yaml = {
+          schemaStore = { enable = false, url = '' }, -- use SchemaStore.nvim's copy
+          schemas = schemastore.yaml.schemas(),
+        },
+      },
+    })
+  end
 
   -------------------------------------------------------------------------
   --> Python
@@ -229,6 +256,19 @@ function M.config()
       end
 
       local buf = vim.lsp.buf
+
+      -- Inlay hints: parameter names and inferred types shown inline. Servers
+      -- advertise them, but nothing displays them until this is switched on.
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      if client and client:supports_method('textDocument/inlayHint') then
+        vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+        map('<leader>th', function()
+          vim.lsp.inlay_hint.enable(
+            not vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }),
+            { bufnr = args.buf }
+          )
+        end, 'Toggle inlay hints')
+      end
 
       map('K', buf.hover, 'Hover documentation')
       map('gd', buf.definition, 'Go to definition')
