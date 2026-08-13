@@ -27,10 +27,6 @@
       autoUpdate = true;
       upgrade = true;
       cleanup = "uninstall";
-      # Homebrew 4.x requires --force/--force-cleanup/$HOMEBREW_ASK to run
-      # `brew bundle --cleanup` non-interactively. nix-darwin emits --cleanup
-      # without it, so authorize the uninstall explicitly here.
-      extraFlags = [ "--force-cleanup" ];
     };
     # `brew bundle cleanup` untaps every installed tap the Brewfile doesn't
     # mention (only homebrew/core is exempt), and untapping homebrew/cask
