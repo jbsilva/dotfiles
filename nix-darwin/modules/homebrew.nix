@@ -103,12 +103,14 @@
       "fork"
       "ghostty"
       # "gitbutler"
+      # "gitkraken"   # Fork is the git UI
       "insta360-link-controller"
       "keyboard-maestro"
       "lm-studio"
       "lulu"
       "maccy"
       "mactex"
+      # "meld"        # Fork for diffs; git merge.tool is nvimdiff
       "microsoft-office"
       "nikitabobko/tap/aerospace"
       "notunes"
@@ -133,6 +135,7 @@
       "visual-studio-code"
       "vivaldi"
       # "voiceink"
+      # "warp"        # Ghostty is the terminal
       "wacom-tablet"
       "yubico-authenticator"
       "zulip"

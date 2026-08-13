@@ -47,7 +47,9 @@
     # -------------------------------------------------------------------------
     # Git
     # -------------------------------------------------------------------------
-    delta # syntax-highlighted, side-by-side git diffs
+    delta # syntax-highlighted git diffs; wired up in home-manager/programs/git.nix
+    # lazygit     # Fork is the git UI
+    # difftastic  # delta is the configured diff renderer
     git-absorb # auto-routes fixups into the right commit during rebase
 
     # -------------------------------------------------------------------------
@@ -173,6 +175,9 @@
     neovim
     tree-sitter # REQUIRED by nvim-treesitter's `main` branch to build parsers
     zellij
+    # tmux        # zellij is the multiplexer
+    # wezterm     # Ghostty is the terminal
+    # sesh        # session picker, only ever used via tmux
     glow # render markdown in the terminal
     # ghostty-bin   # via Homebrew cask
 
