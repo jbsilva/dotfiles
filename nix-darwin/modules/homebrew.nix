@@ -118,7 +118,7 @@
       "obs"
       "obsidian"
       "ollama-app"
-      "openmtp"
+      # "openmtp"
       "plex"
       "postman"
       "proton-drive"
