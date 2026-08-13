@@ -386,6 +386,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         nix = { 'nixfmt' },
         python = { 'ruff_format' },
+        rust = { 'rustfmt' },
         sh = { 'shfmt' },
         zsh = { 'shfmt' },
         terraform = { 'terraform_fmt' },

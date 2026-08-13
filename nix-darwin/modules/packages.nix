@@ -132,6 +132,19 @@
     go
     nodejs_24
 
+    # Rust. The toolchain comes from nixpkgs rather than rustup so it is pinned
+    # by flake.lock like everything else and needs no `rustup default stable`
+    # bootstrap step.
+    #
+    # Swap to `rustup` if a project ever needs a rust-toolchain.toml pin or
+    # nightly; `mise use rust@…` also works now that mise is installed. Both
+    # manage ~/.cargo/bin, which .zshrc already puts on $PATH.
+    cargo
+    rustc
+    clippy
+    rustfmt
+    rust-analyzer # also fixes nvim: Mason has no prebuilt rust-analyzer here
+
     # -------------------------------------------------------------------------
     # GNU userland
     # macOS ships ancient BSD variants; these provide the GNU behaviour scripts

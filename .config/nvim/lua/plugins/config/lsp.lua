@@ -43,9 +43,22 @@ local servers = {
   -- Everything else in regular use here
   'bashls',
   'lua_ls',
-  'nil_ls', -- nix
   'terraformls',
   'yamlls',
+}
+
+-- Servers that nixpkgs already provides (see nix-darwin/modules/packages.nix),
+-- mapped to the binary that proves it. Mason must NOT try to install these.
+--
+-- Mason has no prebuilt release for `nil`, so it falls back to building it with
+-- cargo. There is no Rust toolchain here, so that failed on every single
+-- startup with:
+--   Failed to spawn process. cmd="cargo", err="ENOENT: no such file or directory"
+--   Installation failed for Package(name=nil)
+-- They are enabled directly instead, since the binary is already on $PATH.
+local system_servers = {
+  nil_ls = 'nil', -- Nix
+  rust_analyzer = 'rust-analyzer', -- Rust; matches the nixpkgs toolchain
 }
 
 function M.config()
@@ -205,6 +218,14 @@ function M.config()
     ensure_installed = servers,
     automatic_enable = true,
   })
+
+  -- Servers already on $PATH from nixpkgs: enable them directly. Asking Mason
+  -- for these makes it try to build from source (see system_servers above).
+  for server, binary in pairs(system_servers) do
+    if vim.fn.executable(binary) == 1 then
+      vim.lsp.enable(server)
+    end
+  end
 
   ---------------------------------------------------------------------------
   --> Buffer-local keymaps

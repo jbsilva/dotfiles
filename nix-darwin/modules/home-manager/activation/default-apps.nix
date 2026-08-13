@@ -32,7 +32,10 @@
       # causes transient -10810. Let it settle.
       sleep 3
 
-      swdaKnownUTIs="$(mktemp -t swda-utis)"
+      # An explicit template, not `mktemp -t swda-utis`: activation runs with
+      # Nix's coreutils ahead of /usr/bin, and GNU mktemp rejects a -t template
+      # without XXXXXX ("too few X's in template"). This form works on both.
+      swdaKnownUTIs="$(mktemp "''${TMPDIR:-/tmp}/swda-utis.XXXXXX")"
       "$SWDA_CMD" getUTIs 2>/dev/null | cut -f1 | sort -u > "$swdaKnownUTIs"
 
       swdaOK=0
