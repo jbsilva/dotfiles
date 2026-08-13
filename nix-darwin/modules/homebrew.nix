@@ -134,7 +134,6 @@
       "thaw"
       "thunderbird"
       "transmission-remote-gui"
-      "ubiquiti-unifi-controller"
       "visual-studio-code"
       "vivaldi"
       # "voiceink"
