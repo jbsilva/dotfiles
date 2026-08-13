@@ -72,6 +72,8 @@
     hyperfine # statistically sound benchmarking (used to measure zsh startup)
     tokei # lines-of-code stats
     shfmt # shell script formatter
+    stylua # Lua formatter, used by conform.nvim for this nvim config
+    ruff # Python linter/formatter, used by conform.nvim
     typos # source-code spell checker (this repo already has typos.toml)
     ast-grep # structural search & rewrite, by syntax tree rather than regex
     tealdeer # `tldr` client: practical examples instead of full man pages
@@ -137,6 +139,7 @@
     # Terminal & editors
     # -------------------------------------------------------------------------
     neovim
+    tree-sitter # REQUIRED by nvim-treesitter's `main` branch to build parsers
     tmux
     zellij
     wezterm
