@@ -14,17 +14,6 @@ let
   # zsh-autopair documents that it must come after zsh-syntax-highlighting,
   # which this ordering satisfies.
   ###########################################################################
-  emoji-cli = pkgs.fetchFromGitHub {
-    # b4b4r07/emoji-cli, bound to Ctrl-S in .zshrc. Unmaintained since 2017 and
-    # not in nixpkgs, so it is pinned here rather than cloned at shell start.
-    # Needs jq and fzf, both in modules/packages.nix. Delete this and the
-    # Ctrl-S binding in .zshrc if it ever breaks.
-    owner = "b4b4r07";
-    repo = "emoji-cli";
-    rev = "0fbb2e48e07218c5a2776100a4c708b21cb06688";
-    hash = "sha256-ii7RDTK/m+IqK7N+Xb6cEbziLPUQh7ZsbvQiX56F0sE=";
-  };
-
   pluginFiles = [
     # Replaces djui/alias-tips: reminds you an alias exists for what you typed.
     "${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh"
@@ -33,7 +22,6 @@ let
     "${pkgs.zsh-history-search-multi-word}/share/zsh/zsh-history-search-multi-word/history-search-multi-word.plugin.zsh"
     # Was hlissner/zsh-autopair.
     "${pkgs.zsh-autopair}/share/zsh/zsh-autopair/autopair.zsh"
-    "${emoji-cli}/emoji-cli.plugin.zsh"
   ];
 
   sourcePlugins = ''

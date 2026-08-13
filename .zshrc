@@ -363,10 +363,6 @@ if (( ! $+commands[atuin] )); then
   _bindkey_if_widget history-search-multi-word '^r' emacs viins vicmd
 fi
 
-# Ctrl-S: emoji picker (emoji-cli). Note that some terminals swallow Ctrl-S as
-# XOFF flow control; `stty -ixon` frees it up.
-_bindkey_if_widget emoji::cli '^s' viins
-
 # Press vv to edit the command line in $EDITOR (zsh's own edit-command-line,
 # autoloaded above; used to come from Prezto's editor module).
 _bindkey_if_widget edit-command-line 'vv' vicmd
