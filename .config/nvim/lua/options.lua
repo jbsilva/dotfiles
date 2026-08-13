@@ -156,6 +156,23 @@ if vim.fn.has('nvim-0.11') == 1 then
 end
 
 ------------------------------------------------------------------------------
+--> Folding
+--
+-- Folds follow the syntax tree, using Neovim's own treesitter foldexpr -- no
+-- plugin involved. foldexpr returns 0 for filetypes without a parser, so those
+-- simply have no folds.
+--
+-- zc close, zo open, zR open all, zM close all, za toggle.
+------------------------------------------------------------------------------
+o.foldmethod = 'expr'
+o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+-- Start with everything open; folding is opt-in per fold.
+o.foldlevelstart = 99
+-- Empty foldtext keeps the folded line syntax-highlighted (0.10+) instead of
+-- replacing it with a plain dashed summary.
+o.foldtext = ''
+
+------------------------------------------------------------------------------
 --> Custom filetypes
 ------------------------------------------------------------------------------
 vim.filetype.add({

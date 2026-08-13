@@ -61,6 +61,9 @@
       };
     };
 
-    linux-builder.enable = true;
+    # Off: it keeps a NixOS VM resident (~1 GB RSS) and nothing here targets
+    # Linux. Containers go through Colima. Turn back on to build Linux
+    # derivations locally.
+    linux-builder.enable = false;
   };
 }

@@ -198,7 +198,6 @@ require('lazy').setup({
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-tree/nvim-web-devicons',
-      'nvim-telescope/telescope-symbols.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
       {
         -- Native C sorter: a large speedup on big repositories.
