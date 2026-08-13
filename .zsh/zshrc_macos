@@ -3,15 +3,24 @@ if [[ "$OSTYPE" != darwin* ]]; then
   return 1
 fi
 
-# Google-cloud-sdk
-if [ -d $(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk ]; then
-  source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-  source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+# `brew --prefix` costs ~11 ms: it starts Ruby just to print a constant. Use the
+# HOMEBREW_PREFIX that `brew shellenv` already exported, and only fall back to
+# asking brew on a machine where nothing has run shellenv.
+if [[ -z $HOMEBREW_PREFIX ]] && (( $+commands[brew] )); then
+  export HOMEBREW_PREFIX="$(brew --prefix)"
 fi
 
-# Homebrew completions
-if (( $+commands[brew] )); then
-  fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
+# Google-cloud-sdk
+if [[ -n $HOMEBREW_PREFIX ]]; then
+  _gcloud="$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
+  if [[ -d $_gcloud ]]; then
+    source "$_gcloud/path.zsh.inc"
+    source "$_gcloud/completion.zsh.inc"
+  fi
+  unset _gcloud
+
+  # Homebrew completions
+  fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
 fi
 
 ###############################################################################

@@ -1,16 +1,10 @@
 { ... }:
 let
-  # Homebrew's shellenv plus Nix profile precedence. Identical for login and
-  # interactive shells, so it is defined once and reused by both hooks below.
-  # Both blocks are idempotent, which matters because a login+interactive shell
-  # (a normal terminal) runs them back to back.
-  brewAndNixPath = ''
-    # Ensure Homebrew environment (PATH, MANPATH, INFOPATH) is set up
-    if [ -x /opt/homebrew/bin/brew ]; then
-      eval "$(! /opt/homebrew/bin/brew shellenv 2>/dev/null || /opt/homebrew/bin/brew shellenv)"
-    fi
-
-    # Ensure Nix paths take precedence over macOS and Homebrew.
+  # Nix profiles ahead of macOS and Homebrew. Runs after whatever set up
+  # Homebrew, so it has to be repeated in both hooks below rather than folded
+  # into the Homebrew block; it is idempotent, which matters because a
+  # login+interactive shell (a normal terminal) runs both back to back.
+  nixPathPrecedence = ''
     # Use zsh's $path array for reliable de-duplication and ordering.
     if [ -n "$ZSH_VERSION" ]; then
       typeset -U path
@@ -39,7 +33,14 @@ in
         eval "$(/usr/libexec/path_helper -s)"
       fi
 
-      ${brewAndNixPath}
+      # Ensure Homebrew environment (PATH, MANPATH, INFOPATH) is set up.
+      # Only in the login hook: nix-homebrew's own zsh integration already emits
+      # `brew shellenv` into /etc/zshrc, which covers every interactive shell.
+      if [ -x /opt/homebrew/bin/brew ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      fi
+
+      ${nixPathPrecedence}
     '';
 
     interactiveShellInit = ''
@@ -53,7 +54,7 @@ in
         esac
       fi
 
-      ${brewAndNixPath}
+      ${nixPathPrecedence}
     '';
   };
 }
