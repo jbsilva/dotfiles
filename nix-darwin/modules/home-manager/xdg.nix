@@ -48,8 +48,6 @@ in
     "gh/config.yml".source = link "gh/config.yml";
     "gh/hosts.yml".source = link "gh/hosts.yml";
 
-    # See activation/homebrew-trust.nix for why this one is tracked at all.
-    "homebrew/trust.json".source = link "homebrew/trust.json";
 
     "pypoetry/config.toml".source = link "pypoetry/config.toml";
 

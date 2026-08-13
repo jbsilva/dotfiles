@@ -8,6 +8,7 @@
     ./packages.nix
     ./fonts.nix
     ./homebrew.nix
+    ./homebrew-trust.nix
     ./nix.nix
     ./security.nix
     ./system/meta.nix

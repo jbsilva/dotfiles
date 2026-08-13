@@ -26,7 +26,6 @@
           ./activation/disable-onedrive.nix
           ./activation/disable-adobe-creative-cloud.nix
           ./activation/tflint-plugins.nix
-          ./activation/homebrew-trust.nix
         ];
 
         home.username = "julio";

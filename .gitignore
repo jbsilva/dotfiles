@@ -51,7 +51,6 @@
 # Tooling
 !/.config/gh/config.yml
 !/.config/gh/hosts.yml
-!/.config/homebrew/trust.json
 !/.config/pypoetry/config.toml
 
 # -----------------------------------------------------------------------------
