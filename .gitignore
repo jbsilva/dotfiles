@@ -1,14 +1,20 @@
 # =============================================================================
 # .gitignore
 #
-# IMPORTANT: ~/.config is a symlink to this repo's .config/ directory, so every
-# application on this machine writes its runtime state *inside the repo*. A
-# deny-list is unsafe here: any newly installed app silently drops files (often
-# containing tokens, cookies or session state) into a tracked directory, and one
-# `git add -A` publishes them.
+# ~/.config is a real directory. Only the files listed below are linked back
+# into it from this repo, one by one, by
+# nix-darwin/modules/home-manager/xdg.nix.
 #
-# Therefore .config/ uses an ALLOW-LIST: everything is ignored, git is allowed
-# to descend into directories, and only explicitly listed files are trackable.
+# It used to be a single symlink to this repo's .config/, which meant every
+# application wrote its runtime state inside the repo -- Colima's 18 GB VM image
+# included -- and one `git add -A` could publish whatever tokens or session
+# state those apps had dropped there.
+#
+# .config/ still uses an ALLOW-LIST rather than a deny-list. It is no longer the
+# only thing standing between an app and the repo, but the linked paths *are*
+# still written to (VS Code rewrites settings.json, lazy.nvim writes
+# lazy-lock.json), so it remains the cheapest way to be sure only intended
+# files are ever committed.
 #
 # To track a new config file:
 #   1. add a `!/.config/path/to/file` line in the allow-list below

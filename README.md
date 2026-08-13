@@ -10,31 +10,46 @@ just check      # lint, spell-check and scan for secrets
 
 ---
 
-## Read this first: `~/.config` is a symlink into this repo
+## How `~/.config` is wired
+
+`~/.config` is a **real directory**. Individual files are linked back into it
+from this repo by `nix-darwin/modules/home-manager/xdg.nix`:
 
 ```
-~/.config -> ~/dotfiles/.config
-~/.zsh    -> ~/dotfiles/.zsh
+~/.config/nvim                    -> ~/dotfiles/.config/nvim
+~/.config/Code/User/settings.json -> ~/dotfiles/.config/Code/User/settings.json
+~/.config/gh/hosts.yml            -> ~/dotfiles/.config/gh/hosts.yml
+...
+~/.zsh                            -> ~/dotfiles/.zsh          (still a whole dir)
 ```
 
-Every application on the machine therefore writes its runtime state **inside a
-git repository**. Colima's VM image alone is ~18 GB in `.config/colima/`.
+It used to be one symlink, `~/.config -> ~/dotfiles/.config`, which meant every
+application wrote its runtime state **inside the git repo** — Colima's VM image
+alone was 18 GB of it. Switching to per-file links took the repo from 19 GB to
+12 MB and stopped Linux-only files from appearing on macOS.
 
-Because of that, `.gitignore` is an **allow-list**, not a deny-list: everything
-under `.config/` is ignored, git is allowed to descend into directories, and
-only explicitly listed files are trackable.
+The links use home-manager's `mkOutOfStoreSymlink`, not the usual
+`home.file.source`, because these files have to stay **writable and live**: VS
+Code rewrites `settings.json`, `gh` rewrites `hosts.yml`, lazy.nvim writes
+`lazy-lock.json`. A normal `home.file` would point at a read-only `/nix/store`
+path, and editing a config would need a rebuild to take effect.
 
-To start tracking a new config file:
+**Granularity rule:** link a whole directory only when it is entirely ours
+(`nvim`). Where an application keeps its own state alongside our config (VS
+Code's `globalStorage/`, `gh`'s `state.yml`), link the individual files so that
+state stays out of the repo.
+
+To track a new config file:
 
 1. add a `!/.config/path/to/file` line to the allow-list in `.gitignore`
-2. `git add .config/path/to/file`
+2. add a `"path/to/file".source = link "path/to/file";` entry to `xdg.nix`
+3. `git add .config/path/to/file && just switch`
 
 `git check-ignore -v <path>` explains why any given path is ignored.
 
-> **Why an allow-list?** With a deny-list, every newly installed application
-> silently drops files into a tracked directory, and a single `git add -A`
-> publishes whatever tokens, cookies or session state they happen to contain.
-> The allow-list fails closed instead.
+> `.gitignore` still uses an **allow-list** for `.config/`. It is no longer the
+> only thing between an app and the repo, but the linked paths are still written
+> to, so it stays the cheapest way to be sure only intended files get committed.
 
 A `pre-commit` hook (`.githooks/pre-commit`) runs [gitleaks] on staged changes
 as a second line of defence, since `git add -f` bypasses `.gitignore`. Enable it
