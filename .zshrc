@@ -444,6 +444,48 @@ zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
 # bindkey -M <keymap> will list all the bindings in a given keymap.
 # zle -al lists all registered zle commands
 ###############################################################################
+# --- navigation keys ---------------------------------------------------------
+# vi mode leaves Home/End/Delete/Insert unbound in some terminals. Take the
+# sequences from terminfo where the terminal reports them, and fall back to the
+# common xterm ones, then bind in every keymap.
+zmodload zsh/terminfo
+typeset -A _keys
+_keys=(
+  Home     "${terminfo[khome]:-^[[H}"
+  End      "${terminfo[kend]:-^[[F}"
+  Delete   "${terminfo[kdch1]:-^[[3~}"
+  Insert   "${terminfo[kich1]:-^[[2~}"
+  PageUp   "${terminfo[kpp]:-^[[5~}"
+  PageDown "${terminfo[knp]:-^[[6~}"
+  Backward "${terminfo[kcub1]:-^[[D}"
+  Forward  "${terminfo[kcuf1]:-^[[C}"
+)
+for _keymap in emacs viins vicmd; do
+  bindkey -M $_keymap "$_keys[Home]"     beginning-of-line
+  bindkey -M $_keymap "$_keys[End]"      end-of-line
+  bindkey -M $_keymap "$_keys[Delete]"   delete-char
+  bindkey -M $_keymap "$_keys[Insert]"   overwrite-mode
+  bindkey -M $_keymap "$_keys[PageUp]"   up-line-or-history
+  bindkey -M $_keymap "$_keys[PageDown]" down-line-or-history
+  bindkey -M $_keymap "$_keys[Backward]" backward-char
+  bindkey -M $_keymap "$_keys[Forward]"  forward-char
+done
+unset _keymap _keys
+
+# --- url-quote-magic: quote URLs as they are typed ---------------------------
+# Without it, the ?, & and * in a pasted URL are treated as glob characters.
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
+
+# --- Alt-S: prepend sudo to the current line ---------------------------------
+function prepend-sudo() {
+  [[ $BUFFER != sudo\ * ]] && BUFFER="sudo $BUFFER" && (( CURSOR += 5 ))
+}
+zle -N prepend-sudo
+bindkey -M emacs '\es' prepend-sudo
+bindkey -M viins '\es' prepend-sudo
+bindkey -M vicmd '\es' prepend-sudo
+
 # Bind only widgets that exist: which plugins are present varies by machine,
 # and binding a missing widget errors on every shell start.
 function _bindkey_if_widget() {
@@ -467,10 +509,32 @@ _bindkey_if_widget edit-command-line 'vv' vicmd
 ###############################################################################
 # Options
 ###############################################################################
+# --- directories ---
 setopt autocd            # Allow changing directories without `cd`
+setopt auto_pushd        # `cd` pushes onto the stack, so `cd -` and `d` work
 setopt pushd_ignore_dups # Dont push copies of the same dir on stack.
 setopt pushd_minus       # Reference stack entries with "-".
+setopt pushd_silent      # No stack dump after every cd
+setopt pushd_to_home     # Bare `pushd` goes home, like bare `cd`
+setopt cdable_vars       # `cd myvar` when myvar holds a path
 setopt extended_glob
+
+# `d` lists the stack; 1-9 jump to an entry.
+alias d='dirs -v'
+for _i in {1..9}; do alias "$_i"="cd -$_i"; done
+unset _i
+
+# --- interactive niceties ---
+setopt interactive_comments # Allow `# comment` on the command line
+setopt combining_chars      # Draw accented characters as one glyph
+setopt rc_quotes            # 'Henry''s' instead of 'Henry'\''s'
+unsetopt mail_warning
+
+# --- job control ---
+setopt long_list_jobs   # `jobs` in the long format
+setopt auto_resume      # Resume a suspended job instead of starting a new one
+unsetopt hup            # Background jobs survive the shell exiting
+unsetopt check_jobs     # No "you have running jobs" nag on exit
 
 
 ###############################################################################
@@ -488,6 +552,8 @@ setopt hist_ignore_dups       # Ignore consecutive duplicates.
 setopt hist_ignore_all_dups   # Remember only one unique copy of the command.
 setopt hist_reduce_blanks     # Remove superfluous blanks.
 setopt hist_save_no_dups      # Omit older commands in favor of newer ones.
+setopt hist_ignore_space      # A leading space keeps a command out of history.
+setopt hist_verify            # Show `!!` expansions instead of running them.
 
 
 ###############################################################################
@@ -577,6 +643,14 @@ alias sha256='shasum -a 256'
 alias wget='wget -c' # Resume wget by default
 
 alias ack='ack --ignore-dir=".mypy_cache"'
+
+# noglob: type unquoted globs without zsh expanding them first,
+# e.g. `find . -name *.txt` or `scp host:*.log .`
+alias find='noglob find'
+alias locate='noglob locate'
+alias rsync='noglob rsync'
+alias scp='noglob scp'
+alias sftp='noglob sftp'
 
 alias unzipall="unzip '*.zip'"
 

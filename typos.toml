@@ -33,3 +33,5 @@ Pn = "Pn"
 cleand = "cleand"
 # `ba` is a sed branch label in .zsh/mount_share.zsh (`:a;N;$!ba`).
 ba = "ba"
+# terminfo capability names used for key bindings in .zshrc.
+kend = "kend"
