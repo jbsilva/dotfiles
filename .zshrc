@@ -96,6 +96,12 @@ addToPathStart /usr/local/sbin
 addToPathStart $HOME/.local/bin
 addToPathStart $HOME/bin
 
+# pixi installs itself outside any package manager. Added here rather than
+# further down because the completion cache below has to see it on $PATH.
+if [[ -d $HOME/.pixi/bin ]]; then
+  addToPathStart $HOME/.pixi/bin
+fi
+
 # Neovim compiled from source
 if (( ! $+commands[nvim] )); then
   if [[ -d $HOME/.local/nvim/bin ]]; then
@@ -153,6 +159,43 @@ done
 unset _fp
 fpath=($HOME/.zsh/completions $fpath)
 
+# --- tool-generated completions ----------------------------------------------
+#
+# `eval "$(some-tool completion zsh)"` is the documented way to install these,
+# but it makes every shell fork the tool and then *parse* the generated
+# function. Parsing is the expensive half: 143 ms for pixi and 87 ms for uv,
+# measured with `zsh -i -x` and PS4 timestamps.
+#
+# Written into a directory on $fpath instead, so compinit autoloads each one
+# the first time that command is completed and startup pays nothing. The file
+# is only regenerated when the tool's binary is newer than it.
+_zcompcache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions"
+[[ -d $_zcompcache ]] || mkdir -p "$_zcompcache"
+fpath=("$_zcompcache" $fpath)
+
+# Set when a completion is (re)written, so compinit below rebuilds its dump
+# instead of reusing a cached one that predates the new file.
+_zcomp_fresh=0
+function _gen_completion() {
+  local name=$1 bin=$2
+  shift 2
+  local out="$_zcompcache/_$name"
+  (( $+commands[$bin] )) || return 0
+  [[ -s $out && $out -nt $commands[$bin] ]] && return 0
+  if "$@" >| "$out" 2>/dev/null; then
+    _zcomp_fresh=1
+  else
+    rm -f "$out"
+  fi
+}
+
+_gen_completion uv uv uv generate-shell-completion zsh
+_gen_completion uvx uvx uvx --generate-shell-completion zsh
+_gen_completion pixi pixi pixi completion --shell zsh
+
+unfunction _gen_completion
+unset _zcompcache
+
 # compinit is the single most expensive step in zsh startup because it stats
 # every file in $fpath. Rebuild the dump at most once a day and use the cached
 # dump (-C skips the security audit) the rest of the time.
@@ -160,16 +203,14 @@ autoload -Uz compinit
 _zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
 mkdir -p "${_zcompdump:h}"
 # glob qualifiers: N = null_glob, mh-24 = modified less than 24 hours ago
-if [[ -n ${_zcompdump}(#qN.mh-24) ]]; then
+if (( ! _zcomp_fresh )) && [[ -n ${_zcompdump}(#qN.mh-24) ]]; then
   compinit -C -d "$_zcompdump"
 else
   compinit -d "$_zcompdump"
   # Compile the dump so subsequent shells load bytecode instead of parsing it.
   { zcompile -R -- "$_zcompdump" } &!
 fi
-unset _zcompdump
-
-autoload -Uz bashcompinit && bashcompinit
+unset _zcompdump _zcomp_fresh
 
 
 ###############################################################################
@@ -966,27 +1007,11 @@ fi
 
 
 ###############################################################################
-#                                Pixi
+#                            pixi, uv and uvx
+#
+# $PATH is set in the Vars section; their completions are cached onto $fpath by
+# the Completions section, which is why nothing is needed here.
 ###############################################################################
-if [[ -d $HOME/.pixi/bin ]]; then
-  addToPathStart $HOME/.pixi/bin
-fi
-
-if (( $+commands[pixi] )); then
-  eval "$(pixi completion --shell zsh)"
-fi
-
-
-###############################################################################
-#                               uv and uvx
-###############################################################################
-if (( $+commands[uv] )); then
-  eval "$(uv generate-shell-completion zsh)"
-fi
-
-if (( $+commands[uvx] )); then
-  eval "$(uvx --generate-shell-completion zsh)"
-fi
 
 
 ###############################################################################
