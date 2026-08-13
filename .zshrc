@@ -778,17 +778,7 @@ alias git-remove-merged='git branch --merged master | grep -E -v "(^\*|master|ma
 alias git-remove-remote-merged-to-master-keep='git fetch --prune origin && git branch -r --merged | grep -E -v "(^\*|master|main|dev|develop|testing)" | sed "s/origin\///" | xargs -n 1 git push --delete origin'
 alias git-remove-remote-merged-to-master='git fetch --prune origin && git branch -r --merged | grep -E -v "(^\*|master|main)" | sed "s/origin\///" | xargs -n 1 git push --delete origin'
 
-# supercrabtree/k, if it happens to be installed on this machine.
-if (( $+functions[k] )); then
-  # _k: original k
-  #  k: human readable, without Git (faster)
-  # kk: human readable, with Git
-  eval "$(echo "_k() {"; declare -f k | tail -n +2)"
-  alias kk="_k --human --group-directories-first"
-  alias k="_k --human --group-directories-first --no-vcs"
-fi
-
-# eza takes over k/kk when available. `lt` stays `ls -ltr` from above.
+# eza provides k/kk. `lt` stays `ls -ltr` from above.
 if (( $+commands[eza] )); then
   alias k='eza --long --header --group-directories-first --git'
   alias kk='eza --long --header --group-directories-first --git --all'
@@ -915,15 +905,6 @@ alias CAT='echo "=^.^=\n"'
 
 
 ###############################################################################
-#                                Powerlevel10k
-###############################################################################
-# case $(tty) in
-#   (/dev/tty[1-9]) [[ -f ~/.p10k_console.zsh ]] && source ~/.p10k_console.zsh;;
-#               (*) [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh;;
-#           esac
-
-
-###############################################################################
 #                                Starship
 ###############################################################################
 if (( $+commands[starship] )); then
@@ -1010,19 +991,6 @@ fi
 
 
 ###############################################################################
-#                                asdf
-###############################################################################
-# if (( $+commands[asdf] )); then
-#   export ASDF_DATA_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
-#   addToPathStart ${ASDF_DATA_DIR}/shims
-
-#   if [[ ! -f "$HOME/.zsh/completions/_asdf" ]]; then
-#     asdf completion zsh > "$HOME/.zsh/completions/_asdf"
-#   fi
-# fi
-
-
-###############################################################################
 #                            pixi, uv and uvx
 #
 # $PATH is set in the Vars section; their completions are cached onto $fpath by
@@ -1043,15 +1011,6 @@ fi
 
 
 ###############################################################################
-#                                gnome-keyring
-# Wait for systemd --user dbus session and unlock keyring
-###############################################################################
-# if (( $+commands[gnome-keyring-daemon] )); then
-#   eval $(echo -n db | gnome-keyring-daemon --unlock 2> /dev/null)
-# fi
-
-
-###############################################################################
 #                       Toolchain versions: mise, else nvm
 #
 # mise (https://mise.jdx.dev) manages node, python and go versions from a
@@ -1066,16 +1025,6 @@ elif [[ -d "$HOME/.config/nvm" ]]; then
   export NVM_DIR="$HOME/.config/nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-fi
-
-
-###############################################################################
-#                                WSL
-###############################################################################
-
-# Open Windows browser. Install wslu first: `sudo apt install wslu`
-if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
-  export BROWSER=wslview
 fi
 
 
@@ -1108,16 +1057,6 @@ fi
 if (( $+commands[aws_completer] )); then
   complete -C aws_completer aws
 fi
-
-###############################################################################
-#                               Pants completions
-###############################################################################
-if (( $+commands[pants] )); then
-  if [[ ! -f "$HOME/.zsh/completions/_pants" ]]; then
-    pants complete --shell=zsh > "$HOME/.zsh/completions/_pants"
-  fi
-fi
-
 
 ###############################################################################
 #                               Claude
