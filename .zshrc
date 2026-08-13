@@ -387,6 +387,73 @@ fi
 
 
 ###############################################################################
+#                            Completion behaviour
+#
+# This is what Prezto's `completion` module used to configure. Losing it is why
+# `cd ~/dev<TAB>` stopped completing to ~/Dev.
+#
+# Set after LS_COLORS above, because the completion list borrows its colours.
+###############################################################################
+
+# --- matching: case-insensitive, then partial-word, then substring -----------
+#
+# Tried in order; zsh only moves to the next rule if the previous finds nothing.
+#   m:{a-zA-Z-_}={A-Za-z_-}  case-insensitive, and - and _ interchangeable,
+#                            so `cd ~/dev` completes ~/Dev and `foo-bar`
+#                            matches `foo_bar`
+#   r:|=*                    partial word: `usr/lo/b` -> `usr/local/bin`
+#   l:|=* r:|=*              substring: `mkdir` matches `_mkdir`
+zstyle ':completion:*' matcher-list \
+  'm:{a-zA-Z-_}={A-Za-z_-}' \
+  'r:|=*' \
+  'l:|=* r:|=*'
+
+# Globbing is a separate mechanism from completion, and also case-sensitive by
+# default: without this, `ls ~/dev/*` still fails where `~/Dev` is the real
+# directory. Prezto unset it too. Comment out to get case-sensitive globs back.
+unsetopt CASE_GLOB
+
+# --- options ----------------------------------------------------------------
+setopt COMPLETE_IN_WORD   # complete from both ends of the word, not just the end
+setopt ALWAYS_TO_END      # after completing, put the cursor at the end
+setopt AUTO_MENU          # a second <TAB> starts cycling through the matches
+setopt AUTO_LIST          # list choices when the completion is ambiguous
+setopt AUTO_PARAM_SLASH   # completed directory gets a trailing slash
+setopt PATH_DIRS          # search $PATH even for commands containing a slash
+unsetopt MENU_COMPLETE    # do not silently insert the first match
+unsetopt FLOW_CONTROL     # free up ^S/^Q, which XOFF/XON would otherwise eat
+
+# --- presentation -----------------------------------------------------------
+zstyle ':completion:*' menu select                      # arrow-key selectable menu
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}   # colour matches like ls
+zstyle ':completion:*' group-name ''                    # group by type...
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages'     format ' %F{purple}-- %d --%f'
+zstyle ':completion:*:warnings'     format ' %F{red}-- no matches --%f'
+zstyle ':completion:*:corrections'  format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:options' description yes
+
+# --- cache: makes completion for big commands noticeably faster -------------
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion::complete:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
+
+# --- per-command tweaks -----------------------------------------------------
+# cd: offer local directories first, then the directory stack.
+zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+# Do not offer the current directory as a completion for `cd ../`.
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+# kill/ps: complete on this user's processes, with the command line visible.
+zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w'
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:*:kill:*' force-list always
+# man: split the sections instead of one flat list.
+zstyle ':completion:*:manuals' separate-sections true
+# Internal helpers are noise.
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+
+
+###############################################################################
 #                                 Keybindings
 # bindkey -l will give you a list of existing keymap names.
 # bindkey -M <keymap> will list all the bindings in a given keymap.
@@ -728,7 +795,9 @@ fi
 ###############################################################################
 if (( $+commands[carapace] )); then
   export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
-  zstyle ':completion:*' format $'\e[2m%d\e[0m'
+  # The group headings carapace emits are styled by the ':completion:*'
+  # descriptions/messages formats set in the completion section above; carapace
+  # used to set a plain ':completion:*' format here, which overrode them.
   source <(carapace _carapace zsh)
 fi
 
