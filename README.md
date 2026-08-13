@@ -125,6 +125,12 @@ management is split three ways on purpose:
 - **home-manager** (`modules/home-manager/`) — per-user config: git, gnupg, direnv, zsh, plus
   `activation/` scripts for things macOS offers no API for (default apps, removing login items).
 
+Homebrew 6 refuses formulae and casks from non-official taps unless they are trusted. nix-darwin
+handles that declaratively — every Brewfile entry it generates carries `trusted: true` — so nothing
+here writes a `trust.json`. The one workaround left is mirroring `nix-homebrew`'s taps into
+`homebrew.taps`, because `brew bundle cleanup` still untaps anything the Brewfile does not mention,
+and untapping `homebrew/cask` force-uninstalls every cask that came from it.
+
 ### Everyday commands
 
 ```sh
@@ -207,7 +213,11 @@ opkg install zsh-autosuggestions zsh-syntax-highlighting
 | `z-shell/zsh-diff-so-fancy`                                                   | `delta`                                                        |
 | `b4b4r07/emoji-cli`                                                           | pinned `fetchFromGitHub` (unmaintained since 2017)             |
 
-Startup went from **1.71 s to 0.48 s** (`just bench-shell`).
+Startup went from **1.71 s** under zplug to **0.38 s** (`just bench-shell`).
+
+The remaining cost is mostly plugins. The two things that used to dominate are gone: `uv`, `uvx` and
+`pixi` completions are cached onto `$fpath` instead of being `eval`ed in every shell (~230 ms), and
+`brew` no longer runs four times per shell (~40 ms). See the Completions section of `.zshrc`.
 
 > `programs.zsh.plugins` is deliberately _not_ used. That option materialises plugins under
 > `~/.zsh/plugins`, and `~/.zsh` is a symlink into this repo, so it would write generated store
@@ -372,16 +382,25 @@ ______________________________________________________________________
 
 ```sh
 git clone --recurse-submodules git@github.com:jbsilva/dotfiles.git ~/dotfiles
-ln -s dotfiles/.config ~/.config
-ln -s dotfiles/.zsh    ~/.zsh
 cd ~/dotfiles && just hooks
-
-# macOS: install Nix, then
-just switch
 ```
 
-On Linux/WSL, `~/.gitconfig` should point at the matching `.gitconfig-<os>` file, and `.zshrc` (or
-`.zshrc_light`) is symlinked from `$HOME` directly.
+**macOS** — install Nix, then `just switch`. home-manager creates `~/.zshrc`, `~/.zshenv` and the
+per-file `~/.config` links itself; do not link anything by hand.
+
+**Linux / WSL / Synology** — there is no Nix here, so link the two shell paths and point git at the
+matching per-platform config:
+
+```sh
+ln -s ~/dotfiles/.zshrc ~/.zshrc
+ln -s ~/dotfiles/.zsh   ~/.zsh
+ln -s ~/dotfiles/.gitconfig-global ~/.gitconfig-global   # included by the per-OS gitconfig
+ln -s ~/dotfiles/linux/gitconfig   ~/.gitconfig          # or wsl/gitconfig
+```
+
+> Do **not** `ln -s ~/dotfiles/.config ~/.config`. That is what this repo used to do, and it is
+> exactly what the [`~/.config` section](#how-config-is-wired) above explains the move away from:
+> every application then writes its runtime state inside the git repo. Link individual files.
 
 [atuin]: https://atuin.sh
 [gitleaks]: https://github.com/gitleaks/gitleaks
