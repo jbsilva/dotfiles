@@ -55,8 +55,8 @@
     #
     # Loading is deliberately split in two, which is what upstream documents.
     # bashrcExtra lands before home-manager's `[[ $- == *i* ]] || return`, and
-    # initExtra lands after everything else, including the bash integrations
-    # that atuin, starship, zoxide and direnv inject into initExtra:
+    # initExtra lands after everything else, including every prompt and hook
+    # set up below:
     #
     #   source ble.sh --noattach   as early as possible
     #   ble-attach                 as late as possible
@@ -74,25 +74,51 @@
       fi
     '';
 
-    # mkOrder 2000, not mkAfter: direnv's module also uses mkAfter (order 1500)
-    # for its `direnv hook bash`, and between two mkAfter blocks the winner is
-    # just definition order. ble-attach has to be after every PROMPT_COMMAND
-    # manipulation, so it needs a strictly higher order.
-    initExtra = lib.mkOrder 2000 ''
-      if [[ -n ''${BLE_VERSION-} ]]; then
-        # Match the zsh setup: vi keys. `default_keymap` is the real option
-        # name; ble.sh turns it into `set -o vi` internally.
-        bleopt default_keymap=vi
-        # Show the suggestion as dimmed text ahead of the cursor, like
-        # zsh-autosuggestions does.
-        bleopt complete_auto_complete=1
-        bleopt complete_auto_delay=100
-        # Do not beep on every ambiguous completion.
-        bleopt edit_abell=
-        bleopt edit_vbell=
+    initExtra = lib.mkMerge [
+      # atuin and direnv reach bash on their own, because home-manager has
+      # modules for them and those modules write into programs.bash.initExtra.
+      # starship, zoxide and fzf do not: they are initialised by hand in
+      # .zshrc, which bash never reads, so without this bash had no prompt, no
+      # `z`, and no Ctrl-R/Ctrl-T bindings.
+      #
+      # Guarded on presence rather than hardcoded store paths: starship comes
+      # from Homebrew here, zoxide and fzf from nixpkgs.
+      ''
+        if command -v starship >/dev/null 2>&1; then
+          eval "$(starship init bash)"
+        fi
 
-        ble-attach
-      fi
-    '';
+        if command -v zoxide >/dev/null 2>&1; then
+          eval "$(zoxide init bash)"
+        fi
+
+        # Since fzf 0.48 the shell integration is emitted by `fzf --bash`.
+        if command -v fzf >/dev/null 2>&1; then
+          eval "$(fzf --bash)"
+        fi
+      ''
+
+      # mkOrder 2000, not mkAfter: direnv's module also uses mkAfter (order
+      # 1500) for its `direnv hook bash`, and between two mkAfter blocks the
+      # winner is just definition order. ble-attach has to run after every
+      # PROMPT_COMMAND manipulation -- starship's included -- so it needs a
+      # strictly higher order than all of them.
+      (lib.mkOrder 2000 ''
+        if [[ -n ''${BLE_VERSION-} ]]; then
+          # Match the zsh setup: vi keys. `default_keymap` is the real option
+          # name; ble.sh turns it into `set -o vi` internally.
+          bleopt default_keymap=vi
+          # Show the suggestion as dimmed text ahead of the cursor, like
+          # zsh-autosuggestions does.
+          bleopt complete_auto_complete=1
+          bleopt complete_auto_delay=100
+          # Do not beep on every ambiguous completion.
+          bleopt edit_abell=
+          bleopt edit_vbell=
+
+          ble-attach
+        fi
+      '')
+    ];
   };
 }

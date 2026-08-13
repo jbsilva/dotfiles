@@ -32,7 +32,7 @@
     fd # far friendlier and faster `find`
     sd # sed for humans: literal strings by default, no escaping hell
     dust # visual `du`
-    duf # readable `df`
+    duf # readable `df`. Alternative: `dysk`
     btop # .zshrc aliases htop -> btop
     procs # `ps` with colour, tree view and search
     ripgrep # fast grep (already relied on by nvim/telescope)
