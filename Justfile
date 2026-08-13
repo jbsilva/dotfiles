@@ -95,17 +95,11 @@ fmt: lint
 
 # Install the git hooks (run once per clone)
 hooks:
-    # An earlier version of this repo pointed core.hooksPath at .githooks/.
-    # prek installs into .git/hooks/, which git ignores while hooksPath is set,
-    # so clear it or the hooks silently never run.
+    # prek installs into .git/hooks/, which git ignores if core.hooksPath is
+    # set to anything else.
     -git config --unset core.hooksPath
     prek install
     @echo "prek hooks installed"
-
-# Nix provides only the rustup binary; the toolchains themselves live in
-# ~/.rustup so that rust-toolchain.toml, nightly and extra targets work.
-# rust-src and rust-analyzer come from the toolchain so they never drift out of
-# sync with rustc.
 
 # Install the default Rust toolchain and its components (run once)
 rust-setup:

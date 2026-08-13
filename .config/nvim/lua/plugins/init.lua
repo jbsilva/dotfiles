@@ -1,26 +1,12 @@
 -------------------------------------------------------------------------------
 --> Plugin specification (lazy.nvim)
 --
--- Migrated from packer.nvim (archived Aug 2023) to lazy.nvim.
---
 -- Cheat sheet:
 --   :Lazy          open the UI          :Lazy sync     install + clean + update
 --   :Lazy update   update plugins       :Lazy profile  startup cost per plugin
 --   :Lazy health   check for problems   :Lazy clean    remove unused plugins
 --
--- Notable changes from the packer config, all because upstream moved on:
---   * vim-polyglot        -> nvim-treesitter (polyglot is unmaintained and
---                           actively fights treesitter highlighting)
---   * Comment.nvim        -> dropped; Neovim 0.10+ has gc/gcc built in
---   * lsp-zero.nvim       -> dropped; Neovim 0.11+ has vim.lsp.config/enable,
---                           which is what lsp-zero existed to paper over
---   * nvim-cmp + cmp-*    -> blink.cmp (one plugin, native fuzzy matching)
---   * vim-easymotion      -> flash.nvim (treesitter-aware, no <Plug> mappings)
---   * vim-surround        -> nvim-surround (maintained Lua rewrite)
---   * neoformat           -> conform.nvim (async, format-on-save)
---   * TimUntersberger/... -> NeogitOrg/neogit (repository moved)
---   * williamboman/mason  -> mason-org/mason (repository moved)
---   * gruvbox-community   -> ellisonleao/gruvbox.nvim (Lua rewrite)
+-- Commenting (gc/gcc/gbc) is built into Neovim, so no plugin provides it.
 -------------------------------------------------------------------------------
 require('plugins.bootstrap').ensure_lazy()
 
@@ -234,10 +220,9 @@ require('lazy').setup({
   ----------------------------------------------------------
   --> Treesitter: incremental parsing for highlighting and text objects
   --
-  --  Uses the `main` branch. The old `master` branch (and the
-  --  `nvim-treesitter.configs` module the previous config called) is
-  --  deprecated: parsers are now installed with :TSInstall / install() and
-  --  highlighting is started per-buffer via vim.treesitter.start().
+  --  On the `main` branch: parsers install via :TSInstall / install() and
+  --  highlighting starts per buffer through vim.treesitter.start().
+  --  Requires the tree-sitter CLI to build parsers.
   ----------------------------------------------------------
   {
     'nvim-treesitter/nvim-treesitter',

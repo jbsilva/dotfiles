@@ -3,21 +3,15 @@
   ###########################################################################
   # Default applications, via SwiftDefaultApps
   #
-  # Two things about `swda` shape this script:
+  # `swda` exits 0 whether it succeeds or fails, so success is detected by
+  # matching SUCCESS in its output.
   #
-  #   1. It ALWAYS exits 0, even when it prints
-  #      "SwiftDefaultApps ERROR -10810: An unknown error has occurred."
-  #      So success has to be detected by grepping its output. The previous
-  #      version tested the exit status, which meant its retry loop never
-  #      actually retried and every failure was silently swallowed by `|| true`.
+  # It reports "ERROR -10810" (kLSUnknownErr) both for a UTI LaunchServices
+  # does not know and for a transient failure while it is rebuilding its
+  # database. UTIs are checked against `swda getUTIs` up front so the two are
+  # distinguishable: unknown ones are skipped, the rest are retried.
   #
-  #   2. -10810 (kLSUnknownErr) is what it reports for a UTI LaunchServices
-  #      does not know. Retrying that forever is pointless, so UTIs are
-  #      validated against `swda getUTIs` first and unknown ones are reported
-  #      as such instead of burning three sleeps on a cryptic error.
-  #
-  # Output is quiet on success -- ~100 SUCCESS lines buried the five real
-  # failures. Only problems and a one-line summary are printed.
+  # Prints only problems and a one-line summary.
   ###########################################################################
   home.activation.setDefaultApps = ''
     SWDA_CMD="${pkgs.swiftdefaultapps}/bin/swda"
@@ -27,14 +21,11 @@
     else
       echo "Setting default applications using SwiftDefaultApps..."
 
-      # LaunchServices can be mid-rebuild right after Homebrew cask
-      # installs/upgrades or login item changes earlier in activation, which
-      # causes transient -10810. Let it settle.
+      # Cask installs earlier in activation leave LaunchServices rebuilding,
+      # which causes transient -10810. Let it settle.
       sleep 3
 
-      # An explicit template, not `mktemp -t swda-utis`: activation runs with
-      # Nix's coreutils ahead of /usr/bin, and GNU mktemp rejects a -t template
-      # without XXXXXX ("too few X's in template"). This form works on both.
+      # Explicit template: GNU mktemp requires XXXXXX, BSD mktemp accepts it.
       swdaKnownUTIs="$(mktemp "''${TMPDIR:-/tmp}/swda-utis.XXXXXX")"
       "$SWDA_CMD" getUTIs 2>/dev/null | cut -f1 | sort -u > "$swdaKnownUTIs"
 
@@ -43,8 +34,7 @@
       swdaFailed=0
       swdaProblems=""
 
-      # setHandler, retried on transient failures. Success is detected in the
-      # output because swda's exit status is meaningless.
+      # setHandler with backoff, for the transient failures.
       swda_try() {
         local label="$1"
         shift

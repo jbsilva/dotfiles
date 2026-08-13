@@ -6,33 +6,24 @@ let
 
   # Link ~/.config/<target> -> ~/dotfiles/.config/<target>.
   #
-  # mkOutOfStoreSymlink, not the usual `source = ./path`, because every one of
-  # these has to stay WRITABLE and live:
-  #   * VS Code rewrites settings.json whenever a setting changes
-  #   * gh rewrites hosts.yml on `gh auth`
-  #   * lazy.nvim writes lazy-lock.json into the nvim config dir
-  #   * `brew trust` writes trust.json
-  # A normal home.file would point at a read-only /nix/store path, so those
-  # writes would fail, and editing a config would need a rebuild to take effect.
+  # mkOutOfStoreSymlink rather than `source = ./path`, which would point at a
+  # read-only /nix/store path. These files are written by the applications
+  # themselves -- VS Code rewrites settings.json, gh rewrites hosts.yml on
+  # `gh auth`, lazy.nvim writes lazy-lock.json -- and editing one should take
+  # effect without a rebuild.
   link = target: config.lib.file.mkOutOfStoreSymlink "${dotfiles}/.config/${target}";
 in
 {
   ###########################################################################
   # XDG config
   #
-  # ~/.config used to be a single symlink to ~/dotfiles/.config, which meant
-  # every application on the machine wrote its runtime state inside the git
-  # repo -- Colima's ~18 GB VM image included -- and Linux-only files leaked
-  # onto macOS.
+  # ~/.config is a real directory, with only the files tracked in git linked
+  # back into it. Everything else an application writes there stays out of the
+  # repo.
   #
-  # ~/.config is now a real directory. Only the files actually tracked in git
-  # are linked back into it, one by one. Everything else an application creates
-  # stays outside the repo where it belongs.
-  #
-  # Granularity rule: link a whole directory only when the directory is
-  # entirely ours (nvim). Where an application keeps its own state alongside
-  # our config (VS Code's globalStorage, gh's state.yml), link the individual
-  # files so that state is not dragged into the repo.
+  # Granularity rule: link a whole directory only when it is entirely ours
+  # (nvim). Where an application keeps its own state alongside our config
+  # (VS Code's globalStorage, gh's state.yml), link the individual files.
   ###########################################################################
   xdg.configFile = {
     # Entirely ours, so link the directory. lazy-lock.json and the lazy/mason

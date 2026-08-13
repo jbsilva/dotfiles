@@ -1,8 +1,7 @@
 { pkgs, ... }:
 {
-  # Packages are grouped by purpose rather than alphabetically so it is obvious
-  # what is installed and why. Commented-out entries are deliberate records of
-  # things tried and rejected, or handled by Homebrew instead (see homebrew.nix).
+  # Grouped by purpose rather than alphabetically. Commented-out entries are
+  # deliberate: either rejected, or handled by Homebrew (see homebrew.nix).
   environment.systemPackages = with pkgs; [
     # -------------------------------------------------------------------------
     # Nix workflow
@@ -20,7 +19,7 @@
     # -------------------------------------------------------------------------
     # Secrets & safety
     # -------------------------------------------------------------------------
-    gitleaks # secret scanner; used by .githooks/pre-commit
+    gitleaks # secret scanner; run by the pre-commit hook
     age # modern, small file encryption
     sops # encrypted secrets in git, works with age
 
@@ -28,13 +27,13 @@
     # Modern replacements for classic tools
     # These do not shadow the originals; see .zshrc for the opt-in aliases.
     # -------------------------------------------------------------------------
-    eza # ls with git status, tree mode, icons (replaces the dead `k` plugin)
+    eza # ls with git status, tree mode and icons
     bat # cat with syntax highlighting and paging
     fd # far friendlier and faster `find`
     sd # sed for humans: literal strings by default, no escaping hell
-    dust # visual `du` (replaces the `list`/`listh` aliases)
+    dust # visual `du`
     duf # readable `df`
-    btop # replaces htop; .zshrc aliases htop -> btop
+    btop # .zshrc aliases htop -> btop
     procs # `ps` with colour, tree view and search
     ripgrep # fast grep (already relied on by nvim/telescope)
     dua # interactive disk usage browser -- the terminal DaisyDisk
@@ -52,7 +51,7 @@
     # -------------------------------------------------------------------------
     # Navigation & fuzzy finding
     # -------------------------------------------------------------------------
-    fzf # fuzzy finder (was installed out-of-band via ~/.fzf.zsh; now declarative)
+    fzf # fuzzy finder
     zoxide # frecency-based cd; initialised in .zshrc
     yazi # fast terminal file manager with previews
     carapace # completions for hundreds of CLIs; initialised in .zshrc
@@ -70,27 +69,21 @@
     # Development
     # -------------------------------------------------------------------------
     just # command runner; see the Justfile at the repo root
-    # Language server for justfiles. The VS Code extension recommended in
-    # .vscode/extensions.json looks for `just-lsp` on $PATH and never downloads
-    # anything itself, so pinning it here is what makes its LSP features work.
-    just-lsp
+    just-lsp # language server; the VS Code extension expects it on $PATH
     watchexec # re-run a command when files change
-    hyperfine # statistically sound benchmarking (used to measure zsh startup)
+    hyperfine # statistically sound benchmarking
     tokei # lines-of-code stats
     shfmt # shell script formatter
     stylua # Lua formatter, used by conform.nvim for this nvim config
     ruff # Python linter/formatter, used by conform.nvim
-    typos # source-code spell checker (this repo already has typos.toml)
+    typos # source-code spell checker; config in typos.toml
     actionlint # linter for GitHub Actions workflows
     prek # runs .pre-commit-config.yaml; drop-in pre-commit replacement in Rust
     ast-grep # structural search & rewrite, by syntax tree rather than regex
     tealdeer # `tldr` client: practical examples instead of full man pages
-    uv # fast Python package/venv manager (was installed out-of-band)
-    # Not installed here on purpose: `mise` would supersede the nvm block still
-    # in .zshrc (one tool for node/python/go versions, .tool-versions,
-    # per-directory activation), but nixpkgs has no darwin binary cached at the
-    # pinned revision, so it compiles for ~20 min on every flake update.
-    # Add it when the nvm block actually gets in the way.
+    uv # fast Python package/venv manager
+    # mise comes from Homebrew instead (see modules/homebrew.nix): nixpkgs has
+    # no cached darwin build at the pinned revision and compiles it from source.
     prettier
     openapi-generator-cli
     hclfmt
@@ -137,27 +130,17 @@
     go
     nodejs_24
 
-    # Rust, via rustup rather than a pinned nixpkgs toolchain.
+    # rustup rather than a pinned nixpkgs toolchain, because only rustup:
+    #   * honours rust-toolchain.toml (nixpkgs cargo ignores it silently)
+    #   * provides nightly and `rustup target add`
+    #   * keeps clippy/rustfmt/rust-analyzer/rust-src on the same toolchain
     #
-    # Rust does not need per-project versions for the reason Python does --
-    # the compiler is backwards compatible and breaking changes are gated
-    # behind editions, so a newer rustc still builds older crates. What it does
-    # need is toolchain *switching*, and rustup is the only thing that:
+    # Only the rustup binary is pinned; toolchains live in ~/.rustup, outside
+    # Nix. For a reproducible build of one project use a per-project flake
+    # (fenix/oxalica + crane).
     #
-    #   * honours rust-toolchain.toml. nixpkgs cargo ignores it silently, so a
-    #     local build can differ from CI without any warning.
-    #   * provides nightly (`cargo +nightly`) and extra targets
-    #     (`rustup target add wasm32-unknown-unknown`)
-    #   * keeps clippy/rustfmt/rust-analyzer/rust-src on the *same* toolchain,
-    #     so rust-analyzer never drifts out of sync with rustc
-    #
-    # Only the rustup binary is pinned here; the toolchains it downloads live in
-    # ~/.rustup and are deliberately outside Nix -- the same trade uv makes for
-    # Python interpreters. For a genuinely reproducible build of one project,
-    # use a per-project flake (fenix/oxalica + crane), not the global toolchain.
-    #
-    # Bootstrap once with `just rust-setup`.
-    # .zshrc already puts ~/.cargo/bin first, so the rustup shims win.
+    # Bootstrap with `just rust-setup`. .zshrc puts ~/.cargo/bin first, so the
+    # rustup shims win.
     rustup
 
     # -------------------------------------------------------------------------
@@ -180,7 +163,7 @@
     exiftool # photo metadata; drives the exif_* aliases in .zshrc
     file-rename
     renameutils # qmv/qcp, behind the qmv* aliases
-    ack # kept: the `ack` alias and muscle memory
+    ack
     # yt-dlp        # via Homebrew: updates far more often than nixpkgs
 
     # -------------------------------------------------------------------------
@@ -206,7 +189,7 @@
     notion-app
     slack
     opencode
-    git # kept explicitly: home-manager configures it, this provides the binary
+    git # home-manager configures it; this provides the binary
 
     # -------------------------------------------------------------------------
     # Handled elsewhere / deliberately disabled

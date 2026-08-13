@@ -15,7 +15,7 @@
 #           http://www.wtfpl.net/txt/copying for more details.
 #
 # Created:      12 Aug 2011
-# Last Change:  27 Jan 2026
+# Last Change:  13 Aug 2026
 #
 # Download: https://github.com/jbsilva/dotfiles
 ###############################################################################
@@ -130,14 +130,9 @@ export LC_ALL='en_US.UTF-8'
 
 # Terminal Emulator
 #
-# Do NOT overwrite $TERM here. Every modern terminal sets it correctly and
-# ships its own terminfo (ghostty -> xterm-ghostty, kitty -> xterm-kitty,
-# wezterm -> wezterm). Forcing xterm-256color throws away truecolor, undercurl
-# and styled-underline support.
-#
-# (The previous version detected the parent process with `ps -h -o comm`, but
-# BSD/macOS ps has no -h, so it kept the "COMM" header line, never matched
-# kitty, and unconditionally fell through to xterm-256color.)
+# Leave $TERM alone. Terminals set it themselves and ship matching terminfo
+# (ghostty -> xterm-ghostty, wezterm -> wezterm); overwriting it costs
+# truecolor and undercurl support.
 export term_emulator="${TERM_PROGRAM:-$(ps -o comm= -p $PPID 2>/dev/null)}"
 
 # Only provide a sane fallback when the terminal told us nothing useful.
@@ -224,11 +219,7 @@ unset _f
 # DOTFILES_PLUGINS_FROM_NIX=1). Everywhere else the plugins come from the
 # system package manager and are sourced from wherever it put them.
 #
-# This replaced zplug + Prezto, which cloned themselves over the network from
-# inside this file on first run, pinned nothing, and have both been unmaintained
-# for years.
-#
-# Install the plugins with the native package manager:
+# Install them with the native package manager:
 #   Arch      pacman -S zsh-autosuggestions zsh-syntax-highlighting \
 #                       zsh-history-substring-search zsh-completions
 #   Debian    apt install zsh-autosuggestions zsh-syntax-highlighting
@@ -293,11 +284,10 @@ fi
 
 
 ###############################################################################
-#                             Prezto replacements
+#                              Shell conveniences
 #
-# Prezto came with zplug and provided a lot of small things besides the plugins.
-# These are the pieces worth keeping, written out natively so they work on every
-# machine with or without a framework.
+# Small things a framework would normally provide, written out natively so they
+# work on every machine.
 ###############################################################################
 
 # --- editor: edit the current command line in $EDITOR (bound to `vv` below) ---
@@ -315,9 +305,8 @@ if [[ -z $DOTFILES_DISABLE_AUTO_TITLE ]]; then
 fi
 
 # --- archive: extract any archive with one command --------------------------
-# Prefers ouch (installed via Nix) which handles every format and shows
-# progress; falls back to the hand-rolled case statement on machines that only
-# have the base utilities, such as the NAS.
+# Uses ouch where available; falls back to the case statement below on
+# machines with only the base utilities, such as the NAS.
 function extract() {
   if (( $# == 0 )); then
     print "Usage: extract FILE..." >&2
@@ -389,18 +378,15 @@ fi
 ###############################################################################
 #                            Completion behaviour
 #
-# This is what Prezto's `completion` module used to configure. Losing it is why
-# `cd ~/dev<TAB>` stopped completing to ~/Dev.
-#
 # Set after LS_COLORS above, because the completion list borrows its colours.
 ###############################################################################
 
 # --- matching: case-insensitive, then partial-word, then substring -----------
 #
 # Tried in order; zsh only moves to the next rule if the previous finds nothing.
-#   m:{a-zA-Z-_}={A-Za-z_-}  case-insensitive, and - and _ interchangeable,
-#                            so `cd ~/dev` completes ~/Dev and `foo-bar`
-#                            matches `foo_bar`
+#   m:{a-zA-Z-_}={A-Za-z_-}  case-insensitive, and - and _ interchangeable:
+#                            `cd ~/dev` completes ~/Dev, `foo-bar` matches
+#                            `foo_bar`
 #   r:|=*                    partial word: `usr/lo/b` -> `usr/local/bin`
 #   l:|=* r:|=*              substring: `mkdir` matches `_mkdir`
 zstyle ':completion:*' matcher-list \
@@ -408,9 +394,8 @@ zstyle ':completion:*' matcher-list \
   'r:|=*' \
   'l:|=* r:|=*'
 
-# Globbing is a separate mechanism from completion, and also case-sensitive by
-# default: without this, `ls ~/dev/*` still fails where `~/Dev` is the real
-# directory. Prezto unset it too. Comment out to get case-sensitive globs back.
+# Globbing is separate from completion and case-sensitive by default, so
+# `ls ~/dev/*` would still miss ~/Dev. Comment out for case-sensitive globs.
 unsetopt CASE_GLOB
 
 # --- options ----------------------------------------------------------------
@@ -459,9 +444,8 @@ zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
 # bindkey -M <keymap> will list all the bindings in a given keymap.
 # zle -al lists all registered zle commands
 ###############################################################################
-# Bind only widgets that actually exist: binding a missing widget makes zsh
-# print an error on every shell start, and which plugins are present differs
-# between the Nix machines and the zplug ones.
+# Bind only widgets that exist: which plugins are present varies by machine,
+# and binding a missing widget errors on every shell start.
 function _bindkey_if_widget() {
   local widget="$1" key="$2" keymap
   (( $+widgets[$widget] )) || return 0
@@ -470,15 +454,13 @@ function _bindkey_if_widget() {
   done
 }
 
-# Ctrl-R: multi-word history search (zsh-history-search-multi-word).
-# Skipped when Atuin is installed, since Atuin takes Ctrl-R further down and
-# supersedes this. Binding it here anyway would just be dead configuration.
+# Ctrl-R: multi-word history search. Skipped when Atuin is installed, since
+# Atuin claims Ctrl-R further down.
 if (( ! $+commands[atuin] )); then
   _bindkey_if_widget history-search-multi-word '^r' emacs viins vicmd
 fi
 
-# Press vv to edit the command line in $EDITOR (zsh's own edit-command-line,
-# autoloaded above; used to come from Prezto's editor module).
+# Press vv to edit the command line in $EDITOR.
 _bindkey_if_widget edit-command-line 'vv' vicmd
 
 
@@ -523,7 +505,7 @@ Darwin)
   ;;
 Linux)
   # Synology DSM: /etc/synoinfo.conf is present on every DSM install and on
-  # nothing else. Checked before WSL because DSM is never WSL.
+  # nothing else. Checked before WSL: DSM is never WSL.
   if [[ -f /etc/synoinfo.conf ]]; then
     export DOTFILES_PLATFORM=synology
     [[ -f "$HOME/.zsh/zshrc_synology" ]] && source "$HOME/.zsh/zshrc_synology"
@@ -604,8 +586,7 @@ alias git-remove-merged='git branch --merged master | grep -E -v "(^\*|master|ma
 alias git-remove-remote-merged-to-master-keep='git fetch --prune origin && git branch -r --merged | grep -E -v "(^\*|master|main|dev|develop|testing)" | sed "s/origin\///" | xargs -n 1 git push --delete origin'
 alias git-remove-remote-merged-to-master='git fetch --prune origin && git branch -r --merged | grep -E -v "(^\*|master|main)" | sed "s/origin\///" | xargs -n 1 git push --delete origin'
 
-# Supercrabtree/k (unmaintained since 2019) -- superseded by eza below.
-# Kept behind a guard so the aliases still work if the zplug plugin is present.
+# supercrabtree/k, if it happens to be installed on this machine.
 if (( $+functions[k] )); then
   # _k: original k
   #  k: human readable, without Git (faster)
@@ -615,17 +596,16 @@ if (( $+functions[k] )); then
   alias k="_k --human --group-directories-first --no-vcs"
 fi
 
-# eza: actively maintained ls replacement. Overrides k/kk when available.
-# `lt` is deliberately left alone (it is `ls -ltr` above).
+# eza takes over k/kk when available. `lt` stays `ls -ltr` from above.
 if (( $+commands[eza] )); then
   alias k='eza --long --header --group-directories-first --git'
   alias kk='eza --long --header --group-directories-first --git --all'
   alias ltree='eza --tree --level=3'
-  # tree is no longer installed; eza does it better and respects .gitignore.
+  # eza respects .gitignore and colours by file type.
   (( ! $+commands[tree] )) && alias tree='eza --tree'
 fi
 
-# btop replaces htop. Keep the old name working out of muscle memory.
+# btop under the old name, out of muscle memory.
 if (( $+commands[btop] )) && (( ! $+commands[htop] )); then
   alias htop='btop'
 fi
@@ -777,9 +757,8 @@ fi
 # Configured declaratively on the Nix machines, see
 # nix-darwin/modules/home-manager/programs/atuin.nix
 #
-# Initialised here rather than by home-manager so it runs *after* the
-# keybindings section above and therefore wins Ctrl-R, and so the non-Nix
-# machines pick it up as soon as the binary is on PATH.
+# Initialised here rather than by home-manager so it runs after the keybindings
+# section and therefore claims Ctrl-R, and so non-Nix machines pick it up too.
 #
 # --disable-up-arrow keeps Up bound to zsh-history-substring-search, which
 # matches on the prefix already typed. Ctrl-R is the full search.
@@ -795,9 +774,7 @@ fi
 ###############################################################################
 if (( $+commands[carapace] )); then
   export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
-  # The group headings carapace emits are styled by the ':completion:*'
-  # descriptions/messages formats set in the completion section above; carapace
-  # used to set a plain ':completion:*' format here, which overrode them.
+  # Group headings are styled by the ':completion:*' formats set above.
   source <(carapace _carapace zsh)
 fi
 
@@ -894,16 +871,11 @@ fi
 ###############################################################################
 #                       Toolchain versions: mise, else nvm
 #
-# mise (https://mise.jdx.dev) manages node, python, go and the rest from a
-# single .tool-versions/mise.toml, and activates per directory. It supersedes
-# both nvm and asdf, so it is tried first and nvm is only loaded when mise is
-# absent -- running both would give two things fighting over the node on $PATH.
+# mise (https://mise.jdx.dev) manages node, python and go versions from a
+# single .tool-versions/mise.toml, activated per directory. nvm loads only when
+# mise is absent: running both leaves two tools fighting over the node on $PATH.
 #
-# Installed via Homebrew (see nix-darwin/modules/homebrew.nix), which ships a
-# bottle and tracks upstream releases faster than nixpkgs does.
-#
-# Migrating off nvm:
-#   mise use --global node@lts      # then remove ~/.config/nvm
+#   mise use --global node@lts      # then ~/.config/nvm can go
 ###############################################################################
 if (( $+commands[mise] )); then
   eval "$(mise activate zsh)"

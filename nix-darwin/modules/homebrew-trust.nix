@@ -23,28 +23,21 @@ in
   ###########################################################################
   # Homebrew trust store
   #
-  # Written as a REAL file, declaratively, before `brew bundle` runs.
+  # Homebrew validates this file strictly (Library/Homebrew/trust.rb):
   #
-  # It used to be a tracked JSON file in .config/homebrew/ that got symlinked
-  # into place. That broke once ~/.config became a real directory with per-file
-  # links, because Homebrew's rules for the trust store are strict
-  # (Library/Homebrew/trust.rb):
-  #
-  #   * the path may be a symlink, but its target must NOT itself be a symlink
+  #   * the path may be a symlink, but its target must not itself be a symlink
   #   * the file and its directory must be owned by the calling user
   #   * neither may be group- or world-writable
   #
-  # ~/.homebrew/trust.json -> ~/.config/homebrew/trust.json -> repo file was two
-  # hops, so brew refused with "target is a symlink" and failed activation.
+  # So it is written as a plain file rather than linked in from the repo.
   #
-  # Both locations are written because they are used in different contexts:
-  # nix-darwin runs `brew bundle` via `sudo --user=julio --set-home env`, which
-  # drops XDG_CONFIG_HOME, so brew falls back to ~/.homebrew/trust.json. An
-  # interactive `brew trust` with XDG_CONFIG_HOME set uses the other one.
+  # Both locations are written because brew picks between them by environment:
+  # nix-darwin runs `brew bundle` through `sudo --user=julio --set-home env`,
+  # which drops XDG_CONFIG_HOME and sends brew to ~/.homebrew/trust.json, while
+  # an interactive `brew trust` uses the XDG path.
   #
-  # This runs in extraActivation, which nix-darwin schedules well before the
-  # Homebrew bundle step -- the ordering the previous home-manager activation
-  # script got wrong, since home-manager activation runs after brew bundle.
+  # extraActivation runs before the Homebrew step; home-manager activation runs
+  # after it, so this cannot live there.
   ###########################################################################
   system.activationScripts.extraActivation.text = lib.mkBefore ''
     echo "Writing Homebrew trust store (${toString (builtins.length trustedCasks)} trusted casks)..."
@@ -55,8 +48,7 @@ in
       # 0755: readable, but not group/world writable, which brew requires.
       chmod 0755 "$trustDir"
 
-      # Replace whatever is there, including a stale symlink from an earlier
-      # generation -- `install` would otherwise write through it.
+      # Remove first: `install` would write through an existing symlink.
       rm -f "$trustDir/trust.json"
       install -m 0600 -o ${user} "${trustFile}" "$trustDir/trust.json"
     done

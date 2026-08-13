@@ -46,15 +46,12 @@ function M.config()
   ---------------------------------------------------------------------------
   --> Never wrap lines in the tree window
   --
-  -- The ,e keymap lives in the lazy.nvim spec (lua/plugins/init.lua) so the
-  -- plugin can stay lazy-loaded until the key is pressed.
+  -- The ,e keymap lives in the lazy.nvim spec so the plugin stays lazy-loaded.
   ---------------------------------------------------------------------------
   vim.api.nvim_create_autocmd('FileType', {
     group = vim.api.nvim_create_augroup('NVIM_TREE', { clear = true }),
     pattern = 'NvimTree',
     callback = function()
-      -- nvim_win_set_option is deprecated since 0.10; vim.wo is the
-      -- supported way to set a window-local option.
       vim.wo[0].wrap = false
     end,
   })

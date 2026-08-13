@@ -12,7 +12,6 @@ xrandr --auto
 
 # Force Composition Pipeline
 #
-# Executed, not sourced: the script needs bash (see its shebang) and sets
-# nothing this shell needs, so sourcing it from /bin/sh would just break.
+# Executed, not sourced: it needs bash, and sets nothing this shell needs.
 nfcp_script="/home/julio/bin/nvidia-force_comp_pipeline.sh"
 [ -x "$nfcp_script" ] && "$nfcp_script"

@@ -11,8 +11,7 @@ autocmd('TextYankPost', {
   group = yank_group,
   pattern = '*',
   callback = function()
-    -- vim.highlight was renamed to vim.hl in Neovim 0.11; the old name is
-    -- deprecated and slated for removal.
+    -- vim.highlight was renamed to vim.hl in Neovim 0.11.
     local hl = vim.hl or vim.highlight
     hl.on_yank({
       higroup = 'IncSearch',
@@ -54,14 +53,6 @@ autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'WinLeave' }, {
 --     end,
 --   }
 -- )
-
--------------------------------------------------------------------------------
---> Plugin changes
---
--- The old :PackerCompile autocmd is gone: lazy.nvim has no compile step and
--- picks up spec changes itself (change_detection). Run :Lazy sync after
--- editing lua/plugins/init.lua.
--------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
 --> Text files

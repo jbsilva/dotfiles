@@ -1,11 +1,8 @@
 -------------------------------------------------------------------------------
 --> LSP, completion and debugging
 --
--- Replaces the old lsp_zero.lua. lsp-zero existed to hide the boilerplate of
--- wiring nvim-lspconfig + cmp + mason together; Neovim 0.11 absorbed that job
--- into core (`vim.lsp.config` / `vim.lsp.enable`), and lsp-zero's author now
--- points people at the native API. So there is no plugin here doing the
--- wiring -- just core plus mason for installing the servers.
+-- Uses Neovim's native vim.lsp.config/vim.lsp.enable; Mason only installs the
+-- servers.
 --
 -- Keymaps (buffer-local, set on LspAttach):
 --   K       hover documentation        <F2>    rename symbol
@@ -47,20 +44,13 @@ local servers = {
   'yamlls',
 }
 
--- Servers that nixpkgs already provides (see nix-darwin/modules/packages.nix),
--- mapped to the binary that proves it. Mason must NOT try to install these.
---
--- Mason has no prebuilt release for `nil`, so it falls back to building it with
--- cargo. There is no Rust toolchain here, so that failed on every single
--- startup with:
---   Failed to spawn process. cmd="cargo", err="ENOENT: no such file or directory"
---   Installation failed for Package(name=nil)
--- They are enabled directly instead, since the binary is already on $PATH.
+-- Servers already installed outside Mason, mapped to the binary that proves
+-- it. Mason has no prebuilt release for some of these and would build them
+-- from source; these are enabled directly instead.
 local system_servers = {
   nil_ls = 'nil', -- Nix, from nixpkgs
-  -- Rust, from the rustup toolchain (`just rust-setup`). Taking it from the
-  -- toolchain rather than Mason or nixpkgs is what keeps it matched to rustc
-  -- and gives it rust-src for std-library navigation.
+  -- From the rustup toolchain (`just rust-setup`), so it stays matched to
+  -- rustc and has rust-src for std-library navigation.
   rust_analyzer = 'rust-analyzer',
 }
 
@@ -115,10 +105,9 @@ function M.config()
   -- diagnostics are turned off to avoid two servers reporting the same
   -- unused import twice.
   --
-  -- pythonPath is resolved per project so pyright reads the right virtualenv
-  -- (uv/poetry `.venv`, or whatever $VIRTUAL_ENV points at) instead of the
-  -- interpreter Mason happened to launch with. Without this, every
-  -- third-party import shows up as unresolved.
+  -- pythonPath is resolved per project so pyright reads the project
+  -- virtualenv (uv/poetry `.venv`, or $VIRTUAL_ENV); without it every
+  -- third-party import shows as unresolved.
   -------------------------------------------------------------------------
   local function python_path(root)
     if vim.env.VIRTUAL_ENV then
@@ -222,8 +211,7 @@ function M.config()
     automatic_enable = true,
   })
 
-  -- Servers already on $PATH from nixpkgs: enable them directly. Asking Mason
-  -- for these makes it try to build from source (see system_servers above).
+  -- Enable the servers that are already on $PATH.
   for server, binary in pairs(system_servers) do
     if vim.fn.executable(binary) == 1 then
       vim.lsp.enable(server)

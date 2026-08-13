@@ -4,10 +4,9 @@
     useGlobalPkgs = true;
     useUserPackages = true;
 
-    # When an unmanaged file is already sitting where home-manager wants to put
-    # one, move it aside instead of aborting the whole activation. Without this,
-    # a single stray file fails the switch -- which is exactly what happened when
-    # Atuin had written its default config.toml before home-manager first ran.
+    # Move an unmanaged file aside rather than aborting activation when one is
+    # sitting where home-manager wants to write. Applications that generate a
+    # default config on first run would otherwise fail the whole switch.
     backupFileExtension = "hm-bak";
     users.julio =
       { ... }:
