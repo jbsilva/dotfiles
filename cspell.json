@@ -1,0 +1,34 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  // en-GB as well as en: the comments in here are written in British English
+  // (behaviour, colours, organisation), which is a locale rather than a word
+  // list of its own.
+  "language": "en,en-GB",
+
+  // The word list lives in its own file rather than inline, so adding a word
+  // is a one-line diff and VS Code can append to it directly.
+  "dictionaryDefinitions": [
+    {
+      "name": "dotfiles",
+      "path": ".cspell/dotfiles.txt",
+      "addWords": true
+    }
+  ],
+  "dictionaries": ["dotfiles", "bash", "node"],
+
+  // Every Neovim plugin is named as a quoted 'owner/repo', so match those
+  // wholesale rather than collecting GitHub usernames one at a time.
+  "ignoreRegExpList": ["/'[A-Za-z0-9_.-]+\\/[A-Za-z0-9_.-]+'/g"],
+
+  // Generated or vendored, same set the pre-commit hooks exclude.
+  "ignorePaths": [
+    ".git/**",
+    ".cspell/**",
+    "linux/XCompose/**",
+    ".zsh/completions/**",
+    "windows/**",
+    "**/lazy-lock.json",
+    "**/flake.lock"
+  ]
+}

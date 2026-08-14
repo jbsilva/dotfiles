@@ -6,40 +6,11 @@
   //
   // Neovim sends the same settings itself, from
   // .config/nvim/lua/plugins/config/lsp.lua.
+  //
+  // Spell checking is configured in cspell.json at the repo root, not here, so
+  // it applies to the cspell CLI too and not only to this editor.
   "Lua.runtime.version": "LuaJIT",
   "Lua.diagnostics.globals": ["vim"],
   "Lua.workspace.checkThirdParty": false,
-  "Lua.telemetry.enable": false,
-
-  // Every plugin is named as a quoted 'owner/repo', so match those wholesale
-  // rather than collecting GitHub usernames one at a time.
-  "cSpell.ignoreRegExpList": ["/'[A-Za-z0-9_.-]+\\/[A-Za-z0-9_.-]+'/g"],
-
-  // Plugin, language server and option names the spell checker cannot know.
-  "cSpell.words": [
-    "autopairs",
-    "bashls",
-    "bufferline",
-    "catppuccin",
-    "cssls",
-    "debugpy",
-    "gitsigns",
-    "jsonls",
-    "keybinds",
-    "lazydev",
-    "lspconfig",
-    "lualine",
-    "luasnip",
-    "neoformat",
-    "neotest",
-    "nvim",
-    "pyright",
-    "subfiletypes",
-    "terraformls",
-    "timeoutlen",
-    "treesitter",
-    "undotree",
-    "vtsls",
-    "yamlls"
-  ]
+  "Lua.telemetry.enable": false
 }

@@ -1,0 +1,158 @@
+# Words this repo uses that no general dictionary knows: Neovim options and
+# API calls, plugin names, language servers, tooling.
+#
+# One word per line, matched case-insensitively, so the lower-case form also
+# covers Cmdline, Subword and friends. VS Code's "Add to dictionary" action
+# appends here, because cspell.json sets addWords on this dictionary.
+#
+# British spellings are not listed: cspell.json sets language to en,en-GB.
+# Plugin repositories are not listed either: cspell.json ignores anything of
+# the quoted 'owner/repo' shape.
+
+# Neovim options
+cindent
+colorcolumn
+cursorcolumn
+cursorline
+expandtab
+foldexpr
+foldlevelstart
+foldmethod
+foldtext
+globalstatus
+ignorecase
+inccommand
+indentexpr
+jumpoptions
+listchars
+numberwidth
+relativenumber
+runtimepath
+scrolloff
+shiftwidth
+showbreak
+signcolumn
+smartcase
+smarttab
+softtabstop
+spelllang
+splitbelow
+splitkeep
+statusline
+swapfile
+tabline
+termguicolors
+textwidth
+undofile
+updatetime
+virtualedit
+whichwrap
+winborder
+writebackup
+
+# Neovim commands, API and concepts
+augroup
+autocmd
+bdelete
+bnext
+bprevious
+bufnr
+checkhealth
+cmdline
+diffthis
+exepath
+getchar
+getcwd
+getline
+higroup
+joinpath
+jumplist
+mapleader
+maplocalleader
+netrw
+nornu
+nospell
+spellr
+stdpath
+textobject
+textobjects
+tohtml
+vimdoc
+virt
+vsplit
+wincmd
+
+# Mapping helpers, from lua/mapmodes.lua
+inoremap
+mapmodes
+nnoremap
+noremap
+onoremap
+vnoremap
+xnoremap
+
+# Plugins and colorschemes
+autopairs
+autotag
+bufferline
+catppuccin
+dapui
+devicons
+gitsigns
+habamax
+lazydev
+lazypath
+lspconfig
+lualine
+luasnip
+multicursor
+neoformat
+neotest
+nvim
+qflist
+speeddating
+subword
+suda
+tokyonight
+undotree
+
+# Language servers and debuggers
+bashls
+cssls
+debugpy
+jsonls
+pyright
+terraformls
+vtsls
+yamlls
+
+# Python and other tooling
+direnv
+luarc
+luarocks
+hererocks
+nixfmt
+nixpkgs
+pyproject
+pytest
+rustc
+rustup
+venv
+virtualenv
+
+# Config file names and identifiers appearing in prose
+keybinds
+subfiletypes
+timeoutlen
+treesitter
+
+# Plugin authors named outside a quoted 'owner/repo'
+bkad
+easymotion
+jayp
+kylechui
+stevearc
+wbthomason
+
+# Literal key sequences in mappings
+mzgg
