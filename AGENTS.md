@@ -105,4 +105,6 @@ Two tools with different jobs. Put a word in the right one:
 - **cspell** (`cspell.json`, word list in `.cspell/dotfiles.txt`) — prose and comments, in VS Code.
   Plugin names, option names, jargon.
 
-Neovim's own `zg` writes to `.config/nvim/spell/en.utf-8.add`, which is tracked.
+Neovim's own `zg` writes to `.config/nvim/spell/en.utf-8.add`, which is tracked — the compiled
+`.spl` beside it is not. Both rules live together in `.gitignore`: a deny on the whole `spell/`
+directory anywhere below the `!…/*.add` line silently wins over it, which is what happened before.
