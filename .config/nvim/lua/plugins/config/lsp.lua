@@ -4,6 +4,16 @@
 -- Uses Neovim's native vim.lsp.config/vim.lsp.enable; Mason only installs the
 -- servers.
 --
+-- Per-server settings live one file each in after/lsp/<name>.lua. It has to be
+-- after/: all lsp/<name>.lua files on the runtimepath merge into a single tier
+-- in runtimepath order, and plugin directories come after the config
+-- directory, so a plain lsp/pyright.lua here would lose to the one
+-- nvim-lspconfig ships. after/lsp/ is a strictly higher tier and extends it
+-- instead. See :h lsp-config-merge.
+--
+-- This file keeps what is not per-server: diagnostics, which servers to
+-- install and enable, and the buffer-local behaviour set on LspAttach.
+--
 -- Keymaps (buffer-local, set on LspAttach):
 --   K       hover documentation        <F2>    rename symbol
 --   gd      definition                 gD      declaration
@@ -84,133 +94,11 @@ function M.config()
   ---------------------------------------------------------------------------
 
   ---------------------------------------------------------------------------
-  --> Per-server overrides
+  --> eslint fix on save
+  --
+  -- Per buffer, so it only applies where eslint actually attached. The
+  -- server's own settings are in after/lsp/eslint.lua.
   ---------------------------------------------------------------------------
-  -- Types for the Neovim API and for plugins come from lazydev, which loads
-  -- them on demand. Listing the whole runtimepath as `workspace.library`
-  -- instead makes lua_ls index every plugin on every start.
-  --
-  -- .config/nvim/.luarc.json mirrors the settings below, for editors that run
-  -- lua_ls without this config -- VS Code, where `vim` would otherwise be an
-  -- undefined global on every line. A workspace .luarc.json takes precedence
-  -- over what a client sends, so it deliberately omits workspace.library and
-  -- leaves that to lazydev.
-  vim.lsp.config('lua_ls', {
-    settings = {
-      Lua = {
-        runtime = { version = 'LuaJIT' },
-        diagnostics = { globals = { 'vim' } },
-        workspace = { checkThirdParty = false },
-        telemetry = { enable = false },
-      },
-    },
-  })
-
-  -------------------------------------------------------------------------
-  --> JSON and YAML schemas
-  --
-  -- Without a schema catalogue these two servers only check syntax. With one
-  -- they validate and complete package.json, tsconfig.json, GitHub workflow
-  -- files, docker-compose and the rest against their published schemas.
-  -------------------------------------------------------------------------
-  local ok_schemas, schemastore = pcall(require, 'schemastore')
-  if ok_schemas then
-    vim.lsp.config('jsonls', {
-      settings = {
-        json = {
-          schemas = schemastore.json.schemas(),
-          validate = { enable = true },
-        },
-      },
-    })
-
-    vim.lsp.config('yamlls', {
-      settings = {
-        yaml = {
-          schemaStore = { enable = false, url = '' }, -- use SchemaStore.nvim's copy
-          schemas = schemastore.yaml.schemas(),
-        },
-      },
-    })
-  end
-
-  -------------------------------------------------------------------------
-  --> Python
-  --
-  -- pyright does types and navigation; ruff does linting, so pyright's own
-  -- diagnostics are turned off to avoid two servers reporting the same
-  -- unused import twice.
-  --
-  -- pythonPath is resolved per project so pyright reads the project
-  -- virtualenv (uv/poetry `.venv`, or $VIRTUAL_ENV); without it every
-  -- third-party import shows as unresolved. neotest-python resolves it the
-  -- same way, so the lookup lives in plugins.config.util.
-  -------------------------------------------------------------------------
-  vim.lsp.config('pyright', {
-    before_init = function(_, config)
-      config.settings = config.settings or {}
-      config.settings.python = config.settings.python or {}
-      config.settings.python.pythonPath =
-        require('plugins.config.util').venv_python(config.root_dir)
-    end,
-    settings = {
-      pyright = {
-        -- Let ruff own import organisation.
-        disableOrganizeImports = true,
-      },
-      python = {
-        analysis = {
-          -- ruff reports the lint diagnostics; keep pyright on types only.
-          ignore = { '*' },
-          typeCheckingMode = 'basic',
-          autoSearchPaths = true,
-          useLibraryCodeForTypes = true,
-        },
-      },
-    },
-  })
-
-  vim.lsp.config('ruff', {
-    init_options = {
-      settings = {
-        -- Prefer the project's own pyproject.toml/ruff.toml configuration.
-        lineLength = 88,
-      },
-    },
-  })
-
-  -------------------------------------------------------------------------
-  --> JavaScript / TypeScript
-  --
-  -- Inlay hints for parameter names and types; toggle them at runtime with
-  -- :lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-  -------------------------------------------------------------------------
-  local ts_inlay_hints = {
-    parameterNames = { enabled = 'literals' },
-    parameterTypes = { enabled = true },
-    variableTypes = { enabled = false },
-    propertyDeclarationTypes = { enabled = true },
-    functionLikeReturnTypes = { enabled = true },
-    enumMemberValues = { enabled = true },
-  }
-
-  vim.lsp.config('vtsls', {
-    settings = {
-      typescript = { inlayHints = ts_inlay_hints, updateImportsOnFileMove = { enabled = 'always' } },
-      javascript = { inlayHints = ts_inlay_hints },
-      vtsls = {
-        -- Surface the full error text rather than truncating long TS unions.
-        experimental = { completion = { enableServerSideFuzzyMatch = true } },
-      },
-    },
-  })
-
-  -- eslint can fix on save; wired up per-buffer below so it only applies where
-  -- the server actually attached.
-  vim.lsp.config('eslint', {
-    settings = { workingDirectories = { mode = 'auto' } },
-  })
-
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserEslintFix', { clear = true }),
     callback = function(args)

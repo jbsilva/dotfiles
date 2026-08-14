@@ -12,5 +12,12 @@
   "Lua.runtime.version": "LuaJIT",
   "Lua.diagnostics.globals": ["vim"],
   "Lua.workspace.checkThirdParty": false,
-  "Lua.telemetry.enable": false
+  "Lua.telemetry.enable": false,
+
+  // Neovim's type definitions are not reachable from here: they live under a
+  // /nix/store path that changes on every upgrade, so there is nothing stable
+  // to put in Lua.workspace.library. That makes `---@type vim.lsp.Config` and
+  // friends in after/lsp/*.lua unresolvable names. lazydev supplies them
+  // inside Neovim, which is where those annotations earn their keep.
+  "Lua.diagnostics.disable": ["undefined-doc-name"]
 }
