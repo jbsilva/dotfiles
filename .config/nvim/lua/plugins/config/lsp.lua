@@ -11,6 +11,7 @@
 --   gr      references                 gs      signature help
 --   gl      show diagnostic in a float  <leader>ca  code action
 --   [d ]d   previous/next diagnostic    <leader>th  toggle inlay hints
+--   [e ]e   previous/next error only
 --
 -- Neovim 0.11 also ships its own defaults (grn rename, gra code action,
 -- grr references, gri implementation, gO symbols); those still work.
@@ -315,6 +316,15 @@ function M.config()
       map(']d', function()
         vim.diagnostic.jump({ count = 1, float = true })
       end, 'Next diagnostic')
+
+      -- The same jumps restricted to errors, for a file noisy with warnings
+      -- and hints where ]d would stop at every one of them.
+      map('[e', function()
+        vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
+      end, 'Previous error')
+      map(']e', function()
+        vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
+      end, 'Next error')
     end,
   })
 end
