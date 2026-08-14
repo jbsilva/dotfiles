@@ -268,6 +268,34 @@ unset _f
 
 
 ###############################################################################
+#                          Git aliases (oh-my-zsh)
+#
+# gp, gst, gco and ~200 others, plus git_current_branch / git_main_branch.
+#
+# Sourced from the oh-my-zsh package rather than copied into this repo, so the
+# set tracks upstream instead of drifting from a snapshot. On the Nix machines
+# $DOTFILES_OMZ points at the pinned store path and moves with flake.lock;
+# elsewhere a local oh-my-zsh checkout is used if there is one.
+#
+# lib/git.zsh has to come first: the plugin's aliases call git_current_branch,
+# which is defined there, not in the plugin. Both need compinit to have run
+# already, for compdef.
+#
+# Git's own aliases -- `git co`, `git st` -- are separate, in
+# nix-darwin/modules/home-manager/programs/git.nix.
+###############################################################################
+() {
+  local omz
+  for omz in "$DOTFILES_OMZ" "$HOME/.oh-my-zsh" /usr/share/oh-my-zsh /opt/homebrew/share/oh-my-zsh; do
+    [[ -n $omz && -r $omz/plugins/git/git.plugin.zsh ]] || continue
+    source "$omz/lib/git.zsh"
+    source "$omz/plugins/git/git.plugin.zsh"
+    return
+  done
+}
+
+
+###############################################################################
 #                                   Plugins
 #
 # There is no plugin manager. On the Nix machines home-manager has already
@@ -775,7 +803,6 @@ alias sftp='noglob sftp'
 
 alias unzipall="unzip '*.zip'"
 
-# Git shell aliases live in .zsh/git_aliases.zsh (auto-sourced).
 alias git-remove-untracked='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -d'
 alias git-remove-merged='git branch --merged master | grep -E -v "(^\*|master|main|dev|develop|testing)" | xargs git branch -d'
 alias git-remove-remote-merged-to-master-keep='git fetch --prune origin && git branch -r --merged | grep -E -v "(^\*|master|main|dev|develop|testing)" | sed "s/origin\///" | xargs -n 1 git push --delete origin'

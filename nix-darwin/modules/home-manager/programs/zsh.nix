@@ -86,6 +86,7 @@ in
     envExtra = ''
       export DOTFILES_PLUGINS_FROM_NIX=1
       export DOTFILES_FZF_TAB=${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+      export DOTFILES_OMZ=${pkgs.oh-my-zsh}/share/oh-my-zsh
     '';
 
     initContent = lib.mkMerge [
