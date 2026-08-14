@@ -123,6 +123,18 @@ autocmd('LspAttach', {
 })
 
 -------------------------------------------------------------------------------
+--> Re-equalize splits when the terminal is resized
+--
+-- Splits keep their absolute sizes when the terminal window or the zellij pane
+-- around them changes, which usually leaves one of them a couple of lines
+-- tall. nvim-tree is unaffected: its window is 'winfixwidth'.
+-------------------------------------------------------------------------------
+autocmd('VimResized', {
+  group = augroup('ResizeSplits', { clear = true }),
+  command = 'wincmd =',
+})
+
+-------------------------------------------------------------------------------
 --> Per-filetype settings
 --
 -- These live in after/ftplugin/<filetype>.lua now -- text, markdown, qf and
