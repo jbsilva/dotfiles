@@ -123,15 +123,9 @@ autocmd('LspAttach', {
 })
 
 -------------------------------------------------------------------------------
---> Text files
+--> Per-filetype settings
 --
--- * Spell checker
---   * Deactivate correction:     `:setlocal nospell`
---   * Commands (`:help spell`):  `[s`, `]s`, `z=`, `zg`, `zw`, `:spellr`
--- * Text with: 80 columns
+-- These live in after/ftplugin/<filetype>.lua now -- text, markdown, qf and
+-- help. Neovim sources those once per buffer, which is what an autocmd on
+-- BufEnter/BufWinEnter/TabEnter was approximating.
 -------------------------------------------------------------------------------
-autocmd({ 'BufEnter', 'BufWinEnter', 'TabEnter' }, {
-  group = augroup('Text', { clear = true }),
-  pattern = '*.txt',
-  command = 'setlocal textwidth=80 spell spelllang=en_us',
-})
