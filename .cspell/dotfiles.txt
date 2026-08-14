@@ -141,7 +141,9 @@ venv
 virtualenv
 
 # Config file names and identifiers appearing in prose
+ftplugin
 keybinds
+prek
 subfiletypes
 timeoutlen
 treesitter
