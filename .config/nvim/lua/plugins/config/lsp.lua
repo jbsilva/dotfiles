@@ -243,8 +243,21 @@ function M.config()
   end
 
   ---------------------------------------------------------------------------
-  --> Buffer-local keymaps
+  --> Buffer-local keymaps and per-buffer behaviour
   ---------------------------------------------------------------------------
+  -- clear = false: this group holds one set of autocommands per buffer, so
+  -- clearing it on every LspAttach would drop the other buffers' entries.
+  -- They are cleared per buffer instead, on attach and again on detach.
+  local highlight_group = vim.api.nvim_create_augroup('UserLspDocumentHighlight', { clear = false })
+
+  vim.api.nvim_create_autocmd('LspDetach', {
+    group = vim.api.nvim_create_augroup('UserLspDetach', { clear = true }),
+    callback = function(args)
+      vim.lsp.buf.clear_references()
+      vim.api.nvim_clear_autocmds({ group = highlight_group, buffer = args.buf })
+    end,
+  })
+
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspKeymaps', { clear = true }),
     callback = function(args)
@@ -254,9 +267,27 @@ function M.config()
 
       local buf = vim.lsp.buf
 
+      -- Highlight every other reference to the symbol under the cursor once
+      -- the cursor has rested for 'updatetime' (300ms in options.lua), and
+      -- clear them again on the next move. Servers advertise this, but nothing
+      -- asks for it by default.
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      if client and client:supports_method('textDocument/documentHighlight') then
+        vim.api.nvim_clear_autocmds({ group = highlight_group, buffer = args.buf })
+        vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+          group = highlight_group,
+          buffer = args.buf,
+          callback = vim.lsp.buf.document_highlight,
+        })
+        vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+          group = highlight_group,
+          buffer = args.buf,
+          callback = vim.lsp.buf.clear_references,
+        })
+      end
+
       -- Inlay hints: parameter names and inferred types shown inline. Servers
       -- advertise them, but nothing displays them until this is switched on.
-      local client = vim.lsp.get_client_by_id(args.data.client_id)
       if client and client:supports_method('textDocument/inlayHint') then
         vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
         map('<leader>th', function()
