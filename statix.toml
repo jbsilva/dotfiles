@@ -1,5 +1,6 @@
 # Configuration for `statix` (https://github.com/oppiliappan/statix).
-# Run with `just check-nix`.
+# Run by the statix hook, so `just lint` covers it. Whole-flake evaluation is
+# separate and far slower: `just check-flake`.
 
 disabled = [
   # "empty_pattern": statix wants `_:` instead of `{ ... }:` for modules that

@@ -1,5 +1,6 @@
 # Configuration for `typos` (https://github.com/crate-ci/typos).
-# Run with `just check-typos`.
+# Run by the typos hook, so `just lint` covers it. Prose and comments are the
+# other spell checker's job; see the Spell checking section of AGENTS.md.
 
 [files]
 # This is a dotfiles repo: .zshrc, .zsh/, .config/ and .github/ are the bulk of
@@ -17,7 +18,6 @@ extend-exclude = [
   # ("BA", "DAA", "Nd", ...) reads as a misspelling. Upstream's own typos
   # (e.g. "CAPTIAL") are not ours to fix here.
   "linux/XCompose/",
-  # Git submodules, checked by their own upstreams.
   # Generated shell completions.
   ".zsh/completions/",
 ]

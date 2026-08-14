@@ -19,14 +19,17 @@
 	sort = -committerdate
 [commit]
 	gpgsign = true
+	verbose = true
 [tag]
 	sort = version:refname
 	gpgSign = true
 [merge]
-	tool = meld
+	# nvim rather than meld: meld is not installed on any of these machines,
+	# and nvim is already core.editor everywhere.
+	tool = nvimdiff
 	conflictstyle = zdiff3
 [diff]
-	guitool = meld
+	guitool = nvimdiff
 	algorithm = histogram
 	colorMoved = plain
 	mnemonicPrefix = true
@@ -41,8 +44,6 @@
 	all = true
 [help]
 	autocorrect = prompt
-[commit]
-	verbose = true
 [rerere]
 	enabled = true
 	autoupdate = true

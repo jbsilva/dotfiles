@@ -95,9 +95,12 @@ beyond `.zshrc` and `.zsh/`. Its behaviour lives in `.zsh/zshrc_synology`.
 
 `Justfile` (task runner), `.pre-commit-config.yaml` (git hooks, run by [prek]), `scripts/`,
 `.github/workflows/` (CI), and the tool configs: `typos.toml`, `statix.toml`, `.gitleaks.toml`,
-`.mdformat.toml`, `.stylua.toml`.
+`.mdformat.toml`, `.stylua.toml`, `cspell.json`.
 
-Spelling is checked by `typos`; there is no cSpell dictionary to keep in sync.
+Two spell checkers, with different jobs: `typos` catches real misspellings anywhere and gates
+commits, while cSpell (`cspell.json`, word list in `.cspell/dotfiles.txt`) covers prose and comments
+and runs **in VS Code only** — no hook, no CI, so its word list is the one thing here that can rot
+unnoticed. Which word goes where is under "Spell checking" in [AGENTS.md](AGENTS.md).
 
 `.vscode/extensions.json` suggests `nefrob.vscode-just-syntax` for the Justfile — the only actively
 maintained Just extension, and one that downloads nothing: it uses the `just` and `just-lsp`
