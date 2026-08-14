@@ -20,6 +20,24 @@ autocmd('TextYankPost', {
 })
 
 -------------------------------------------------------------------------------
+--> Comment continuation
+--
+-- Drop two of the defaults every filetype plugin sets:
+--   c  auto-wrap comments at 'textwidth' while typing
+--   o  insert the comment leader when opening a line with o or O
+--
+-- `r` is deliberately kept, so <CR> inside a comment still continues it.
+--
+-- On FileType rather than once at startup: the runtime ftplugins set
+-- 'formatoptions' themselves, so anything set earlier is overwritten.
+-------------------------------------------------------------------------------
+autocmd('FileType', {
+  group = augroup('FormatOptions', { clear = true }),
+  pattern = '*',
+  command = 'setlocal formatoptions-=c formatoptions-=o',
+})
+
+-------------------------------------------------------------------------------
 --> Hybrid relative line numbers
 -- Disable rnu on insert mode and when out of focus
 -------------------------------------------------------------------------------
