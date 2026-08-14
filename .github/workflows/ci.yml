@@ -119,6 +119,15 @@ jobs:
   neovim:
     name: Neovim
     runs-on: ubuntu-latest
+    # `require('options')`, `require('plugins.config.lsp')` and the rest resolve
+    # through runtimepath, which means $XDG_CONFIG_HOME/nvim/lua. Point it at
+    # this repo's .config so that is the nvim tree under test.
+    #
+    # This was .config-ci, a directory that does not exist, and it was set on
+    # the install step only. So nothing was ever on the runtimepath and every
+    # require failed -- including the ones inside init.lua.
+    env:
+      XDG_CONFIG_HOME: ${{ github.workspace }}/.config
     steps:
       - uses: actions/checkout@v7
 
@@ -128,8 +137,6 @@ jobs:
         run: |
           nix shell nixpkgs#neovim nixpkgs#tree-sitter nixpkgs#git nixpkgs#gcc \
             --command nvim --headless -u .config/nvim/init.lua "+Lazy! sync" +qa
-        env:
-          XDG_CONFIG_HOME: ${{ github.workspace }}/.config-ci
 
       - name: Load every config module and check for errors
         run: |

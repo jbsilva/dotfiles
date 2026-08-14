@@ -1,10 +1,11 @@
 # mdformat config (see the mdformat hook in .pre-commit-config.yaml).
 # number: keep sequential 1. 2. 3. numbering instead of mdformat's all-"1." default.
 # wrap = 100: hard-wrap prose at 100 columns.
+#
+# No `exclude` here on purpose: mdformat only supports it on Python 3.13+, and
+# the hook environment prek builds in CI is older, so it aborts with
+# "'exclude' patterns are only available on Python 3.13+". Excluding paths is
+# the top-level `exclude:` in .pre-commit-config.yaml, which already covers
+# linux/XCompose and never hands those files to the hook.
 number = true
 wrap = 100
-exclude = [
-    # Vendored from https://github.com/kragen/xcompose -- not ours to reformat.
-    "linux/XCompose/**",
-    # Submodule, formatted by its own upstream.
-]
