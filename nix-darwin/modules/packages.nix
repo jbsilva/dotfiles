@@ -161,7 +161,11 @@
     # -------------------------------------------------------------------------
     # GNU userland
     # macOS ships ancient BSD variants; these provide the GNU behaviour scripts
-    # expect. Prezto's gnu-utility module exposes them with a `g` prefix.
+    # expect. They install under the plain names, so they shadow the BSD ones on
+    # $PATH (/usr/bin/find and friends stay reachable by full path). There are no
+    # g-prefixed aliases -- that is the separate coreutils-prefixed package --
+    # so a script wanting GNU behaviour should feature-detect, as
+    # .zsh/rm_regex.zsh does, rather than reach for `gfind`.
     # -------------------------------------------------------------------------
     bash # macOS ships 3.2.57 from 2007; this puts 5.x first on $PATH
     coreutils

@@ -899,7 +899,10 @@ alias dvrm_dang='docker volume rm $(docker volume ls -q -f "dangling=true")'
 # --- Housekeeping ---
 alias dnorestart='docker update --restart=no $* $(docker ps -q)'
 alias dprune='docker system prune --volumes'
-alias dupgrade="docker images | awk '{print $1}' | grep -v 'none' | grep -iv 'repo' | xargs -n1 docker pull"
+# --format rather than awk over the table: docker renames the table's columns
+# between releases (REPOSITORY became IMAGE), so anything that cuts a field by
+# position or greps the header away breaks on upgrade.
+alias dupgrade="docker images --format '{{.Repository}}:{{.Tag}}' | grep -v '<none>' | xargs -n1 docker pull"
 
 # --- Compose ---
 alias dcu='docker compose up -d'
@@ -919,8 +922,10 @@ elif (( $+commands[chafa] )); then
   alias icat='chafa'
 fi
 
-# Clipboard
-# Prezto already defined the pbcopy and pbpaste aliases
+# Clipboard. Reads stdin into the clipboard when piped to, and always prints the
+# clipboard, so it works as both `foo | clipboard` and a bare `clipboard`.
+# pbcopy/pbpaste are native on macOS and aliased onto wl-copy/xclip (Linux) or
+# clip.exe/powershell (WSL) further up.
 alias clipboard='if [ -p /dev/stdin ]; then pbcopy &> /dev/null; fi; pbpaste'
 
 # Split files
