@@ -1,0 +1,27 @@
+{
+  // lua_ls settings for this repo, which is opened at the dotfiles root rather
+  // than at .config/nvim. The language server only reads .luarc.json from the
+  // workspace root, so .config/nvim/.luarc.json alone does not reach it here
+  // and every `vim.*` call is reported as an undefined global.
+  //
+  // Neovim sends the same settings itself, from
+  // .config/nvim/lua/plugins/config/lsp.lua.
+  "Lua.runtime.version": "LuaJIT",
+  "Lua.diagnostics.globals": ["vim"],
+  "Lua.workspace.checkThirdParty": false,
+  "Lua.telemetry.enable": false,
+
+  // Plugin and API names the spell checker cannot know.
+  "cSpell.words": [
+    "autopairs",
+    "bufferline",
+    "gitsigns",
+    "lazydev",
+    "lualine",
+    "luasnip",
+    "neotest",
+    "nvim",
+    "treesitter",
+    "undotree"
+  ]
+}

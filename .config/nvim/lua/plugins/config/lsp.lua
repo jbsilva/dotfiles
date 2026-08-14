@@ -91,6 +91,12 @@ function M.config()
   -- Types for the Neovim API and for plugins come from lazydev, which loads
   -- them on demand. Listing the whole runtimepath as `workspace.library`
   -- instead makes lua_ls index every plugin on every start.
+  --
+  -- .config/nvim/.luarc.json mirrors the settings below, for editors that run
+  -- lua_ls without this config -- VS Code, where `vim` would otherwise be an
+  -- undefined global on every line. A workspace .luarc.json takes precedence
+  -- over what a client sends, so it deliberately omits workspace.library and
+  -- leaves that to lazydev.
   vim.lsp.config('lua_ls', {
     settings = {
       Lua = {
