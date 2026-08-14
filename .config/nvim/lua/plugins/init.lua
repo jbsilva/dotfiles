@@ -404,7 +404,8 @@ require('lazy').setup({
   ----------------------------------------------------------
   --> Neotest: run and debug tests from the editor
   --  <leader>tt file      <leader>tn nearest     <leader>ts summary
-  --  <leader>td debug nearest test
+  --  <leader>td debug nearest test               <leader>to last output
+  --  <leader>tm is nvim-dap's Python test-method map, in its spec above.
   ----------------------------------------------------------
   {
     'nvim-neotest/neotest',

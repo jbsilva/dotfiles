@@ -3,6 +3,11 @@ local o = vim.o
 
 -------------------------------------------------------------------------------
 --> Disable netrw (will use nvim-tree)
+--
+-- These have to be set before netrw's autoload half can run, so they live
+-- here rather than in the plugin spec. lazy.nvim's disabled_plugins list also
+-- names netrwPlugin, which is the separate matter of not sourcing its
+-- plugin/ file at all.
 -------------------------------------------------------------------------------
 g.loaded_netrw = 1
 g.loaded_netrwPlugin = 1
@@ -60,7 +65,7 @@ o.cursorline = true
 -- Highlight the current column
 -- o.cursorcolumn = true
 
--- Color columns 80 and 88
+-- Color columns 80, 88 and 100
 o.colorcolumn = '80,88,100'
 
 -- Text wrap

@@ -10,7 +10,7 @@
 --   gi      implementation             go      type definition
 --   gr      references                 gs      signature help
 --   gl      show diagnostic in a float  <leader>ca  code action
---   [d ]d   previous/next diagnostic
+--   [d ]d   previous/next diagnostic    <leader>th  toggle inlay hints
 --
 -- Neovim 0.11 also ships its own defaults (grn rename, gra code action,
 -- grr references, gri implementation, gO symbols); those still work.
