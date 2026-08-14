@@ -11,17 +11,35 @@
   "Lua.workspace.checkThirdParty": false,
   "Lua.telemetry.enable": false,
 
-  // Plugin and API names the spell checker cannot know.
+  // Every plugin is named as a quoted 'owner/repo', so match those wholesale
+  // rather than collecting GitHub usernames one at a time.
+  "cSpell.ignoreRegExpList": ["/'[A-Za-z0-9_.-]+\\/[A-Za-z0-9_.-]+'/g"],
+
+  // Plugin, language server and option names the spell checker cannot know.
   "cSpell.words": [
     "autopairs",
+    "bashls",
     "bufferline",
+    "catppuccin",
+    "cssls",
+    "debugpy",
     "gitsigns",
+    "jsonls",
+    "keybinds",
     "lazydev",
+    "lspconfig",
     "lualine",
     "luasnip",
+    "neoformat",
     "neotest",
     "nvim",
+    "pyright",
+    "subfiletypes",
+    "terraformls",
+    "timeoutlen",
     "treesitter",
-    "undotree"
+    "undotree",
+    "vtsls",
+    "yamlls"
   ]
 }
