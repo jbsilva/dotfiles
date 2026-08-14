@@ -53,6 +53,17 @@ repos:
     hooks:
       - id: zizmor
 
+  # renovate.json5 is what keeps the two blocks of pins above current, so a typo
+  # in it fails open: Renovate logs the error server-side and stops opening PRs,
+  # with nothing visible in the repo. The upstream hook rather than a `local` one
+  # because renovate's nix closure is 1.8 GiB, far too much for packages.nix and
+  # the CI lint shell; this pulls just the validator through node.
+  - repo: https://github.com/renovatebot/pre-commit-hooks
+    rev: 44.30.1
+    hooks:
+      - id: renovate-config-validator
+        args: [--strict]
+
   # Nix. These are `local` because they are already installed by
   # nix-darwin/modules/packages.nix, so there is nothing to fetch.
   - repo: local

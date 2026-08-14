@@ -10,7 +10,7 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
 
-[*.{lua,nix,json,jsonc,yml,yaml,md,js,jsx,ts,tsx,css,scss,html}]
+[*.{lua,nix,json,jsonc,json5,yml,yaml,md,js,jsx,ts,tsx,css,scss,html}]
 indent_size = 2
 
 [*.{zsh,sh,bash}]

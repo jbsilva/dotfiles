@@ -1,0 +1,89 @@
+// Renovate configuration: automated dependency updates for the GitHub Actions SHA pins in
+// .github/workflows/ and the hook revs in .pre-commit-config.yaml.
+//
+// Setup: install the Renovate GitHub App (https://github.com/apps/renovate) and merge the one-time
+// "Configure Renovate" onboarding PR. Renovate's GitHub-sourced security PRs need the repo's
+// Dependency graph + Dependabot alerts enabled (Settings -> Security).
+//
+// Validate after editing: `just lint` runs renovate-config-validator as a hook.
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  // config:best-practices keeps GitHub Actions pinned to a full commit SHA with the version in the
+  // trailing comment, which is the form zizmor requires and the workflows already use. It also
+  // enables the Dependency Dashboard issue. ":enablePreCommit" is separate because the pre-commit
+  // manager is off by default -- it is the reason this repo wants Renovate rather than Dependabot,
+  // whose pre-commit ecosystem is not GA.
+  extends: ["config:best-practices", ":enablePreCommit"],
+
+  timezone: "Europe/Berlin",
+
+  // Cron (the minute field must be "*"): a Monday 02:00-06:59 window, ahead of the 06:00 Monday
+  // cron in ci.yml so a bump and the weekly drift check do not land on top of each other. The
+  // window only *allows* PRs to open; the hosted App decides when it actually runs.
+  schedule: ["* 2-6 * * 1"],
+
+  // Hold a non-security release for 7 days before opening a PR. A compromised action or hook is
+  // usually caught and yanked within days, and nothing in a dotfiles repo needs the newest possible
+  // pin. `renovate-check` in .zsh/renovate_check.zsh reports what this is currently holding back.
+  minimumReleaseAge: "7 days",
+
+  // Security fixes open immediately, bypassing the weekly window and the 7-day hold.
+  vulnerabilityAlerts: {
+    labels: ["dependencies", "security"],
+    minimumReleaseAge: "0 days",
+  },
+
+  labels: ["dependencies"],
+
+  // Match the commit style in AGENTS.md: "area: imperative summary".
+  commitMessagePrefix: "ci:",
+  semanticCommits: "disabled",
+
+  packageRules: [
+    // --- Batch the routine bumps, let majors land alone for their own review. ---
+    {
+      description: "GitHub Actions: group minor+patch",
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      groupName: "github-actions (minor+patch)",
+    },
+    {
+      description: "pre-commit hooks: group minor+patch",
+      matchManagers: ["pre-commit"],
+      matchUpdateTypes: ["minor", "patch"],
+      groupName: "pre-commit hooks (minor+patch)",
+    },
+
+    // --- Cross-file version sync. Several tools are pinned twice: once as a pre-commit hook rev,
+    //     once as a nixpkgs package that the `local` hooks and CI call off $PATH. Renovate only
+    //     manages the hook side (nixpkgs versions move with flake.lock), but grouping keeps each
+    //     tool's PR self-contained and named after the tool, so it is obvious when a hook has moved
+    //     ahead of the binary `just lint` actually runs. ---
+    {
+      description: "typos: hook rev, twinned with the typos package in packages.nix",
+      matchPackageNames: ["crate-ci/typos"],
+      groupName: "typos",
+    },
+    {
+      description: "zizmor: hook rev, twinned with the zizmor package in packages.nix",
+      matchPackageNames: ["zizmorcore/zizmor-pre-commit"],
+      groupName: "zizmor",
+    },
+    {
+      description: "actionlint: hook rev, twinned with the actionlint package in packages.nix",
+      matchPackageNames: ["rhysd/actionlint"],
+      groupName: "actionlint",
+    },
+  ],
+
+  // The Nix manager is deliberately off. flake.lock is updated on purpose with `just update` (or
+  // `just update-input <name>`) and reviewed with `just diff` before a switch, and nixpkgs tracks
+  // nixpkgs-unstable, which moves several times a day -- Renovate would open a PR against it
+  // continuously. The Monday cron in ci.yml is what catches drift from upstream here.
+  //
+  // Not managed by anything, for the record: .config/nvim/lazy-lock.json is written by `:Lazy`
+  // commands (see AGENTS.md), and the pinned rev+hash in modules/git-extra-commands.nix has to be
+  // bumped by hand because Renovate cannot compute the new fixed-output hash.
+  enabledManagers: ["github-actions", "pre-commit"],
+}

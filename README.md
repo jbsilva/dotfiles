@@ -94,8 +94,13 @@ beyond `.zshrc` and `.zsh/`. Its behaviour lives in `.zsh/zshrc_synology`.
 ### Repo infrastructure
 
 `Justfile` (task runner), `.pre-commit-config.yaml` (git hooks, run by [prek]), `scripts/`,
-`.github/workflows/` (CI), and the tool configs: `typos.toml`, `statix.toml`, `.gitleaks.toml`,
-`.mdformat.toml`, `.stylua.toml`, `cspell.json`.
+`.github/workflows/` (CI), `renovate.json5`, and the tool configs: `typos.toml`, `statix.toml`,
+`.gitleaks.toml`, `.mdformat.toml`, `.stylua.toml`, `cspell.json`.
+
+[Renovate] keeps the two sets of pins current: the SHA-pinned actions in `.github/workflows/` and
+the hook `rev`s in `.pre-commit-config.yaml`. It is deliberately not pointed at `flake.lock` — that
+is `just update`'s job, and `nixpkgs-unstable` moves several times a day. `renovate-check` in
+`.zsh/renovate_check.zsh` runs the same rules locally and shows what is being held back.
 
 Two spell checkers, with different jobs: `typos` catches real misspellings anywhere and gates
 commits, while cSpell (`cspell.json`, word list in `.cspell/dotfiles.txt`) covers prose and comments
@@ -369,6 +374,7 @@ just test-shell     # WSL/Synology/bare-Linux containers (needs docker)
 | `stylua`                      | Lua, config in `.stylua.toml`                                         |
 | `actionlint`                  | GitHub Actions workflows                                              |
 | `zizmor`                      | GitHub Actions workflows, security side                               |
+| `renovate-config-validator`   | `renovate.json5`                                                      |
 | `gitleaks`                    | secrets in staged changes                                             |
 | pre-commit-hooks              | trailing whitespace, EOF, line endings, large files, YAML/TOML syntax |
 
@@ -407,3 +413,4 @@ ln -s ~/dotfiles/linux/gitconfig   ~/.gitconfig          # or wsl/gitconfig
 [gitleaks]: https://github.com/gitleaks/gitleaks
 [kragen/xcompose]: https://github.com/kragen/xcompose
 [prek]: https://github.com/j178/prek
+[renovate]: https://docs.renovatebot.com
