@@ -45,6 +45,10 @@
 !/.config/nvim/lazy-lock.json
 # lua_ls settings for editors that do not run init.lua to get them.
 !/.config/nvim/.luarc.json
+# `zg` (add the word under the cursor to the spell dictionary) writes here,
+# because ~/.config/nvim is the first writable directory on the runtimepath.
+# Only the word list: the .spl next to it is compiled from this file.
+!/.config/nvim/spell/*.add
 
 # Terminal / multiplexer
 
