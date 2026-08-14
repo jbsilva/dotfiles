@@ -71,6 +71,13 @@ o.colorcolumn = '80,88,100'
 -- Text wrap
 o.wrap = true
 
+-- Break the line at a space rather than in the middle of a word
+o.linebreak = true
+
+-- Continue a wrapped line at the indent of the line it belongs to, instead of
+-- restarting at column 0
+o.breakindent = true
+
 -- Show symbol (↳) to indicate that line was wrapped
 o.showbreak = '↳ '
 
@@ -153,6 +160,10 @@ o.smoothscroll = true
 
 -- Keep the jumplist a stack, so <C-o> after a jump does not lose entries.
 o.jumpoptions = 'stack'
+
+-- Spell-check camelCase and snake_case one part at a time, so identifiers in
+-- prose are not reported as a single unknown word.
+o.spelloptions = 'camel'
 
 -- Rounded borders for every floating window (hover, diagnostics, LSP).
 -- Neovim 0.11+; guarded so an older nvim on another machine still works.
