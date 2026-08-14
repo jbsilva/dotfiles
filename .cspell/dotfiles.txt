@@ -24,6 +24,7 @@ ignorecase
 inccommand
 indentexpr
 jumpoptions
+laststatus
 listchars
 numberwidth
 relativenumber
@@ -71,6 +72,7 @@ mapleader
 maplocalleader
 netrw
 nornu
+redrawstatus
 nospell
 spellr
 stdpath
@@ -96,15 +98,18 @@ autopairs
 autotag
 bufferline
 catppuccin
+colorschemes
 dapui
 devicons
 gitsigns
 habamax
+hipatterns
 lazydev
 lazypath
 lspconfig
 lualine
 luasnip
+minigit
 multicursor
 neoformat
 neotest

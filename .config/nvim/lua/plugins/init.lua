@@ -41,16 +41,30 @@ require('lazy').setup({
 
   ----------------------------------------------------------
   --> Icons
-  -- Required by lualine, bufferline, nvim-tree and telescope.
+  -- Required by lualine, mini.tabline, nvim-tree and telescope.
   --
-  -- Alternative to consider: mini.icons  https://github.com/echasnovski/mini.icons
-  -- Lighter and faster, and can stand in for this one via
-  -- require('mini.icons').mock_nvim_web_devicons().
+  -- mock_nvim_web_devicons() defines the nvim-web-devicons API surface, so the
+  -- consumers above keep calling get_icon/get_icon_color unchanged. Stays
+  -- lazy: lazy.nvim runs a dependency's config() before the dependent's, so
+  -- the mock is installed before anything asks for an icon.
+  --
+  -- Traded away: per-filetype icon *colours*. mini.icons uses a fixed set of
+  -- highlight groups instead, which tokyonight already defines (MiniIconsAzure
+  -- ... MiniIconsYellow). Needs Nerd Fonts >= 3.0.0.
+  --
+  -- Replaced 'nvim-tree/nvim-web-devicons', which was `lazy = true, opts = {}`.
   ----------------------------------------------------------
   {
-    'nvim-tree/nvim-web-devicons',
+    'nvim-mini/mini.icons',
     lazy = true,
     opts = {},
+    config = function(_, opts)
+      -- Through the module table rather than the _G.MiniIcons global the docs
+      -- use: same table (mini/icons.lua returns it), and lua_ls can see it.
+      local icons = require('mini.icons')
+      icons.setup(opts)
+      icons.mock_nvim_web_devicons()
+    end,
   },
 
   ----------------------------------------------------------
@@ -59,7 +73,7 @@ require('lazy').setup({
   {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
-    dependencies = { 'lewis6991/gitsigns.nvim', 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'lewis6991/gitsigns.nvim', 'nvim-mini/mini.icons' },
     config = function()
       require('plugins.config.lualine').config()
     end,
@@ -75,17 +89,22 @@ require('lazy').setup({
   },
 
   ----------------------------------------------------------
-  --> Bufferline: buffer tabs
+  --> Buffer tabs
   --
-  --  Alternative to consider: mini.tabline
-  --  https://github.com/echasnovski/mini.tabline
-  --  Much smaller, if the extra bufferline features go unused.
+  --  Renders the listed buffers, with the current one centred and duplicate
+  --  names disambiguated by directory. Buffer navigation is unaffected: it is
+  --  <Tab>/<S-Tab> on :bnext/:bprevious and ,d on :bdelete, all in
+  --  keybinds.lua, none of it routed through this plugin.
+  --
+  --  Replaced 'akinsho/bufferline.nvim' (version = '*', opts = {}), which ran
+  --  on defaults. What it offered beyond this and nothing here used: close
+  --  icons, :BufferLinePick, buffer reordering, groups, diagnostics, and the
+  --  nvim-tree offset.
   ----------------------------------------------------------
   {
-    'akinsho/bufferline.nvim',
-    version = '*',
+    'nvim-mini/mini.tabline',
     event = 'VeryLazy',
-    dependencies = 'nvim-tree/nvim-web-devicons',
+    dependencies = 'nvim-mini/mini.icons',
     opts = {},
   },
 
@@ -186,7 +205,7 @@ require('lazy').setup({
     keys = {
       { ',e', '<CMD>NvimTreeToggle<CR>', desc = 'Toggle file explorer' },
     },
-    dependencies = 'nvim-tree/nvim-web-devicons',
+    dependencies = 'nvim-mini/mini.icons',
     config = function()
       require('plugins.config.nvim-tree').config()
     end,
@@ -248,7 +267,7 @@ require('lazy').setup({
     },
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons',
+      'nvim-mini/mini.icons',
       'nvim-telescope/telescope-file-browser.nvim',
       {
         -- Native C sorter: a large speedup on big repositories.
@@ -793,6 +812,49 @@ require('lazy').setup({
   -- 'NeogitOrg/neogit'       -- Fork is the git UI here; gitsigns covers hunks
   -- 'antoinemadec/FixCursorHold.nvim' -- its README: not needed after neovim#20198 (0.9)
   -- 'f-person/git-blame.nvim' -- gitsigns' b:gitsigns_blame_line feeds lualine
+  -- 'nvim-tree/nvim-web-devicons' -- replaced by mini.icons + mock_nvim_web_devicons
+  -- 'akinsho/bufferline.nvim' -- replaced by mini.tabline; ran on bare defaults
+
+  ----------------------------------------------------------
+  --> mini.nvim (nvim-mini/mini.nvim), evaluated against every plugin above
+  --
+  -- Adopted: mini.icons, mini.tabline. Both were already flagged as
+  -- alternatives here and neither changes behaviour that anything uses.
+  --
+  -- Worth revisiting, each with one concrete cost:
+  --   mini.notify     replaces fidget, but setup() reassigns vim.notify
+  --                   unconditionally, so it takes over every notification
+  --                   unless it is restored afterwards. Gains a history.
+  --   mini.statusline replaces lualine, but it has no refresh timer, and the
+  --                   blame section depends on one: gitsigns sets
+  --                   b:gitsigns_blame_line asynchronously without calling
+  --                   redrawstatus, so the section would show the previous
+  --                   line's blame. It also never sets laststatus, so
+  --                   globalstatus has to move to options.lua.
+  --   mini.files      replaces telescope-file-browser for <leader>fb, but not
+  --                   nvim-tree: it is a transient float with no git or
+  --                   diagnostic status, which this tree is configured for.
+  --
+  -- Rejected, with the blocking reason:
+  --   mini.pick       no git_status picker exists ('c is bound to it)
+  --   mini.surround   defaults are s-prefixed; flash.nvim owns bare `s`, so
+  --                   every jump would wait out timeoutlen
+  --   mini.pairs      no treesitter awareness at all; check_ts = true is the
+  --                   only option this config sets on nvim-autopairs
+  --   mini.diff       no inline blame anywhere in mini.nvim; only
+  --                   minigit_summary_string (branch/HEAD) is exposed
+  --   mini.clue       triggers are buffer-local and must be created last, so
+  --                   every per-buffer on_attach here would need wiring
+  --   mini.jump2d     no treesitter mode (S) and no remote operator (r)
+  --   mini.hipatterns highlighting only: no ]t/[t, no project-wide todo list
+  --   mini.ai         layers on nvim-treesitter-textobjects rather than
+  --                   replacing it, and its defaults claim al/il, already
+  --                   mapped to @loop.outer/@loop.inner in treesitter.lua
+  --
+  -- No mini module exists for: multiple cursors, HTML/JSX tag closing, date
+  -- incrementing, undo-tree visualisation, or sudo write -- checked across all
+  -- 46 module docs. LSP, DAP, test running, parser management, formatters and
+  -- colorschemes are outside mini.nvim's stated scope.
 }, {
   ----------------------------------------------------------
   --> lazy.nvim options
