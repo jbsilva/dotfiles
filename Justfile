@@ -147,3 +147,16 @@ rust-setup:
 # Measure interactive shell startup time
 bench-shell:
     hyperfine --warmup 3 'zsh -i -c exit'
+
+# Profile shell startup AND Tab-completion latency
+#
+# bench-shell only measures startup. Completion needs a real terminal -- zsh
+# will not run its line editor without a tty, so fzf-tab and zsh-patina are
+# never exercised by `zsh -i -c exit`. This drives a pty and times how long
+# each Tab takes to produce output.
+#
+#   just profile-shell                  a default set of completions
+#   just profile-shell 'ls ~/dot'       one specific case
+#   just profile-shell '' --cold        as a shell is right after `just switch`
+profile-shell *ARGS:
+    ./scripts/profile-shell.py {{ ARGS }}
