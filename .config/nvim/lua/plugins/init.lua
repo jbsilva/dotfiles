@@ -510,7 +510,8 @@ require('lazy').setup({
   ----------------------------------------------------------
   {
     'stevearc/conform.nvim',
-    event = 'BufWritePre',
+    -- No BufWritePre event: with format_on_save off there is nothing for it to
+    -- do, so it only pulled the plugin in on the first write of every session.
     cmd = 'ConformInfo',
     keys = {
       {
@@ -540,7 +541,8 @@ require('lazy').setup({
         typescript = { 'prettier' },
       },
       -- Not format-on-save: this config has deliberate hand-formatting in
-      -- places. Use <leader>F or :Format.
+      -- places. Use <leader>F. There is no :Format command; conform only
+      -- creates :ConformInfo.
       format_on_save = false,
     },
   },
