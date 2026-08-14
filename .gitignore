@@ -47,15 +47,16 @@
 !/.config/nvim/.luarc.json
 # `zg` (add the word under the cursor to the spell dictionary) writes here,
 # because ~/.config/nvim is the first writable directory on the runtimepath.
-# Only the word list: the .spl next to it is compiled from this file.
+# Only the word list: the .spl next to it is compiled from this file, so it is
+# re-ignored here rather than in the runtime-dirs section below -- a deny on the
+# whole spell/ directory there would come after this line and win, which is what
+# used to make the allow-list entry unreachable.
 !/.config/nvim/spell/*.add
-
-# Terminal / multiplexer
+/.config/nvim/spell/*.spl
 
 # Tooling
 !/.config/gh/config.yml
 !/.config/gh/hosts.yml
-!/.config/pypoetry/config.toml
 
 # -----------------------------------------------------------------------------
 # .config — re-ignore heavy runtime dirs
@@ -67,7 +68,6 @@
 /.config/raycast/
 /.config/opencode/
 /.config/Transmission Remote GUI/
-/.config/nvim/spell/
 /.config/nvim/.netrwhist
 /.config/photo-tagger/logs/
 

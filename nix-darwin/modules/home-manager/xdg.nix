@@ -38,8 +38,5 @@ in
     # gh also writes state.yml here.
     "gh/config.yml".source = link "gh/config.yml";
     "gh/hosts.yml".source = link "gh/hosts.yml";
-
-    "pypoetry/config.toml".source = link "pypoetry/config.toml";
-
   };
 }
