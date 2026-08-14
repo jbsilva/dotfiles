@@ -547,13 +547,18 @@ zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
 # by zsh with the matcher-list, fzf only chooses among it. `ls linux/Compose`
 # still finds XCompose.
 #
-# Loaded on the first <Tab> rather than at startup: sourcing it eagerly costs
-# 126ms of a 276ms startup, nearly all of it in an `autoload` that scales with
-# the ~1800 files on $fpath. Deferring moves that to the first completion.
+# Sourced here, at file scope, which is what upstream documents. It must land
+# after compinit and before zsh-syntax-highlighting.
 #
-# It still has to land after compinit and before zsh-syntax-highlighting, which
-# any <Tab> trivially satisfies. $DOTFILES_FZF_TAB is exported from ~/.zshenv on
-# the Nix machines; elsewhere the usual prefixes are searched.
+# It was briefly loaded from inside a ZLE widget on the first <Tab> instead, to
+# save ~115ms of startup. That is not a safe context to source it from: line 9
+# of fzf-tab.zsh runs a command substitution, which failed with "write error:
+# bad file descriptor", and the half-initialised module check then reached its
+# `read -q` rebuild prompt and sat there. Every first <Tab> in a cold terminal
+# hung for ~15s before flashing the error.
+#
+# $DOTFILES_FZF_TAB is exported from ~/.zshenv on the Nix machines; elsewhere
+# the usual prefixes are searched.
 ###############################################################################
 function _fzf_tab_configure() {
   zstyle ':fzf-tab:*' fzf-flags --height=45% --layout=reverse --border
@@ -571,7 +576,7 @@ function _fzf_tab_configure() {
   zstyle ':completion:*' menu no
 }
 
-function _fzf_tab_lazy_load() {
+() {
   local candidate
   for candidate in \
     "$DOTFILES_FZF_TAB" \
@@ -583,17 +588,10 @@ function _fzf_tab_lazy_load() {
     if [[ -n $candidate && -r $candidate ]]; then
       source "$candidate"
       _fzf_tab_configure
-      # Sourcing rebinds ^I to fzf-tab's widget; hand this keypress on to it.
-      zle fzf-tab-complete
       return
     fi
   done
-  # Nothing found: fall back to stock completion, permanently.
-  bindkey '^I' expand-or-complete
-  zle expand-or-complete
 }
-zle -N _fzf_tab_lazy_load
-bindkey '^I' _fzf_tab_lazy_load
 
 
 ###############################################################################
