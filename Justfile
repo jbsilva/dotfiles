@@ -64,6 +64,8 @@ lint:
 
 # Evaluate the whole darwin configuration. Not a prek hook: it is far slower
 # than the rest and only makes sense on the flake as a whole, not per file.
+
+# Evaluate the whole darwin configuration (slow; not a prek hook)
 check-flake:
     nix flake check {{ flake }}
 
@@ -85,8 +87,10 @@ test-shell scenario="all":
 # Formatting
 # ---------------------------------------------------------------------------
 
-# Format everything. Same hooks as `just lint`: the formatting ones rewrite
-# files in place, so there is no separate format-only pass.
+# Same hooks as `just lint`: the formatting ones rewrite files in place, so
+# there is no separate format-only pass.
+
+# Format everything
 fmt: lint
 
 # ---------------------------------------------------------------------------
@@ -111,6 +115,8 @@ hooks:
 #
 # pants must run from inside a Pants project, so point this at one:
 #   just completions ~/Dev/Hoppe/fleet-connect-serverless
+
+# Refresh the completion dumps in .zsh/completions/ (pass a Pants dir for pants)
 completions pants_dir="":
     #!/usr/bin/env zsh
     set -uo pipefail
@@ -158,5 +164,7 @@ bench-shell:
 #   just profile-shell                  a default set of completions
 #   just profile-shell 'ls ~/dot'       one specific case
 #   just profile-shell '' --cold        as a shell is right after `just switch`
+
+# Profile shell startup AND Tab-completion latency
 profile-shell *ARGS:
     ./scripts/profile-shell.py {{ ARGS }}
