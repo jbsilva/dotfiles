@@ -125,21 +125,23 @@ require('lazy').setup({
           vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
         end
 
-        -- Navigation: fall through to plain ]c/[c inside a diff.
+        -- Inside a diff ]c/[c stay the built-in diff motions, everywhere else
+        -- they walk gitsigns hunks. These are not `expr` mappings, so the diff
+        -- branch runs the motion itself instead of returning it.
         map('n', ']c', function()
           if vim.wo.diff then
-            return ']c'
+            vim.cmd.normal({ ']c', bang = true })
+          else
+            gs.nav_hunk('next')
           end
-          vim.schedule(gs.next_hunk)
-          return '<Ignore>'
         end, 'Next git hunk')
 
         map('n', '[c', function()
           if vim.wo.diff then
-            return '[c'
+            vim.cmd.normal({ '[c', bang = true })
+          else
+            gs.nav_hunk('prev')
           end
-          vim.schedule(gs.prev_hunk)
-          return '<Ignore>'
         end, 'Previous git hunk')
 
         map('n', '<leader>hs', gs.stage_hunk, 'Stage hunk')
