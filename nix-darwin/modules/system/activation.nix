@@ -1,5 +1,18 @@
 { ... }:
 {
+  ###########################################################################
+  # Root-level activation.
+  #
+  # The Adobe, OneDrive and Ollama blocks below look like duplicates of
+  # home-manager/activation/disable-*.nix, and they overlap on purpose: the
+  # launchd `gui/$UID` domain, ~/Library and the login-item list are the user's
+  # and belong there, while the `system` domain, /Library and /Applications
+  # need root and can only be done here. Neither half covers the other.
+  #
+  # Everything in here runs as root on every `just switch`, so it stays
+  # explicit: named labels and named paths, never a glob that deletes whatever
+  # matches today.
+  ###########################################################################
   system.activationScripts.extraActivation.text = ''
     echo "Setting up OpenJDK symlink..."
 
@@ -53,8 +66,11 @@
     # Remove blessed helper tool if present
     rm -f /Library/PrivilegedHelperTools/com.adobe.ARMDC.SMJobBlessHelper 2>/dev/null || true
 
-    # Remove any other stray Adobe launchd plists
-    find /Library/LaunchAgents /Library/LaunchDaemons -maxdepth 1 -type f -name 'com.adobe.*.plist' -exec rm -f {} + 2>/dev/null || true
+    # Anything Adobe installs that is NOT in the list above is left alone. A
+    # `find ... -name 'com.adobe.*.plist' -exec rm -f` here would also take out
+    # the Acrobat updater and any future component, as root, on every switch --
+    # unbounded deletion to disable a known set of agents. Add the label above
+    # instead when a new one turns up; `launchctl list | grep adobe` names it.
 
     # Kill lingering Adobe processes (system context)
     pkill -if 'AdobeGC' 2>/dev/null || true

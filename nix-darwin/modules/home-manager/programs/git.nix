@@ -35,18 +35,24 @@
       # which overrides our gpg.program below with the dummy nix package path.
     };
 
-    ignores = [
-      ".DS_Store"
-      ".AppleDouble"
-      ".LSOverride"
-      "._*"
-      ".Spotlight-V100"
-      ".Trashes"
-      "Icon?"
+    #########################################################################
+    # Global ignores.
+    #
+    # The OS-junk half is read from .gitignore-global rather than restated
+    # here, because that file is already `core.excludesfile` on the Linux, WSL
+    # and Windows machines. Kept as two lists they drifted: this one had grown
+    # node_modules/ and __pycache__/, that one .fuse_hidden*, $RECYCLE.BIN/ and
+    # *.lnk, and neither machine got both.
+    #
+    # home-manager joins these with newlines into ~/.config/git/ignore, and git
+    # reads that as an ignore file, so the comments and blank lines in the
+    # imported text are fine as-is.
+    #########################################################################
+    ignores = lib.splitString "\n" (builtins.readFile ../../../../.gitignore-global) ++ [
+      # Editor and tooling noise, on top of the OS junk imported above.
       ".idea/"
       "*.swp"
       "*.swo"
-      "*~"
       ".vim/backup/"
       ".vim/swap/"
       ".vim/undo/"
@@ -56,12 +62,10 @@
       ".pytest_cache/"
       ".direnv/"
       ".envrc"
-      "Thumbs.db"
-      "Desktop.ini"
-      ".directory"
       "*.tmp"
       "*.temp"
       ".cache/"
+      # Never commit these by accident, wherever they turn up.
       ".env"
       ".env.local"
       "*.pem"
