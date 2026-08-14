@@ -67,10 +67,10 @@ function M.config()
   vim.api.nvim_create_autocmd('FileType', {
     group = vim.api.nvim_create_augroup('TreesitterStart', { clear = true }),
     callback = function(args)
+      -- get_lang() resolves subfiletypes such as html.glimmer, and falls back
+      -- to the filetype itself, so it answers for anything a FileType event
+      -- carries. Whether a parser exists is the pcall's business.
       local lang = vim.treesitter.language.get_lang(args.match)
-      if not lang then
-        return
-      end
 
       if pcall(vim.treesitter.start, args.buf, lang) then
         -- Use treesitter for the `=` operator.
