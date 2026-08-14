@@ -211,7 +211,7 @@ opkg install zsh-autosuggestions zsh-syntax-highlighting
 | Prezto `fasd`                                                                 | zoxide                                                         |
 | Prezto `terminal` / `archive` / `utility`                                     | ~40 lines of plain zsh in `.zshrc`                             |
 | `djui/alias-tips`                                                             | `zsh-you-should-use`                                           |
-| `zdharma-continuum/history-search-multi-word`                                 | same, from nixpkgs                                             |
+| `zdharma-continuum/history-search-multi-word`                                 | dropped; Atuin owns `Ctrl-R`                                   |
 | `hlissner/zsh-autopair`                                                       | same, from nixpkgs                                             |
 | `seebi/dircolors-solarized`                                                   | `vivid`                                                        |
 | `supercrabtree/k`                                                             | `eza`                                                          |

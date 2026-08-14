@@ -13,8 +13,8 @@ let
   pluginFiles = [
     # Warns when an alias exists for the command just typed.
     "${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh"
-    # Provides the history-search-multi-word widget .zshrc binds to Ctrl-R.
-    "${pkgs.zsh-history-search-multi-word}/share/zsh/zsh-history-search-multi-word/history-search-multi-word.plugin.zsh"
+    # Off while Atuin owns Ctrl-R: the widget would be sourced and never bound.
+    # "${pkgs.zsh-history-search-multi-word}/share/zsh/zsh-history-search-multi-word/history-search-multi-word.plugin.zsh"
     # Auto-closes quotes and brackets.
     "${pkgs.zsh-autopair}/share/zsh/zsh-autopair/autopair.zsh"
   ];
