@@ -34,3 +34,6 @@ cleand = "cleand"
 ba = "ba"
 # terminfo capability names used for key bindings in .zshrc.
 kend = "kend"
+# Alias names in .zsh/git_aliases.zsh, not misspellings:
+#   grup = git remote update
+grup = "grup"
