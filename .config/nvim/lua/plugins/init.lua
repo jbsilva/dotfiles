@@ -324,47 +324,57 @@ require('lazy').setup({
       require('plugins.config.lsp').completion()
     end,
   },
+  --
+  --  Debugging is on the function keys, the same ones every other debugger
+  --  uses. It cannot live under <leader>d: that is the "delete, but keep the
+  --  text" operator from keybinds.lua, and a <leader>d? mapping swallows the
+  --  motion after it -- <leader>diw and <leader>dt) could never fire while
+  --  <leader>di and <leader>dt were step-into and UI-toggle.
+  --
+  --  <F5> continue    <F9>  breakpoint   <F6> UI toggle
+  --  <F10> step over  <F11> step into
   {
     'mfussenegger/nvim-dap',
     keys = {
       {
-        '<leader>db',
+        '<F9>',
         function()
           require('dap').toggle_breakpoint()
         end,
         desc = 'DAP breakpoint',
       },
       {
-        '<leader>dc',
+        '<F5>',
         function()
           require('dap').continue()
         end,
         desc = 'DAP continue',
       },
       {
-        '<leader>do',
+        '<F10>',
         function()
           require('dap').step_over()
         end,
         desc = 'DAP step over',
       },
       {
-        '<leader>di',
+        '<F11>',
         function()
           require('dap').step_into()
         end,
         desc = 'DAP step into',
       },
       {
-        '<leader>dt',
+        '<F6>',
         function()
           require('dapui').toggle()
         end,
         desc = 'DAP UI toggle',
       },
-      -- Python: debug just the test/class/method under the cursor
+      -- Python: debug just the test/class/method under the cursor. Grouped
+      -- with the other <leader>t test mappings rather than with the F keys.
       {
-        '<leader>dm',
+        '<leader>tm',
         function()
           require('dap-python').test_method()
         end,
