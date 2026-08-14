@@ -347,6 +347,10 @@ function M.dap()
   require('mason-nvim-dap').setup({
     -- debugpy for Python, js-debug-adapter for Node/browser JS and TS.
     ensure_installed = { 'python', 'js' },
+    -- Set explicitly because the type marks it required, so leaving it out is
+    -- a lua_ls warning. Off: ensure_installed above is the only thing that
+    -- should pull an adapter in.
+    automatic_installation = false,
     -- Empty handlers table = apply mason-nvim-dap's default adapter setup for
     -- everything installed. Replaces the old `automatic_setup = true`.
     handlers = {},

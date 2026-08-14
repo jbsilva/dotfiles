@@ -1,6 +1,10 @@
 local M = {}
 
 function M.config()
+  -- lua_ls reports `setup` as an undefined field. The field exists; lualine
+  -- declares `local M = {}` and then replaces it wholesale with its export
+  -- table at the end of the file, which defeats the inference.
+  ---@diagnostic disable-next-line: undefined-field
   require('lualine').setup({
     options = {
       -- Derives the statusline colours from the active colorscheme, so
