@@ -1,6 +1,5 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-local command = vim.api.nvim_create_user_command
 
 -------------------------------------------------------------------------------
 --> Highlight the region on yank
@@ -118,8 +117,3 @@ autocmd({ 'BufEnter', 'BufWinEnter', 'TabEnter' }, {
   pattern = '*.txt',
   command = 'setlocal textwidth=80 spell spelllang=en_us',
 })
-
--------------------------------------------------------------------------------
---> Remove trailing whitespaces
--------------------------------------------------------------------------------
-command('FixWhitespace', ':%s/\\s\\+$//e', { desc = 'Remove trailing whitespaces' })
