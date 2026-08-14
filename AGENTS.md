@@ -22,12 +22,15 @@ path.
 with no rebuild. Most other `.config` paths are linked file by file, and adding one needs an
 `xdg.nix` entry as well as the `.gitignore` line.
 
-**Any Neovim run can rewrite `lazy-lock.json`.** Starting Neovim to test something may prune or bump
-plugin pins as a side effect. Check `git status` before staging, and do not sweep an unrelated
-lockfile change into a commit.
+**`lazy-lock.json` changes come from `:Lazy` commands, never from starting Neovim.** lazy.nvim calls
+`Lock.update()` from exactly three places in `lazy/manage/init.lua` — install, update and clean — so
+`:Lazy sync`, which runs all three, rewrites it and a plain startup does not. If it turns up
+modified, someone ran one of those deliberately.
 
-**Leave unrelated dirty files alone.** `nix-darwin/flake.lock` and friends are often already
-modified. Stage paths explicitly; never `git add -A`.
+**Do not assume you caused a working-tree change.** The repo is in use while you work in it;
+`nix-darwin/flake.lock`, `lazy-lock.json` and VS Code's `settings.json` all get modified by their
+owners. Stage paths explicitly, never `git add -A`, and ask before reverting something you did not
+write — a "stray" pin bump is more likely to be an intended update than an accident.
 
 ## Commits
 
