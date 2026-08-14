@@ -45,6 +45,14 @@ repos:
     hooks:
       - id: actionlint
 
+  # The security half of the workflow linting: actionlint reads the YAML for
+  # correctness, zizmor reads it for unpinned actions, credential persistence,
+  # cache poisoning, template injection and over-broad permissions.
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.29.0
+    hooks:
+      - id: zizmor
+
   # Nix. These are `local` because they are already installed by
   # nix-darwin/modules/packages.nix, so there is nothing to fetch.
   - repo: local

@@ -91,6 +91,7 @@
     ruff # Python linter/formatter, used by conform.nvim
     typos # source-code spell checker; config in typos.toml
     actionlint # linter for GitHub Actions workflows
+    zizmor # security auditor for GitHub Actions workflows
     prek # runs .pre-commit-config.yaml; drop-in pre-commit replacement in Rust
     ast-grep # structural search & rewrite, by syntax tree rather than regex
     tealdeer # `tldr` client: practical examples instead of full man pages

@@ -365,6 +365,7 @@ just test-shell     # WSL/Synology/bare-Linux containers (needs docker)
 | `shellcheck`, `zsh -n`        | sh/bash and zsh respectively                                          |
 | `stylua`                      | Lua, config in `.stylua.toml`                                         |
 | `actionlint`                  | GitHub Actions workflows                                              |
+| `zizmor`                      | GitHub Actions workflows, security side                               |
 | `gitleaks`                    | secrets in staged changes                                             |
 | pre-commit-hooks              | trailing whitespace, EOF, line endings, large files, YAML/TOML syntax |
 

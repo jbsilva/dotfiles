@@ -71,6 +71,47 @@ jobs:
             --command prek run --all-files --show-diff-on-failure
 
   # ---------------------------------------------------------------------------
+  # The workflow files themselves (https://docs.zizmor.sh). The zizmor hook
+  # already runs in the lint job above; this job adds the two things a hook run
+  # cannot do: the findings land in the Security tab, and GH_TOKEN switches on
+  # the audits that query the GitHub API, so a pinned action that turns out to
+  # be vulnerable fails here without anything in this repo changing.
+  # ---------------------------------------------------------------------------
+  workflows:
+    name: Workflow audit
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # actions/checkout
+      security-events: write # upload-sarif
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+
+      - name: zizmor
+        run: nix run nixpkgs#zizmor -- --format=sarif . > results.sarif
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload SARIF
+        # A fork PR gets a read-only token, so the upload would fail there; the
+        # gate below still runs.
+        if: ${{ !github.event.pull_request.head.repo.fork }}
+        uses: github/codeql-action/upload-sarif@5595ccaf912efad79be6eef63a5619ff05969be3 # v4.37.6
+        with:
+          sarif_file: results.sarif
+          category: zizmor
+
+      - name: Fail on findings
+        # --format=sarif always exits 0, so the audit runs a second time to gate
+        # the PR, after the results are safely in the Security tab.
+        run: nix run nixpkgs#zizmor -- .
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ---------------------------------------------------------------------------
   # Nix. Evaluated on arm64 macOS because the flake is aarch64-darwin only.
   # ---------------------------------------------------------------------------
   nix:
