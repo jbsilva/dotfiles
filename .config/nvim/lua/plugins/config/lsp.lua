@@ -75,15 +75,12 @@ function M.config()
   ---------------------------------------------------------------------------
   --> Capabilities shared by every server
   --
-  -- blink.cmp advertises the completion capabilities (snippet support,
-  -- resolve support, ...). It is lazy-loaded on InsertEnter, so this is
-  -- guarded: if blink has not loaded yet it registers its own defaults when
-  -- it does, and we fall back to core capabilities here.
+  -- Nothing to do here. blink.cmp advertises the completion capabilities
+  -- (snippet support, resolve support, ...) from its own plugin/blink-cmp.lua,
+  -- which calls vim.lsp.config('*', { capabilities = ... }) as it loads. It is
+  -- listed as a dependency of nvim-lspconfig so that runs before any server
+  -- starts; doing it again here only duplicated it.
   ---------------------------------------------------------------------------
-  local ok, blink = pcall(require, 'blink.cmp')
-  if ok then
-    vim.lsp.config('*', { capabilities = blink.get_lsp_capabilities(nil, true) })
-  end
 
   ---------------------------------------------------------------------------
   --> Per-server overrides

@@ -306,6 +306,9 @@ require('lazy').setup({
       -- Schemas for jsonls and yamlls: package.json, tsconfig, GitHub
       -- workflows, docker-compose and friends get validation and completion.
       'b0o/SchemaStore.nvim',
+      -- Registers the completion capabilities every server is started with, so
+      -- it has to load first. Spec is below, with the rest of completion.
+      'saghen/blink.cmp',
     },
     config = function()
       require('plugins.config.lsp').config()
@@ -313,6 +316,11 @@ require('lazy').setup({
   },
   {
     -- blink.cmp replaces nvim-cmp and all the cmp-* sources with one plugin.
+    --
+    -- Also a dependency of nvim-lspconfig above, which is what loads it in
+    -- practice: it has to register the LSP capabilities before a server
+    -- starts. These events only catch the cases with no file read, such as
+    -- typing a command straight into an empty buffer.
     'saghen/blink.cmp',
     event = { 'InsertEnter', 'CmdlineEnter' },
     version = '*', -- use a release tag, which ships a prebuilt fuzzy binary
