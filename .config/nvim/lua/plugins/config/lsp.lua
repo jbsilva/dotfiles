@@ -53,6 +53,11 @@ local servers = {
   'lua_ls',
   'terraformls',
   'yamlls',
+
+  -- Not tied to a language: the same checker the `typos` pre-commit hook
+  -- runs, reading the same typos.toml, so a misspelling that would block a
+  -- commit is visible while typing. Attaches to every filetype.
+  'typos_lsp',
 }
 
 -- Servers already installed outside Mason, mapped to the binary that proves
