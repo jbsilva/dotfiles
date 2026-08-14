@@ -6,6 +6,7 @@
     ./environment.nix
     ./programs/zsh.nix
     ./packages.nix
+    ./git-extra-commands.nix
     ./fonts.nix
     ./homebrew.nix
     ./nix.nix
