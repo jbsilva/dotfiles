@@ -4,15 +4,18 @@
 -------------------------------------------------------------------------------
 local M = {}
 
-local function bind(op, outer_opts)
-  outer_opts = outer_opts or { noremap = true }
+-- These only name the mode. vim.keymap.set already defaults to a
+-- non-remapping mapping, so there is nothing else to pass.
+--
+-- For the rare mapping that does have to go through other mappings, put
+-- `{ remap = true }` in `opts`. Not `noremap = false`: vim.keymap.set ignores
+-- that and forces noremap whenever `remap` is unset.
+local function bind(mode)
   return function(lhs, rhs, opts)
-    opts = vim.tbl_extend('force', outer_opts, opts or {})
-    vim.keymap.set(op, lhs, rhs, opts)
+    vim.keymap.set(mode, lhs, rhs, opts)
   end
 end
 
-M.nmap = bind('n', { noremap = false })
 M.noremap = bind({ 'n', 'v', 'o' })
 M.nnoremap = bind('n')
 M.vnoremap = bind('v')
