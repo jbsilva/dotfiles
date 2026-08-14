@@ -183,6 +183,25 @@ nnoremap(',,p', '"ap')
 -- end
 
 -------------------------------------------------------------------------------
+--> Undo tree
+--
+-- Neovim 0.12 ships this as an optional package, so mbbill/undotree is gone.
+-- It lives under pack/dist/opt, which is not on the runtimepath until packadd
+-- runs -- doing that inside the callback keeps it off the startup path, the
+-- same reason the plugin spec used to carry `keys`.
+--
+-- open() toggles, so one mapping covers both directions. Inside the window,
+-- moving the cursor moves through the undo states; there is no separate diff
+-- pane as mbbill had.
+-------------------------------------------------------------------------------
+if vim.fn.has('nvim-0.12') == 1 then
+  nnoremap('<leader>u', function()
+    vim.cmd.packadd('nvim.undotree')
+    require('undotree').open()
+  end, { desc = 'Toggle undotree' })
+end
+
+-------------------------------------------------------------------------------
 --> Remove trailing whitespaces
 -------------------------------------------------------------------------------
 local command = vim.api.nvim_create_user_command

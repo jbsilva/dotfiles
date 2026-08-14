@@ -199,7 +199,7 @@ jobs:
                    'options', 'autocmd', 'keybinds', 'mapmodes',
                    'plugins.config.lsp',
                    'plugins.config.treesitter',
-                   'plugins.config.telescope',
+                   'plugins.config.fzf',
                    'plugins.config.lualine',
                    'plugins.config.neotest',
                    'plugins.config.nvim-tree',

@@ -41,7 +41,7 @@ require('lazy').setup({
 
   ----------------------------------------------------------
   --> Icons
-  -- Required by lualine, mini.tabline, nvim-tree and telescope.
+  -- Required by lualine, mini.tabline, nvim-tree, fzf-lua and mini.files.
   --
   -- mock_nvim_web_devicons() defines the nvim-web-devicons API surface, so the
   -- consumers above keep calling get_icon/get_icon_color unchanged. Stays
@@ -179,17 +179,8 @@ require('lazy').setup({
     cmd = { 'SudaRead', 'SudaWrite' },
   },
 
-  ----------------------------------------------------------
-  --> Undotree: visualise the undo history
-  --  <leader>u toggles
-  ----------------------------------------------------------
-  {
-    'mbbill/undotree',
-    cmd = { 'UndotreeToggle', 'UndotreeShow' },
-    keys = {
-      { '<leader>u', vim.cmd.UndotreeToggle, desc = 'Toggle undotree' },
-    },
-  },
+  -- Undotree is no longer a plugin: Neovim 0.12 ships nvim.undotree as an
+  -- optional package. <leader>u is mapped in keybinds.lua.
 
   ----------------------------------------------------------
   --> Nvim-tree: file explorer
@@ -212,74 +203,97 @@ require('lazy').setup({
   },
 
   ----------------------------------------------------------
-  --> Telescope: fuzzy finder over lists
-  --  Needs fd and ripgrep, both declared in nix-darwin/modules/packages.nix.
+  --> fzf-lua: fuzzy finder over lists
+  --  Needs fd, ripgrep and fzf, all declared in nix-darwin/modules/packages.nix.
   --  <C-p> files, 'b buffers, 'r live grep, 'c git status, <leader>H help
   --
-  --  Alternative to consider: fzf-lua  https://github.com/ibhagwan/fzf-lua
-  --  Faster, more actively developed, and drives the same fzf binary already
-  --  in packages.nix. Telescope keeps the larger extension ecosystem.
+  --  Replaced nvim-telescope/telescope.nvim, which needed plenary,
+  --  telescope-fzf-native (a `make` build step, to get a sorter as fast as the
+  --  fzf binary already on $PATH) and telescope-file-browser. fzf-lua drives
+  --  that fzf binary directly and needs none of the three.
+  --
+  --  Most of the old in-picker mappings were reproduced by fzf itself: esc
+  --  aborts, ctrl-j/ctrl-k move, tab toggles and moves down. Only the quickfix
+  --  keys are configured, in plugins/config/fzf.lua.
   ----------------------------------------------------------
   {
-    'nvim-telescope/telescope.nvim',
-    cmd = 'Telescope',
-    -- Declared here rather than mapped inside config(), so lazy.nvim can bind
-    -- a stub and defer the plugin (plus plenary, fzf-native, file-browser and
-    -- devicons) until the first press. Mapping in config() is why this used to
-    -- carry `event = 'VeryLazy'` and load on every startup.
+    'ibhagwan/fzf-lua',
+    cmd = 'FzfLua',
+    -- Declared here rather than mapped inside config(), so lazy.nvim can bind a
+    -- stub and defer the plugin until the first press.
     keys = {
       {
         '<C-p>',
         function()
-          require('plugins.config.telescope').project_files()
+          require('plugins.config.fzf').project_files()
         end,
         desc = 'Find files (git-aware)',
       },
       {
         "'b",
         function()
-          require('plugins.config.telescope').pick('buffers')
+          require('plugins.config.fzf').pick('buffers')
         end,
         desc = 'Find buffers',
       },
       {
         "'r",
         function()
-          require('plugins.config.telescope').pick('live_grep')
+          require('plugins.config.fzf').pick('live_grep')
         end,
         desc = 'Live grep',
       },
       {
         "'c",
         function()
-          require('plugins.config.telescope').pick('git_status')
+          require('plugins.config.fzf').pick('git_status')
         end,
         desc = 'Changed files (git)',
       },
       {
         '<leader>H',
         function()
-          require('plugins.config.telescope').pick('help_tags')
+          require('plugins.config.fzf').pick('helptags')
         end,
         desc = 'Help tags',
       },
-      { '<leader>fb', '<cmd>Telescope file_browser<cr>', desc = 'File browser' },
     },
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-mini/mini.icons',
-      'nvim-telescope/telescope-file-browser.nvim',
+    -- fzf-lua reads _G.MiniIcons directly when it is present.
+    dependencies = 'nvim-mini/mini.icons',
+    config = function()
+      require('plugins.config.fzf').config()
+    end,
+  },
+
+  ----------------------------------------------------------
+  --> mini.files: file browser
+  --  <leader>fb, replacing telescope-file-browser, which died with telescope.
+  --
+  --  Deliberately NOT a replacement for nvim-tree: this is a transient float
+  --  with no git or diagnostic status, and the tree is configured for both.
+  --  Filesystem edits are ordinary text edits, applied on confirmation.
+  ----------------------------------------------------------
+  {
+    'nvim-mini/mini.files',
+    keys = {
       {
-        -- Native C sorter: a large speedup on big repositories.
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
+        '<leader>fb',
+        function()
+          local buf = vim.api.nvim_buf_get_name(0)
+          require('mini.files').open(buf ~= '' and buf or nil, true)
+        end,
+        desc = 'File browser',
       },
     },
-    config = function()
-      require('plugins.config.telescope').config()
-      require('telescope').load_extension('fzf')
-      require('telescope').load_extension('file_browser')
-    end,
+    dependencies = 'nvim-mini/mini.icons',
+    opts = {
+      windows = { preview = true, width_focus = 35, width_preview = 60 },
+      content = {
+        filter = function(entry)
+          return not vim.tbl_contains({ '.git', 'node_modules', 'target' }, entry.name)
+        end,
+      },
+    },
   },
 
   ----------------------------------------------------------
@@ -574,6 +588,8 @@ require('lazy').setup({
   ----------------------------------------------------------
   {
     'folke/flash.nvim',
+    -- Still VeryLazy, not `keys`: the f/F/t/T labels come from flash's char
+    -- mode, which needs the plugin loaded rather than a lazy.nvim stub.
     event = 'VeryLazy',
     opts = {
       modes = {
@@ -582,8 +598,13 @@ require('lazy').setup({
       },
     },
     keys = {
+      -- Jump moved off bare s/S so mini.surround can have the s prefix.
+      --
+      -- <leader>j rather than gs: gs is LSP signature help (lsp.lua), mapped
+      -- per buffer on attach, so a global gs would be shadowed in every buffer
+      -- with a server running. gm/gM/gw/gh are all builtins.
       {
-        's',
+        '<leader>j',
         mode = { 'n', 'x', 'o' },
         function()
           require('flash').jump()
@@ -591,13 +612,15 @@ require('lazy').setup({
         desc = 'Flash jump',
       },
       {
-        'S',
+        '<leader>J',
         mode = { 'n', 'x', 'o' },
         function()
           require('flash').treesitter()
         end,
         desc = 'Flash treesitter',
       },
+      -- Operator-pending only, and mini.surround maps nothing on bare r, so
+      -- this one stays where it was.
       {
         'r',
         mode = 'o',
@@ -610,20 +633,36 @@ require('lazy').setup({
   },
 
   ----------------------------------------------------------
-  --> nvim-surround: manipulate surroundings (maintained vim-surround)
+  --> mini.surround: manipulate surroundings
+  --
+  --  Replaced kylechui/nvim-surround. Different verbs: everything is under an
+  --  s prefix rather than ys/cs/ds, which is why flash's jump moved to
+  --  <leader>j -- see its spec above.
   --
   --  (*) is the cursor:
   --  Old text                  Command     New text
-  --  "Hello *world!"           ds"         Hello world!
-  --  [123+4*56]/2              cs])        (123+456)/2
-  --  <div>Yo!*</div>           cst<p>      <p>Yo!</p>
-  --  if *x>3 {                 ysW(        if ( x>3 ) {
+  --  "Hello *world!"           sd"         Hello world!
+  --  [123+4*56]/2              sr])        (123+456)/2
+  --  <div>Yo!*</div>           srt<p>      <p>Yo!</p>
+  --  if *x>3 {                 saW(        if ( x>3 ) {
+  --
+  --  Maps sa add, sd delete, sr replace, sf/sF find right/left, sh highlight,
+  --  each also with an n/l suffix for the next/previous match (sdn, srl, ...).
+  --  b and q are aliases for any bracket and any quote, as in nvim-surround.
+  --
+  --  mini.surround maps bare s to <Nop> itself, on purpose: without it a slow
+  --  s-then-key would fire the built-in substitute. So s alone does nothing,
+  --  which is no loss here because flash held s before. Use cl instead.
+  --  Bare S is now free again and back to the built-in substitute-line.
   ----------------------------------------------------------
   {
-    'kylechui/nvim-surround',
-    version = '*',
+    'nvim-mini/mini.surround',
     event = 'VeryLazy',
-    opts = {},
+    opts = {
+      -- nvim-surround searched the whole buffer; mini.surround defaults to 20
+      -- lines, which silently fails to find a surrounding in longer functions.
+      n_lines = 500,
+    },
   },
 
   ----------------------------------------------------------
@@ -814,6 +853,11 @@ require('lazy').setup({
   -- 'f-person/git-blame.nvim' -- gitsigns' b:gitsigns_blame_line feeds lualine
   -- 'nvim-tree/nvim-web-devicons' -- replaced by mini.icons + mock_nvim_web_devicons
   -- 'akinsho/bufferline.nvim' -- replaced by mini.tabline; ran on bare defaults
+  -- 'kylechui/nvim-surround' -- replaced by mini.surround; flash moved to <leader>j
+  -- 'nvim-telescope/telescope.nvim' -- replaced by fzf-lua
+  -- 'nvim-telescope/telescope-fzf-native.nvim' -- fzf-lua drives the fzf binary itself
+  -- 'nvim-telescope/telescope-file-browser.nvim' -- replaced by mini.files on <leader>fb
+  -- 'mbbill/undotree'         -- Neovim 0.12 ships nvim.undotree; mapped in keybinds.lua
 
   ----------------------------------------------------------
   --> mini.nvim (nvim-mini/mini.nvim), evaluated against every plugin above
@@ -831,14 +875,10 @@ require('lazy').setup({
   --                   redrawstatus, so the section would show the previous
   --                   line's blame. It also never sets laststatus, so
   --                   globalstatus has to move to options.lua.
-  --   mini.files      replaces telescope-file-browser for <leader>fb, but not
-  --                   nvim-tree: it is a transient float with no git or
-  --                   diagnostic status, which this tree is configured for.
   --
   -- Rejected, with the blocking reason:
-  --   mini.pick       no git_status picker exists ('c is bound to it)
-  --   mini.surround   defaults are s-prefixed; flash.nvim owns bare `s`, so
-  --                   every jump would wait out timeoutlen
+  --   mini.pick       no git_status picker exists ('c is bound to it), and
+  --                   fzf-lua now fills this role anyway
   --   mini.pairs      no treesitter awareness at all; check_ts = true is the
   --                   only option this config sets on nvim-autopairs
   --   mini.diff       no inline blame anywhere in mini.nvim; only
