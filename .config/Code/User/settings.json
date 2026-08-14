@@ -122,6 +122,7 @@
   },
   "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.enableImages": true,
+  "terminal.integrated.initialHint": false,
   "terminal.integrated.localEchoExcludePrograms": ["vim", "vi", "nano", "zellij", "nvim"],
   "terminal.integrated.scrollback": 50000,
   "terminal.integrated.stickyScroll.enabled": false,
