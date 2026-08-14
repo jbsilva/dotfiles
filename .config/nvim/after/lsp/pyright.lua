@@ -12,9 +12,16 @@
 ---@type vim.lsp.Config
 return {
   before_init = function(_, config)
-    config.settings = config.settings or {}
-    config.settings.python = config.settings.python or {}
-    config.settings.python.pythonPath = require('plugins.config.util').venv_python(config.root_dir)
+    -- Mutated in place, through a local typed `table`. The client captures
+    -- this table before before_init runs, so replacing config.settings with a
+    -- new one is silently dropped; the local is only there because reaching
+    -- into config.settings directly is an inject-field warning (it is typed
+    -- lsp.LSPObject).
+    ---@type table
+    local settings = config.settings or {}
+    settings.python = settings.python or {}
+    settings.python.pythonPath = require('plugins.config.util').venv_python(config.root_dir)
+    config.settings = settings
   end,
   settings = {
     pyright = {
