@@ -32,11 +32,30 @@ local M = {}
 
 -- Servers installed automatically. Names are mason-lspconfig's, which match
 -- nvim-lspconfig's lsp/<name>.lua files.
+-- Python type checkers. All three are installed, exactly one attaches: they
+-- all report the same type errors, so two of them running means every error
+-- appears twice.
+--
+--   pyright   Microsoft. The most complete of the three, and the default.
+--   ty        Astral, same people as ruff. Far faster, still pre-1.0.
+--   pyrefly   Meta. Also far faster, also young.
+--
+-- Switch with `:PyTypeChecker ty`, which takes effect immediately. To change
+-- the default, set vim.g.python_type_checker before this module loads.
+local python_type_checkers = { 'pyright', 'ty', 'pyrefly' }
+
+local function active_type_checker()
+  local want = vim.g.python_type_checker
+  return vim.tbl_contains(python_type_checkers, want) and want or 'pyright'
+end
+
 local servers = {
-  -- Python: pyright for types/navigation, ruff for lint + import sorting.
-  -- They are complementary; pyright's own linting is left off below.
-  'pyright',
+  -- Python: ruff for lint and import sorting, plus whichever type checker is
+  -- active. They are complementary -- ruff owns the lint diagnostics.
   'ruff',
+  'pyright',
+  'ty',
+  'pyrefly',
 
   -- JavaScript / TypeScript. vtsls wraps the official TypeScript language
   -- server and is better maintained than the old tsserver integration.
@@ -124,9 +143,16 @@ function M.config()
   -- mason-lspconfig v2 calls vim.lsp.enable() for every installed server,
   -- so no per-server setup() loop is needed.
   ---------------------------------------------------------------------------
+  -- Install everything, but keep the type checkers that are not currently
+  -- selected from attaching, or every Python type error is reported three
+  -- times.
+  local inactive = vim.tbl_filter(function(name)
+    return name ~= active_type_checker()
+  end, python_type_checkers)
+
   require('mason-lspconfig').setup({
     ensure_installed = servers,
-    automatic_enable = true,
+    automatic_enable = { exclude = inactive },
   })
 
   -- Enable the servers that are already on $PATH.
@@ -135,6 +161,39 @@ function M.config()
       vim.lsp.enable(server)
     end
   end
+
+  ---------------------------------------------------------------------------
+  --> Switching Python type checker
+  --
+  -- vim.lsp.enable() does the work in both directions: enabling re-runs the
+  -- FileType hook over the buffers already open, and disabling stops the
+  -- running clients. So the switch takes effect without a restart.
+  ---------------------------------------------------------------------------
+  vim.api.nvim_create_user_command('PyTypeChecker', function(opts)
+    local want = opts.args
+    if not vim.tbl_contains(python_type_checkers, want) then
+      vim.notify(
+        ('Unknown type checker %q. Pick one of: %s'):format(
+          want,
+          table.concat(python_type_checkers, ', ')
+        ),
+        vim.log.levels.ERROR
+      )
+      return
+    end
+
+    vim.g.python_type_checker = want
+    for _, name in ipairs(python_type_checkers) do
+      vim.lsp.enable(name, name == want)
+    end
+    vim.notify('Python type checker: ' .. want)
+  end, {
+    nargs = 1,
+    complete = function()
+      return python_type_checkers
+    end,
+    desc = 'Choose the Python type checker (pyright, ty or pyrefly)',
+  })
 
   ---------------------------------------------------------------------------
   --> Buffer-local keymaps and per-buffer behaviour
