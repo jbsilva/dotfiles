@@ -547,29 +547,18 @@ zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
 # by zsh with the matcher-list, fzf only chooses among it. `ls linux/Compose`
 # still finds XCompose.
 #
-# Must load after compinit and before zsh-syntax-highlighting. $DOTFILES_FZF_TAB
-# is exported from ~/.zshenv on the Nix machines; elsewhere it is looked up in
-# the usual package-manager prefixes.
+# Loaded on the first <Tab> rather than at startup: sourcing it eagerly costs
+# 126ms of a 276ms startup, nearly all of it in an `autoload` that scales with
+# the ~1800 files on $fpath. Deferring moves that to the first completion.
+#
+# It still has to land after compinit and before zsh-syntax-highlighting, which
+# any <Tab> trivially satisfies. $DOTFILES_FZF_TAB is exported from ~/.zshenv on
+# the Nix machines; elsewhere the usual prefixes are searched.
 ###############################################################################
-() {
-  local candidate
-  for candidate in \
-    "$DOTFILES_FZF_TAB" \
-    /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh \
-    /opt/homebrew/share/fzf-tab/fzf-tab.plugin.zsh \
-    /usr/share/fzf-tab/fzf-tab.plugin.zsh \
-    "$HOME/.local/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
-  do
-    [[ -n $candidate && -r $candidate ]] && { source "$candidate"; break }
-  done
-}
-
-if (( $+functions[fzf-tab-complete] )); then
-  # Keep the picker small and out of the way.
+function _fzf_tab_configure() {
   zstyle ':fzf-tab:*' fzf-flags --height=45% --layout=reverse --border
-  # Accept the current match with Enter; Space keeps filtering.
+  # Accept the current match with Enter; / keeps drilling into directories.
   zstyle ':fzf-tab:*' continuous-trigger '/'
-  # Preview: directory listing for cd, file contents elsewhere.
   if (( $+commands[eza] )); then
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons $realpath'
     zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always --icons $realpath'
@@ -580,7 +569,31 @@ if (( $+functions[fzf-tab-complete] )); then
   fi
   # fzf-tab draws the list itself, so zsh should not also open its own menu.
   zstyle ':completion:*' menu no
-fi
+}
+
+function _fzf_tab_lazy_load() {
+  local candidate
+  for candidate in \
+    "$DOTFILES_FZF_TAB" \
+    /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh \
+    /opt/homebrew/share/fzf-tab/fzf-tab.plugin.zsh \
+    /usr/share/fzf-tab/fzf-tab.plugin.zsh \
+    "$HOME/.local/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
+  do
+    if [[ -n $candidate && -r $candidate ]]; then
+      source "$candidate"
+      _fzf_tab_configure
+      # Sourcing rebinds ^I to fzf-tab's widget; hand this keypress on to it.
+      zle fzf-tab-complete
+      return
+    fi
+  done
+  # Nothing found: fall back to stock completion, permanently.
+  bindkey '^I' expand-or-complete
+  zle expand-or-complete
+}
+zle -N _fzf_tab_lazy_load
+bindkey '^I' _fzf_tab_lazy_load
 
 
 ###############################################################################
