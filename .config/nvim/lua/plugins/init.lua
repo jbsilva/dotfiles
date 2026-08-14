@@ -13,11 +13,14 @@ require('plugins.bootstrap').ensure_lazy()
 require('lazy').setup({
 
   ----------------------------------------------------------
-  --> Colorschemes
+  --> Colorscheme
   --
   -- tokyonight loads eagerly and early so the colorscheme is applied before
   -- anything draws, and so lualine can resolve its matching theme.
-  -- The others stay lazy; `:colorscheme` switches to them on demand.
+  --
+  -- github-nvim-theme, gruvbox and catppuccin used to sit here as lazy specs
+  -- for `:colorscheme` to switch to. Nothing ever selected them, so they were
+  -- only ever cloned and updated. Add one back if that changes.
   ----------------------------------------------------------
   {
     'folke/tokyonight.nvim',
@@ -35,13 +38,6 @@ require('lazy').setup({
       vim.cmd.colorscheme('tokyonight-night')
     end,
   },
-  -- These three are never selected -- tokyonight-night is set above and
-  -- nothing switches away from it. They are lazy, so they cost nothing at
-  -- startup, but they are still cloned and updated. Drop them if `:colorscheme`
-  -- really never gets used.
-  { 'projekt0n/github-nvim-theme', lazy = true },
-  { 'ellisonleao/gruvbox.nvim', lazy = true },
-  { 'catppuccin/nvim', name = 'catppuccin', lazy = true },
 
   ----------------------------------------------------------
   --> Icons
