@@ -663,9 +663,13 @@ require('lazy').setup({
 
   ----------------------------------------------------------
   --> Trouble: diagnostics, references and quickfix in one list
-  --  <leader>xx  diagnostics for the buffer   <leader>xX  for the workspace
-  --  <leader>xs  document symbols             <leader>xl  LSP references
-  --  <leader>xq  quickfix list
+  --  <leader>qd  diagnostics for the buffer   <leader>qD  for the workspace
+  --  <leader>qs  document symbols             <leader>ql  LSP references
+  --  <leader>qq  quickfix list
+  --
+  --  Under <leader>q rather than the usual <leader>x, because keybinds.lua
+  --  maps <leader>x to "+x. Sharing the prefix left that mapping complete but
+  --  ambiguous, so every bare press sat out timeoutlen (500ms) first.
   ----------------------------------------------------------
   {
     'folke/trouble.nvim',
@@ -673,20 +677,20 @@ require('lazy').setup({
     opts = {},
     keys = {
       {
-        '<leader>xx',
+        '<leader>qd',
         '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
         desc = 'Diagnostics (buffer)',
       },
-      { '<leader>xX', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (workspace)' },
-      { '<leader>xs', '<cmd>Trouble symbols toggle<cr>', desc = 'Symbols' },
-      { '<leader>xl', '<cmd>Trouble lsp toggle<cr>', desc = 'LSP references/definitions' },
-      { '<leader>xq', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix list' },
+      { '<leader>qD', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (workspace)' },
+      { '<leader>qs', '<cmd>Trouble symbols toggle<cr>', desc = 'Symbols' },
+      { '<leader>ql', '<cmd>Trouble lsp toggle<cr>', desc = 'LSP references/definitions' },
+      { '<leader>qq', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix list' },
     },
   },
 
   ----------------------------------------------------------
   --> Todo-comments: highlight TODO/FIXME/HACK and search them
-  --  <leader>xt lists them, ]t / [t jump between them
+  --  <leader>qt lists them, ]t / [t jump between them
   ----------------------------------------------------------
   {
     'folke/todo-comments.nvim',
@@ -694,7 +698,7 @@ require('lazy').setup({
     dependencies = 'nvim-lua/plenary.nvim',
     opts = { signs = false },
     keys = {
-      { '<leader>xt', '<cmd>Trouble todo toggle<cr>', desc = 'Todo list' },
+      { '<leader>qt', '<cmd>Trouble todo toggle<cr>', desc = 'Todo list' },
       {
         ']t',
         function()
