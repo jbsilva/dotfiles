@@ -24,24 +24,13 @@ function M.config()
       --> Python
       --
       -- runner is left unset so the adapter detects pytest vs unittest from
-      -- the project. `python` is resolved the same way as for pyright: use
-      -- the project virtualenv if there is one, since that is where pytest
-      -- and the dependencies live.
+      -- the project. `python` is the same lookup pyright uses, shared from
+      -- plugins.config.util. The adapter calls it with the project root, so
+      -- passing the function itself hands it a root rather than the cwd.
       -----------------------------------------------------------------------
       require('neotest-python')({
         dap = { justMyCode = false },
-        python = function()
-          if vim.env.VIRTUAL_ENV then
-            return vim.fs.joinpath(vim.env.VIRTUAL_ENV, 'bin', 'python')
-          end
-          for _, dir in ipairs({ '.venv', 'venv' }) do
-            local candidate = vim.fs.joinpath(vim.uv.cwd(), dir, 'bin', 'python')
-            if vim.uv.fs_stat(candidate) then
-              return candidate
-            end
-          end
-          return vim.fn.exepath('python3')
-        end,
+        python = require('plugins.config.util').venv_python,
       }),
 
       -----------------------------------------------------------------------

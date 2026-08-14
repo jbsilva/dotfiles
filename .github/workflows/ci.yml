@@ -203,6 +203,7 @@ jobs:
                    'plugins.config.lualine',
                    'plugins.config.neotest',
                    'plugins.config.nvim-tree',
+                   'plugins.config.util',
                  }) do
                    local ok, err = pcall(require, m)
                    if not ok then table.insert(failed, m .. ': ' .. tostring(err)) end

@@ -142,26 +142,15 @@ function M.config()
   --
   -- pythonPath is resolved per project so pyright reads the project
   -- virtualenv (uv/poetry `.venv`, or $VIRTUAL_ENV); without it every
-  -- third-party import shows as unresolved.
+  -- third-party import shows as unresolved. neotest-python resolves it the
+  -- same way, so the lookup lives in plugins.config.util.
   -------------------------------------------------------------------------
-  local function python_path(root)
-    if vim.env.VIRTUAL_ENV then
-      return vim.fs.joinpath(vim.env.VIRTUAL_ENV, 'bin', 'python')
-    end
-    for _, dir in ipairs({ '.venv', 'venv', '.direnv' }) do
-      local candidate = vim.fs.joinpath(root or vim.uv.cwd(), dir, 'bin', 'python')
-      if vim.uv.fs_stat(candidate) then
-        return candidate
-      end
-    end
-    return vim.fn.exepath('python3')
-  end
-
   vim.lsp.config('pyright', {
     before_init = function(_, config)
       config.settings = config.settings or {}
       config.settings.python = config.settings.python or {}
-      config.settings.python.pythonPath = python_path(config.root_dir)
+      config.settings.python.pythonPath =
+        require('plugins.config.util').venv_python(config.root_dir)
     end,
     settings = {
       pyright = {
