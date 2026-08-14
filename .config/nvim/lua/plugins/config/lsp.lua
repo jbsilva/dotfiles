@@ -187,16 +187,31 @@ function M.config()
         end, 'Toggle inlay hints')
       end
 
-      map('K', buf.hover, 'Hover documentation')
-      map('gd', buf.definition, 'Go to definition')
-      map('gD', buf.declaration, 'Go to declaration')
-      map('gi', buf.implementation, 'List implementations')
-      map('go', buf.type_definition, 'Go to type definition')
-      map('gr', buf.references, 'List references')
-      map('gs', buf.signature_help, 'Signature help')
-      map('<F2>', buf.rename, 'Rename symbol')
-      map('<leader>ca', buf.code_action, 'Code action')
+      -- Only map what this server can answer. Diagnostics-only servers attach
+      -- to buffers of every filetype -- typos_lsp does -- and an unconditional
+      -- `K` there would replace the built-in keywordprg lookup with a hover
+      -- request that returns nothing.
+      local methods = {
+        { 'K', 'hover', 'textDocument/hover', 'Hover documentation' },
+        { 'gd', 'definition', 'textDocument/definition', 'Go to definition' },
+        { 'gD', 'declaration', 'textDocument/declaration', 'Go to declaration' },
+        { 'gi', 'implementation', 'textDocument/implementation', 'List implementations' },
+        { 'go', 'type_definition', 'textDocument/typeDefinition', 'Go to type definition' },
+        { 'gr', 'references', 'textDocument/references', 'List references' },
+        { 'gs', 'signature_help', 'textDocument/signatureHelp', 'Signature help' },
+        { '<F2>', 'rename', 'textDocument/rename', 'Rename symbol' },
+        { '<leader>ca', 'code_action', 'textDocument/codeAction', 'Code action' },
+      }
 
+      for _, m in ipairs(methods) do
+        local lhs, fn, method, desc = m[1], m[2], m[3], m[4]
+        if client and client:supports_method(method) then
+          map(lhs, buf[fn], desc)
+        end
+      end
+
+      -- Diagnostics are Neovim's, not a server capability, so these are always
+      -- mapped once anything at all has attached.
       map('gl', vim.diagnostic.open_float, 'Show diagnostic')
       map('[d', function()
         vim.diagnostic.jump({ count = -1, float = true })
