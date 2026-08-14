@@ -59,6 +59,26 @@ else
   pass "zplug is gone"
 fi
 
+print -r -- "--- a fresh interactive shell starts silently ---"
+# Every check above asks "is this defined", which a shell that printed three
+# errors on the way up still answers yes to. This catches the errors: a clean
+# start writes nothing to stderr. Run as a child so the assertion is about a
+# shell starting from scratch, not the one already running this script.
+#
+# This only holds in the container images, which is the only place this script
+# runs. On the Mac, `fzf --zsh` restores the full option list through `eval`,
+# and `zle` cannot be set without a terminal, so a tty-less start there prints
+# "can't change option: zle" twice from inside fzf's own integration. A real
+# terminal never sees it.
+typeset startup_stderr
+startup_stderr="$(zsh -i -c exit 2>&1 >/dev/null)"
+if [[ -z $startup_stderr ]]; then
+  pass "no output on stderr during startup"
+else
+  fail "startup wrote to stderr:"
+  print -r -- "$startup_stderr" | sed 's/^/          | /'
+fi
+
 print -r -- "--- \$PATH is de-duplicated ---"
 typeset -i dupes
 dupes=$(print -rl -- $path | sort | uniq -d | wc -l)

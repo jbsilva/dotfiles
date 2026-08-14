@@ -1,0 +1,33 @@
+# Keeps the SHA pins in .github/workflows/ current.
+#
+# Actions are pinned to a commit SHA rather than a tag, which zizmor requires
+# and which means a tag moving upstream cannot change what runs here. The cost
+# is that nothing bumps them: a SHA carries no version, so `just update` (the
+# flake) and the weekly CI run both leave them alone. Dependabot rewrites the
+# pin and the trailing `# vX.Y.Z` comment together.
+#
+# The pre-commit hook `rev:`s in .pre-commit-config.yaml are deliberately not
+# listed. Dependabot's package-ecosystem: pre-commit is not GA, and prek reads
+# that file rather than pre-commit, so the hooks are refreshed by hand -- see
+# `renovate-check` in .zsh/renovate_check.zsh, which does read them.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # Do not pick up a release on the day it ships. A compromised action is
+    # usually caught and yanked within days, and nothing here is urgent enough
+    # to want the newest possible pin. Same idea as the minimumReleaseAge that
+    # `renovate-check` reports on in .zsh/renovate_check.zsh; the zizmor hook
+    # fails the commit without it.
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "ci:"
+    groups:
+      # One PR for the lot: these move together and each is a one-line pin.
+      actions:
+        patterns:
+          - "*"
