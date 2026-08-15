@@ -33,5 +33,26 @@
   // to put in Lua.workspace.library. That makes `---@type vim.lsp.Config` and
   // friends in after/lsp/*.lua unresolvable names. lazydev supplies them
   // inside Neovim, which is where those annotations earn their keep.
-  "Lua.diagnostics.disable": ["undefined-doc-name"]
+  "Lua.diagnostics.disable": ["undefined-doc-name"],
+
+  // Format Lua on save with the same stylua the pre-commit hook and conform
+  // use, now that lua_ls's own formatter is off above. The extension reads
+  // .stylua.toml from the workspace root directly, so the three consumers
+  // cannot drift the way lua_ls did.
+  //
+  // searchBinaryInPATH rather than a styluaPath: left alone the extension
+  // downloads its own binary from GitHub releases, which would be a different
+  // version from the nix-managed 2.5.2, and hardcoding
+  // /run/current-system/sw/bin/stylua would only be right on the nix-darwin
+  // hosts -- this repo is checked out on Arch and WSL too. If VS Code is
+  // launched from Finder and does not inherit the shell PATH, set
+  // stylua.styluaPath on that machine instead.
+  //
+  // disableVersionCheck stops it phoning GitHub about releases that nix
+  // controls, not the extension.
+  "[lua]": {
+    "editor.defaultFormatter": "JohnnyMorganz.stylua"
+  },
+  "stylua.searchBinaryInPATH": true,
+  "stylua.disableVersionCheck": true
 }
