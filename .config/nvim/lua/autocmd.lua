@@ -141,3 +141,29 @@ autocmd('VimResized', {
 -- help. Neovim sources those once per buffer, which is what an autocmd on
 -- BufEnter/BufWinEnter/TabEnter was approximating.
 -------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+--> `nvim some_dir` starts in that directory
+--
+-- Showing the directory is mini.files' job, through its default
+-- options.use_as_default_explorer -- see its spec in plugins/init.lua for why
+-- that plugin is the one thing loaded eagerly. What mini.files deliberately
+-- does not do is change directory, so `cd ~ && nvim project` would leave
+-- <C-p> and 'r searching all of ~ instead of the project just opened.
+--
+-- Only the command-line argument, so `:e some_dir` mid-session still browses
+-- without moving cwd out from under the buffers already open.
+-------------------------------------------------------------------------------
+autocmd('VimEnter', {
+  group = augroup('DirArgChdir', { clear = true }),
+  callback = function()
+    if vim.fn.argc() ~= 1 then
+      return
+    end
+
+    local dir = vim.fn.argv(0) --[[@as string]]
+    if vim.fn.isdirectory(dir) == 1 then
+      vim.cmd.chdir(vim.fn.fnameescape(dir))
+    end
+  end,
+})

@@ -281,9 +281,21 @@ require('lazy').setup({
   --  Deliberately NOT a replacement for nvim-tree: this is a transient float
   --  with no git or diagnostic status, and the tree is configured for both.
   --  Filesystem edits are ordinary text edits, applied on confirmation.
+  --
+  --  The one plugin here that cannot be lazy. options.use_as_default_explorer
+  --  (on by default) is what makes `nvim some_dir` and `:e some_dir` show the
+  --  browser instead of an empty buffer, and it works through a BufEnter
+  --  autocmd that setup() installs -- so setup() has to have run before the
+  --  directory is opened. The module's own docs say as much: "to work with
+  --  directory in |arglist|, do not lazy load this module."
+  --
+  --  Costs ~2ms of a ~16ms startup. netrw is disabled in options.lua, and
+  --  mini.files clears the FileExplorer autocommands itself (plus nvim.dir,
+  --  once Neovim 0.13 ships its built-in explorer).
   ----------------------------------------------------------
   {
     'nvim-mini/mini.files',
+    lazy = false,
     keys = {
       {
         '<leader>fb',
