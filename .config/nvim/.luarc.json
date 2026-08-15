@@ -4,5 +4,6 @@
   "runtime.path": ["?.lua", "?/init.lua"],
   "diagnostics.globals": ["vim"],
   "workspace.checkThirdParty": false,
-  "telemetry.enable": false
+  "telemetry.enable": false,
+  "format.enable": false
 }

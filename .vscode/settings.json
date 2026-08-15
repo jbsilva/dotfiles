@@ -5,7 +5,7 @@
   // and every `vim.*` call is reported as an undefined global.
   //
   // Neovim sends the same settings itself, from
-  // .config/nvim/lua/plugins/config/lsp.lua.
+  // .config/nvim/after/lsp/lua_ls.lua.
   //
   // Spell checking is configured in cspell.json at the repo root, not here, so
   // it applies to the cspell CLI too and not only to this editor.
@@ -13,6 +13,20 @@
   "Lua.diagnostics.globals": ["vim"],
   "Lua.workspace.checkThirdParty": false,
   "Lua.telemetry.enable": false,
+
+  // stylua owns Lua formatting here -- .stylua.toml, the pre-commit hook, and
+  // conform's <leader>F inside Neovim. lua_ls cannot read .stylua.toml: it
+  // formats with EmmyLuaCodeStyle, configured through .editorconfig, and its
+  // defaults align consecutive table fields and call arguments. With the
+  // global "editor.formatOnSave" on, that rewrote lua/plugins/init.lua on
+  // every save into a style the pre-commit hook then reverted.
+  //
+  // Off rather than approximated in .editorconfig, because the two formatters
+  // disagree in more places than the alignment. after/lsp/lua_ls.lua sets the
+  // same thing for Neovim. The cost is that format-on-save does nothing for
+  // Lua in VS Code; install JohnnyMorganz.stylua and point [lua] at it if that
+  // is wanted back.
+  "Lua.format.enable": false,
 
   // Neovim's type definitions are not reachable from here: they live under a
   // /nix/store path that changes on every upgrade, so there is nothing stable
