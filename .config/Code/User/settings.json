@@ -108,7 +108,7 @@
     "-workbench.action.quickOpenView",
   ],
   "terminal.integrated.defaultProfile.linux": "zsh",
-  // A profile so ctrl+shift+alt+t (keybindings.json) can open a multiplexer
+  // A profile so ctrl+shift+alt+z (keybindings.json) can open a multiplexer
   // terminal. The session is named after the workspace, so reopening the folder
   // reattaches instead of starting a second one.
   "terminal.integrated.profiles.osx": {
@@ -117,7 +117,7 @@
     },
     "zellij": {
       "path": "zellij",
-      "args": ["attach", "--create", "vscode"],
+      "args": ["attach", "--create", "${workspaceFolderBasename}"],
     },
   },
   "terminal.integrated.defaultProfile.osx": "zsh",
