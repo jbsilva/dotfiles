@@ -23,11 +23,10 @@
     mutableTaps = false;
   };
 
-  # Homebrew 6 turned on HOMEBREW_REQUIRE_TAP_TRUST, which refuses formulae and
-  # casks from non-official taps that aren't trusted. nix-darwin handles that
-  # declaratively: every brew/cask entry it generates carries `trusted: true`,
-  # which covers the fully-qualified ones below (docker/tap/sbx,
-  # nikitabobko/tap/aerospace). Nothing needs to write ~/.homebrew/trust.json.
+  # Homebrew 6's HOMEBREW_REQUIRE_TAP_TRUST refuses entries from untrusted
+  # third-party taps. nix-darwin emits `trusted: true` on every brew and cask it
+  # generates, which covers the fully-qualified ones below, so nothing needs to
+  # write ~/.homebrew/trust.json.
   homebrew = {
     enable = true;
     onActivation = {
@@ -35,12 +34,10 @@
       upgrade = true;
       cleanup = "uninstall";
     };
-    # `brew bundle cleanup` untaps every installed tap the Brewfile doesn't
-    # mention (only homebrew/core is exempt), and untapping homebrew/cask
-    # force-uninstalls all 47 casks that came from it. So mirror nix-homebrew's
-    # taps into the Brewfile. Homebrew normalises `owner/homebrew-repo` to
-    # `owner/repo` and cleanup compares those names literally, so strip the
-    # `homebrew-` prefix or the entries won't match and cleanup still untaps.
+    # `brew bundle cleanup` untaps every tap the Brewfile omits, and untapping
+    # homebrew/cask force-uninstalls every cask from it -- so mirror the taps
+    # above. Cleanup compares names literally against Homebrew's normalised
+    # `owner/repo`, hence stripping the `homebrew-` prefix.
     taps = lib.mapAttrsToList (
       name: _:
       let
@@ -48,100 +45,177 @@
       in
       "${lib.head parts}/${lib.removePrefix "homebrew-" (lib.last parts)}"
     ) config.nix-homebrew.taps;
+
     brews = [
-      "colima"
-      "docker"
-      "docker-buildx"
-      "docker-compose"
-      "duckdb"
-      "freetype"
-      "fribidi"
-      "gh"
-      "gnupg"
-      "gphoto2"
-      "harfbuzz"
-      "hugo"
-      "imagemagick"
-      "libpq"
-      "libraqm"
-      "lima-additional-guestagents"
-      # mise: node/python/go toolchain versions, replaces nvm and asdf.
-      # Homebrew rather than nixpkgs on purpose -- nixpkgs has no cached darwin
-      # build at the pinned revision, so it compiles for ~20 min on every
-      # flake update. Homebrew ships a bottle and tracks releases faster.
-      "mise"
+      # -----------------------------------------------------------------------
+      # Containers
+      # -----------------------------------------------------------------------
+      "colima" # container runtime on a Lima VM, no Docker Desktop
+      "docker" # CLI only; colima provides the daemon
+      "docker-buildx" # BuildKit builder, as a docker plugin
+      "docker-compose" # multi-container stacks
+      "lima-additional-guestagents" # extra guest agents for the Lima VM
+      "skopeo" # copy and inspect images without a daemon
+
+      # -----------------------------------------------------------------------
+      # Development
+      # -----------------------------------------------------------------------
+      "gh" # GitHub CLI
+      "mise" # node/python/go versions, replacing nvm and asdf
+      "openjdk" # Java development kit
+      "redocly-cli" # lint and bundle OpenAPI specs
+      "shellcheck" # run by the pre-commit hook
+      "sonar-scanner" # SonarQube analysis client
+      "hugo" # static site generator
+
+      # -----------------------------------------------------------------------
+      # Data
+      # -----------------------------------------------------------------------
+      "duckdb" # embedded analytical SQL
+      "libpq" # psql and the client library, without a local server
+
+      # -----------------------------------------------------------------------
+      # Media & image processing
+      # -----------------------------------------------------------------------
+      "freetype" # font renderer
+      "fribidi" # Unicode bidi algorithm
+      "harfbuzz" # OpenType text shaping
+      "libraqm" # complex text layout; pulls in the three above
+      "imagemagick" # image conversion and manipulation
+      "gphoto2" # tethered capture and camera control
+      "yt-dlp" # YouTube downloader. Homebrew updates more often than nixpkgs
+
+      # -----------------------------------------------------------------------
+      # Networking
+      # -----------------------------------------------------------------------
+      "nginx" # HTTP server and reverse proxy
+      "openssl" # TLS and crypto toolkit
+      "socat" # netcat with more socket types
+      "telnet" # TELNET client
+
+      # -----------------------------------------------------------------------
+      # Secrets & signing
+      # -----------------------------------------------------------------------
+      "gnupg" # OpenPGP signing and encryption
+      "pinentry-mac" # native macOS passphrase prompt for GnuPG
+
+      # -----------------------------------------------------------------------
+      # Shell integration
+      # -----------------------------------------------------------------------
+      "starship" # prompt
+      "terminal-notifier" # macOS notifications from the command line
+
+      # -----------------------------------------------------------------------
+      # Local LLM runtimes -- off; the lm-studio and ollama-app casks cover this
+      # -----------------------------------------------------------------------
+      # "llama.cpp"
       # "llmfit"
-      "nginx"
-      "openjdk"
-      "openssl"
-      "pinentry-mac"
-      "redocly-cli"
-      "shellcheck"
-      "skopeo"
-      "socat"
-      "sonar-scanner"
-      "starship"
-      "telnet"
-      "terminal-notifier"
-      "yt-dlp"
     ];
+
     casks = [
-      # "adobe-acrobat-reader"
-      "adobe-creative-cloud"
-      "bambu-studio"
-      "betterdisplay"
-      "bettertouchtool"
-      "bruno"
-      "canon-eos-utility"
-      "claude-code@latest"
-      "codeql"
+      # -----------------------------------------------------------------------
+      # Development
+      # -----------------------------------------------------------------------
+      "claude-code@latest" # terminal coding agent
+      "codeql" # semantic code analysis
+      "db-browser-for-sqlite" # SQLite GUI
+      "docker/tap/sbx" # Docker Sandboxes
+      "fork" # the git UI
+      "visual-studio-code"
       # "cursor"
-      "daisydisk"
-      "db-browser-for-sqlite"
-      "discord"
-      "docker/tap/sbx"
-      "elgato-stream-deck"
-      "firefox"
-      "fork"
-      "frankea/whisky/whisky"
-      "ghostty"
       # "gitbutler"
       # "gitkraken"   # Fork is the git UI
-      "insta360-link-controller"
-      "keyboard-maestro"
-      "lm-studio"
-      "lulu"
-      "maccy"
-      "mactex"
       # "meld"        # Fork for diffs; git merge.tool is nvimdiff
-      "microsoft-office"
-      "nikitabobko/tap/aerospace"
-      "notunes"
-      "obs"
-      "obsidian"
-      "ollama-app"
-      # "openmtp"
-      "plex"
-      "postman"
-      "proton-drive"
-      "proton-mail"
-      "proton-mail-bridge"
-      "protonvpn"
-      "roon"
+
+      # -----------------------------------------------------------------------
+      # API clients
+      # -----------------------------------------------------------------------
+      "bruno" # collections as files, so they live in git
+      "postman" # API client and testing
+
+      # -----------------------------------------------------------------------
+      # Terminal
+      # -----------------------------------------------------------------------
+      "ghostty" # GPU-accelerated, native UI
+      # "warp"        # AI-assisted terminal; closed-source, subscription-based
+
+      # -----------------------------------------------------------------------
+      # Browsers
+      # -----------------------------------------------------------------------
+      "firefox"
+      "vivaldi" # Chromium-based, with a built-in mail client
+
+      # -----------------------------------------------------------------------
+      # Communication
+      # -----------------------------------------------------------------------
+      "discord" # voice and text chat
+      "telegram" # messaging
+      "thunderbird" # email client
+      "zulip" # threaded team chat
+
+      # -----------------------------------------------------------------------
+      # Local LLM
+      # -----------------------------------------------------------------------
+      "lm-studio" # GUI to find, download and run local models
+      "ollama-app" # local model runner
+
+      # -----------------------------------------------------------------------
+      # Privacy, security & remote access
+      # -----------------------------------------------------------------------
+      "lulu" # outbound firewall
+      "proton-drive" # encrypted cloud storage
+      "proton-mail" # mail and calendar client
+      "proton-mail-bridge" # local IMAP/SMTP for desktop mail clients
+      "protonvpn" # VPN client
+      "tailscale-app" # WireGuard mesh VPN
+      "yubico-authenticator" # YubiKey companion app
+
+      # -----------------------------------------------------------------------
+      # Window management & desktop UX
+      # -----------------------------------------------------------------------
+      "nikitabobko/tap/aerospace" # tiling window manager
+      "betterdisplay" # display and resolution control
+      "bettertouchtool" # input device customisation and automation
+      "keyboard-maestro" # macro automation
+      "maccy" # clipboard history
+      "notunes" # stops Music hijacking the Play key
+      "stats" # menu-bar system monitor
+      "thaw" # menu bar manager
+      # "voiceink" # voice control
+
+      # -----------------------------------------------------------------------
+      # System utilities
+      # -----------------------------------------------------------------------
+      "daisydisk" # disk space visualiser
+      "frankea/whisky/whisky" # Wine wrapper for Windows apps (maintained fork)
+
+      # -----------------------------------------------------------------------
+      # Hardware & peripherals
+      # -----------------------------------------------------------------------
+      "bambu-studio" # 3D print slicer
+      "canon-eos-utility" # tethering and control for Canon EOS bodies
+      "elgato-stream-deck" # Stream Deck key configuration
+      "insta360-link-controller" # Insta360 webcam control
+      "obs" # capture and streaming
+      "wacom-tablet" # tablet drivers
+      # "openmtp" # Android file transfer
+
+      # -----------------------------------------------------------------------
+      # Documents & office
+      # -----------------------------------------------------------------------
+      # "adobe-acrobat-reader"
+      "adobe-creative-cloud" # installer and launcher for the Adobe apps
+      "mactex" # full TeX Live distribution
+      "microsoft-office" # Office suite
+      "obsidian" # Markdown knowledge base
+
+      # -----------------------------------------------------------------------
+      # Media & entertainment
+      # -----------------------------------------------------------------------
+      "plex" # home media player
+      "roon" # music player
+      "steam" # games
       # "spotify"
-      "stats"
-      "steam"
-      "tailscale-app"
-      "telegram"
-      "thaw"
-      "thunderbird"
-      "visual-studio-code"
-      "vivaldi"
-      # "voiceink"
-      # "warp"        # Ghostty is the terminal
-      "wacom-tablet"
-      "yubico-authenticator"
-      "zulip"
     ];
   };
 }
