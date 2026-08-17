@@ -43,6 +43,11 @@
       url = "github:docker/homebrew-tap";
       flake = false;
     };
+    # Whisky (fork of the archived upstream, which had no tap of its own)
+    homebrew-frankea = {
+      url = "github:frankea/homebrew-whisky";
+      flake = false;
+    };
   };
 
   outputs =
@@ -57,6 +62,7 @@
       homebrew-cask,
       homebrew-nikitabobko,
       homebrew-docker,
+      homebrew-frankea,
       ...
     }:
     let
@@ -66,6 +72,7 @@
         homebrewCask = homebrew-cask;
         homebrewNikitabobko = homebrew-nikitabobko;
         homebrewDocker = homebrew-docker;
+        homebrewFrankea = homebrew-frankea;
       };
     in
     {

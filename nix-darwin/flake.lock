@@ -85,6 +85,22 @@
         "type": "github"
       }
     },
+    "homebrew-frankea": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786641656,
+        "narHash": "sha256-48LmYVAXTQcdDPaurKWLqBiq23X2YL2QLs3X7gcAni0=",
+        "owner": "frankea",
+        "repo": "homebrew-whisky",
+        "rev": "1fd2dc9b8203b576150b582c5b3546a4994d469e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "frankea",
+        "repo": "homebrew-whisky",
+        "type": "github"
+      }
+    },
     "homebrew-nikitabobko": {
       "flake": false,
       "locked": {
@@ -182,6 +198,7 @@
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "homebrew-docker": "homebrew-docker",
+        "homebrew-frankea": "homebrew-frankea",
         "homebrew-nikitabobko": "homebrew-nikitabobko",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",

@@ -5,6 +5,7 @@
   homebrewCask,
   homebrewNikitabobko,
   homebrewDocker,
+  homebrewFrankea,
   ...
 }:
 {
@@ -17,6 +18,7 @@
       "homebrew/homebrew-cask" = homebrewCask;
       "nikitabobko/homebrew-tap" = homebrewNikitabobko;
       "docker/homebrew-tap" = homebrewDocker;
+      "frankea/homebrew-whisky" = homebrewFrankea;
     };
     mutableTaps = false;
   };
@@ -101,6 +103,7 @@
       "elgato-stream-deck"
       "firefox"
       "fork"
+      "frankea/whisky/whisky"
       "ghostty"
       # "gitbutler"
       # "gitkraken"   # Fork is the git UI
