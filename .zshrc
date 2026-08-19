@@ -1031,9 +1031,14 @@ fi
 # exec would kill the login shell and lock you out of a headless box over SSH.
 # Falling through to a normal shell is the safe failure mode.
 #
-# Escape hatches:
-#   DOTFILES_NO_ZELLIJ=1 ssh host    skip it for one connection
-#   ssh host -t 'zsh -l'             same, if the variable cannot be passed
+# Escape hatch, for one connection:
+#
+#   ssh host -t 'DOTFILES_NO_ZELLIJ=1 $SHELL -l'
+#
+# The assignment must be part of the remote command: DSM's sshd sets no
+# AcceptEnv, so it drops every forwarded variable, LANG included. $SHELL rather
+# than zsh, because on DSM that is /bin/sh reaching zsh via ~/.profile, and zsh
+# is not on the PATH a remote command gets.
 ###############################################################################
 if (( $+commands[zellij] )) &&
   [[ -z "$ZELLIJ" &&

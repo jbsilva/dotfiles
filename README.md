@@ -263,8 +263,85 @@ late for the shell's own lookup. Without it zellij and nvim misrender over SSH.
 
 On SSH login the shell auto-attaches to a zellij session named after the host, so reconnecting lands
 back in the same session. It deliberately does **not** `exec zellij` — if zellij or the terminfo
-were broken, exec would kill the login shell and lock you out of a headless box. Skip it with
-`DOTFILES_NO_ZELLIJ=1 ssh …`.
+were broken, exec would kill the login shell and lock you out of a headless box. Skip it for one
+connection with:
+
+```sh
+ssh nas -t 'DOTFILES_NO_ZELLIJ=1 $SHELL -l'
+```
+
+The assignment has to be part of the remote command. DSM's sshd sets no `AcceptEnv`, so it drops
+every forwarded variable — `LANG` included.
+
+#### Installing Entware
+
+Entware lives in `/volume1/@Entware/opt`, bind-mounted onto `/opt`. The `@` prefix makes it a DSM
+system directory rather than a shared folder: invisible in File Station, never exported over
+SMB/NFS, skipped by Media Indexing, and left out of DSM's shared-folder ACL model, so the POSIX
+modes and setuid bits the packages set are the only thing governing it. DSM will not let you create
+an `@` name through the UI anyway.
+
+A DSM upgrade wipes `/opt`, which is on the rootfs, but not `/volume1/@Entware`. **So after an
+upgrade, check whether this is only a lost bind mount before reinstalling anything:**
+
+```sh
+sudo ls -la /volume1/@Entware/opt      # bin/ etc/ lib/ share/ still there?
+sudo mount -o bind /volume1/@Entware/opt /opt
+```
+
+If that brings `/opt/bin/opkg` back, skip the rest of this section and go straight to the boot task.
+
+A fresh install follows the
+[Entware wiki](https://github.com/Entware/Entware/wiki/Install-on-Synology-NAS). `x64-k3.2` is the
+right feed for this box — `uname -m` is `x86_64` on kernel 4.4.
+
+**Every line below runs in a root shell.** Only root can write at a volume root, and `umask` is a
+shell builtin, so `sudo` per command would not carry it. DSM 7 disables direct root SSH, so:
+
+```sh
+sudo -i
+```
+
+Then, as root:
+
+```sh
+umask 022        # root's umask is 077; 0700 on /opt locks every other user out
+
+mkdir -p /volume1/@Entware/opt
+chmod 755 /volume1/@Entware /volume1/@Entware/opt
+
+# Not the wiki's `rm -rf /opt`: the bind mount hides what is under it, and
+# Container Manager keeps an (empty) /opt/containerd there.
+cp -a /opt/containerd /volume1/@Entware/opt/
+
+mount -o bind /volume1/@Entware/opt /opt
+wget -O - https://bin.entware.net/x64-k3.2/installer/generic.sh | /bin/sh
+```
+
+At 0700 nothing under `/opt` runs at all, not even the loader at `/opt/lib/ld-linux-x86-64.so.2`.
+Check `ls -la /opt` first — anything else living there needs carrying across too.
+
+The tree lives on the volume so it survives upgrades, but the bind mount does not survive a reboot.
+Re-create it from a **Triggered Task** in Control Panel → Task Scheduler (event: Boot-up, user:
+`root`):
+
+```sh
+mkdir -p /opt
+mount -o bind /volume1/@Entware/opt /opt
+/opt/etc/init.d/rc.unslung start
+/opt/bin/opkg update
+```
+
+The wiki's boot script also appends `/opt/etc/profile` to `/etc/profile`. That is not needed here:
+`zshrc_synology` puts `/opt/bin` and `/opt/sbin` on `$PATH` itself, and `/etc/profile` is another
+file DSM rewrites on upgrade.
+
+Then `opkg install zsh ncurses-bin terminfo`. That zsh links against Entware's own ncurses 6.4
+instead of baking in a static one, and `ncurses-bin` supplies `tic` and `infocmp` — so a terminfo
+entry DSM lacks can be compiled in place rather than copied in, and Ghostty's `ssh-terminfo` shell
+integration starts working on its own. Entware packages neither `zsh-autosuggestions` nor
+`zsh-syntax-highlighting`; clone those into `~/.local/share/zsh/plugins`, which `.zshrc` already
+searches.
 
 > Nix on DSM is possible but awkward: no systemd, so the multi-user daemon install doesn't apply,
 > and `/nix` has to survive DSM upgrades. A single-user install

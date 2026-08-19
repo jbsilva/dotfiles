@@ -163,3 +163,14 @@ wbthomason
 
 # Literal key sequences in mappings
 mzgg
+
+# Shells, terminals and Synology
+cdstacks
+entware
+ghostty
+infocmp
+misrender
+opkg
+syno
+synosystemctl
+zmodload
