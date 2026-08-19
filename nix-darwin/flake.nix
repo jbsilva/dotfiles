@@ -88,5 +88,17 @@
           nix-index-database.darwinModules.nix-index
         ];
       };
+
+      # The Synology, which runs single-user Nix and neither NixOS nor
+      # nix-darwin, so it gets a standalone home configuration rather than a
+      # system one. It shares this flake.lock with the MacBook.
+      #
+      # Applied on the NAS itself:
+      #   nix build ~/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage
+      #   ./result/activate -b hm-bak
+      homeConfigurations."julio@nas" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
+        modules = [ ./modules/home-manager/nas.nix ];
+      };
     };
 }

@@ -497,6 +497,29 @@ installer wrote there.
 > host tools, because the build `PATH` contains only store paths. In practice `x86_64-linux` is
 > almost entirely cache hits, so builds are rare.
 
+#### home-manager on the NAS
+
+`homeConfigurations."julio@nas"` in `nix-darwin/flake.nix`, with the profile in
+`modules/home-manager/nas.nix`. Standalone, because there is no NixOS or nix-darwin there, but it
+shares this flake and therefore `flake.lock` with the MacBook.
+
+It imports `programs/zsh.nix` unchanged, so the NAS gets the same generated `~/.zshrc` as macOS and
+with it `$DOTFILES_PLUGINS_FROM_NIX`. The zsh plugins and oh-my-zsh come from `flake.lock` rather
+than from checkouts in `$HOME`, and `home.packages` supplies the CLI tools. Apply it on the NAS:
+
+```sh
+nix build ~/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage
+./result/activate
+```
+
+Activation replaces `~/.zshrc` and `~/.zshenv`, which are symlinks into this repo on a non-Nix
+machine. Pass `-b hm-bak` the first time so home-manager moves them aside instead of refusing.
+
+> Build it from the repo root, not from `nix-darwin/`. `programs/zsh.nix` reads `.zshrc` and
+> `.zshenv` from the repo root, which is above the flake directory, so a flake reference that copies
+> only `nix-darwin/` fails with `access to absolute path '/nix/store/.zshenv' is forbidden`. Inside
+> the git clone the whole repo is copied, so the path resolves.
+
 **WSL (Ubuntu 26.04)**: `.zsh/zshrc_wsl`. Sets `BROWSER=wslview`, maps `pbcopy`/`pbpaste` onto
 `clip.exe`/PowerShell so scripts stay portable, and strips the inherited Windows `PATH` entries that
 otherwise slow every completion down and shadow Linux binaries with `.exe` ones (keep them with
