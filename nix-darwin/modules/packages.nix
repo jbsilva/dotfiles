@@ -98,6 +98,7 @@
     prettier # formats JS/TS, JSON, CSS, Markdown and YAML
     openapi-generator-cli # generates clients and servers from an OpenAPI spec
     opencode # terminal coding agent
+    dotnet-sdk # .NET
 
     # -------------------------------------------------------------------------
     # Containers
