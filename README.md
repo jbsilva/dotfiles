@@ -65,14 +65,15 @@ that is specific to one platform lives in that platform's directory and is deplo
 
 ### Shared — these land in `$HOME`
 
-| Path                                     | Maps to                                                                   |
-| ---------------------------------------- | ------------------------------------------------------------------------- |
-| `.zshrc`                                 | `~/.zshrc` — one file for every machine; branches on `$DOTFILES_PLATFORM` |
-| `.zsh/`                                  | `~/.zsh` — every `*.zsh` in here is auto-sourced                          |
-| `.zsh/zshrc_{macos,linux,wsl,synology}`  | Per-platform sections, loaded by `.zshrc`                                 |
-| `.config/`                               | Linked file-by-file into `~/.config` (see above). Cross-platform only     |
-| `.config/nvim/`                          | Neovim: lazy.nvim + native LSP                                            |
-| `.gitconfig-global`, `.gitignore-global` | The base git config every non-Nix machine includes                        |
+| Path                                     | Maps to                                                                     |
+| ---------------------------------------- | --------------------------------------------------------------------------- |
+| `.zshenv`                                | `~/.zshenv` — the little that has to be set before zsh touches the terminal |
+| `.zshrc`                                 | `~/.zshrc` — one file for every machine; branches on `$DOTFILES_PLATFORM`   |
+| `.zsh/`                                  | `~/.zsh` — every `*.zsh` in here is auto-sourced                            |
+| `.zsh/zshrc_{macos,linux,wsl,synology}`  | Per-platform sections, loaded by `.zshrc`                                   |
+| `.config/`                               | Linked file-by-file into `~/.config` (see above). Cross-platform only       |
+| `.config/nvim/`                          | Neovim: lazy.nvim + native LSP                                              |
+| `.gitconfig-global`, `.gitignore-global` | The base git config every non-Nix machine includes                          |
 
 ### Per platform
 
@@ -84,8 +85,8 @@ that is specific to one platform lives in that platform's directory and is deplo
 | `windows/`    | Windows Terminal settings, `gitconfig`                                                                                                                                                                                    |
 | `scripts/`    | Cross-platform helpers and the container-based shell tests                                                                                                                                                                |
 
-The Synology (RS2423+, DSM 7.3.2) has no directory of its own — it needs no files copied to it
-beyond `.zshrc` and `.zsh/`. Its behaviour lives in `.zsh/zshrc_synology`.
+The Synology (RS2423+, DSM 7.x) has no directory of its own — it needs no files copied to it beyond
+`.zshenv`, `.zshrc` and `.zsh/`. Its behaviour lives in `.zsh/zshrc_synology`.
 
 > Linux-only XDG files live in `linux/config/`, **not** `.config/`. Because `~/.config` is one
 > symlink shared by every machine, anything put in `.config/` shows up on macOS too. Symlink
@@ -251,10 +252,14 @@ executing immediately. Sync is off — it needs an account; see the comments in 
 
 ### Other machines
 
-**Synology RS2423+ (DSM 7.3.2)** — `.zsh/zshrc_synology`, loaded when `/etc/synoinfo.conf` exists.
-Puts Entware's `/opt/bin` ahead of DSM's older tools, points `TERMINFO` at Entware (without it
-zellij and nvim misrender over SSH), and adds `opkg`/`synosystemctl`/compose aliases. Deploy by
-cloning the repo and symlinking `~/.zshrc` and `~/.zsh`; nothing else is needed.
+**Synology RS2423+ (DSM 7.x)** — `.zsh/zshrc_synology`, loaded when `/etc/synoinfo.conf` exists.
+Puts Entware's `/opt/bin` ahead of DSM's older tools and adds `opkg`/`synosystemctl`/compose
+aliases. Deploy by cloning the repo and symlinking `~/.zshenv`, `~/.zshrc` and `~/.zsh`; nothing
+else is needed.
+
+Entware's terminfo reaches the shell through `$TERMINFO_DIRS` in `.zshenv`, not `$TERMINFO` here —
+ncurses fixes its search path before `.zshrc` is read, so setting it at that point is already too
+late for the shell's own lookup. Without it zellij and nvim misrender over SSH.
 
 On SSH login the shell auto-attaches to a zellij session named after the host, so reconnecting lands
 back in the same session. It deliberately does **not** `exec zellij` — if zellij or the terminfo
@@ -393,12 +398,14 @@ cd ~/dotfiles && just hooks
 ```
 
 **macOS** — install Nix, then `just switch`. home-manager creates `~/.zshrc`, `~/.zshenv` and the
-per-file `~/.config` links itself; do not link anything by hand.
+per-file `~/.config` links itself; do not link anything by hand. `.zshenv` is read into
+`programs.zsh.envExtra` there, the same way `.zshrc` is read into `initContent`.
 
-**Linux / WSL / Synology** — there is no Nix here, so link the two shell paths and point git at the
-matching per-platform config:
+**Linux / WSL / Synology** — there is no Nix here, so link the three shell paths and point git at
+the matching per-platform config:
 
 ```sh
+ln -s ~/dotfiles/.zshenv ~/.zshenv
 ln -s ~/dotfiles/.zshrc ~/.zshrc
 ln -s ~/dotfiles/.zsh   ~/.zsh
 ln -s ~/dotfiles/.gitconfig-global ~/.gitconfig-global   # included by the per-OS gitconfig

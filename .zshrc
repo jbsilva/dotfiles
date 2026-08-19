@@ -161,6 +161,18 @@ if [[ -z $TERM || $TERM == (dumb|unknown) ]]; then
   export TERM="xterm-256color"
 fi
 
+# A $TERM with no terminfo entry costs the whole line editor, not just colours:
+# ZLE never starts, leaving no backspace and no ^L. SSH is where it bites, when
+# the local $TERM reaches a host that has never heard of it.
+#
+# An empty $terminfo is the failed lookup; assigning to $TERM re-reads it, which
+# repairs the running shell. Widening the search path is better but has to
+# happen in .zshenv -- ncurses caches it before .zshrc is read.
+zmodload zsh/terminfo
+if (( ! ${#terminfo} )); then
+  export TERM="xterm-256color"
+fi
+
 
 ###############################################################################
 #                                Completions

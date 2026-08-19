@@ -85,6 +85,40 @@ dupes=$(print -rl -- $path | sort | uniq -d | wc -l)
 (( dupes == 0 )) && pass "no duplicate PATH entries" \
   || fail "$dupes duplicate PATH entries"
 
+print -r -- "--- terminfo ---"
+# Both halves of it: the search path .zshenv widens, and the .zshrc fallback for
+# whatever is still unresolved.
+[[ ":${TERMINFO_DIRS:-}:" == *":$HOME/.terminfo:"* ]] \
+  && pass "~/.terminfo is on \$TERMINFO_DIRS" \
+  || fail "~/.terminfo is not on \$TERMINFO_DIRS (${TERMINFO_DIRS:-<unset>})"
+zmodload zsh/terminfo
+(( ${#terminfo} )) && pass "\$TERM=$TERM resolves to a terminfo entry" \
+  || fail "\$TERM=$TERM has no terminfo entry, so this shell has no line editor"
+
+# A $TERM that resolves nowhere. The check above cannot see this: .zshrc has
+# already repaired $TERM, and its child inherits the repaired value.
+#
+# Via `env`, not a `TERM=... cmd` prefix: $TERM is special, so the prefix form
+# would re-run terminal setup in *this* shell and report the failure from here.
+typeset -a unknown_term_out
+unknown_term_out=(
+  "$(env -u TERMINFO_DIRS TERM=nonexistent-term-xyz zsh -i -c 'zmodload zsh/terminfo; print -rn -- "$TERM ${#terminfo}"' 2>/dev/null)"
+  "$(env -u TERMINFO_DIRS TERM=nonexistent-term-xyz zsh -i -c exit 2>&1 >/dev/null)"
+)
+if [[ $unknown_term_out[1] == "nonexistent-term-xyz "* ]]; then
+  fail "an unresolvable \$TERM was left in place: no line editor"
+elif [[ $unknown_term_out[1] != *" 0" ]]; then
+  pass "an unresolvable \$TERM falls back to ${unknown_term_out[1]% *}"
+else
+  fail "an unresolvable \$TERM resolved to nothing: ${unknown_term_out[1]}"
+fi
+if [[ -z $unknown_term_out[2] ]]; then
+  pass "an unresolvable \$TERM starts silently"
+else
+  fail "an unresolvable \$TERM wrote to stderr:"
+  print -r -- "$unknown_term_out[2]" | sed 's/^/          | /'
+fi
+
 case $DOTFILES_PLATFORM in
 synology)
   print -r -- "--- synology ---"
@@ -93,8 +127,13 @@ synology)
   if [[ -d /opt/bin ]]; then
     [[ $path[1] == /opt/bin ]] && pass "/opt/bin is first in PATH" \
       || fail "/opt/bin is not first in PATH (got $path[1])"
-    [[ ${TERMINFO:-} == /opt/share/terminfo ]] && pass "TERMINFO points at Entware" \
-      || skip "Entware terminfo not present"
+    if [[ -d /opt/share/terminfo ]]; then
+      [[ ":${TERMINFO_DIRS:-}:" == *":/opt/share/terminfo:"* ]] \
+        && pass "Entware terminfo is on \$TERMINFO_DIRS" \
+        || fail "Entware terminfo is not on \$TERMINFO_DIRS (${TERMINFO_DIRS:-<unset>})"
+    else
+      skip "Entware terminfo not present"
+    fi
   else
     skip "Entware (/opt/bin) not present"
   fi

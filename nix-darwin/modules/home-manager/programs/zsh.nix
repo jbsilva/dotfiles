@@ -83,11 +83,15 @@ in
     #
     # fzf-tab is passed as a path rather than sourced with the others: it has to
     # load after compinit, which runs inside .zshrc, so .zshrc sources it there.
+    #
+    # .zshenv is appended for the same reason .zshrc feeds initContent: the
+    # non-Nix machines symlink it, so it stays a plain file.
     envExtra = ''
       export DOTFILES_PLUGINS_FROM_NIX=1
       export DOTFILES_FZF_TAB=${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
       export DOTFILES_OMZ=${pkgs.oh-my-zsh}/share/oh-my-zsh
-    '';
+    ''
+    + builtins.readFile ../../../../.zshenv;
 
     initContent = lib.mkMerge [
       (lib.mkOrder 900 sourcePlugins)

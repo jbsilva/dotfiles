@@ -23,9 +23,8 @@ if [[ -d /opt/bin ]]; then
   addToPathStart /opt/sbin
   addToPathStart /opt/bin
 
-  # Entware ships its own terminfo; without this, anything full-screen
-  # (zellij, nvim, htop) misrenders over SSH.
-  [[ -d /opt/share/terminfo ]] && export TERMINFO=/opt/share/terminfo
+  # Entware's terminfo goes on $TERMINFO_DIRS in .zshenv, not here: ncurses
+  # fixes the search path before .zshrc runs.
 fi
 
 # SynoCommunity packages install under /var/packages/<name>/target.

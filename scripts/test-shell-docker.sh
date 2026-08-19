@@ -25,6 +25,7 @@ fi
 # Mount the config read-only so a container can never write into the repo.
 docker_common=(
   --rm
+  -v "$repo_root/.zshenv:/root/.zshenv:ro"
   -v "$repo_root/.zshrc:/root/.zshrc:ro"
   -v "$repo_root/.zsh:/root/.zsh:ro"
   -v "$repo_root/scripts/shell-selftest.zsh:/selftest.zsh:ro"
