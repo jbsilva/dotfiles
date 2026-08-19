@@ -433,6 +433,11 @@ cdstacks      # cd to <volume>/docker
 dpst          # docker ps, showing names, status and ports
 ```
 
+DSM keeps `/var/run/docker.sock` root-only, so every docker call needs `sudo`. Its docker group is
+root-equivalent, which makes joining it a worse trade than typing the password. `zshrc_synology`
+aliases `docker` to `sudo docker`, and zsh re-expands the first word of an alias body, so `dps` and
+the `dc*` aliases work too.
+
 > Nix on DSM is possible but awkward: no systemd, so the multi-user daemon install doesn't apply,
 > and `/nix` has to survive DSM upgrades. A single-user install
 > (`sh <(curl -L https://nixos.org/nix/install) --no-daemon`) works. Given the workloads there are

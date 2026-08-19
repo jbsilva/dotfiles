@@ -77,6 +77,12 @@ alias syno-temp='sudo synonvme --get-location 2>/dev/null; sudo hdparm -H /dev/s
 # Most of what runs here is dockerized. DSM calls it "Container Manager" but the
 # CLI is still docker.
 if (( $+commands[docker] )); then
+  # DSM keeps /var/run/docker.sock root-only, and its docker group is
+  # root-equivalent, so joining it to avoid sudo gives away more than it saves.
+  # Route the calls through sudo instead. zsh re-expands the first word of an
+  # alias body, so dps and the dc* aliases in .zshrc go through this as well.
+  alias docker='sudo docker'
+
   # dps/dc* are defined in .zshrc for every platform. Only the DSM-specific
   # extras belong here.
   #
