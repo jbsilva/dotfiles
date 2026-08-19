@@ -23,7 +23,7 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# .config — deny everything
+# .config: deny everything
 # -----------------------------------------------------------------------------
 /.config/**
 
@@ -31,7 +31,7 @@
 !/.config/**/
 
 # -----------------------------------------------------------------------------
-# .config — allow-list
+# .config: allow-list
 # -----------------------------------------------------------------------------
 
 # VS Code
@@ -59,7 +59,7 @@
 !/.config/gh/hosts.yml
 
 # -----------------------------------------------------------------------------
-# .config — re-ignore heavy runtime dirs
+# .config: re-ignore heavy runtime dirs
 #
 # These hold VM images and caches (Colima alone is ~18 GB). Listing them after
 # the allow-list stops git from traversing them on every `status`.
