@@ -165,13 +165,18 @@ wbthomason
 mzgg
 
 # Shells, terminals and Synology
+btop
 cdstacks
 entware
 ghostty
 infocmp
 misrender
+ncdu
+nmap
 opkg
 syno
+synocli
+synopkg
 synosystemctl
 vicmd
 zmodload

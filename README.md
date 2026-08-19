@@ -273,6 +273,12 @@ ssh nas -t 'DOTFILES_NO_ZELLIJ=1 $SHELL -l'
 The assignment has to be part of the remote command. DSM's sshd sets no `AcceptEnv`, so it drops
 every forwarded variable — `LANG` included.
 
+> **Probe this box with a login shell.** `ssh nas '<cmd>'` and `ssh nas -t 'zsh -i'` both skip
+> `/etc/profile`, which is the only thing that puts `/usr/local/bin` and `/usr/syno/bin` on `$PATH`.
+> Under those, roughly 250 installed SynoCli tools look missing and `synopkg status` reports
+> packages as stopped when it merely lacked root. Use the `$SHELL -l` form above before concluding
+> anything is absent.
+
 #### Installing Entware
 
 Entware lives in `/volume1/@Entware/opt`, bind-mounted onto `/opt`. The `@` prefix makes it a DSM

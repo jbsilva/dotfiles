@@ -27,8 +27,20 @@ if [[ -d /opt/bin ]]; then
   # fixes the search path before .zshrc runs.
 fi
 
-# SynoCommunity packages install under /var/packages/<name>/target.
-[[ -d /var/packages/git/target/bin ]] && addToPathEnd /var/packages/git/target/bin
+###############################################################################
+# SynoCommunity
+#
+# Packages install under /var/packages/<name>/target and are symlinked into
+# /usr/local/bin. /etc/profile puts that on $PATH, but only for login shells --
+# an interactive non-login zsh gets neither, and loses all ~250 synocli-* tools
+# (bat, fzf, fd, eza, rg, less, ncdu, btop, tmux, mtr, nmap).
+#
+# addToPathEnd, not Start: `typeset -U path` keeps the first copy of a
+# duplicate, so in a login shell this is a no-op and /etc/profile's ordering
+# stands. Prepending would shadow DSM's own ssh, scp, sftp, sshd, perl and
+# rsync with the synocli builds of the same name.
+###############################################################################
+[[ -d /usr/local/bin ]] && addToPathEnd /usr/local/bin
 
 ###############################################################################
 # DSM specifics
