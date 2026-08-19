@@ -165,18 +165,32 @@ wbthomason
 mzgg
 
 # Shells, terminals and Synology
+atuin
+atuinsh
 btop
 cdstacks
+dandavison
+difftastic
+dpst
 entware
+exiftool
 ghostty
 infocmp
 misrender
 ncdu
 nmap
 opkg
+procs
+rclone
+restic
+smartctl
+starship
 syno
 synocli
 synopkg
 synosystemctl
+tcpdump
 vicmd
+zellij
 zmodload
+zoxide

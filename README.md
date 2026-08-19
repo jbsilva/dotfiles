@@ -65,15 +65,15 @@ that is specific to one platform lives in that platform's directory and is deplo
 
 ### Shared — these land in `$HOME`
 
-| Path                                     | Maps to                                                                     |
-| ---------------------------------------- | --------------------------------------------------------------------------- |
-| `.zshenv`                                | `~/.zshenv` — the little that has to be set before zsh touches the terminal |
-| `.zshrc`                                 | `~/.zshrc` — one file for every machine; branches on `$DOTFILES_PLATFORM`   |
-| `.zsh/`                                  | `~/.zsh` — every `*.zsh` in here is auto-sourced                            |
-| `.zsh/zshrc_{macos,linux,wsl,synology}`  | Per-platform sections, loaded by `.zshrc`                                   |
-| `.config/`                               | Linked file-by-file into `~/.config` (see above). Cross-platform only       |
-| `.config/nvim/`                          | Neovim: lazy.nvim + native LSP                                              |
-| `.gitconfig-global`, `.gitignore-global` | The base git config every non-Nix machine includes                          |
+| Path                                     | Maps to                                                                      |
+| ---------------------------------------- | ---------------------------------------------------------------------------- |
+| `.zshenv`                                | `~/.zshenv`, for the little that must be set before zsh touches the terminal |
+| `.zshrc`                                 | `~/.zshrc` — one file for every machine; branches on `$DOTFILES_PLATFORM`    |
+| `.zsh/`                                  | `~/.zsh` — every `*.zsh` in here is auto-sourced                             |
+| `.zsh/zshrc_{macos,linux,wsl,synology}`  | Per-platform sections, loaded by `.zshrc`                                    |
+| `.config/`                               | Linked file-by-file into `~/.config` (see above). Cross-platform only        |
+| `.config/nvim/`                          | Neovim: lazy.nvim + native LSP                                               |
+| `.gitconfig-global`, `.gitignore-global` | The base git config every non-Nix machine includes                           |
 
 ### Per platform
 
@@ -200,7 +200,7 @@ years.
 pacman -S zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search
 # Debian / Ubuntu / WSL
 apt install zsh-autosuggestions zsh-syntax-highlighting
-# Synology — no package exists for any of them, see "zsh plugins" below
+# Synology: no package exists for any of them, see "zsh plugins" below
 ```
 
 | Was (zplug)                                                                   | Now                                                            |
@@ -256,7 +256,7 @@ Puts Entware's `/opt/bin` ahead of DSM's older tools and adds `opkg`/`synosystem
 aliases. Deploy by cloning the repo and symlinking `~/.zshenv`, `~/.zshrc` and `~/.zsh`; nothing
 else is needed.
 
-Entware's terminfo reaches the shell through `$TERMINFO_DIRS` in `.zshenv`, not `$TERMINFO` here —
+Entware's terminfo reaches the shell through `$TERMINFO_DIRS` in `.zshenv`, not `$TERMINFO` here.
 ncurses fixes its search path before `.zshrc` is read, so setting it at that point is already too
 late for the shell's own lookup. Without it zellij and nvim misrender over SSH.
 
@@ -270,7 +270,7 @@ ssh nas -t 'DOTFILES_NO_ZELLIJ=1 $SHELL -l'
 ```
 
 The assignment has to be part of the remote command. DSM's sshd sets no `AcceptEnv`, so it drops
-every forwarded variable — `LANG` included.
+every forwarded variable, `LANG` included.
 
 > **Probe this box with a login shell.** `ssh nas '<cmd>'` and `ssh nas -t 'zsh -i'` both skip
 > `/etc/profile`, which is the only thing that puts `/usr/local/bin` and `/usr/syno/bin` on `$PATH`.
@@ -298,7 +298,7 @@ If that brings `/opt/bin/opkg` back, skip the rest of this section and go straig
 
 A fresh install follows the
 [Entware wiki](https://github.com/Entware/Entware/wiki/Install-on-Synology-NAS). `x64-k3.2` is the
-right feed for this box — `uname -m` is `x86_64` on kernel 4.4.
+right feed for this box, since `uname -m` is `x86_64` on kernel 4.4.
 
 **Every line below runs in a root shell.** Only root can write at a volume root, and `umask` is a
 shell builtin, so `sudo` per command would not carry it. DSM 7 disables direct root SSH, so:
@@ -324,7 +324,7 @@ wget -O - https://bin.entware.net/x64-k3.2/installer/generic.sh | /bin/sh
 ```
 
 At 0700 nothing under `/opt` runs at all, not even the loader at `/opt/lib/ld-linux-x86-64.so.2`.
-Check `ls -la /opt` first — anything else living there needs carrying across too.
+Check `ls -la /opt` first, since anything else living there needs carrying across too.
 
 The tree lives on the volume so it survives upgrades, but the bind mount does not survive a reboot.
 Re-create it from a **Triggered Task** in Control Panel → Task Scheduler (event: Boot-up, user:
@@ -342,14 +342,14 @@ The wiki's boot script also appends `/opt/etc/profile` to `/etc/profile`. That i
 file DSM rewrites on upgrade.
 
 Then `opkg install zsh ncurses-bin terminfo`. That zsh links against Entware's own ncurses 6.4
-instead of baking in a static one, and `ncurses-bin` supplies `tic` and `infocmp` — so a terminfo
+instead of baking in a static one, and `ncurses-bin` supplies `tic` and `infocmp`, so a terminfo
 entry DSM lacks can be compiled in place rather than copied in, and Ghostty's `ssh-terminfo` shell
 integration starts working on its own.
 
 #### zsh plugins
 
-Entware packages none of them, and SynoCommunity's `zsh-static` is a lone binary. Clone them into
-the last entry of `_plug_dirs` in `.zshrc` — the upstream repository names already match the files
+Entware packages none of them, and [SynoCommunity]'s `zsh-static` is a lone binary. Clone them into
+the last entry of `_plug_dirs` in `.zshrc`. The upstream repository names already match the files
 the loader looks for, so no renaming:
 
 ```sh
@@ -360,7 +360,7 @@ git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting
 git clone --depth 1 https://github.com/zsh-users/zsh-history-substring-search
 ```
 
-No `sudo`; this is all under `$HOME`. The third one is the easy one to skip — without it Up/Down and
+No `sudo`; this is all under `$HOME`. The third one is the easy one to skip: without it Up/Down and
 vicmd `k`/`j` fall back to plain history, and `just test-shell` reports `skip` rather than `fail`.
 
 Nothing pins these: Renovate cannot see a `git clone` in `$HOME`, and only the Nix machines get
@@ -368,6 +368,64 @@ these from `flake.lock`. Update them by hand:
 
 ```sh
 for d in ~/.local/share/zsh/plugins/*(/); do git -C "$d" pull --ff-only; done
+```
+
+#### CLI tools
+
+Tools come from three places. Prefer them in this order, because only the first two update
+themselves.
+
+**SynoCommunity.** Add the repository in Package Center, then install the `synocli-*` bundles. They
+put around 250 tools in `/usr/local/bin`, as symlinks into `/var/packages/synocli-*/`:
+
+| Package           | Gives you                                                         |
+| ----------------- | ----------------------------------------------------------------- |
+| `synocli-file`    | `bat`, `fzf`, `fd`, `eza`, `rg`, `less`, `mc`, `nnn`, `sd`, `lsd` |
+| `synocli-disk`    | `ncdu`, `duf`, `gdu`                                              |
+| `synocli-net`     | `mtr`, `tmux`, `nmap`, `socat`                                    |
+| `synocli-monitor` | `procs`, `lsof`, `btop`                                           |
+
+DSM itself already supplies `htop`, `curl`, `wget`, `jq`, `rsync`, `python3`, `vim`, `gpg`,
+`smartctl` and `tcpdump`.
+
+**Entware.** This covers what SynoCommunity does not package:
+
+```sh
+opkg install zoxide rclone pv progress neovim perl-image-exiftool
+```
+
+`/opt/bin` comes first on `$PATH`, so these win over anything of the same name in `~/bin`. Two are
+worth taking here rather than by hand: `neovim`, because `.config/nvim` needs 0.11+ for
+`vim.lsp.config` and `vim.hl`, and `perl-image-exiftool`, which replaces `~/bin/exiftool`. That one
+costs 17 MB and pulls Entware's own `perl`.
+
+**By hand.** Neither repository packages these:
+
+| Tool                                               | Install                                                           |
+| -------------------------------------------------- | ----------------------------------------------------------------- |
+| `rustup` (and `cargo`, `rustc`, `rust-analyzer`)   | `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \| sh` |
+| `uv`                                               | `curl -LsSf https://astral.sh/uv/install.sh \| sh`                |
+| `starship`                                         | `sh -c "$(curl -fsSL https://starship.rs/install.sh)"`            |
+| `atuin`, `delta`, `difftastic`, `restic`, `zellij` | release binary into `~/bin`                                       |
+
+Those last five have no common command, because the asset names differ per project: `musl` or `gnu`,
+`x86_64` or `amd64`, `.tar.gz` or `.bz2`. Take each from its releases page.
+
+A container is the fourth option, for a tool none of the three package. It costs an image pull
+rather than a binary, but the version is pinned in the compose file.
+
+#### Containers
+
+Most of what this NAS runs is a container. DSM calls the package Container Manager, but the CLI is
+`docker`, with the v2 `docker compose` plugin.
+
+Stacks created through the DSM UI get one directory each under `<volume>/docker`. The volume is
+fixed when Container Manager is installed, so `zshrc_synology` defines `cdstacks` to find it instead
+of naming it:
+
+```sh
+cdstacks      # cd to <volume>/docker
+dpst          # docker ps, showing names, status and ports
 ```
 
 > Nix on DSM is possible but awkward: no systemd, so the multi-user daemon install doesn't apply,
@@ -525,3 +583,4 @@ ln -s ~/dotfiles/linux/gitconfig   ~/.gitconfig          # or wsl/gitconfig
 [kragen/xcompose]: https://github.com/kragen/xcompose
 [prek]: https://github.com/j178/prek
 [renovate]: https://docs.renovatebot.com
+[synocommunity]: https://synocommunity.com
