@@ -341,10 +341,10 @@ The wiki's boot script also appends `/opt/etc/profile` to `/etc/profile`. That i
 `zshrc_synology` puts `/opt/bin` and `/opt/sbin` on `$PATH` itself, and `/etc/profile` is another
 file DSM rewrites on upgrade.
 
-Then `opkg install zsh ncurses-bin terminfo`. That zsh links against Entware's own ncurses 6.4
-instead of baking in a static one, and `ncurses-bin` supplies `tic` and `infocmp`, so a terminfo
-entry DSM lacks can be compiled in place rather than copied in, and Ghostty's `ssh-terminfo` shell
-integration starts working on its own.
+Then `opkg install zsh ncurses-bin terminfo`. That zsh links against Entware's own ncurses instead
+of baking in a static one, and `ncurses-bin` supplies `tic` and `infocmp`, so a terminfo entry DSM
+lacks can be compiled in place rather than copied in, and Ghostty's `ssh-terminfo` shell integration
+starts working on its own.
 
 #### zsh plugins
 
@@ -391,13 +391,17 @@ DSM itself already supplies `htop`, `curl`, `wget`, `jq`, `rsync`, `python3`, `v
 **Entware.** This covers what SynoCommunity does not package:
 
 ```sh
-opkg install zoxide rclone pv progress neovim perl-image-exiftool
+opkg install zoxide rclone pv progress perl-image-exiftool
 ```
 
-`/opt/bin` comes first on `$PATH`, so these win over anything of the same name in `~/bin`. Two are
-worth taking here rather than by hand: `neovim`, because `.config/nvim` needs 0.11+ for
-`vim.lsp.config` and `vim.hl`, and `perl-image-exiftool`, which replaces `~/bin/exiftool`. That one
-costs 17 MB and pulls Entware's own `perl`.
+`perl-image-exiftool` pulls Entware's own `perl`, so it is a heavier install than it looks. `~/bin`
+comes before `/opt/bin` on `$PATH`, so a binary you install by hand still wins over the packaged one
+of the same name.
+
+Neither repository always carries the newest release. When the version matters, check what is
+packaged before you install, and take the tool by hand when the package is behind. `.config/nvim` is
+one such case: it guards features behind a `vim.fn.has('nvim-...')` check, including the built-in
+undotree, and those disappear without a word on an older build.
 
 **By hand.** Neither repository packages these:
 
@@ -407,9 +411,10 @@ costs 17 MB and pulls Entware's own `perl`.
 | `uv`                                               | `curl -LsSf https://astral.sh/uv/install.sh \| sh`                |
 | `starship`                                         | `sh -c "$(curl -fsSL https://starship.rs/install.sh)"`            |
 | `atuin`, `delta`, `difftastic`, `restic`, `zellij` | release binary into `~/bin`                                       |
+| `nvim`                                             | nightly or source build, into `~/bin`                             |
 
-Those last five have no common command, because the asset names differ per project: `musl` or `gnu`,
-`x86_64` or `amd64`, `.tar.gz` or `.bz2`. Take each from its releases page.
+The release binaries have no common command, because the asset names differ per project: `musl` or
+`gnu`, `x86_64` or `amd64`, `.tar.gz` or `.bz2`. Take each from its releases page.
 
 A container is the fourth option, for a tool none of the three package. It costs an image pull
 rather than a binary, but the version is pinned in the compose file.

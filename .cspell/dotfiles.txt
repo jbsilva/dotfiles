@@ -176,6 +176,7 @@ entware
 exiftool
 ghostty
 infocmp
+mbbill
 misrender
 ncdu
 nmap

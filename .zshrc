@@ -763,6 +763,13 @@ Linux)
   ;;
 esac
 
+# $HOME/bin wins, so a binary installed by hand beats a packaged one of the same
+# name. It is added at the top of this file too, but the platform files prepend
+# after that: Entware puts /opt/bin in front on DSM. `typeset -U path` keeps the
+# first copy of a duplicate, so prepending an entry that is already present
+# moves it to the front rather than adding a second one.
+addToPathStart $HOME/bin
+
 
 ###############################################################################
 # Aliases

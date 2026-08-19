@@ -125,8 +125,12 @@ synology)
   [[ -n ${SYNO_VOLUME:-} ]] && pass "SYNO_VOLUME=$SYNO_VOLUME" || fail "SYNO_VOLUME unset"
   (( $+aliases[syno-services] )) && pass "DSM aliases" || fail "DSM aliases missing"
   if [[ -d /opt/bin ]]; then
-    [[ $path[1] == /opt/bin ]] && pass "/opt/bin is first in PATH" \
-      || fail "/opt/bin is not first in PATH (got $path[1])"
+    # $HOME/bin outranks Entware, and Entware outranks DSM's own tools.
+    [[ $path[1] == $HOME/bin ]] && pass "\$HOME/bin is first in PATH" \
+      || fail "\$HOME/bin is not first in PATH (got $path[1])"
+    [[ ${path[(i)/opt/bin]} -lt ${path[(i)/usr/bin]} ]] \
+      && pass "/opt/bin comes before /usr/bin" \
+      || fail "/opt/bin does not come before /usr/bin"
     if [[ -d /opt/share/terminfo ]]; then
       [[ ":${TERMINFO_DIRS:-}:" == *":/opt/share/terminfo:"* ]] \
         && pass "Entware terminfo is on \$TERMINFO_DIRS" \
