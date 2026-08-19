@@ -447,10 +447,55 @@ root-equivalent, which makes joining it a worse trade than typing the password. 
 aliases `docker` to `sudo docker`, and zsh re-expands the first word of an alias body, so `dps` and
 the `dc*` aliases work too.
 
-> Nix on DSM is possible but awkward: no systemd, so the multi-user daemon install doesn't apply,
-> and `/nix` has to survive DSM upgrades. A single-user install
-> (`sh <(curl -L https://nixos.org/nix/install) --no-daemon`) works. Given the workloads there are
-> containers, Entware is usually less maintenance.
+#### Nix
+
+Single-user, because DSM has no systemd to run the daemon. The store lives on a volume and is
+bind-mounted, for the same reason Entware does: the rootfs has a few GB free and a DSM upgrade wipes
+it.
+
+As root:
+
+```sh
+umask 022                          # root's umask is 077, and a 0700 store is unusable
+mkdir -p /volume2/@Nix /nix
+mount -o bind /volume2/@Nix /nix
+chown julio:users /volume2/@Nix    # single-user Nix wants the store owned by you
+```
+
+Then as your own user. `/tmp` is `noexec` on DSM, so the installer cannot run the binary it unpacks
+there, and `TMPDIR` has to point somewhere it can:
+
+```sh
+mkdir -p ~/.cache/nix-install
+TMPDIR=$HOME/.cache/nix-install sh <(curl -L https://nixos.org/nix/install) --no-daemon
+```
+
+Write `~/.config/nix/nix.conf` **before** running it, or the install fails at
+`unable to load seccomp BPF program`. The DSM 4.4 kernel has neither seccomp BPF filtering nor
+`CONFIG_USER_NS`, so both the syscall filter and the build sandbox have to be off:
+
+```ini
+filter-syscalls = false
+sandbox = false
+experimental-features = nix-command flakes
+```
+
+The bind mount does not survive a reboot. Add it to the same Boot-up task as Entware, or its own:
+
+```sh
+mkdir -p /nix
+mount -o bind /volume2/@Nix /nix
+```
+
+`zshrc_synology` sources `~/.nix-profile/etc/profile.d/nix.sh` when it is readable, which puts the
+Nix profile ahead of Entware and behind `~/bin`. The installer also appends that line to
+`~/.profile` and `~/.zshenv`. Both are useless here: `~/.profile` execs zsh before reaching it, and
+`~/.zshenv` is a symlink into this repo, so the line lands in tracked config. Revert it if the
+installer wrote there.
+
+> Builds are unsandboxed as a result, so a build could see the host filesystem. It still cannot use
+> host tools, because the build `PATH` contains only store paths. In practice `x86_64-linux` is
+> almost entirely cache hits, so builds are rare.
 
 **WSL (Ubuntu 26.04)**: `.zsh/zshrc_wsl`. Sets `BROWSER=wslview`, maps `pbcopy`/`pbpaste` onto
 `clip.exe`/PowerShell so scripts stay portable, and strips the inherited Windows `PATH` entries that

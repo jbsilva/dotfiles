@@ -179,12 +179,14 @@ infocmp
 mbbill
 misrender
 ncdu
-ohmyzsh
 nmap
+ohmyzsh
 opkg
 procs
 rclone
 restic
+rootfs
+seccomp
 smartctl
 starship
 syno
@@ -192,6 +194,7 @@ synocli
 synopkg
 synosystemctl
 tcpdump
+unsandboxed
 vicmd
 zellij
 zmodload

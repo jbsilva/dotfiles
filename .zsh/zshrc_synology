@@ -44,6 +44,20 @@ fi
 [[ -d /usr/local/bin ]] && addToPathEnd /usr/local/bin
 
 ###############################################################################
+# Nix
+#
+# Single-user install, because DSM has no systemd to run the daemon. The store
+# is a bind mount from a volume, re-established by a Boot-up task, so guard on
+# the profile script: between a reboot and that task, ~/.nix-profile dangles.
+#
+# Sourced here rather than in .zshenv, where the installer put it, so that the
+# $HOME/bin re-prepend at the end of .zshrc still outranks the Nix profile. It
+# does land ahead of Entware, which is the order we want.
+###############################################################################
+[[ -r $HOME/.nix-profile/etc/profile.d/nix.sh ]] &&
+  source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+
+###############################################################################
 # DSM specifics
 ###############################################################################
 
