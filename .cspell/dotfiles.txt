@@ -179,6 +179,7 @@ infocmp
 mbbill
 misrender
 ncdu
+ohmyzsh
 nmap
 opkg
 procs

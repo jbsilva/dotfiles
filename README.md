@@ -363,11 +363,20 @@ git clone --depth 1 https://github.com/zsh-users/zsh-history-substring-search
 No `sudo`; this is all under `$HOME`. The third one is the easy one to skip: without it Up/Down and
 vicmd `k`/`j` fall back to plain history, and `just test-shell` reports `skip` rather than `fail`.
 
-Nothing pins these: Renovate cannot see a `git clone` in `$HOME`, and only the Nix machines get
-these from `flake.lock`. Update them by hand:
+The git aliases need oh-my-zsh as well. `.zshrc` sources only `lib/git.zsh` and the git plugin from
+it, and looks in `$DOTFILES_OMZ`, then `~/.oh-my-zsh`, then two system paths. `$DOTFILES_OMZ` is set
+by the Nix machines alone, so without a checkout here `gl`, `gst`, `gco` and the rest are simply not
+defined:
 
 ```sh
-for d in ~/.local/share/zsh/plugins/*(/); do git -C "$d" pull --ff-only; done
+git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh ~/.oh-my-zsh
+```
+
+Nothing pins any of these: Renovate cannot see a `git clone` in `$HOME`, and only the Nix machines
+get them from `flake.lock`. Update them by hand:
+
+```sh
+for d in ~/.local/share/zsh/plugins/*(/) ~/.oh-my-zsh(N/); do git -C "$d" pull --ff-only; done
 ```
 
 #### CLI tools
