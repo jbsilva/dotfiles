@@ -69,8 +69,17 @@ if (( $+commands[docker] )); then
   #
   # dpst: the columns that matter when checking on a NAS at a glance.
   alias dpst='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
-  # Compose stacks created through DSM's UI live here.
-  alias cdstacks='cd /volume1/docker'
+  # Compose stacks from DSM's UI. The volume is fixed when Container Manager is
+  # installed (volume3 here), so find it rather than name it.
+  function cdstacks() {
+    local d
+    for d in /volume*/docker(N/); do
+      cd "$d"
+      return
+    done
+    print -u2 "cdstacks: no /volume*/docker directory on this host"
+    return 1
+  }
 fi
 
 ###############################################################################
