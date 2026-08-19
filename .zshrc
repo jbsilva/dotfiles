@@ -319,7 +319,8 @@ unset _f
 #   Arch      pacman -S zsh-autosuggestions zsh-syntax-highlighting \
 #                       zsh-history-substring-search zsh-completions
 #   Debian    apt install zsh-autosuggestions zsh-syntax-highlighting
-#   Synology  opkg install zsh-autosuggestions zsh-syntax-highlighting  (Entware)
+#   Synology  Entware packages neither one. Clone them into
+#             ~/.local/share/zsh/plugins, which _plug_dirs below searches.
 #
 # Anything not found is simply skipped, so a machine with none of them still
 # gets a working shell.
