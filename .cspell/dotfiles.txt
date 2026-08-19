@@ -173,4 +173,5 @@ misrender
 opkg
 syno
 synosystemctl
+vicmd
 zmodload

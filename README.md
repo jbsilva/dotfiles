@@ -339,9 +339,31 @@ file DSM rewrites on upgrade.
 Then `opkg install zsh ncurses-bin terminfo`. That zsh links against Entware's own ncurses 6.4
 instead of baking in a static one, and `ncurses-bin` supplies `tic` and `infocmp` — so a terminfo
 entry DSM lacks can be compiled in place rather than copied in, and Ghostty's `ssh-terminfo` shell
-integration starts working on its own. Entware packages neither `zsh-autosuggestions` nor
-`zsh-syntax-highlighting`; clone those into `~/.local/share/zsh/plugins`, which `.zshrc` already
-searches.
+integration starts working on its own.
+
+#### zsh plugins
+
+Entware packages none of them, and SynoCommunity's `zsh-static` is a lone binary. Clone them into
+the last entry of `_plug_dirs` in `.zshrc` — the upstream repository names already match the files
+the loader looks for, so no renaming:
+
+```sh
+mkdir -p ~/.local/share/zsh/plugins
+cd ~/.local/share/zsh/plugins
+git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions
+git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting
+git clone --depth 1 https://github.com/zsh-users/zsh-history-substring-search
+```
+
+No `sudo`; this is all under `$HOME`. The third one is the easy one to skip — without it Up/Down and
+vicmd `k`/`j` fall back to plain history, and `just test-shell` reports `skip` rather than `fail`.
+
+Nothing pins these: Renovate cannot see a `git clone` in `$HOME`, and only the Nix machines get
+these from `flake.lock`. Update them by hand:
+
+```sh
+for d in ~/.local/share/zsh/plugins/*(/); do git -C "$d" pull --ff-only; done
+```
 
 > Nix on DSM is possible but awkward: no systemd, so the multi-user daemon install doesn't apply,
 > and `/nix` has to survive DSM upgrades. A single-user install
