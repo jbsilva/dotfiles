@@ -200,8 +200,7 @@ years.
 pacman -S zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search
 # Debian / Ubuntu / WSL
 apt install zsh-autosuggestions zsh-syntax-highlighting
-# Synology (Entware)
-opkg install zsh-autosuggestions zsh-syntax-highlighting
+# Synology — no package exists for any of them, see "zsh plugins" below
 ```
 
 | Was (zplug)                                                                   | Now                                                            |
