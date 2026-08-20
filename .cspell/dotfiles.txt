@@ -169,6 +169,7 @@ atuin
 atuinsh
 btop
 cdstacks
+chroot
 dandavison
 difftastic
 dpst
@@ -187,7 +188,10 @@ rclone
 restic
 rootfs
 seccomp
+setuid
+sftp
 smartctl
+sshd
 starship
 syno
 synocli

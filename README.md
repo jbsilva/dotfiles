@@ -288,6 +288,39 @@ every forwarded variable, `LANG` included.
 > packages as stopped when it merely lacked root. Use the `$SHELL -l` form above before concluding
 > anything is absent.
 
+#### Copying files
+
+DSM jails both transfer tools, and it jails them into **different namespaces**. Copy the path style
+from the table rather than reasoning about it:
+
+| Destination                              | `scp` | `rsync` | `scp -O` |
+| ---------------------------------------- | :---: | :-----: | :------: |
+| `nas:/home/f`, `nas:/docker/f` (shares)  |  yes  |   no    |    no    |
+| `nas:/var/services/homes/julio/f` (real) |  no   |   yes   |   yes    |
+| `nas:/volume3/docker/f` (real)           |  no   |   yes   |   yes    |
+| `nas:/tmp/f` (rootfs)                    |  no   |   no    |   yes    |
+
+`scp` has spoken SFTP since OpenSSH 9.0, and DSM serves SFTP from a jailed server whose root is the
+list of shared folders. So real paths do not exist for it, and its own root takes no writes:
+
+```sh
+scp file nas:/var/services/homes/julio/file   # dest open: No such file or directory
+scp file nas:file                             # dest open: Permission denied
+```
+
+`ChrootDirectory` is `none` in DSM's `sshd_config`, so the jail lives inside Synology's
+`internal-sftp` and no setting turns it off. DSM's `/usr/bin/rsync` is setuid root and patched the
+same way, but it takes the real paths and treats the rootfs as a read-only module:
+
+```sh
+rsync -a file nas:/tmp/file                   # ERROR: module is read only
+```
+
+Use `rsync` for daily work. It takes the paths that `ssh nas` shows you, it re-sends only what
+changed, and it is current. Reach for `-O` only for the rootfs, which is rare. That flag selects the
+pre-9.0 SCP protocol: `scp(1)` calls it legacy, and it has the remote shell expand globs, so
+filenames then need careful quoting.
+
 #### Installing Entware
 
 Entware lives in `/volume1/@Entware/opt`, bind-mounted onto `/opt`. The `@` prefix makes it a DSM
