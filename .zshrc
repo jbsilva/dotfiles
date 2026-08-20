@@ -628,6 +628,7 @@ _keys=(
   PageDown "${terminfo[knp]:-^[[6~}"
   Backward "${terminfo[kcub1]:-^[[D}"
   Forward  "${terminfo[kcuf1]:-^[[C}"
+  BackTab  "${terminfo[kcbt]:-^[[Z}"
 )
 for _keymap in emacs viins vicmd; do
   bindkey -M $_keymap "$_keys[Home]"     beginning-of-line
@@ -639,7 +640,67 @@ for _keymap in emacs viins vicmd; do
   bindkey -M $_keymap "$_keys[Backward]" backward-char
   bindkey -M $_keymap "$_keys[Forward]"  forward-char
 done
+# Shift-Tab steps back through the completion menu. Not bound in vicmd, where
+# there is no menu to step through.
+bindkey -M emacs "$_keys[BackTab]" reverse-menu-complete
+bindkey -M viins "$_keys[BackTab]" reverse-menu-complete
 unset _keymap _keys
+
+# --- function keys: inert rather than unbound --------------------------------
+# An unbound escape sequence is not ignored in the vi keymaps, it is read as a
+# run of vi commands. F5 sends ^[[15~, which lands on digit-argument 1,
+# digit-argument 5 and then vi-swap-case, so one keypress inverts the case of 15
+# characters of the line. Send them to a widget that does nothing instead.
+function ignore-key() { }
+zle -N ignore-key
+for _fkey in {1..12}; do
+  [[ -n ${terminfo[kf$_fkey]} ]] || continue
+  bindkey -M viins "${terminfo[kf$_fkey]}" ignore-key
+  bindkey -M vicmd "${terminfo[kf$_fkey]}" ignore-key
+done
+unset _fkey
+
+# --- word boundaries ---------------------------------------------------------
+# What the word widgets, ^W among them, treat as one word. The zsh default also
+# lists = and /, which makes ^W on a path swallow the whole thing; without them
+# it stops at each component.
+WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
+
+# --- deletion keys in insert mode --------------------------------------------
+# Take the emacs deletion widgets rather than the vi ones. The vi widgets that
+# viins binds by default refuse to touch anything left of the point where the
+# current insert session began, so after `ab<ESC>ac` the `ab` cannot be erased
+# with backspace, ^W or ^U. The emacs widgets have no such limit. ^K is bound
+# here as well: viins leaves it on self-insert, so it puts a literal control
+# character in the line instead of killing to the end of it.
+#
+# zsh-autopair wraps backspace and ^W, and reads these two variables on every
+# keypress to decide what to delegate to, so setting them here reaches the
+# widget without taking the key away from autopair. The bindkey lines below
+# cover the machines where autopair is not installed, and are guarded so they
+# never overwrite it.
+AUTOPAIR_BKSPC_WIDGET=backward-delete-char
+AUTOPAIR_DELWORD_WIDGET=backward-kill-word
+[[ $(bindkey -M viins '^?') == *vi-backward-delete-char* ]] &&
+  bindkey -M viins '^?' backward-delete-char
+[[ $(bindkey -M viins '^H') == *vi-backward-delete-char* ]] &&
+  bindkey -M viins '^H' backward-delete-char
+[[ $(bindkey -M viins '^W') == *vi-backward-kill-word* ]] &&
+  bindkey -M viins '^W' backward-kill-word
+bindkey -M viins '^U' backward-kill-line
+bindkey -M viins '^K' kill-line
+
+# --- other keys viins leaves out ---------------------------------------------
+# ^_ is undo in the emacs keymap but self-insert in viins, which leaves insert
+# mode with no undo of its own.
+bindkey -M viins '^_' undo
+
+# Space expands history references such as !! and !$ as they are typed, rather
+# than only on Enter. zsh-autopair owns the key, and reads this variable on
+# every keypress as it does for backspace above.
+AUTOPAIR_SPC_WIDGET=magic-space
+[[ $(bindkey -M emacs ' ') == *self-insert* ]] && bindkey -M emacs ' ' magic-space
+[[ $(bindkey -M viins ' ') == *self-insert* ]] && bindkey -M viins ' ' magic-space
 
 # --- url-quote-magic: quote URLs as they are typed ---------------------------
 # Without it, the ?, & and * in a pasted URL are treated as glob characters.

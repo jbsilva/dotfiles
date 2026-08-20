@@ -167,22 +167,28 @@ mzgg
 # Shells, terminals and Synology
 atuin
 atuinsh
+autopair
+bkspc
 btop
 cdstacks
 chroot
 dandavison
+delword
 difftastic
 dpst
 entware
 exiftool
+fkey
 ghostty
 infocmp
+kcbt
 mbbill
 misrender
 ncdu
 nmap
 ohmyzsh
 opkg
+prezto
 procs
 rclone
 restic
@@ -200,6 +206,8 @@ synosystemctl
 tcpdump
 unsandboxed
 vicmd
+viins
+wordchars
 zellij
 zmodload
 zoxide
