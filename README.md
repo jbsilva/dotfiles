@@ -260,6 +260,16 @@ Entware's terminfo reaches the shell through `$TERMINFO_DIRS` in `.zshenv`, not 
 ncurses fixes its search path before `.zshrc` is read, so setting it at that point is already too
 late for the shell's own lookup. Without it zellij and nvim misrender over SSH.
 
+`.zshenv` names three directories: `~/.terminfo`, the Nix profile's, and Entware's. A machine with
+Nix gets `xterm-ghostty` from `ghostty.terminfo` and needs nothing in `~/.terminfo`. A machine
+without Nix needs the entry copied in by hand, which takes no root and no `tic`:
+
+```sh
+ssh HOST mkdir -p .terminfo/x
+scp /Applications/Ghostty.app/Contents/Resources/terminfo/78/xterm-ghostty \
+    HOST:.terminfo/x/xterm-ghostty
+```
+
 On SSH login the shell auto-attaches to a zellij session named after the host, so reconnecting lands
 back in the same session. It deliberately does **not** `exec zellij`. If zellij or the terminfo were
 broken, exec would kill the login shell and lock you out of a headless box. Skip it for one
@@ -517,6 +527,12 @@ Before the first activation those two are symlinks into this repo, and home-mana
 them. Its backup mechanism does not apply: `HOME_MANAGER_BACKUP_EXT` is checked only for regular
 files, so a symlink falls through to `Existing file ... would be clobbered` and activation aborts.
 Delete the links rather than backing them up, since the repo copies are what they pointed at.
+
+Git is configured by `programs/git.nix` too, so delete the `~/.gitconfig` and `~/.gitconfig-global`
+symlinks on activation. Both are read after `~/.config/git/config` and would win, which is how the
+NAS kept using the libsecret helper from `linux/gitconfig` that does not exist there. The module
+branches on `stdenv.isDarwin`: macOS keeps `osxkeychain`, and everything else gets git's `cache`
+helper, which holds the token in memory rather than writing it to disk.
 
 `~/.profile` should then hand over to the Nix zsh, which fixes the terminfo problem at its root:
 unlike SynoCommunity's `zsh-static` it is not built `--disable-home-terminfo`, so it reads

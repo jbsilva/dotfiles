@@ -50,8 +50,10 @@
     # -------------------------------------------------------------------------
     # Editing and terminal
     # -------------------------------------------------------------------------
-    ghostty.terminfo # xterm-ghostty; DSM ships neither it nor a way to build it
-    ncurses # tic and infocmp, for compiling any other terminfo entry
+    # ncurses carries share/terminfo/g/ghostty as well, so one has to win the
+    # collision. Only this one has x/xterm-ghostty, which is what Ghostty sends.
+    (lib.hiPrio ghostty.terminfo) # xterm-ghostty
+    ncurses # tic and infocmp
     neovim # config in .config/nvim
     zellij # multiplexer; .zshrc auto-attaches to it on SSH
 

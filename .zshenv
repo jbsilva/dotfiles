@@ -26,6 +26,13 @@
 # Guarded because nested shells inherit the exported value.
 if [[ ":${TERMINFO_DIRS}:" != *":$HOME/.terminfo:"* ]]; then
   _terminfo_dirs="$HOME/.terminfo"
+
+  # A Nix profile carries its own database, and zsh does not look there by
+  # default. ghostty.terminfo puts xterm-ghostty here, so the machines with Nix
+  # need nothing in ~/.terminfo at all.
+  [[ -d $HOME/.nix-profile/share/terminfo ]] &&
+    _terminfo_dirs="$_terminfo_dirs:$HOME/.nix-profile/share/terminfo"
+
   [[ -d /opt/share/terminfo ]] && _terminfo_dirs="$_terminfo_dirs:/opt/share/terminfo"
 
   # Trailing colon keeps ncurses' compiled-in directory on the path. Braces
