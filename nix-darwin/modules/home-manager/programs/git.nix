@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 {
@@ -192,8 +193,12 @@
 
       help.autocorrect = "prompt";
       commit.verbose = true;
-      credential.helper = "osxkeychain";
-      gpg.program = "/opt/homebrew/bin/gpg";
+
+      # The Synology has no secret service, so no keyring helper exists to point
+      # at there. `cache` keeps the token in a daemon's memory for an hour
+      # instead of writing it to disk, which is what `store` would do.
+      credential.helper = if pkgs.stdenv.isDarwin then "osxkeychain" else "cache --timeout 3600";
+      gpg.program = if pkgs.stdenv.isDarwin then "/opt/homebrew/bin/gpg" else "gpg";
     };
 
     # Conditional includes for per-directory Git config.

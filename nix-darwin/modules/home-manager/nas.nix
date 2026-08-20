@@ -13,7 +13,12 @@
 ###############################################################################
 { pkgs, ... }:
 {
-  imports = [ ./programs/zsh.nix ];
+  imports = [
+    ./programs/zsh.nix
+    ./programs/git.nix
+    ./programs/atuin.nix
+    ./programs/direnv.nix
+  ];
 
   home.username = "julio";
   home.homeDirectory = "/var/services/homes/julio";
@@ -25,24 +30,28 @@
     # -------------------------------------------------------------------------
     # Shell
     # -------------------------------------------------------------------------
+    ack # Perl-based grep-alike
     atuin # shell history in SQLite, behind Ctrl-R
     bat # cat with syntax highlighting and paging
     eza # ls with git status, tree mode and icons
     fd # far friendlier and faster `find`
     fzf # fuzzy finder; .zshrc feeds it fd and previews with bat
     ripgrep # fast grep
-    starship # prompt
+    starship # prompt; .zshrc initialises it, as on the other machines
     zoxide # directory jumper, behind `z`
 
     # -------------------------------------------------------------------------
     # Git
     # -------------------------------------------------------------------------
+    git # programs/git.nix configures it; this provides the binary
     delta # syntax-highlighted git diffs
     difftastic # diffs by syntax tree rather than by line
 
     # -------------------------------------------------------------------------
     # Editing and terminal
     # -------------------------------------------------------------------------
+    ghostty.terminfo # xterm-ghostty; DSM ships neither it nor a way to build it
+    ncurses # tic and infocmp, for compiling any other terminfo entry
     neovim # config in .config/nvim
     zellij # multiplexer; .zshrc auto-attaches to it on SSH
 
@@ -53,6 +62,18 @@
     restic # deduplicating backups
     pv # throughput meter for a pipe
     progress # reports how far a running cp, tar or dd has got
+
+    # -------------------------------------------------------------------------
+    # Files and archives
+    # -------------------------------------------------------------------------
+    p7zip # 7z archives
+    renameutils # qmv and friends: bulk rename inside $EDITOR
+
+    # -------------------------------------------------------------------------
+    # Languages
+    # -------------------------------------------------------------------------
+    rustup # toolchain manager; the toolchains live in ~/.rustup, outside Nix
+    uv # Python packages, projects and interpreters
 
     # -------------------------------------------------------------------------
     # Data

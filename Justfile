@@ -168,3 +168,36 @@ bench-shell:
 # Profile shell startup AND Tab-completion latency
 profile-shell *ARGS:
     ./scripts/profile-shell.py {{ ARGS }}
+
+# ---------------------------------------------------------------------------
+# Synology
+#
+# Everything above runs on this MacBook: darwin-rebuild, prek and gitleaks are
+# not installed on the NAS. These drive it over SSH instead.
+# ---------------------------------------------------------------------------
+
+# Pull and activate the home-manager profile on the Synology
+nas-switch:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ssh nas '
+      set -eu
+      . ~/.nix-profile/etc/profile.d/nix.sh
+      /usr/local/bin/git -C ~/dotfiles pull --ff-only
+      export TMPDIR=$HOME/.cache/nix-install
+      nix build -o ~/.hm-generation \
+        "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
+      ~/.hm-generation/activate
+    '
+
+# What the next nas-switch would change, without activating it
+nas-diff:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ssh nas '
+      set -eu
+      . ~/.nix-profile/etc/profile.d/nix.sh
+      export TMPDIR=$HOME/.cache/nix-install
+      nix build --no-link --print-out-paths \
+        "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
+    '
