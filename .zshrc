@@ -145,6 +145,16 @@ export DEFAULT_COLOR=$DEFAULT_FOREGROUND
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
+# gpg: the terminal the agent asks for a passphrase on.
+#
+# The agent keeps whichever terminal it first saw. Start it from something with
+# no terminal, a hook or a remote command, and every later prompt goes there:
+# pinentry then reports "Screen or window too small" rather than asking. Only
+# set it where there is a terminal to name.
+if [[ -t 0 ]]; then
+  export GPG_TTY=${TTY:-$(tty)}
+fi
+
 # Terminal Emulator
 #
 # Leave $TERM alone. Terminals set it themselves and ship matching terminfo
