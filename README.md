@@ -98,6 +98,9 @@ The Synology (RS2423+, DSM 7.x) has no directory of its own. It needs no files c
 `.github/workflows/` (CI), `renovate.json5`, and the tool configs: `typos.toml`, `statix.toml`,
 `.gitleaks.toml`, `.mdformat.toml`, `.stylua.toml`, `cspell.json`.
 
+`docs/` takes what is too long for this file: setups that live on a machine rather than in this
+repo, where the value is the commands and the traps.
+
 [Renovate] keeps the two sets of pins current: the SHA-pinned actions in `.github/workflows/` and
 the hook `rev`s in `.pre-commit-config.yaml`. It is deliberately not pointed at `flake.lock`. That
 is `just update`'s job, and `nixpkgs-unstable` moves several times a day. `renovate-check` in
@@ -489,6 +492,30 @@ DSM keeps `/var/run/docker.sock` root-only, so every docker call needs `sudo`. I
 root-equivalent, which makes joining it a worse trade than typing the password. `zshrc_synology`
 aliases `docker` to `sudo docker`, and zsh re-expands the first word of an alias body, so `dps` and
 the `dc*` aliases work too.
+
+> That alias covers interactive shells only. `sudo` keeps its own `secure_path`, which holds neither
+> `/usr/local/bin` nor `/usr/syno/bin`, so `sudo docker` and `sudo synopkg` both answer
+> `command not found` inside a script or under `ssh nas '<cmd>'`. Write `/usr/local/bin/docker` and
+> `/usr/syno/bin/synopkg` there.
+
+Two boot traps, neither of which announces itself. A container that borrows another's namespace with
+`network_mode: service:<name>` dies with exit 128 and
+`cannot join network of a non running container` when the daemon happens to start it first.
+`depends_on` orders `compose up` alone, and a start that fails this way is never retried, so it
+stays down. `restart <name>` and `up -d --force-recreate <name>` do the same damage by hand: the
+borrowers keep a handle on a namespace that went away, lose the LAN and the internet, and
+`docker ps` still calls them healthy, because each one answers itself on `127.0.0.1`. Act on the
+whole stack, never on the one service.
+
+A container that reserves a static IP loses it to whichever container the daemon starts first, and
+then fails with `Address already in use`. `ip_range` on the network is the pool that dynamic
+addresses come from, so give it the upper half of the subnet and every static address below stays
+reserved. Leaving it to cover the whole subnet is what creates the race. Docker fixes IPAM when it
+creates the network, so a change here means recreating it: stop every attached container,
+`compose down` the stack that defines the network, then `up -d` in dependency order.
+
+WireGuard on this box runs in the kernel rather than in userspace, which is worth about 1.5 cores:
+[docs/synology-wireguard.md](docs/synology-wireguard.md).
 
 #### Nix
 

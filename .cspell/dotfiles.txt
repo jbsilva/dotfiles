@@ -203,3 +203,10 @@ vicmd
 zellij
 zmodload
 zoxide
+
+# Containers and WireGuard on the NAS
+gluetun
+lsmod
+synobuild
+vermagic
+wireguard
