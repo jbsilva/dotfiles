@@ -46,6 +46,10 @@
     git # programs/git.nix configures it; this provides the binary
     delta # syntax-highlighted git diffs
     difftastic # diffs by syntax tree rather than by line
+    # DSM ships gpg but no pinentry, and gpg routes every use of a secret key
+    # through the agent, so without one a key cannot even be imported. The
+    # curses build is the one that works over SSH.
+    pinentry-curses
 
     # -------------------------------------------------------------------------
     # Editing and terminal
@@ -83,4 +87,15 @@
     exiftool # reads and writes media metadata
     jq # JSON processor
   ];
+
+  # gpg finds its pinentry through this file, and DSM's default path points at
+  # a binary that does not exist here. loopback lets a passphrase be piped in
+  # for an unattended import, which is the only way in before a pinentry is on
+  # the box at all.
+  home.file.".gnupg/gpg-agent.conf".text = ''
+    pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
+    allow-loopback-pinentry
+    default-cache-ttl 3600
+    max-cache-ttl 28800
+  '';
 }
