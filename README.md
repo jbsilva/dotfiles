@@ -508,12 +508,30 @@ with it `$DOTFILES_PLUGINS_FROM_NIX`. The zsh plugins and oh-my-zsh come from `f
 than from checkouts in `$HOME`, and `home.packages` supplies the CLI tools. Apply it on the NAS:
 
 ```sh
+rm ~/.zshrc ~/.zshenv    # first activation only, see below
 nix build ~/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage
 ./result/activate
 ```
 
-Activation replaces `~/.zshrc` and `~/.zshenv`, which are symlinks into this repo on a non-Nix
-machine. Pass `-b hm-bak` the first time so home-manager moves them aside instead of refusing.
+Before the first activation those two are symlinks into this repo, and home-manager will not clobber
+them. Its backup mechanism does not apply: `HOME_MANAGER_BACKUP_EXT` is checked only for regular
+files, so a symlink falls through to `Existing file ... would be clobbered` and activation aborts.
+Delete the links rather than backing them up, since the repo copies are what they pointed at.
+
+`~/.profile` should then hand over to the Nix zsh, which fixes the terminfo problem at its root:
+unlike SynoCommunity's `zsh-static` it is not built `--disable-home-terminfo`, so it reads
+`~/.terminfo` unaided. Keep the old one as a fallback for the window between a reboot and the
+Boot-up task that mounts `/nix`:
+
+```sh
+for _shell in "$HOME/.nix-profile/bin/zsh" /usr/local/bin/zsh; do
+  if [ -x "$_shell" ]; then
+    SHELL="$_shell"
+    export SHELL
+    exec "$_shell"
+  fi
+done
+```
 
 > Build it from the repo root, not from `nix-darwin/`. `programs/zsh.nix` reads `.zshrc` and
 > `.zshenv` from the repo root, which is above the flake directory, so a flake reference that copies
