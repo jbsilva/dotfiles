@@ -213,8 +213,11 @@ zmodload
 zoxide
 
 # Containers and WireGuard on the NAS
+ExitIP
 gluetun
+logicals
 lsmod
+protonvpn
 synobuild
 vermagic
 wireguard

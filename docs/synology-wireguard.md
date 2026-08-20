@@ -106,6 +106,9 @@ sudo docker logs gluetun | grep -i implementation
 gluetun names its interface from a setting, so the device stays `tun0` under either implementation.
 Anything bound to the interface keeps working.
 
+Choosing which Proton server gluetun connects to is a separate trap, and the list inside the image
+is not the one an account holds: [gluetun-proton-servers.md](gluetun-proton-servers.md).
+
 ## Weighing it
 
 Against:
