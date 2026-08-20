@@ -51,55 +51,80 @@ The port stays shut roughly two thirds of the time. A one-shot port checker stil
 because it asks during one of the good windows, while anything that checks repeatedly reports it
 unreachable. Watch for that disagreement: it means intermittent, not closed.
 
-## Pick the server yourself
+## Give gluetun your own list
 
-The account page at `account.protonvpn.com/downloads` shows every server with its load and marks the
-ones that forward a port. Download a WireGuard profile for the one you want, then take three values
-from it:
+gluetun merges `/gluetun/servers.json` by timestamp and keeps whichever side is newer, for the whole
+provider rather than server by server. A file built from the account API therefore replaces its list
+outright, and it then chooses and fails over among servers that exist. Ask for one it no longer has
+and it stops with the choices it does have, which is a loud failure rather than a quiet one:
 
-```ini
-[Interface]
-PrivateKey = ...
-Address    = 10.2.0.2/32
-
-[Peer]
-PublicKey = ...
-Endpoint  = 203.0.113.10:51820
+```
+ERROR VPN settings: the server name specified is not valid: none of nl#943 is one of
+the choices available CH#1031, CH#1131, CH#450, CH#650, CH#801, ...
 ```
 
-Those go straight into gluetun, which then chooses nothing:
-
-```yaml
-VPN_SERVICE_PROVIDER: custom
-VPN_TYPE: wireguard
-VPN_ENDPOINT_IP: 203.0.113.10
-VPN_ENDPOINT_PORT: 51820
-WIREGUARD_PUBLIC_KEY: ...
-WIREGUARD_PRIVATE_KEY: ...
-WIREGUARD_ADDRESSES: 10.2.0.2/32
-VPN_PORT_FORWARDING: "on"
-VPN_PORT_FORWARDING_PROVIDER: protonvpn
-```
-
-A custom provider has no port forwarding of its own, which is why the provider is named again on the
-last line.
-
-A Proton key belongs to the account rather than to one server, so any profile's key reaches any
-server. Keep several profiles and switch by rewriting those values.
-
-## Checking a server still exists
-
-The account API answers with the servers the account really has, and with their load. Take the
-session from a logged-in browser on the downloads page:
+`scripts/proton-to-gluetun.py` does the conversion. There is no reason to carry all 2758 servers, so
+filter to the ones worth using:
 
 ```sh
-curl -H 'x-pm-uid: <uid>' -b '<session cookies>' \
-  'https://account.protonvpn.com/api/vpn/v1/logicals?WithIpV6=1' > servers.json
-
-jq -r '.LogicalServers[] | select(.Name=="NL#428") | "\(.Name) load=\(.Load)%"' servers.json
+scripts/proton-to-gluetun.py account.json gluetun-protonvpn.json servers.json \
+  --countries NL,CH,IS,SE --p2p-suitable --max-load 60
 ```
 
-Treat that output as a credential while it lives on disk.
+Then drop it in the gluetun volume and leave `SERVER_NAMES` empty so gluetun may use any of them:
+
+```yaml
+VPN_SERVICE_PROVIDER: protonvpn
+VPN_TYPE: wireguard
+WIREGUARD_PRIVATE_KEY: ...     # any profile's key reaches any server
+WIREGUARD_ADDRESSES: 10.2.0.2/32
+PORT_FORWARD_ONLY: "on"
+VPN_PORT_FORWARDING: "on"
+```
+
+Naming a few servers in `SERVER_NAMES` narrows it further, which is what a service that authorizes
+an address wants, at the cost of somewhere to fail over to.
+
+## Not every server suits a forwarded port
+
+Proton marks each server with a feature bitmask, and three of the bits decide whether it is worth
+using:
+
+| bit | meaning     | keep it?                                          |
+| --- | ----------- | ------------------------------------------------- |
+| 1   | secure core | no, it enters one country and leaves another      |
+| 2   | Tor         | no, it rewrites the exit                          |
+| 4   | P2P         | yes, this is the one that carries port forwarding |
+
+`--p2p-suitable` applies all three. The P2P bit matches gluetun's own `port_forward` field on every
+one of the 337 servers both lists know, so the mapping is not a guess.
+
+Load is worth filtering on too, and it is the figure gluetun has no access to. On one account every
+Icelandic server sat above 62% while the Dutch ones were in the mid forties, so `--max-load 60`
+dropped a whole country without naming it.
+
+## Measure before settling on one
+
+Load is a starting point, not an answer. Latency and throughput through the tunnel, taken from one
+account across four servers:
+
+| country     | rtt   | throughput |
+| ----------- | ----- | ---------- |
+| Netherlands | 13 ms | 48 MB/s    |
+| Switzerland | 17 ms | 50 MB/s    |
+| Sweden      | 26 ms | 41 MB/s    |
+| Sweden      | 33 ms | 34 MB/s    |
+
+Proton drops ICMP, so take the round trip from a TCP handshake instead:
+
+```sh
+sudo docker exec <container-on-the-tunnel> \
+  curl -s -o /dev/null -w '%{time_connect}\n' https://1.1.1.1
+```
+
+Stop whatever runs behind the tunnel before cycling gluetun to test it. Recreating the stack for
+each attempt makes every dependent container reload its state, and an application holding thousands
+of items pays for that each time.
 
 ## The updater does not close the gap
 
@@ -126,7 +151,11 @@ avoids the whole question.
 
 Whatever address a service authorizes has to be the measured one, not the `Endpoint` in the profile
 and not `ExitIP` from the API. Across four servers those three values disagreed every time, usually
-inside the same `/24` but once in a different `/8` altogether. Read it from inside the tunnel:
+inside the same `/24` but once in a different `/8` altogether.
+
+Worse for anything that authorizes a single address: the exit address moves between connections to
+**the same server**. One server gave `.62` on one connect and `.53` on the next, same `/24`. Pinning
+a server narrows the range, it does not fix the address. Read it from inside the tunnel:
 
 ```sh
 sudo docker exec <container-on-the-tunnel> curl -s https://ipinfo.io/ip
