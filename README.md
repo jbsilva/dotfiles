@@ -99,7 +99,8 @@ The Synology (RS2423+, DSM 7.x) has no directory of its own. It needs no files c
 `.gitleaks.toml`, `.mdformat.toml`, `.stylua.toml`, `cspell.json`.
 
 `docs/` takes what is too long for this file: setups that live on a machine rather than in this
-repo, where the value is the commands and the traps.
+repo, where the value is the commands and the traps. The compose stacks on the NAS are their own
+repository, `nas-containers`, since they deploy differently and carry credentials.
 
 [Renovate] keeps the two sets of pins current: the SHA-pinned actions in `.github/workflows/` and
 the hook `rev`s in `.pre-commit-config.yaml`. It is deliberately not pointed at `flake.lock`. That

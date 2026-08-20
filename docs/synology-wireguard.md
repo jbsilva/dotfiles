@@ -107,7 +107,8 @@ gluetun names its interface from a setting, so the device stays `tun0` under eit
 Anything bound to the interface keeps working.
 
 Choosing which Proton server gluetun connects to is a separate trap, and the list inside the image
-is not the one an account holds: [gluetun-proton-servers.md](gluetun-proton-servers.md).
+is not the one an account holds. That, and the stacks themselves, are in the `nas-containers`
+repository.
 
 ## Weighing it
 
