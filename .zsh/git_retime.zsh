@@ -29,8 +29,9 @@ git-retime-sign() {
   fi
 
   # Resolve base unix timestamp + UTC offset once.
+  # python3.14 by name: zoneinfo must be there, whatever "python3" points at.
   local base_ts offset
-  if ! read -r base_ts offset < <(python3 - "$base_date" "$tz" <<'PY'
+  if ! read -r base_ts offset < <(python3.14 - "$base_date" "$tz" <<'PY'
 import sys
 from datetime import datetime
 from zoneinfo import ZoneInfo
