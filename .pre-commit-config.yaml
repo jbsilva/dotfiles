@@ -59,7 +59,7 @@ repos:
   # because renovate's nix closure is 1.8 GiB, far too much for packages.nix and
   # the CI lint shell; this pulls just the validator through node.
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 44.30.1
+    rev: 44.39.1
     hooks:
       - id: renovate-config-validator
         args: [--strict]
