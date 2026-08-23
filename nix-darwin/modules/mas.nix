@@ -11,6 +11,7 @@
   # which writes the `mas` lines into the generated Brewfile.
   homebrew.masApps = {
     Amphetamine = 937984704; # keep the Mac awake, on rules and triggers
+    "ShutterCount Pro" = 1441290690; # read the shutter count off a Canon body
     WireGuard = 1451685025; # the official client; wireguard-tools is the CLI
   };
 }
