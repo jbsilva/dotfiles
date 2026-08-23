@@ -92,6 +92,7 @@
       "openssl" # TLS and crypto toolkit
       "socat" # netcat with more socket types
       "telnet" # TELNET client
+      "wireguard-tools" # wg and wg-quick, to read and convert tunnel configs
 
       # -----------------------------------------------------------------------
       # Secrets & signing

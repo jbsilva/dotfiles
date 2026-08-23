@@ -9,6 +9,7 @@
     ./git-extra-commands.nix
     ./fonts.nix
     ./homebrew.nix
+    ./mas.nix
     ./nix.nix
     ./security.nix
     ./system/meta.nix
