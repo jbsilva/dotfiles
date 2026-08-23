@@ -10,6 +10,7 @@
   # nix-darwin has no top-level option for this, so it sits under `homebrew`,
   # which writes the `mas` lines into the generated Brewfile.
   homebrew.masApps = {
+    Amphetamine = 937984704; # keep the Mac awake, on rules and triggers
     WireGuard = 1451685025; # the official client; wireguard-tools is the CLI
   };
 }
