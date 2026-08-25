@@ -179,6 +179,7 @@ dpst
 entware
 exiftool
 fkey
+getconf
 ghostty
 infocmp
 kcbt

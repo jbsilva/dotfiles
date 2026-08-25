@@ -88,6 +88,61 @@
     jq # JSON processor
   ];
 
+  # DSM has glibc but not its ldd, and neither Entware nor SynoCommunity puts
+  # one on the box. VS Code Remote-SSH installs the musl build of the server CLI
+  # on every x86_64 Linux host, and that build runs `ldd --version` to tell a
+  # glibc host from a musl one. With no ldd it settles on musl, looks for
+  # /lib/ld-musl-x86_64.so.1, finds nothing and refuses to start: "The remote
+  # host does not meet the prerequisites for running VS Code Server".
+  #
+  # glibc's own ldd is a shell wrapper around the dynamic loader, so this is that
+  # wrapper with the two modes anything here asks for. The loader reports the
+  # glibc actually in use, 2.36, well over the 2.28 the server wants.
+  home.file.".local/bin/ldd" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      loader=/lib/ld-linux-x86-64.so.2
+
+      if [ "$1" = --version ]; then
+        "$loader" --version |
+          sed -n "1s/^ld\.so \(([^)]*)\) stable release version \([0-9][0-9.]*\)\./ldd \1 \2/p"
+        exit 0
+      fi
+
+      exec "$loader" --list "$@"
+    '';
+  };
+
+  # The same installer reads the word size from `getconf LONG_BIT`, which DSM
+  # also leaves out. Only the ARM branch acts on the answer, so the miss costs
+  # nothing here beyond a "command not found" in the connection log, but the
+  # next script to ask is not guaranteed to be as forgiving. LONG_BIT alone:
+  # a stub that answered every variable would be a worse lie than an absent
+  # getconf, since callers read a zero exit as a real answer.
+  home.file.".local/bin/getconf" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      if [ "$1" = LONG_BIT ]; then
+        case $(uname -m) in
+          *64) echo 64 ;;
+          *) echo 32 ;;
+        esac
+        exit 0
+      fi
+
+      echo "getconf: Unrecognized variable \`$1'" >&2
+      exit 1
+    '';
+  };
+
+  # .zshrc puts ~/.local/bin on $PATH, but .zshrc is read by interactive shells
+  # only. Remote-SSH runs the CLI under `ssh -T` with no command, which is a
+  # non-interactive login shell: .zshenv and .zprofile, then nothing. This lands
+  # in hm-session-vars.sh, which both of those source, so that shell finds ldd.
+  home.sessionPath = [ "$HOME/.local/bin" ];
+
   # gpg finds its pinentry through this file, and DSM's default path points at
   # a binary that does not exist here. loopback lets a passphrase be piped in
   # for an unattended import, which is the only way in before a pinentry is on
