@@ -102,7 +102,21 @@
   # Not the ldd from glibc.bin, which is a wrapper around the *store* loader and
   # so answers for a glibc nothing outside /nix links against. It would read
   # as a pass on a DSM too old to run the server, which is the one thing the
-  # question is asked to find out.
+  # question is asked to find out. No packaged ldd can answer for DSM: glibc
+  # bakes the version into the script at build time, so every copy reports the
+  # glibc it was built beside.
+  #
+  # Two other ways out, both tried on the box and both worse:
+  #
+  #   remote.SSH.useExecServer=false drops the extension back to the installer
+  #   that predates the CLI, which reads the version out of libc.so.6 and wants
+  #   no ldd. It exits 0 here. The setting is client-wide though, so it moves
+  #   every other host onto the older path to fix this one.
+  #
+  #   VSCODE_SERVER_CUSTOM_GLIBC_LINKER makes the CLI skip the check and still
+  #   choose the glibc server, and on its own it changes nothing about how the
+  #   server starts. It also skips the libstdc++ check, which passes honestly,
+  #   and prints "Server stability is not guaranteed" on every connect.
   home.file.".local/bin/ldd" = {
     executable = true;
     text = ''

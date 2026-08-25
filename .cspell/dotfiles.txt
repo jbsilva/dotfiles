@@ -184,6 +184,7 @@ ghostty
 infocmp
 kcbt
 libc
+libstdc
 mbbill
 misrender
 ncdu
