@@ -98,6 +98,11 @@
   # glibc's own ldd is a shell wrapper around the dynamic loader, so this is that
   # wrapper with the two modes anything here asks for. The loader reports the
   # glibc actually in use, 2.36, well over the 2.28 the server wants.
+  #
+  # Not the ldd from glibc.bin, which is a wrapper around the *store* loader and
+  # so answers for a glibc nothing outside /nix links against. It would read
+  # as a pass on a DSM too old to run the server, which is the one thing the
+  # question is asked to find out.
   home.file.".local/bin/ldd" = {
     executable = true;
     text = ''
@@ -115,27 +120,17 @@
   };
 
   # The same installer reads the word size from `getconf LONG_BIT`, which DSM
-  # also leaves out. Only the ARM branch acts on the answer, so the miss costs
-  # nothing here beyond a "command not found" in the connection log, but the
-  # next script to ask is not guaranteed to be as forgiving. LONG_BIT alone:
-  # a stub that answered every variable would be a worse lie than an absent
-  # getconf, since callers read a zero exit as a real answer.
-  home.file.".local/bin/getconf" = {
-    executable = true;
-    text = ''
-      #!/bin/sh
-      if [ "$1" = LONG_BIT ]; then
-        case $(uname -m) in
-          *64) echo 64 ;;
-          *) echo 32 ;;
-        esac
-        exit 0
-      fi
-
-      echo "getconf: Unrecognized variable \`$1'" >&2
-      exit 1
-    '';
-  };
+  # also leaves out. glibc's own getconf answers every variable, so take that
+  # rather than write a second script: only ldd has a reason to be hand-rolled.
+  #
+  # Linked on its own, not through home.packages, because the Nix profile is not
+  # on $PATH in the shell this has to serve, and putting it there would also
+  # hand every non-interactive shell the ldd, ldconfig and locale beside it.
+  #
+  # GNU_LIBC_VERSION is the one answer to distrust: it reports the glibc this
+  # binary was built against, 2.42, not DSM's 2.36. The installer asks only
+  # LONG_BIT, and anything asking the version question goes through ldd above.
+  home.file.".local/bin/getconf".source = "${pkgs.glibc.bin}/bin/getconf";
 
   # .zshrc puts ~/.local/bin on $PATH, but .zshrc is read by interactive shells
   # only. Remote-SSH runs the CLI under `ssh -T` with no command, which is a

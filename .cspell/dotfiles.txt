@@ -183,6 +183,7 @@ getconf
 ghostty
 infocmp
 kcbt
+libc
 mbbill
 misrender
 ncdu
