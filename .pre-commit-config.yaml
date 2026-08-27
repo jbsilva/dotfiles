@@ -14,8 +14,10 @@ exclude: |
   )$
 
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+  # prek's Rust build of the pre-commit-hooks set. Naming the upstream repo
+  # runs the same code, but also clones it and builds an unused Python venv.
+  # Resolves under prek only, which is the only runner here.
+  - repo: builtin
     hooks:
       - id: check-added-large-files
       - id: check-merge-conflict
