@@ -66,14 +66,29 @@
       groupName: "typos",
     },
     {
-      description: "zizmor: hook rev, twinned with the zizmor package in packages.nix",
-      matchPackageNames: ["zizmorcore/zizmor-pre-commit"],
+      description: "zizmor: the wheel is pinned in both .pre-commit-config.yaml and ci.yml",
+      matchPackageNames: ["zizmor"],
       groupName: "zizmor",
     },
     {
       description: "actionlint: hook rev, twinned with the actionlint package in packages.nix",
       matchPackageNames: ["rhysd/actionlint"],
       groupName: "actionlint",
+    },
+  ],
+
+  // No stock manager sees the zizmor pins: the pre-commit manager reads `rev`, not
+  // `additional_dependencies`, and nothing parses a `run:` line. The shared depName groups all of
+  // them into the one PR above. On a prerelease pin, `ignoreUnstable` follows later prereleases of
+  // that same version and then its stable release, and never jumps to the next prerelease train.
+  customManagers: [
+    {
+      customType: "regex",
+      managerFilePatterns: [".pre-commit-config.yaml", ".github/workflows/ci.yml"],
+      matchStrings: ["zizmor==(?<currentValue>[0-9][^\"'\\s]*)"],
+      datasourceTemplate: "pypi",
+      depNameTemplate: "zizmor",
+      versioningTemplate: "pep440",
     },
   ],
 
@@ -85,5 +100,5 @@
   // Not managed by anything, for the record: .config/nvim/lazy-lock.json is written by `:Lazy`
   // commands (see AGENTS.md), and the pinned rev+hash in modules/git-extra-commands.nix has to be
   // bumped by hand because Renovate cannot compute the new fixed-output hash.
-  enabledManagers: ["github-actions", "pre-commit"],
+  enabledManagers: ["github-actions", "pre-commit", "custom.regex"],
 }

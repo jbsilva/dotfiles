@@ -722,7 +722,7 @@ just test-shell     # WSL/Synology/bare-Linux containers (needs docker)
 | `shellcheck`, `zsh -n`        | sh/bash and zsh respectively                                          |
 | `stylua`                      | Lua, config in `.stylua.toml`                                         |
 | `actionlint`                  | GitHub Actions workflows                                              |
-| `zizmor`                      | GitHub Actions workflows, security side                               |
+| `zizmor`                      | GitHub Actions workflows and `.pre-commit-config.yaml`, security side |
 | `renovate-config-validator`   | `renovate.json5`                                                      |
 | `gitleaks`                    | secrets in staged changes                                             |
 | pre-commit-hooks              | trailing whitespace, EOF, line endings, large files, YAML/TOML syntax |

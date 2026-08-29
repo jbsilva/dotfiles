@@ -88,10 +88,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
-
+      # pipx is preinstalled on the runner, and PyPI has releases ahead of the
+      # community-maintained nixpkgs one. Renovate moves this pin, the one
+      # below and the one in .pre-commit-config.yaml together.
       - name: zizmor
-        run: nix run nixpkgs#zizmor -- --format=sarif . > results.sarif
+        run: pipx run zizmor==1.30.0rc1 --format=sarif . > results.sarif
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -107,7 +108,7 @@ jobs:
       - name: Fail on findings
         # --format=sarif always exits 0, so the audit runs a second time to gate
         # the PR, after the results are safely in the Security tab.
-        run: nix run nixpkgs#zizmor -- .
+        run: pipx run zizmor==1.30.0rc1 .
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

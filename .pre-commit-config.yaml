@@ -50,10 +50,20 @@ repos:
   # The security half of the workflow linting: actionlint reads the YAML for
   # correctness, zizmor reads it for unpinned actions, credential persistence,
   # cache poisoning, template injection and over-broad permissions.
-  - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.29.0
+  # `local` because zizmor-pre-commit only tags stable releases; pinning the
+  # wheel here takes prereleases too. zizmor audits this file as well, which
+  # the upstream hook's `files` pattern leaves out.
+  - repo: local
     hooks:
       - id: zizmor
+        name: zizmor
+        entry: zizmor
+        language: python
+        additional_dependencies: ["zizmor==1.30.0rc1"]
+        args: ["--no-progress"]
+        require_serial: true
+        types: [yaml]
+        files: (\.github/(workflows/.*|dependabot\.ya?ml))|(action\.ya?ml)|(^\.pre-commit-config\.ya?ml)$
 
   # renovate.json5 is what keeps the two blocks of pins above current, so a typo
   # in it fails open: Renovate logs the error server-side and stops opening PRs,
