@@ -175,43 +175,43 @@ profile-shell *ARGS:
 # Everything above runs on this MacBook: darwin-rebuild, prek and gitleaks are
 # not installed on the NAS.
 #
-# Each name below is defined twice, once per platform. On the MacBook it drives
-# the box over SSH; on the box itself it does the work. `just --list` shows only
-# the variant for the machine you are on. `just` reaches the NAS through
+# Each recipe below serves both sides. On the NAS it does the work; anywhere
+# else it drives the box over SSH. `just` reaches the NAS through
 # home-manager/nas.nix.
 #
-# The SSH variants source nix.sh to put `just` on $PATH, and so read the NAS
-# copy of this file as it was before the pull below. A change to a recipe here
-# therefore takes effect on the run after the one that ships it.
+# The test is /usr/syno, DSM's own tree, rather than the platform: WSL is
+# x86_64-linux as well, so a `[linux]` attribute would send it down the local
+# branch, where the build succeeds and activation then runs against the wrong
+# $HOME.
 #
-# The NAS variants carry no shebang, because a shebang recipe runs from a file
-# just writes under /tmp and DSM mounts that noexec. Each of their lines is
-# therefore its own shell: TMPDIR is set per command rather than exported, and
-# sourcing nix.sh is left to the caller. The SSH variants above do it, an
-# interactive shell has it from zshrc_synology, and `just` cannot be on $PATH
-# without it either way.
+# No shebang: a shebang recipe runs from a file just writes under /tmp, and DSM
+# mounts that noexec. Each body is one shell command instead, which is also
+# what lets the branch cover the commands inside it.
+#
+# The SSH branch sources nix.sh to put `just` on $PATH, and so reads the NAS
+# copy of this file as it stands before the pull inside it. A change to a
+# recipe here therefore takes effect on the run after the one that ships it.
 # ---------------------------------------------------------------------------
 
+# `nas` is the LAN address. Set NAS_HOST to the Tailscale alias from off the LAN.
+nas_host := env("NAS_HOST", "nas")
+
 # Pull and activate the home-manager profile on the Synology
-[macos]
 nas-switch:
-    ssh nas '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-switch'
-
-# Pull and activate the home-manager profile (run on the NAS itself)
-[linux]
-nas-switch:
-    /usr/local/bin/git -C ~/dotfiles pull --ff-only
-    TMPDIR=$HOME/.cache/nix-install nix build -o ~/.hm-generation \
-      "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
-    ~/.hm-generation/activate
+    if [ -d /usr/syno ]; then \
+      /usr/local/bin/git -C ~/dotfiles pull --ff-only && \
+      TMPDIR=$HOME/.cache/nix-install nix build -o ~/.hm-generation \
+        "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage" && \
+      ~/.hm-generation/activate; \
+    else \
+      ssh {{ nas_host }} '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-switch'; \
+    fi
 
 # What the next nas-switch would change, without activating it
-[macos]
 nas-diff:
-    ssh nas '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-diff'
-
-# What the next nas-switch would change, without activating it
-[linux]
-nas-diff:
-    TMPDIR=$HOME/.cache/nix-install nix build --no-link --print-out-paths \
-      "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
+    if [ -d /usr/syno ]; then \
+      TMPDIR=$HOME/.cache/nix-install nix build --no-link --print-out-paths \
+        "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"; \
+    else \
+      ssh {{ nas_host }} '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-diff'; \
+    fi
