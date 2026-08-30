@@ -63,6 +63,15 @@
     zellij # multiplexer; .zshrc auto-attaches to it on SSH
 
     # -------------------------------------------------------------------------
+    # Remote access
+    # -------------------------------------------------------------------------
+    # The server half of the mosh in the MacBook's packages.nix. mosh starts it
+    # over SSH as a plain command, and DSM gives that shell
+    # /usr/bin:/bin:/usr/sbin:/sbin only, so the client has to be told where it
+    # is: `mosh --server='~/.nix-profile/bin/mosh-server' nas`. See the README.
+    mosh # SSH that survives roaming and suspend
+
+    # -------------------------------------------------------------------------
     # Storage and transfer
     # -------------------------------------------------------------------------
     rclone # syncs to and from cloud storage

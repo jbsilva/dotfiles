@@ -35,6 +35,19 @@ alias showAllOff='defaults write com.apple.finder AppleShowAllFiles 0 && killall
 alias hide_Desktop='defaults write com.apple.finder CreateDesktop -bool FALSE; killall Finder'
 alias show_Desktop='defaults write com.apple.finder CreateDesktop TRUE; killall Finder'
 
+# Mosh to a host whose mosh-server comes from a Nix profile: `mosh-nix nas`.
+#
+# mosh starts the server as a plain command over SSH, so it has to find
+# mosh-server on the remote $PATH. That command runs in a shell that is neither
+# interactive nor a login shell, and on DSM such a shell gets
+# /usr/bin:/bin:/usr/sbin:/sbin and nothing else. The Nix profile is not on it,
+# so the default lookup fails with "Did not find mosh server startup message".
+#
+# The inner quotes are what keeps the tilde intact past this shell. mosh
+# interpolates --server into the remote command line unquoted, so the NAS
+# expands it against its own $HOME.
+alias mosh-nix="mosh --server='~/.nix-profile/bin/mosh-server'"
+
 # Updates with Homebrew. Do a `sudo chown -R $(whoami):admin /usr/local` first.
 # compaudit | xargs chmod g-w
 # Use nix-darwin instead

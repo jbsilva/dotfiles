@@ -124,7 +124,7 @@
     trippy # traceroute and ping in one TUI; the tool for "why is the NAS slow"
     curlFull # curl with every optional protocol compiled in
     wget # non-interactive downloader
-    mosh # SSH that survives roaming and suspend
+    mosh # SSH that survives roaming and suspend; for the NAS, `mosh-nix`
     iperf # bandwidth measurement between two hosts
     rsync # incremental file transfer
 

@@ -615,6 +615,34 @@ done
 > only `nix-darwin/` fails with `access to absolute path '/nix/store/.zshenv' is forbidden`. Inside
 > the git clone the whole repo is copied, so the path resolves.
 
+#### Mosh on the NAS
+
+`packages.nix` installs the client on the MacBook and `nas.nix` installs the server on the NAS, so
+`just switch` and `just nas-switch` cover both halves. The client still has to be told where the
+server is:
+
+```sh
+mosh-nix nas                                          # alias in .zsh/zshrc_macos
+mosh --server='~/.nix-profile/bin/mosh-server' nas    # what it expands to
+```
+
+mosh starts `mosh-server` as a plain command over SSH, and that command lands in a shell that is
+neither interactive nor a login shell. DSM gives it `/usr/bin:/bin:/usr/sbin:/sbin`, which holds
+neither the Nix profile nor `/usr/local/bin`. Plain `mosh nas` therefore stops at
+`Did not find mosh server startup message`. Quote the path: the tilde has to reach the NAS
+unexpanded. mosh interpolates `--server` into the remote command line without quoting it, and the
+remote shell is what expands it.
+
+Everything past that lookup works untouched. mosh runs the login shell, so `~/.profile` hands over
+to the Nix zsh exactly as an SSH login does. The client's `LANG` and `LC_ALL` travel on the
+`mosh-server` command line rather than in the environment, so DSM's missing `AcceptEnv` costs
+nothing here. The Nix glibc reads DSM's own `/usr/lib/locale/locale-archive`, so `en_US.UTF-8`
+resolves and mosh gets the UTF-8 locale it insists on. `SSH_TTY` and `SSH_CONNECTION` are inherited
+from the SSH session that started the server, so `.zshrc` auto-attaches zellij here too.
+
+The UDP port mosh picks, somewhere in 60000 to 61000, has to reach the NAS. Nothing had to be opened
+for the LAN.
+
 **WSL (Ubuntu 26.04)**: `.zsh/zshrc_wsl`. Sets `BROWSER=wslview`, maps `pbcopy`/`pbpaste` onto
 `clip.exe`/PowerShell so scripts stay portable, and strips the inherited Windows `PATH` entries that
 otherwise slow every completion down and shadow Linux binaries with `.exe` ones (keep them with
