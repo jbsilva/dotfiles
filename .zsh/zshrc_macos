@@ -48,6 +48,25 @@ alias show_Desktop='defaults write com.apple.finder CreateDesktop TRUE; killall 
 # expands it against its own $HOME.
 alias mosh-nix="mosh --server='~/.nix-profile/bin/mosh-server'"
 
+# SSH to the NAS, telling the session that starts there that it is nested.
+#
+# Zellij 0.45.0 handles a session inside a pane properly, but only once the
+# inner one knows it is nested, and it decides that by looking for $ZELLIJ in
+# its own environment. Nothing forwards it: DSM's sshd sets no AcceptEnv, so
+# the marker rides in the remote command, and the shared .zshrc turns it back
+# into $ZELLIJ before it starts zellij. Without this the NAS draws its own
+# status bar under the one already on screen.
+#
+# Only from inside a pane, and only with no command of your own: `nas uptime`
+# still runs uptime rather than a login shell.
+nas() {
+  if [[ -n "$ZELLIJ" && $# -eq 0 ]]; then
+    ssh -t nas 'DOTFILES_ZELLIJ_HOST=1 $SHELL -l'
+  else
+    ssh nas "$@"
+  fi
+}
+
 # Updates with Homebrew. Do a `sudo chown -R $(whoami):admin /usr/local` first.
 # compaudit | xargs chmod g-w
 # Use nix-darwin instead

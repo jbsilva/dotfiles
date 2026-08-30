@@ -191,6 +191,11 @@ profile-shell *ARGS:
 # The SSH branch sources nix.sh to put `just` on $PATH, and so reads the NAS
 # copy of this file as it stands before the pull inside it. A change to a
 # recipe here therefore takes effect on the run after the one that ships it.
+#
+# HOME_MANAGER_BACKUP_EXT is what `home-manager.backupFileExtension` sets for
+# the MacBook. Standalone home-manager takes it from the environment instead,
+# and without it activation stops at the first unmanaged file sitting where a
+# link belongs, rather than moving it aside.
 # ---------------------------------------------------------------------------
 
 # `nas` is the LAN address. Set NAS_HOST to the Tailscale alias from off the LAN.
@@ -202,7 +207,7 @@ nas-switch:
       /usr/local/bin/git -C ~/dotfiles pull --ff-only && \
       TMPDIR=$HOME/.cache/nix-install nix build -o ~/.hm-generation \
         "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage" && \
-      ~/.hm-generation/activate; \
+      HOME_MANAGER_BACKUP_EXT=hm-bak ~/.hm-generation/activate; \
     else \
       ssh {{ nas_host }} '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-switch'; \
     fi

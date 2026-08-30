@@ -18,6 +18,7 @@
     ./programs/git.nix
     ./programs/atuin.nix
     ./programs/direnv.nix
+    ./programs/zellij.nix
   ];
 
   home.username = "julio";

@@ -286,6 +286,18 @@ ssh nas -t 'DOTFILES_NO_ZELLIJ=1 $SHELL -l'
 The assignment has to be part of the remote command. DSM's sshd sets no `AcceptEnv`, so it drops
 every forwarded variable, `LANG` included.
 
+Since 0.45.0 zellij knows how to nest, so the session on the NAS does not have to draw a second
+status bar under the local one. The catch is how it finds out: the inner session looks for `$ZELLIJ`
+in its own environment, and only then announces itself to the outer one over an in-band escape
+sequence. `AcceptEnv` blocks that variable as well, so reach the box with `nas`, a function in
+`.zsh/zshrc_macos` that carries `DOTFILES_ZELLIJ_HOST=1` in the remote command instead. `.zshrc`
+turns it back into `$ZELLIJ` there. `nested_session_handling "fullscreen"` in
+[`.config/zellij/config.kdl`](.config/zellij/config.kdl) then zooms the pane on focus, leaving one
+status bar on screen. Descend and ascend by hand with `[` and `]` in session mode.
+
+Plain `ssh nas` still works and still gets a session; it just gets the doubled bar. `mosh-nix nas`
+does too, for the same reason.
+
 > **Probe this box with a login shell.** `ssh nas '<cmd>'` and `ssh nas -t 'zsh -i'` both skip
 > `/etc/profile`, which is the only thing that puts `/usr/local/bin` and `/usr/syno/bin` on `$PATH`.
 > Under those, roughly 250 installed SynoCli tools look missing and `synopkg status` reports

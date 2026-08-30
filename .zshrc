@@ -1117,6 +1117,18 @@ fi
 # AcceptEnv, so it drops every forwarded variable, LANG included. $SHELL rather
 # than zsh, because on DSM that is /bin/sh reaching zsh via ~/.profile, and zsh
 # is not on the PATH a remote command gets.
+#
+# DOTFILES_ZELLIJ_HOST arrives the same way, from the `nas` function in
+# .zsh/zshrc_macos, and says the terminal on the other end is itself a Zellij
+# pane. Since 0.45.0 a session works out that it is nested by looking for
+# $ZELLIJ in its own environment, then announces itself to the session around
+# it over an in-band escape sequence. That variable cannot survive the hop for
+# the AcceptEnv reason above, so put it back here, and only around the command:
+# left exported, it would be a lie in the plain shell that remains if zellij
+# fails to start.
+#
+# The -z "$ZELLIJ" test above still guards what it always did, a pane inside a
+# session on this same machine, which must not open another one.
 ###############################################################################
 if (( $+commands[zellij] )) &&
   [[ -z "$ZELLIJ" &&
@@ -1128,7 +1140,11 @@ if (( $+commands[zellij] )) &&
     -o interactive &&
     "$TERM_PROGRAM" != "vscode" &&
     "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" ]]; then
-  zellij attach --create "${HOST%%.*}"
+  if [[ -n "$DOTFILES_ZELLIJ_HOST" ]]; then
+    ZELLIJ=0 zellij attach --create "${HOST%%.*}"
+  else
+    zellij attach --create "${HOST%%.*}"
+  fi
 fi
 
 

@@ -58,6 +58,11 @@
 !/.config/gh/config.yml
 !/.config/gh/hosts.yml
 
+# Zellij. Only config.kdl: layouts/ and themes/ beside it are not ours, and the
+# file itself is rewritten in place by zellij on a version upgrade, so an
+# upgrade shows up as a diff here.
+!/.config/zellij/config.kdl
+
 # -----------------------------------------------------------------------------
 # .config: re-ignore heavy runtime dirs
 #

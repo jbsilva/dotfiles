@@ -19,6 +19,7 @@
           ./programs/bash.nix
           ./programs/direnv.nix
           ./programs/atuin.nix
+          ./programs/zellij.nix
           ./activation/docker-plugins.nix
           ./activation/default-apps.nix
           ./activation/remove-lm-studio-login-item.nix
