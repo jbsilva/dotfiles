@@ -187,6 +187,7 @@ libc
 libstdc
 mbbill
 misrender
+nast
 ncdu
 nmap
 ohmyzsh

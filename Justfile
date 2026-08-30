@@ -198,7 +198,7 @@ profile-shell *ARGS:
 # link belongs, rather than moving it aside.
 # ---------------------------------------------------------------------------
 
-# `nas` is the LAN address. Set NAS_HOST to the Tailscale alias from off the LAN.
+# `nas` is the LAN address. Set NAS_HOST=nast, the Tailscale alias, from off the LAN.
 nas_host := env("NAS_HOST", "nas")
 
 # Pull and activate the home-manager profile on the Synology

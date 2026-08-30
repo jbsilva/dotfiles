@@ -289,14 +289,29 @@ every forwarded variable, `LANG` included.
 Since 0.45.0 zellij knows how to nest, so the session on the NAS does not have to draw a second
 status bar under the local one. The catch is how it finds out: the inner session looks for `$ZELLIJ`
 in its own environment, and only then announces itself to the outer one over an in-band escape
-sequence. `AcceptEnv` blocks that variable as well, so reach the box with `nas`, a function in
-`.zsh/zshrc_macos` that carries `DOTFILES_ZELLIJ_HOST=1` in the remote command instead. `.zshrc`
-turns it back into `$ZELLIJ` there. `nested_session_handling "fullscreen"` in
-[`.config/zellij/config.kdl`](.config/zellij/config.kdl) then zooms the pane on focus, leaving one
-status bar on screen. Descend and ascend by hand with `[` and `]` in session mode.
+sequence. `AcceptEnv` blocks that variable as well, so the wrappers in `.zsh/zshrc_macos` carry
+`DOTFILES_ZELLIJ_HOST=1` to the far side instead, and `.zshrc` turns it back into `$ZELLIJ` just
+before it starts zellij there.
 
-Plain `ssh nas` still works and still gets a session; it just gets the doubled bar. `mosh-nix nas`
-does too, for the same reason.
+| Reach the NAS with | Over | Address   |
+| ------------------ | ---- | --------- |
+| `nas`              | SSH  | LAN       |
+| `nast`             | SSH  | Tailscale |
+| `mosh-nix nas`     | mosh | LAN       |
+| `mosh-nix nast`    | mosh | Tailscale |
+
+The two spellings need different tricks. SSH takes a remote command, so the marker goes there, the
+same way `DOTFILES_NO_ZELLIJ` does above. mosh has no room for one, because it appends its own
+`new -s -c ...` to whatever `--server` names, so `mosh-nix` puts `env DOTFILES_ZELLIJ_HOST=1` in
+front of `mosh-server` and lets it hand the variable to the login shell it spawns.
+
+`nested_session_handling "fullscreen"` in [`.config/zellij/config.kdl`](.config/zellij/config.kdl)
+then zooms the pane on focus, leaving one status bar on screen. Descend and ascend by hand with `[`
+and `]` in session mode, and toggle the zoom with `f`.
+
+All four fall back to their plain behaviour outside a pane, and anything of your own after the host
+wins: `nas uptime` still runs `uptime` rather than a login shell. Bare `ssh nas` still works too; it
+just gets the doubled bar.
 
 > **Probe this box with a login shell.** `ssh nas '<cmd>'` and `ssh nas -t 'zsh -i'` both skip
 > `/etc/profile`, which is the only thing that puts `/usr/local/bin` and `/usr/syno/bin` on `$PATH`.
@@ -634,8 +649,8 @@ done
 server is:
 
 ```sh
-mosh-nix nas                                          # alias in .zsh/zshrc_macos
-mosh --server='~/.nix-profile/bin/mosh-server' nas    # what it expands to
+mosh-nix nas                                          # function in .zsh/zshrc_macos
+mosh --server='~/.nix-profile/bin/mosh-server' nas    # what it runs
 ```
 
 mosh starts `mosh-server` as a plain command over SSH, and that command lands in a shell that is
@@ -651,6 +666,9 @@ to the Nix zsh exactly as an SSH login does. The client's `LANG` and `LC_ALL` tr
 nothing here. The Nix glibc reads DSM's own `/usr/lib/locale/locale-archive`, so `en_US.UTF-8`
 resolves and mosh gets the UTF-8 locale it insists on. `SSH_TTY` and `SSH_CONNECTION` are inherited
 from the SSH session that started the server, so `.zshrc` auto-attaches zellij here too.
+
+From inside a zellij pane `mosh-nix` prefixes `env DOTFILES_ZELLIJ_HOST=1` to the server path, which
+is how the nesting marker reaches the far side over mosh. See the Zellij section above.
 
 The UDP port mosh picks, somewhere in 60000 to 61000, has to reach the NAS. Nothing had to be opened
 for the LAN.

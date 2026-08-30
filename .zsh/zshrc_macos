@@ -35,6 +35,45 @@ alias showAllOff='defaults write com.apple.finder AppleShowAllFiles 0 && killall
 alias hide_Desktop='defaults write com.apple.finder CreateDesktop -bool FALSE; killall Finder'
 alias show_Desktop='defaults write com.apple.finder CreateDesktop TRUE; killall Finder'
 
+###############################################################################
+# Reaching the NAS
+#
+# `nas` is the LAN address and `nast` the Tailscale one, both Host blocks in
+# ~/.ssh/config. Each has an SSH and a mosh spelling, and all four carry the
+# Zellij nesting marker.
+#
+# Zellij 0.45.0 runs a session inside a pane properly, but the inner one only
+# works out that it is nested by looking for $ZELLIJ in its own environment,
+# and only then announces itself to the outer one over an in-band escape
+# sequence. Nothing carries that variable across on its own: DSM's sshd sets no
+# AcceptEnv and drops every forwarded variable. So DOTFILES_ZELLIJ_HOST rides
+# in the remote command instead, and the shared .zshrc turns it back into
+# $ZELLIJ just before it starts zellij there. Without it the NAS draws its own
+# status bar under the one already on screen.
+#
+# Only from inside a pane. Off the multiplexer these all behave as before.
+###############################################################################
+
+# The login shell the SSH wrappers ask for. $SHELL rather than zsh, because on
+# DSM that is /bin/sh reaching zsh via ~/.profile, and zsh is not on the PATH a
+# remote command gets.
+_nas_nested_login='DOTFILES_ZELLIJ_HOST=1 $SHELL -l'
+
+# Anything of your own after the host wins: `nas uptime` still runs uptime
+# rather than a login shell.
+_nas_ssh() {
+  local host=$1
+  shift
+  if [[ -n "$ZELLIJ" && $# -eq 0 ]]; then
+    ssh -t "$host" "$_nas_nested_login"
+  else
+    ssh "$host" "$@"
+  fi
+}
+
+nas() { _nas_ssh nas "$@"; }
+nast() { _nas_ssh nast "$@"; }
+
 # Mosh to a host whose mosh-server comes from a Nix profile: `mosh-nix nas`.
 #
 # mosh starts the server as a plain command over SSH, so it has to find
@@ -46,25 +85,16 @@ alias show_Desktop='defaults write com.apple.finder CreateDesktop TRUE; killall 
 # The inner quotes are what keeps the tilde intact past this shell. mosh
 # interpolates --server into the remote command line unquoted, so the NAS
 # expands it against its own $HOME.
-alias mosh-nix="mosh --server='~/.nix-profile/bin/mosh-server'"
-
-# SSH to the NAS, telling the session that starts there that it is nested.
 #
-# Zellij 0.45.0 handles a session inside a pane properly, but only once the
-# inner one knows it is nested, and it decides that by looking for $ZELLIJ in
-# its own environment. Nothing forwards it: DSM's sshd sets no AcceptEnv, so
-# the marker rides in the remote command, and the shared .zshrc turns it back
-# into $ZELLIJ before it starts zellij. Without this the NAS draws its own
-# status bar under the one already on screen.
-#
-# Only from inside a pane, and only with no command of your own: `nas uptime`
-# still runs uptime rather than a login shell.
-nas() {
-  if [[ -n "$ZELLIJ" && $# -eq 0 ]]; then
-    ssh -t nas 'DOTFILES_ZELLIJ_HOST=1 $SHELL -l'
-  else
-    ssh nas "$@"
-  fi
+# There is no room for a second remote command here, which is how the SSH
+# wrappers above pass the marker, because mosh appends `new -s -c ...` to
+# whatever --server names. `env` in front of mosh-server is the way in: the
+# variable is set for the server, and mosh-server hands its environment to the
+# login shell it spawns.
+mosh-nix() {
+  local server='~/.nix-profile/bin/mosh-server'
+  [[ -n "$ZELLIJ" ]] && server="env DOTFILES_ZELLIJ_HOST=1 $server"
+  mosh --server="$server" "$@"
 }
 
 # Updates with Homebrew. Do a `sudo chown -R $(whoami):admin /usr/local` first.

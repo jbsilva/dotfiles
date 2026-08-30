@@ -34,3 +34,6 @@ cleand = "cleand"
 ba = "ba"
 # terminfo capability names used for key bindings in .zshrc.
 kend = "kend"
+# `nast` is the Tailscale Host block for the NAS in ~/.ssh/config, next to the
+# LAN one named `nas`. Not a misspelling of "nasty" or "mast".
+nast = "nast"
