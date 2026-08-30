@@ -173,31 +173,46 @@ profile-shell *ARGS:
 # Synology
 #
 # Everything above runs on this MacBook: darwin-rebuild, prek and gitleaks are
-# not installed on the NAS. These drive it over SSH instead.
+# not installed on the NAS.
+#
+# Each name below is defined twice, once per platform. On the MacBook it drives
+# the box over SSH; on the box itself it does the work. `just --list` shows only
+# the variant for the machine you are on. `just` reaches the NAS through
+# home-manager/nas.nix.
+#
+# The SSH variants source nix.sh to put `just` on $PATH, and so read the NAS
+# copy of this file as it was before the pull below. A change to a recipe here
+# therefore takes effect on the run after the one that ships it.
 # ---------------------------------------------------------------------------
 
 # Pull and activate the home-manager profile on the Synology
+[macos]
+nas-switch:
+    ssh nas '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-switch'
+
+# Pull and activate the home-manager profile (run on the NAS itself)
+[linux]
 nas-switch:
     #!/usr/bin/env bash
     set -euo pipefail
-    ssh nas '
-      set -eu
-      . ~/.nix-profile/etc/profile.d/nix.sh
-      /usr/local/bin/git -C ~/dotfiles pull --ff-only
-      export TMPDIR=$HOME/.cache/nix-install
-      nix build -o ~/.hm-generation \
-        "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
-      ~/.hm-generation/activate
-    '
+    . ~/.nix-profile/etc/profile.d/nix.sh
+    /usr/local/bin/git -C ~/dotfiles pull --ff-only
+    export TMPDIR=$HOME/.cache/nix-install
+    nix build -o ~/.hm-generation \
+      "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
+    ~/.hm-generation/activate
 
 # What the next nas-switch would change, without activating it
+[macos]
+nas-diff:
+    ssh nas '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-diff'
+
+# What the next nas-switch would change, without activating it
+[linux]
 nas-diff:
     #!/usr/bin/env bash
     set -euo pipefail
-    ssh nas '
-      set -eu
-      . ~/.nix-profile/etc/profile.d/nix.sh
-      export TMPDIR=$HOME/.cache/nix-install
-      nix build --no-link --print-out-paths \
-        "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
-    '
+    . ~/.nix-profile/etc/profile.d/nix.sh
+    export TMPDIR=$HOME/.cache/nix-install
+    nix build --no-link --print-out-paths \
+      "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"

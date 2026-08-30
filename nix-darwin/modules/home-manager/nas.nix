@@ -36,6 +36,7 @@
     eza # ls with git status, tree mode and icons
     fd # far friendlier and faster `find`
     fzf # fuzzy finder; .zshrc feeds it fd and previews with bat
+    just # task runner; the Synology recipes in ../../../Justfile run here
     ripgrep # fast grep
     starship # prompt; .zshrc initialises it, as on the other machines
     zoxide # directory jumper, behind `z`
