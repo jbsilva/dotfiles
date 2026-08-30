@@ -72,6 +72,7 @@
     # -------------------------------------------------------------------------
     # Files and archives
     # -------------------------------------------------------------------------
+    convmv # converts filenames between encodings
     p7zip # 7z archives
     renameutils # qmv and friends: bulk rename inside $EDITOR
 
@@ -82,9 +83,14 @@
     uv # Python packages, projects and interpreters
 
     # -------------------------------------------------------------------------
-    # Data
+    # Media
     # -------------------------------------------------------------------------
     exiftool # reads and writes media metadata
+    flac # encodes and decodes the FLAC lossless audio format
+
+    # -------------------------------------------------------------------------
+    # Data
+    # -------------------------------------------------------------------------
     jq # JSON processor
   ];
 
