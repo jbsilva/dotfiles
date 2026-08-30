@@ -19,6 +19,15 @@
       ShowRemovableMediaOnDesktop = true;
     };
 
+    # Finder writes a .DS_Store into every network folder it opens. Synology's
+    # SMB cannot keep a resource fork inside the file, so it puts one beside it
+    # as @eaDir/.DS_Store@SynoResource, and the NAS fills up with @eaDir nobody
+    # reads. This stops the cause rather than sweeping the shares afterwards.
+    #
+    # Network volumes only. Local disks keep their .DS_Store, so only shares
+    # forget their per-folder view style, sort order and window size.
+    CustomUserPreferences."com.apple.desktopservices".DSDontWriteNetworkStores = true;
+
     loginwindow.LoginwindowText = "mbp@juliobs.com";
 
     screencapture = {
