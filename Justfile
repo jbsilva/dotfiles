@@ -183,6 +183,13 @@ profile-shell *ARGS:
 # The SSH variants source nix.sh to put `just` on $PATH, and so read the NAS
 # copy of this file as it was before the pull below. A change to a recipe here
 # therefore takes effect on the run after the one that ships it.
+#
+# The NAS variants carry no shebang, because a shebang recipe runs from a file
+# just writes under /tmp and DSM mounts that noexec. Each of their lines is
+# therefore its own shell: TMPDIR is set per command rather than exported, and
+# sourcing nix.sh is left to the caller. The SSH variants above do it, an
+# interactive shell has it from zshrc_synology, and `just` cannot be on $PATH
+# without it either way.
 # ---------------------------------------------------------------------------
 
 # Pull and activate the home-manager profile on the Synology
@@ -193,12 +200,8 @@ nas-switch:
 # Pull and activate the home-manager profile (run on the NAS itself)
 [linux]
 nas-switch:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    . ~/.nix-profile/etc/profile.d/nix.sh
     /usr/local/bin/git -C ~/dotfiles pull --ff-only
-    export TMPDIR=$HOME/.cache/nix-install
-    nix build -o ~/.hm-generation \
+    TMPDIR=$HOME/.cache/nix-install nix build -o ~/.hm-generation \
       "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
     ~/.hm-generation/activate
 
@@ -210,9 +213,5 @@ nas-diff:
 # What the next nas-switch would change, without activating it
 [linux]
 nas-diff:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    . ~/.nix-profile/etc/profile.d/nix.sh
-    export TMPDIR=$HOME/.cache/nix-install
-    nix build --no-link --print-out-paths \
+    TMPDIR=$HOME/.cache/nix-install nix build --no-link --print-out-paths \
       "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
