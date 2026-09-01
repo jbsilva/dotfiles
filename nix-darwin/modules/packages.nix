@@ -195,7 +195,7 @@
     shottr # screenshots with scrolling capture, OCR and annotation
     swiftdefaultapps # backs the default-apps activation script
     iina # video player
-    notion-app # notes and docs
+    # notion-app # notes and docs
     slack # chat
   ];
 }
