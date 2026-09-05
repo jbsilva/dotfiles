@@ -191,7 +191,7 @@
     # -------------------------------------------------------------------------
     mas # Mac App Store CLI
     loopwm # window snapping (Loop)
-    raycast # launcher and command palette
+    # raycast # via Homebrew cask: this binary traps at launch
     shottr # screenshots with scrolling capture, OCR and annotation
     swiftdefaultapps # backs the default-apps activation script
     iina # video player

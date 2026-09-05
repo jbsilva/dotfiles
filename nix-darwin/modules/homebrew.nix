@@ -181,6 +181,7 @@
       "keyboard-maestro" # macro automation
       "maccy" # clipboard history
       "notunes" # stops Music hijacking the Play key
+      "raycast" # launcher and command palette. The nixpkgs binary traps at launch
       "stats" # menu-bar system monitor
       "thaw" # menu bar manager
       # "voiceink" # voice control
