@@ -117,6 +117,7 @@
       # -----------------------------------------------------------------------
       # Development
       # -----------------------------------------------------------------------
+      "claude" # Anthropic's desktop app
       "claude-code@latest" # terminal coding agent
       "codeql" # semantic code analysis
       "db-browser-for-sqlite" # SQLite GUI
