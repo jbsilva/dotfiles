@@ -46,6 +46,17 @@ update-input input:
 generations:
     darwin-rebuild --list-generations
 
+# Upgrade the Homebrew formulae and casks
+#
+# Separate from `just switch` on purpose. homebrew.onActivation.upgrade is off,
+# so activation installs and uninstalls to match homebrew.nix and changes no
+# version. This is the deliberate half: mactex, microsoft-office and steam are
+# in the list, so it can be a long download.
+brew-upgrade:
+    brew update
+    brew upgrade
+    brew upgrade --cask --greedy
+
 # Collect garbage older than 14 days and optimise the store
 gc:
     sudo nix-collect-garbage --delete-older-than 14d

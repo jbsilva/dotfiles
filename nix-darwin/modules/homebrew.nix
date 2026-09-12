@@ -29,9 +29,22 @@
   # write ~/.homebrew/trust.json.
   homebrew = {
     enable = true;
+    # Upgrades are not part of activation. `just brew-upgrade` does them on
+    # purpose; activation only installs and uninstalls to match the lists below.
+    #
+    # Leave `upgrade` off. It applies to every brew and cask below, and mactex,
+    # microsoft-office, steam, adobe-creative-cloud and codeql are among them,
+    # so turning it on lets a one-line change to any module pull gigabytes at a
+    # moment nobody chose. Neither `just build` nor `just diff` shows a word of
+    # it beforehand, which is what makes it worth keeping out of activation.
+    #
+    # `autoUpdate` buys nothing either: the taps are pinned flake inputs and
+    # `mutableTaps` is false, so a `brew update` has nothing to fetch.
+    #
+    # `cleanup = "uninstall"` stays on: removing a line below should uninstall.
     onActivation = {
-      autoUpdate = true;
-      upgrade = true;
+      autoUpdate = false;
+      upgrade = false;
       cleanup = "uninstall";
     };
     # `brew bundle cleanup` untaps every tap the Brewfile omits, and untapping
@@ -64,7 +77,6 @@
       "mise" # node/python/go versions, replacing nvm and asdf
       "openjdk" # Java development kit
       "redocly-cli" # lint and bundle OpenAPI specs
-      "shellcheck" # run by the pre-commit hook
       "sonar-scanner" # SonarQube analysis client
       "hugo" # static site generator
 
