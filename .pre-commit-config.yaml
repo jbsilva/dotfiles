@@ -38,7 +38,7 @@ repos:
           - mdformat-frontmatter # Don't mess with YAML front matter blocks
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.50.0
+    rev: v1.50.1
     hooks:
       - id: typos # config in typos.toml
 
@@ -71,7 +71,7 @@ repos:
   # because renovate's nix closure is 1.8 GiB, far too much for packages.nix and
   # the CI lint shell; this pulls just the validator through node.
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 44.50.3
+    rev: 44.82.3
     hooks:
       - id: renovate-config-validator
         args: [--strict]
