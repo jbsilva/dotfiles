@@ -12,6 +12,7 @@
     ./mas.nix
     ./nix.nix
     ./security.nix
+    ./secrets.nix
     ./system/meta.nix
     ./system/activation.nix
     ./system/defaults.nix

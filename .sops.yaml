@@ -1,0 +1,30 @@
+# Which keys sops encrypts to, and which parts of a file it encrypts.
+#
+# `sops secrets/secrets.yaml` reads this, so the rules apply on their own and no
+# flag has to be remembered. Editing this file does not re-encrypt anything
+# already written: run `sops updatekeys secrets/secrets.yaml` after a change
+# here, or a new machine's key will not be able to read the old values.
+#
+# Fill in the age public key below before the first `sops` run. It comes from:
+#
+#   age-keygen -o ~/Library/Application\ Support/sops/age/keys.txt
+#
+# The public half is printed on stderr and is also the `# public key:` line at
+# the top of that file. It starts with `age1`. It is public: committing it is
+# the point, and it is what lets this machine be added as a recipient.
+#
+# A second machine gets its own key pair and its own line here, rather than a
+# copy of this one. Then `sops updatekeys` re-encrypts to both.
+
+keys:
+  - &macbook_m4 age1PUT_THE_PUBLIC_KEY_HERE
+
+creation_rules:
+  # Only the values are encrypted, never the keys. `encrypted_regex` is the
+  # opposite choice and would need every secret to be named in a pattern; this
+  # way a new key in the file is encrypted by default, which is the safe
+  # direction to fail in.
+  - path_regex: secrets/[^/]+\.yaml$
+    key_groups:
+      - age:
+          - *macbook_m4
