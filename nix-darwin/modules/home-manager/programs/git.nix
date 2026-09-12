@@ -79,64 +79,6 @@
         email = "julio@juliobs.com";
       };
 
-      alias = {
-        co = "checkout";
-        ci = "commit";
-        st = "status -s";
-        br = "branch";
-        cp = "cherry-pick";
-        amend = "commit --amend";
-        commit-each = "!git diff --name-only -z | xargs -0 -I {} sh -c 'git add -- \"$1\" && git commit -m \"$1\" -- \"$1\"' _ {}";
-        commit-each-staged = "!git diff --cached --name-only -z | xargs -0 -I {} sh -c 'git commit -m \"$1\" -- \"$1\"' _ {}";
-        snap = "!git stash save \"snapshot: $(date)\"";
-        unstash = "stash pop";
-        mkbranch = "!f(){ git checkout -b \${1} && git push origin -u \${1}; };f";
-        rmbranch = "!f(){ git branch -d \${1} && git push origin --delete \${1}; };f";
-        hist = "log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short";
-        logg = "log --pretty=format:\"%h | %G? | CD: %ci | AD: %ai | %an <%ae> | %s%d\"";
-        ld = "log --pretty=format:\"%h | %G? | Committer: %ci | Author: %ai | %an <%ae> | %s%d\"";
-        lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative";
-        lol = "log --graph --decorate --pretty=oneline --abbrev-commit";
-        lola = "log --graph --decorate --pretty=oneline --abbrev-commit --all";
-        aliases = "config --get-regexp alias";
-        shove = "push --force-with-lease";
-        unpushed = "cherry -v --abbrev";
-
-        # Inspection
-        type = "cat-file -t";
-        dump = "cat-file -p";
-        whatis = "show -s --pretty='tformat:%h (%s, %ad)' --date=short";
-        # Find the commit that first introduced a file (follows renames)
-        whatadded = "log --follow --diff-filter=A --find-renames=40%";
-        contains = "branch --contains";
-        cloneurl = "config --get remote.origin.url";
-        ls-ignored = "ls-files --exclude-standard --ignored --others";
-        show-tree = "log --all --graph --decorate --oneline --simplify-by-decoration";
-        lc = "log ORIG_HEAD.. --stat --no-merges";
-        # Commits created by the last command that moved this ref
-        new = "!sh -c 'git log $1@{1}..$1@{0} \"$@\"'";
-        # Branches already merged into the current branch
-        lurkers = "branch --merged";
-
-        # Conflict resolution
-        accept-ours = "!f() { git checkout --ours -- \"\${@:-.}\"; git add -u \"\${@:-.}\"; }; f";
-        accept-theirs = "!f() { git checkout --theirs -- \"\${@:-.}\"; git add -u \"\${@:-.}\"; }; f";
-
-        # Stash helpers
-        snapshot = "!git stash save \"snapshot: $(date)\" && git stash apply \"stash@{0}\"";
-        snapshots = "!git stash list --grep snapshot";
-        # Show the full diff of every stash entry
-        sll = "!f() { for s in $(git stash list --pretty=format:%gd); do git stash show -p $s; done; };f";
-
-        # Discard file-mode-only changes
-        permission-reset = "!git diff -p -R --no-ext-diff --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply";
-
-        # Interactive `git clean -df`
-        cl = "!f() { echo 'Remove following files?'; echo; git clean -dn; echo; echo 'Press ENTER to confirm'; read -p 'Press ^C to stop cleanup and exit' a && git clean -df; }; f";
-
-        prune-all = "!git remote | xargs -n 1 git remote prune";
-      };
-
       core = {
         editor = "nvim";
         autocrlf = false;
@@ -202,9 +144,29 @@
       gpg.program = if pkgs.stdenv.hostPlatform.isDarwin then "/opt/homebrew/bin/gpg" else "gpg";
     };
 
-    # Conditional includes for per-directory Git config.
-    # Use mkAfter to ensure this include appears at the end of config so it can override values.
-    includes = lib.mkAfter [
+    #########################################################################
+    # Includes.
+    #
+    # git/aliases holds the alias list for every machine, this one included.
+    # Keep aliases there rather than in a `settings.alias` block here: a set
+    # defined here reaches only the machines home-manager configures, and the
+    # same names then have to be maintained a second time in .gitconfig-global
+    # for the ones it does not. `ignores` above is shared for the same reason.
+    #
+    # An include of a live path rather than `builtins.readFile` into
+    # `settings.alias`. readFile would work and would even be purer, but it
+    # bakes the list into a store path, so adding an alias would need a
+    # `just switch` before it answered. This way editing git/aliases takes
+    # effect at the next `git` invocation, on every machine alike.
+    #
+    # One plain list, not two definitions: git applies includes in the order it
+    # reads them, and a list literal keeps that order. `lib.mkAfter` would order
+    # this definition against other definitions of the same option, which is a
+    # different question and not the one that matters here. The Hoppe entry goes
+    # last so a repository under ~/Dev/Hoppe can override anything above it.
+    #########################################################################
+    includes = [
+      { path = "${config.home.homeDirectory}/dotfiles/git/aliases"; }
       {
         # Equivalent to: [includeIf "gitdir:~/Dev/Hoppe/**"]
         condition = "gitdir:${config.home.homeDirectory}/Dev/Hoppe/**";

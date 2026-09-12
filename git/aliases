@@ -1,0 +1,104 @@
+# Git aliases, shared by every machine.
+#
+# This is a git config fragment, not a standalone config. Two files include it:
+#
+#   .gitconfig-global                                  Arch, WSL, Windows
+#   nix-darwin/modules/home-manager/programs/git.nix   macOS and the Synology
+#
+# One file, so that every machine answers to the same aliases. Add an alias here
+# and nowhere else: a copy kept in either of the two includers is a copy that
+# only some machines read, and the difference is silent until the day one of
+# them is missing an alias the other has. .gitignore-global is shared the same
+# way, for the same reason.
+#
+# Anything that is not an alias stays in the two including files: they set
+# user.email, the credential helper and gpg.program differently per platform.
+#
+# `git aliases` lists what is here, at a prompt, on any of them.
+
+[alias]
+	# List of aliases
+	alias = "!f(){ git config -l | grep alias; };f"
+	aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'
+
+	# Shortcuts
+	co = checkout
+	ci = commit
+	cp = cherry-pick
+	cl = "!f() { echo 'Remove following files?'; echo; git clean -dn; echo; echo 'Press ENTER to confirm'; read -p 'Press ^C to stop cleanup and exit' a && git clean -df; }; f"
+	st = status -s
+	br = branch
+	amend = commit --amend
+	k = !gitk
+
+	sm = submodule
+	sup = submodule update
+
+	rmbranch = "!f(){ git branch -d ${1} && git push origin --delete ${1}; };f"
+	mkbranch = "!f(){ git checkout -b ${1} && git push origin -u ${1}; };f"
+
+	snap = !git stash save "snapshot: $(date)"
+	snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+	snapshots = !git stash list --grep snapshot
+	unstash = stash pop
+	apply0 = !git stash apply "stash@{0}"
+	drop0 = !git stash drop "stash@{0}"
+	# $(...) rather than backticks, which nest badly inside the double quotes
+	# around this value.
+	sll = "!f() { for s in $(git stash list --pretty=format:%gd); do git stash show -p $s; done; };f"
+
+	# Commit each changed file on its own, named after the file
+	commit-each = "!git diff --name-only -z | xargs -0 -I {} sh -c 'git add -- \"$1\" && git commit -m \"$1\" -- \"$1\"' _ {}"
+	commit-each-staged = "!git diff --cached --name-only -z | xargs -0 -I {} sh -c 'git commit -m \"$1\" -- \"$1\"' _ {}"
+
+	type = cat-file -t
+	dump = cat-file -p
+
+	shove = push --force-with-lease
+
+	# Pretty log
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	logg = log --pretty=format:\"%h | %G? | CD: %ci | AD: %ai | %an <%ae> | %s%d\"
+	ld = log --pretty=format:\"%h | %G? | Committer: %ci | Author: %ai | %an <%ae> | %s%d\"
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+	lc = log ORIG_HEAD.. --stat --no-merges
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit
+	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	ll = log --graph --date=short
+	show-tree = log --all --graph --decorate --oneline --simplify-by-decoration
+	rawlog = log --format=\"format:commit %H%nAuthor:%an%n%n%B%n\"
+
+	accept-ours = "!f() { git checkout --ours -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+	accept-theirs = "!f() { git checkout --theirs -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+	# No `git` in front of `reset`: an alias value without a `!` prefix is
+	# appended to `git`, so `git reset HEAD` here would run `git git reset HEAD`,
+	# which does nothing and exits 0. Silent, so it is worth stating.
+	unadd = reset HEAD --
+	# --abbrev, or the hashes come out full length and unreadable.
+	unpushed = cherry -v --abbrev
+	contains = branch --contains
+	tagage = !sh -c 'git for-each-ref --sort=taggerdate refs/tags --format=\"%(refname:short)\"'
+	cloneurl = config --get remote.origin.url
+	ls-ignored = ls-files --exclude-standard --ignored --others
+
+	# Branches already merged into the current branch. Deliberately no `master`
+	# argument: naming a branch here answers for that one in every repository,
+	# including the many whose trunk is called something else.
+	lurkers = branch --merged
+
+	# New commits created by the last command
+	new = !sh -c 'git log $1@{1}..$1@{0} "$@"'
+
+	# Prune stale remote branches
+	prune-all = !git remote | xargs -n 1 git remote prune
+
+	# Info about last commit
+	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+	whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+
+	# Date of the first commit
+	log-first-date = !git log --date-order --date=iso --pretty=\"format:%ad\" --reverse | head -1
+
+	# What commit a file was added
+	whatadded = log --follow --diff-filter=A --find-renames=40%
+	permission-reset = !git diff -p -R --no-ext-diff --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
