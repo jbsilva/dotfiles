@@ -11,8 +11,8 @@ let
   # installed; several call each other (git-delete-local-merged uses
   # `git origin-head`), so they are installed as a set rather than picked over.
   #
-  # Complements git-extras rather than duplicating it: of 162 commands here and
-  # 78 there, 5 overlap.
+  # Complements git-extras rather than duplicating it: barely any of the two
+  # command sets overlap.
   #
   # The source is the `git-extra-commands` flake input, so the rev and its hash
   # live in flake.lock: `just update` moves it with everything else, and

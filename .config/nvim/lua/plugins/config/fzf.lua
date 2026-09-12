@@ -25,10 +25,10 @@ end
 --
 -- git_files defaults to `git ls-files --exclude-standard`, which is tracked
 -- only; --others --cached adds untracked files while still honouring
--- .gitignore. That is what telescope's show_untracked = true did.
+-- .gitignore.
 --
 -- Outside a repo git_files errors rather than returning empty, so the fallback
--- is a pcall the same way it was under telescope.
+-- has to be a pcall.
 function M.project_files()
   leave_tree()
   local fzf = require('fzf-lua')

@@ -8,9 +8,9 @@
   ###########################################################################
   # delta: syntax-highlighted diffs for terminal git.
   #
-  # delta has been in packages.nix for a while but nothing ever pointed git at
-  # it, so `git diff` was still plain. enableGitIntegration sets core.pager and
-  # the interactive.diffFilter, which is what actually makes it apply.
+  # delta comes from packages.nix; `enableGitIntegration` is what points git at
+  # it, by setting core.pager and interactive.diffFilter. Installing the package
+  # alone leaves `git diff` plain.
   #
   # Complementary to Fork, not competing with it: Fork is for browsing history
   # and staging, this is for `git diff` and `git show` in the terminal.
@@ -41,9 +41,9 @@
     #
     # The OS-junk half is read from .gitignore-global rather than restated
     # here, because that file is already `core.excludesfile` on the Linux, WSL
-    # and Windows machines. Kept as two lists they drifted: this one had grown
-    # node_modules/ and __pycache__/, that one .fuse_hidden*, $RECYCLE.BIN/ and
-    # *.lnk, and neither machine got both.
+    # and Windows machines. Keep it that way: two hand-maintained lists give
+    # each machine whichever entries were added on its side, and nothing reports
+    # the difference.
     #
     # home-manager joins these with newlines into ~/.config/git/ignore, and git
     # reads that as an ignore file, so the comments and blank lines in the
@@ -110,8 +110,8 @@
 
       merge = {
         conflictstyle = "zdiff3";
-        # nvim rather than meld: meld was a cask that is no longer installed,
-        # and nvim is already the editor, so it is always there.
+        # nvim rather than meld: nvim is already core.editor, so it is present
+        # on every machine here without a cask to keep installed.
         tool = "nvimdiff";
       };
 

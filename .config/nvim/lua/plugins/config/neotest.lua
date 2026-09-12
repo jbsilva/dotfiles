@@ -10,8 +10,8 @@
 --   <leader>ts  toggle the summary panel
 --   <leader>to  open the output of the last run
 --
--- The previous version of this file configured neotest-rust; it was replaced
--- along with the plugin being re-enabled.
+-- An adapter also has to be a dependency of the neotest spec in
+-- plugins/init.lua, or the require below fails at setup time.
 -------------------------------------------------------------------------------
 local M = {}
 

@@ -68,13 +68,15 @@ nvim --headless -c 'redir! > /tmp/maps.txt' -c 'silent map' -c 'redir END' -c 'q
   --check .config/nvim --checklevel=Hint --logpath=/tmp/luals
 ```
 
-That last one currently reports 13 problems, none of them real, because `.luarc.json` deliberately
-omits `workspace.library`, because lazydev owns it inside Neovim. Without it lua_ls cannot see
-Neovim's or the plugins' types, so it reports `vim.lsp.Config` as an unknown name once per
-`after/lsp/` file, and a few `different-requires` where a local module shares a plugin's name
-(`plugins/config/telescope.lua` and `telescope`). To see what the editor sees, copy the tree
-somewhere and add the Neovim runtime plus `~/.local/share/nvim/lazy/*/lua` to `workspace.library` in
-the copy; that run reports 7, all of them nvim-dap fields that lua_ls cannot infer.
+That last one reports problems that are not real, because `.luarc.json` deliberately omits
+`workspace.library`: lazydev owns it inside Neovim. Without it lua_ls cannot see Neovim's or the
+plugins' types, so it reports `vim.lsp.Config` as an unknown name once per `after/lsp/` file, plus a
+`different-requires` wherever a local module shares a plugin's name. Expect `undefined-doc` and
+`different-requires` and nothing else; anything of another kind is worth reading.
+
+To see what the editor sees, copy the tree somewhere and add the Neovim runtime plus
+`~/.local/share/nvim/lazy/*/lua` to `workspace.library` in the copy. That run still reports the
+nvim-dap fields lua_ls cannot infer.
 
 Three things that will hand you a wrong answer:
 
@@ -101,8 +103,9 @@ never an autocmd matching a file glob: `*.txt` also matches Neovim's own help fi
 `config()`, or the plugin loads at startup regardless. `:Lazy profile` shows the cost.
 
 **Check whether Neovim already does it before adding a plugin.** Commenting (`gc`/`gcc`) and
-treesitter folding are built in now. The bottom of `lua/plugins/init.lua` keeps a record of what was
-removed and why. Add to it rather than deleting the line.
+treesitter folding are built in. The bottom of `lua/plugins/init.lua` lists the plugins that are
+deliberately not installed and what covers each instead. Add to that list rather than deleting a
+line, so the same plugin is not evaluated twice.
 
 ## Spell checking
 
@@ -115,4 +118,4 @@ Two tools with different jobs. Put a word in the right one:
 
 Neovim's own `zg` writes to `.config/nvim/spell/en.utf-8.add`, which is tracked. The compiled `.spl`
 beside it is not. Both rules live together in `.gitignore`: a deny on the whole `spell/` directory
-anywhere below the `!…/*.add` line silently wins over it, which is what happened before.
+anywhere below the `!…/*.add` line silently wins over it.

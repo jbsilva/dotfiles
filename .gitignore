@@ -5,16 +5,15 @@
 # into it from this repo, one by one, by
 # nix-darwin/modules/home-manager/xdg.nix.
 #
-# It used to be a single symlink to this repo's .config/, which meant every
-# application wrote its runtime state inside the repo -- Colima's 18 GB VM image
-# included -- and one `git add -A` could publish whatever tokens or session
-# state those apps had dropped there.
+# Never make ~/.config a single symlink to this repo's .config/. Every
+# application then writes its runtime state inside the repo, VM images and all,
+# and one `git add -A` publishes whatever tokens or session state those apps
+# dropped there.
 #
-# .config/ still uses an ALLOW-LIST rather than a deny-list. It is no longer the
-# only thing standing between an app and the repo, but the linked paths *are*
-# still written to (VS Code rewrites settings.json, lazy.nvim writes
-# lazy-lock.json), so it remains the cheapest way to be sure only intended
-# files are ever committed.
+# .config/ uses an ALLOW-LIST rather than a deny-list. The per-file links are
+# the first guard, but the linked paths *are* written to (VS Code rewrites
+# settings.json, lazy.nvim writes lazy-lock.json), so the allow-list is the
+# cheapest way to be sure only intended files are ever committed.
 #
 # To track a new config file:
 #   1. add a `!/.config/path/to/file` line in the allow-list below
@@ -48,9 +47,9 @@
 # `zg` (add the word under the cursor to the spell dictionary) writes here,
 # because ~/.config/nvim is the first writable directory on the runtimepath.
 # Only the word list: the .spl next to it is compiled from this file, so it is
-# re-ignored here rather than in the runtime-dirs section below -- a deny on the
-# whole spell/ directory there would come after this line and win, which is what
-# used to make the allow-list entry unreachable.
+# re-ignored here rather than in the runtime-dirs section below. Keep it here: a
+# deny on the whole spell/ directory down there comes after this line and wins,
+# which makes the allow-list entry above unreachable.
 !/.config/nvim/spell/*.add
 /.config/nvim/spell/*.spl
 
@@ -70,7 +69,7 @@
 # -----------------------------------------------------------------------------
 # .config: re-ignore heavy runtime dirs
 #
-# These hold VM images and caches (Colima alone is ~18 GB). Listing them after
+# These hold VM images and caches, which run to gigabytes. Listing them after
 # the allow-list stops git from traversing them on every `status`.
 # -----------------------------------------------------------------------------
 /.config/colima/

@@ -76,7 +76,7 @@ autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'WinLeave' }, {
 --
 -- Treesitter parsing, LSP attach and syntax highlighting are all O(file size).
 -- Past a threshold they make opening a file take seconds and every keystroke
--- lag. Above 1 MB, open the file as plain text instead.
+-- lag. Past `bigfile_bytes` below, open the file as plain text instead.
 --
 -- :e! after opening restores everything for that buffer if the file really
 -- does need highlighting.

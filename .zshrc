@@ -874,8 +874,9 @@ setopt hist_verify            # Show `!!` expansions instead of running them.
 case $OS in
 Darwin)
   export DOTFILES_PLATFORM=macos
-  # $MACOS_VERSION was exported here from `sw_vers -productVersion`, ~6 ms of
-  # every shell start, and nothing read it. Run sw_vers directly when needed.
+  # Run `sw_vers -productVersion` directly where the macOS version is needed.
+  # Exporting it from here costs ~6 ms of every shell start, whether or not
+  # anything goes on to read it.
   [[ -f "$HOME/.zsh/zshrc_macos" ]] && source "$HOME/.zsh/zshrc_macos"
   ;;
 Linux)

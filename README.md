@@ -24,10 +24,9 @@ ______________________________________________________________________
 ~/.zsh                            -> ~/dotfiles/.zsh          (still a whole dir)
 ```
 
-It used to be one symlink, `~/.config -> ~/dotfiles/.config`, which meant every application wrote
-its runtime state **inside the git repo**. Colima's VM image alone was 18 GB of it. Switching to
-per-file links took the repo from 19 GB to 12 MB and stopped Linux-only files from appearing on
-macOS.
+Never make it one symlink, `~/.config -> ~/dotfiles/.config`. Every application then writes its
+runtime state **inside the git repo**: VM images, caches and session state, and Linux-only files
+turn up on macOS. Per-file links keep the repo to what is actually tracked.
 
 The links use home-manager's `mkOutOfStoreSymlink`, not the usual `home.file.source`, because these
 files have to stay **writable and live**: VS Code rewrites `settings.json`, `gh` rewrites
@@ -163,10 +162,11 @@ just brew-upgrade   # upgrade the Homebrew formulae and casks
 ```
 
 `just switch` installs and uninstalls to match `homebrew.nix` and **changes no version**.
-`homebrew.onActivation.upgrade` is off on purpose: with it on, every switch upgraded all 40 brews
-and 50 casks, and `mactex`, `microsoft-office`, `steam` and `adobe-creative-cloud` are in that list,
-so a one-line change to a module could pull gigabytes at a moment nobody chose. Neither `just build`
-nor `just diff` showed any of it. `just brew-upgrade` is the deliberate half.
+`homebrew.onActivation.upgrade` is off on purpose: it applies to every brew and cask in
+`homebrew.nix`, and `mactex`, `microsoft-office`, `steam` and `adobe-creative-cloud` are in that
+list, so turning it on lets a one-line change to any module pull gigabytes at a moment nobody chose.
+Neither `just build` nor `just diff` shows a word of it beforehand. `just brew-upgrade` is the
+deliberate half.
 
 `nh` is installed as a friendlier front-end: `just nhs` wraps `nh darwin switch`, which shows a
 package diff automatically.
@@ -249,7 +249,7 @@ The remaining cost is mostly plugins. Four things keep it there, all in the Comp
 | Change                                                                       | Saved   |
 | ---------------------------------------------------------------------------- | ------- |
 | `uv`, `uvx` and `pixi` completions cached onto `$fpath` rather than `eval`ed | ~230 ms |
-| `brew` no longer run four times per shell                                    | ~40 ms  |
+| `brew shellenv` in the login hook only, and `$HOMEBREW_PREFIX` reused        | ~40 ms  |
 | `starship`, `zoxide` and `atuin` init cached to a file and sourced           | ~16 ms  |
 | `mise` activation commented out, since it manages nothing                    | ~20 ms  |
 

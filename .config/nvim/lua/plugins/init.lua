@@ -18,9 +18,9 @@ require('lazy').setup({
   -- tokyonight loads eagerly and early so the colorscheme is applied before
   -- anything draws, and so lualine can resolve its matching theme.
   --
-  -- github-nvim-theme, gruvbox and catppuccin used to sit here as lazy specs
-  -- for `:colorscheme` to switch to. Nothing ever selected them, so they were
-  -- only ever cloned and updated. Add one back if that changes.
+  -- Only one colorscheme is installed. A second as a lazy spec for
+  -- `:colorscheme` to switch to is still cloned and updated on every sync, so
+  -- add one only when something actually selects it.
   ----------------------------------------------------------
   {
     'folke/tokyonight.nvim',
@@ -188,8 +188,8 @@ require('lazy').setup({
     cmd = { 'SudaRead', 'SudaWrite' },
   },
 
-  -- Undotree is no longer a plugin: Neovim 0.12 ships nvim.undotree as an
-  -- optional package. <leader>u is mapped in keybinds.lua.
+  -- No undotree plugin: Neovim 0.12 ships nvim.undotree as an optional
+  -- package. <leader>u is mapped in keybinds.lua.
 
   ----------------------------------------------------------
   --> Nvim-tree: file explorer
@@ -859,25 +859,28 @@ require('lazy').setup({
   },
 
   ----------------------------------------------------------
-  --> Removed, kept here as a record of why
+  --> Deliberately not installed, and what covers each instead
+  --
+  --  Add to this list rather than deleting a line, so the same plugin is not
+  --  evaluated twice.
   ----------------------------------------------------------
   -- 'numToStr/Comment.nvim'   -- archived; Neovim 0.10+ has built-in gc/gcc/gbc
-  -- 'preservim/nerdcommenter' -- superseded by the built-in commenting
+  -- 'preservim/nerdcommenter' -- the built-in commenting covers it
   -- 'sheerun/vim-polyglot'    -- unmaintained; conflicts with treesitter
-  -- 'VonHeikemen/lsp-zero'    -- superseded by native vim.lsp.config/enable
-  -- 'bkad/CamelCaseMotion'    -- unmaintained; replaced by nvim-spider
-  -- 'easymotion/vim-easymotion' -- replaced by flash.nvim
-  -- 'tpope/vim-surround'      -- replaced by kylechui/nvim-surround
-  -- 'sbdchd/neoformat'        -- replaced by stevearc/conform.nvim
+  -- 'VonHeikemen/lsp-zero'    -- native vim.lsp.config/enable covers it
+  -- 'bkad/CamelCaseMotion'    -- unmaintained; nvim-spider covers it
+  -- 'easymotion/vim-easymotion' -- flash.nvim covers it
+  -- 'tpope/vim-surround'      -- mini.surround covers it
+  -- 'sbdchd/neoformat'        -- stevearc/conform.nvim covers it
   -- 'NeogitOrg/neogit'       -- Fork is the git UI here; gitsigns covers hunks
   -- 'antoinemadec/FixCursorHold.nvim' -- its README: not needed after neovim#20198 (0.9)
   -- 'f-person/git-blame.nvim' -- gitsigns' b:gitsigns_blame_line feeds lualine
-  -- 'nvim-tree/nvim-web-devicons' -- replaced by mini.icons + mock_nvim_web_devicons
-  -- 'akinsho/bufferline.nvim' -- replaced by mini.tabline; ran on bare defaults
-  -- 'kylechui/nvim-surround' -- replaced by mini.surround; flash moved to <leader>j
-  -- 'nvim-telescope/telescope.nvim' -- replaced by fzf-lua
+  -- 'nvim-tree/nvim-web-devicons' -- mini.icons + mock_nvim_web_devicons cover it
+  -- 'akinsho/bufferline.nvim' -- mini.tabline covers it
+  -- 'kylechui/nvim-surround' -- mini.surround covers it; flash is on <leader>j
+  -- 'nvim-telescope/telescope.nvim' -- fzf-lua covers it
   -- 'nvim-telescope/telescope-fzf-native.nvim' -- fzf-lua drives the fzf binary itself
-  -- 'nvim-telescope/telescope-file-browser.nvim' -- replaced by mini.files on <leader>fb
+  -- 'nvim-telescope/telescope-file-browser.nvim' -- mini.files covers it, on <leader>fb
   -- 'mbbill/undotree'         -- Neovim 0.12 ships nvim.undotree; mapped in keybinds.lua
 
   ----------------------------------------------------------
