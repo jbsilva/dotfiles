@@ -86,6 +86,10 @@
     hyperfine # statistically sound benchmarking
     tokei # lines-of-code stats
     shfmt # shell script formatter
+    # From nixpkgs rather than Homebrew, so `just lint` and the CI lint job run
+    # the same build. Every other hook binary already comes from here, and the
+    # workflow calls `nix shell nixpkgs#shellcheck`.
+    shellcheck # shell script linter; run by the pre-commit hook
     stylua # Lua formatter
     ruff # Python linter/formatter
     typos # source-code spell checker
