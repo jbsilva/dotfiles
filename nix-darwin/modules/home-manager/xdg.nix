@@ -38,5 +38,9 @@ in
     # gh also writes state.yml here.
     "gh/config.yml".source = link "gh/config.yml";
     "gh/hosts.yml".source = link "gh/hosts.yml";
+
+    # Ghostty reads this as well as the macOS Application Support path, and
+    # this one wins.
+    "ghostty/config".source = link "ghostty/config";
   };
 }

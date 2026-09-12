@@ -58,6 +58,10 @@
 !/.config/gh/config.yml
 !/.config/gh/hosts.yml
 
+# Ghostty. Only the config: Ghostty keeps no state beside it, but a directory
+# link would still pick up anything a future version decides to write there.
+!/.config/ghostty/config
+
 # Zellij. Only config.kdl: layouts/ and themes/ beside it are not ours, and the
 # file itself is rewritten in place by zellij on a version upgrade, so an
 # upgrade shows up as a diff here.
@@ -93,6 +97,13 @@ __pycache__/
 *.swp
 *.swo
 *~
+
+# Linter caches. There is no Python project here, but ruff runs over the repo
+# from the editor and drops one in the root. It stays out of `git status` on its
+# own, because ruff writes a .gitignore inside it, which is a quiet way to be
+# invisible rather than a reason to be here.
+.ruff_cache/
+.mypy_cache/
 
 # Secrets / local overrides (never commit)
 *.env
