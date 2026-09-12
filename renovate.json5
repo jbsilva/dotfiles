@@ -23,12 +23,12 @@
   // window only *allows* PRs to open; the hosted App decides when it actually runs.
   schedule: ["* 2-6 * * 1"],
 
-  // Hold a non-security release for 7 days before opening a PR. A compromised action or hook is
+  // Hold a non-security release for 3 days before opening a PR. A compromised action or hook is
   // usually caught and yanked within days, and nothing in a dotfiles repo needs the newest possible
   // pin. `renovate-check` in .zsh/renovate_check.zsh reports what this is currently holding back.
-  minimumReleaseAge: "7 days",
+  minimumReleaseAge: "3 days",
 
-  // Security fixes open immediately, bypassing the weekly window and the 7-day hold.
+  // Security fixes open immediately, bypassing the weekly window and the hold above.
   vulnerabilityAlerts: {
     labels: ["dependencies", "security"],
     minimumReleaseAge: "0 days",
@@ -84,7 +84,10 @@
   customManagers: [
     {
       customType: "regex",
-      managerFilePatterns: [".pre-commit-config.yaml", ".github/workflows/ci.yml"],
+      managerFilePatterns: [
+        ".pre-commit-config.yaml",
+        ".github/workflows/ci.yml",
+      ],
       matchStrings: ["zizmor==(?<currentValue>[0-9][^\"'\\s]*)"],
       datasourceTemplate: "pypi",
       depNameTemplate: "zizmor",
