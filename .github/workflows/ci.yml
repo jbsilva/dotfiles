@@ -92,7 +92,7 @@ jobs:
       # community-maintained nixpkgs one. Renovate moves this pin, the one
       # below and the one in .pre-commit-config.yaml together.
       - name: zizmor
-        run: pipx run zizmor==1.30.0rc1 --format=sarif . > results.sarif
+        run: pipx run zizmor==1.30.1 --format=sarif . > results.sarif
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -108,7 +108,7 @@ jobs:
       - name: Fail on findings
         # --format=sarif always exits 0, so the audit runs a second time to gate
         # the PR, after the results are safely in the Security tab.
-        run: pipx run zizmor==1.30.0rc1 .
+        run: pipx run zizmor==1.30.1 .
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
