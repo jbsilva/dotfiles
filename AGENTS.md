@@ -29,7 +29,16 @@ modified, someone ran one of those deliberately.
 **Do not assume you caused a working-tree change.** The repo is in use while you work in it;
 `nix-darwin/flake.lock`, `lazy-lock.json` and VS Code's `settings.json` all get modified by their
 owners. Stage paths explicitly, never `git add -A`, and ask before reverting something you did not
-write. A "stray" pin bump is more likely to be an intended update than an accident.
+write. A "stray" pin bump is more likely to be an intended update than an accident. `nix flake lock`
+only *adds* missing inputs, so a lock diff touching inputs you did not add was already there.
+
+**Git aliases live in `git/aliases`, not in `git.nix` and not in `.gitconfig-global`.** Both of
+those `include` it. Add an alias in that one file: a copy kept in either includer reaches only some
+machines, and nothing reports the difference.
+
+**Never write a decrypted secret into the working tree.** `secrets/secrets.yaml` is sops-encrypted
+and this repository is public. `sops secrets/secrets.yaml` edits it in place without ever producing
+a plaintext file; do not build one with `sops --decrypt > ...`.
 
 ## Commits
 

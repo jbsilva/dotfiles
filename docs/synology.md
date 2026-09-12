@@ -1,0 +1,446 @@
+# Synology
+
+RS2423+ running DSM 7.x. Not a machine this repo configures the way it configures the MacBook: DSM
+is not a distribution, there is no nix-darwin, and most of what follows is about working around
+that.
+
+This is a runbook for one machine rather than a description of the repo, so it lives here next to
+[synology-wireguard.md](synology-wireguard.md) rather than in the README.
+
+What the repo itself holds for this box:
+
+| Path                                      | What                                                     |
+| ----------------------------------------- | -------------------------------------------------------- |
+| `.zsh/zshrc_synology`                     | The shell half, loaded when `/etc/synoinfo.conf` exists  |
+| `nix-darwin/modules/home-manager/nas.nix` | The home-manager profile, applied with `just nas-switch` |
+| `Justfile`                                | The `nas-*` recipes, which run here or drive it over SSH |
+
+The compose stacks are their own repository, `nas-containers`, because they deploy differently and
+carry credentials.
+
+______________________________________________________________________
+
+## The shell
+
+`.zsh/zshrc_synology` is loaded when `/etc/synoinfo.conf` exists, which is true on every DSM install
+and on nothing else. It puts Entware's `/opt/bin` ahead of DSM's older tools and adds
+`opkg`/`synosystemctl`/compose aliases. Deploy by cloning the repo and symlinking `~/.zshenv`,
+`~/.zshrc` and `~/.zsh`; nothing else is needed.
+
+Entware's terminfo reaches the shell through `$TERMINFO_DIRS` in `.zshenv`, not `$TERMINFO` here.
+ncurses fixes its search path before `.zshrc` is read, so setting it at that point is already too
+late for the shell's own lookup. Without it zellij and nvim misrender over SSH.
+
+`.zshenv` names three directories: `~/.terminfo`, the Nix profile's, and Entware's. A machine with
+Nix gets `xterm-ghostty` from `ghostty.terminfo` and needs nothing in `~/.terminfo`. A machine
+without Nix needs the entry copied in by hand, which takes no root and no `tic`:
+
+```sh
+ssh HOST mkdir -p .terminfo/x
+scp /Applications/Ghostty.app/Contents/Resources/terminfo/78/xterm-ghostty \
+    HOST:.terminfo/x/xterm-ghostty
+```
+
+## Zellij, and nesting
+
+On SSH login the shell auto-attaches to a zellij session named after the host, so reconnecting lands
+back in the same session. It deliberately does **not** `exec zellij`. If zellij or the terminfo were
+broken, exec would kill the login shell and lock you out of a headless box. Skip it for one
+connection with:
+
+```sh
+ssh nas -t 'DOTFILES_NO_ZELLIJ=1 $SHELL -l'
+```
+
+The assignment has to be part of the remote command. DSM's sshd sets no `AcceptEnv`, so it drops
+every forwarded variable, `LANG` included.
+
+Since 0.45.0 zellij knows how to nest, so the session on the NAS does not have to draw a second
+status bar under the local one. The catch is how it finds out: the inner session looks for `$ZELLIJ`
+in its own environment, and only then announces itself to the outer one over an in-band escape
+sequence. `AcceptEnv` blocks that variable as well, so the wrappers in `.zsh/zshrc_macos` carry
+`DOTFILES_ZELLIJ_HOST=1` to the far side instead, and `.zshrc` turns it back into `$ZELLIJ` just
+before it starts zellij there.
+
+| Reach the NAS with | Over | Address   |
+| ------------------ | ---- | --------- |
+| `nas`              | SSH  | LAN       |
+| `nast`             | SSH  | Tailscale |
+| `mosh-nix nas`     | mosh | LAN       |
+| `mosh-nix nast`    | mosh | Tailscale |
+
+The two spellings need different tricks. SSH takes a remote command, so the marker goes there, the
+same way `DOTFILES_NO_ZELLIJ` does above. mosh has no room for one, because it appends its own
+`new -s -c ...` to whatever `--server` names, so `mosh-nix` puts `env DOTFILES_ZELLIJ_HOST=1` in
+front of `mosh-server` and lets it hand the variable to the login shell it spawns.
+
+`nested_session_handling "fullscreen"` in
+[`.config/zellij/config.kdl`](../.config/zellij/config.kdl) then zooms the pane on focus, leaving
+one status bar on screen. Descend and ascend by hand with `[` and `]` in session mode, and toggle
+the zoom with `f`.
+
+All four fall back to their plain behaviour outside a pane, and anything of your own after the host
+wins: `nas uptime` still runs `uptime` rather than a login shell. Bare `ssh nas` still works too; it
+just gets the doubled bar.
+
+> **Probe this box with a login shell.** `ssh nas '<cmd>'` and `ssh nas -t 'zsh -i'` both skip
+> `/etc/profile`, which is the only thing that puts `/usr/local/bin` and `/usr/syno/bin` on `$PATH`.
+> Under those, roughly 250 installed SynoCli tools look missing and `synopkg status` reports
+> packages as stopped when it merely lacked root. Use the `$SHELL -l` form above before concluding
+> anything is absent.
+
+## Copying files
+
+DSM jails both transfer tools, and it jails them into **different namespaces**. Copy the path style
+from the table rather than reasoning about it:
+
+| Destination                              | `scp` | `rsync` | `scp -O` |
+| ---------------------------------------- | :---: | :-----: | :------: |
+| `nas:/home/f`, `nas:/docker/f` (shares)  |  yes  |   no    |    no    |
+| `nas:/var/services/homes/julio/f` (real) |  no   |   yes   |   yes    |
+| `nas:/volume3/docker/f` (real)           |  no   |   yes   |   yes    |
+| `nas:/tmp/f` (rootfs)                    |  no   |   no    |   yes    |
+
+`scp` has spoken SFTP since OpenSSH 9.0, and DSM serves SFTP from a jailed server whose root is the
+list of shared folders. So real paths do not exist for it, and its own root takes no writes:
+
+```sh
+scp file nas:/var/services/homes/julio/file   # dest open: No such file or directory
+scp file nas:file                             # dest open: Permission denied
+```
+
+`ChrootDirectory` is `none` in DSM's `sshd_config`, so the jail lives inside Synology's
+`internal-sftp` and no setting turns it off. DSM's `/usr/bin/rsync` is setuid root and patched the
+same way, but it takes the real paths and treats the rootfs as a read-only module:
+
+```sh
+rsync -a file nas:/tmp/file                   # ERROR: module is read only
+```
+
+Use `rsync` for daily work. It takes the paths that `ssh nas` shows you, it re-sends only what
+changed, and it is current. Reach for `-O` only for the rootfs, which is rare. That flag selects the
+pre-9.0 SCP protocol: `scp(1)` calls it legacy, and it has the remote shell expand globs, so
+filenames then need careful quoting.
+
+## Installing Entware
+
+Entware lives in `/volume1/@Entware/opt`, bind-mounted onto `/opt`. The `@` prefix makes it a DSM
+system directory rather than a shared folder: invisible in File Station, never exported over
+SMB/NFS, skipped by Media Indexing, and left out of DSM's shared-folder ACL model, so the POSIX
+modes and setuid bits the packages set are the only thing governing it. DSM will not let you create
+an `@` name through the UI anyway.
+
+A DSM upgrade wipes `/opt`, which is on the rootfs, but not `/volume1/@Entware`. **So after an
+upgrade, check whether this is only a lost bind mount before reinstalling anything:**
+
+```sh
+sudo ls -la /volume1/@Entware/opt      # bin/ etc/ lib/ share/ still there?
+sudo mount -o bind /volume1/@Entware/opt /opt
+```
+
+If that brings `/opt/bin/opkg` back, skip the rest of this section and go straight to the boot task.
+
+A fresh install follows the
+[Entware wiki](https://github.com/Entware/Entware/wiki/Install-on-Synology-NAS). `x64-k3.2` is the
+right feed for this box, since `uname -m` is `x86_64` on kernel 4.4.
+
+**Every line below runs in a root shell.** Only root can write at a volume root, and `umask` is a
+shell builtin, so `sudo` per command would not carry it. DSM 7 disables direct root SSH, so:
+
+```sh
+sudo -i
+```
+
+Then, as root:
+
+```sh
+umask 022        # root's umask is 077; 0700 on /opt locks every other user out
+
+mkdir -p /volume1/@Entware/opt
+chmod 755 /volume1/@Entware /volume1/@Entware/opt
+
+# Not the wiki's `rm -rf /opt`: the bind mount hides what is under it, and
+# Container Manager keeps an (empty) /opt/containerd there.
+cp -a /opt/containerd /volume1/@Entware/opt/
+
+mount -o bind /volume1/@Entware/opt /opt
+wget -O - https://bin.entware.net/x64-k3.2/installer/generic.sh | /bin/sh
+```
+
+At 0700 nothing under `/opt` runs at all, not even the loader at `/opt/lib/ld-linux-x86-64.so.2`.
+Check `ls -la /opt` first, since anything else living there needs carrying across too.
+
+The tree lives on the volume so it survives upgrades, but the bind mount does not survive a reboot.
+Re-create it from a **Triggered Task** in Control Panel → Task Scheduler (event: Boot-up, user:
+`root`):
+
+```sh
+mkdir -p /opt
+mount -o bind /volume1/@Entware/opt /opt
+/opt/etc/init.d/rc.unslung start
+/opt/bin/opkg update
+```
+
+The wiki's boot script also appends `/opt/etc/profile` to `/etc/profile`. That is not needed here:
+`zshrc_synology` puts `/opt/bin` and `/opt/sbin` on `$PATH` itself, and `/etc/profile` is another
+file DSM rewrites on upgrade.
+
+Then `opkg install zsh ncurses-bin terminfo`. That zsh links against Entware's own ncurses instead
+of baking in a static one, and `ncurses-bin` supplies `tic` and `infocmp`, so a terminfo entry DSM
+lacks can be compiled in place rather than copied in, and Ghostty's `ssh-terminfo` shell integration
+starts working on its own.
+
+## zsh plugins
+
+Entware packages none of them, and [SynoCommunity]'s `zsh-static` is a lone binary. Clone them into
+the last entry of `_plug_dirs` in `.zshrc`. The upstream repository names already match the files
+the loader looks for, so no renaming:
+
+```sh
+mkdir -p ~/.local/share/zsh/plugins
+cd ~/.local/share/zsh/plugins
+git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions
+git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting
+git clone --depth 1 https://github.com/zsh-users/zsh-history-substring-search
+```
+
+No `sudo`; this is all under `$HOME`. The third one is the easy one to skip: without it Up/Down and
+vicmd `k`/`j` fall back to plain history, and `just test-shell` reports `skip` rather than `fail`.
+
+The git aliases need oh-my-zsh as well. `.zshrc` sources only `lib/git.zsh` and the git plugin from
+it, and looks in `$DOTFILES_OMZ`, then `~/.oh-my-zsh`, then two system paths. `$DOTFILES_OMZ` is set
+by the Nix machines alone, so without a checkout here `gl`, `gst`, `gco` and the rest are simply not
+defined:
+
+```sh
+git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh ~/.oh-my-zsh
+```
+
+Nothing pins any of these: Renovate cannot see a `git clone` in `$HOME`, and only the Nix machines
+get them from `flake.lock`. Update them by hand:
+
+```sh
+for d in ~/.local/share/zsh/plugins/*(/) ~/.oh-my-zsh(N/); do git -C "$d" pull --ff-only; done
+```
+
+## CLI tools
+
+Tools come from three places. Prefer them in this order, because only the first two update
+themselves.
+
+**SynoCommunity.** Add the repository in Package Center, then install the `synocli-*` bundles. They
+put around 250 tools in `/usr/local/bin`, as symlinks into `/var/packages/synocli-*/`:
+
+| Package           | Gives you                                                         |
+| ----------------- | ----------------------------------------------------------------- |
+| `synocli-file`    | `bat`, `fzf`, `fd`, `eza`, `rg`, `less`, `mc`, `nnn`, `sd`, `lsd` |
+| `synocli-disk`    | `ncdu`, `duf`, `gdu`                                              |
+| `synocli-net`     | `mtr`, `tmux`, `nmap`, `socat`                                    |
+| `synocli-monitor` | `procs`, `lsof`, `btop`                                           |
+
+DSM itself already supplies `htop`, `curl`, `wget`, `jq`, `rsync`, `python3`, `vim`, `gpg`,
+`smartctl` and `tcpdump`.
+
+**Entware.** This covers what SynoCommunity does not package:
+
+```sh
+opkg install zoxide rclone pv progress perl-image-exiftool
+```
+
+`perl-image-exiftool` pulls Entware's own `perl`, so it is a heavier install than it looks. `~/bin`
+comes before `/opt/bin` on `$PATH`, so a binary you install by hand still wins over the packaged one
+of the same name.
+
+Neither repository always carries the newest release. When the version matters, check what is
+packaged before you install, and take the tool by hand when the package is behind. `.config/nvim` is
+one such case: it guards features behind a `vim.fn.has('nvim-...')` check, including the built-in
+undotree, and those disappear without a word on an older build.
+
+**By hand.** Neither repository packages these:
+
+| Tool                                               | Install                                                           |
+| -------------------------------------------------- | ----------------------------------------------------------------- |
+| `rustup` (and `cargo`, `rustc`, `rust-analyzer`)   | `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \| sh` |
+| `uv`                                               | `curl -LsSf https://astral.sh/uv/install.sh \| sh`                |
+| `starship`                                         | `sh -c "$(curl -fsSL https://starship.rs/install.sh)"`            |
+| `atuin`, `delta`, `difftastic`, `restic`, `zellij` | release binary into `~/bin`                                       |
+| `nvim`                                             | nightly or source build, into `~/bin`                             |
+
+The release binaries have no common command, because the asset names differ per project: `musl` or
+`gnu`, `x86_64` or `amd64`, `.tar.gz` or `.bz2`. Take each from its releases page.
+
+A container is the fourth option, for a tool none of the three package. It costs an image pull
+rather than a binary, but the version is pinned in the compose file.
+
+## Containers
+
+Most of what this NAS runs is a container. DSM calls the package Container Manager, but the CLI is
+`docker`, with the v2 `docker compose` plugin.
+
+Stacks created through the DSM UI get one directory each under `<volume>/docker`. The volume is
+fixed when Container Manager is installed, so `zshrc_synology` defines `cdstacks` to find it instead
+of naming it:
+
+```sh
+cdstacks      # cd to <volume>/docker
+dpst          # docker ps, showing names, status and ports
+```
+
+DSM keeps `/var/run/docker.sock` root-only, so every docker call needs `sudo`. Its docker group is
+root-equivalent, which makes joining it a worse trade than typing the password. `zshrc_synology`
+aliases `docker` to `sudo docker`, and zsh re-expands the first word of an alias body, so `dps` and
+the `dc*` aliases work too.
+
+> That alias covers interactive shells only. `sudo` keeps its own `secure_path`, which holds neither
+> `/usr/local/bin` nor `/usr/syno/bin`, so `sudo docker` and `sudo synopkg` both answer
+> `command not found` inside a script or under `ssh nas '<cmd>'`. Write `/usr/local/bin/docker` and
+> `/usr/syno/bin/synopkg` there.
+
+Two boot traps, neither of which announces itself. A container that borrows another's namespace with
+`network_mode: service:<name>` dies with exit 128 and
+`cannot join network of a non running container` when the daemon happens to start it first.
+`depends_on` orders `compose up` alone, and a start that fails this way is never retried, so it
+stays down. `restart <name>` and `up -d --force-recreate <name>` do the same damage by hand: the
+borrowers keep a handle on a namespace that went away, lose the LAN and the internet, and
+`docker ps` still calls them healthy, because each one answers itself on `127.0.0.1`. Act on the
+whole stack, never on the one service.
+
+A container that reserves a static IP loses it to whichever container the daemon starts first, and
+then fails with `Address already in use`. `ip_range` on the network is the pool that dynamic
+addresses come from, so give it the upper half of the subnet and every static address below stays
+reserved. Leaving it to cover the whole subnet is what creates the race. Docker fixes IPAM when it
+creates the network, so a change here means recreating it: stop every attached container,
+`compose down` the stack that defines the network, then `up -d` in dependency order.
+
+WireGuard on this box runs in the kernel rather than in userspace, which is worth about 1.5 cores:
+[docs/synology-wireguard.md](synology-wireguard.md).
+
+## Nix
+
+Single-user, because DSM has no systemd to run the daemon. The store lives on a volume and is
+bind-mounted, for the same reason Entware does: the rootfs has a few GB free and a DSM upgrade wipes
+it.
+
+As root:
+
+```sh
+umask 022                          # root's umask is 077, and a 0700 store is unusable
+mkdir -p /volume2/@Nix /nix
+mount -o bind /volume2/@Nix /nix
+chown julio:users /volume2/@Nix    # single-user Nix wants the store owned by you
+```
+
+Then as your own user. `/tmp` is `noexec` on DSM, so the installer cannot run the binary it unpacks
+there, and `TMPDIR` has to point somewhere it can:
+
+```sh
+mkdir -p ~/.cache/nix-install
+TMPDIR=$HOME/.cache/nix-install sh <(curl -L https://nixos.org/nix/install) --no-daemon
+```
+
+Write `~/.config/nix/nix.conf` **before** running it, or the install fails at
+`unable to load seccomp BPF program`. The DSM 4.4 kernel has neither seccomp BPF filtering nor
+`CONFIG_USER_NS`, so both the syscall filter and the build sandbox have to be off:
+
+```ini
+filter-syscalls = false
+sandbox = false
+experimental-features = nix-command flakes
+```
+
+The bind mount does not survive a reboot. Add it to the same Boot-up task as Entware, or its own:
+
+```sh
+mkdir -p /nix
+mount -o bind /volume2/@Nix /nix
+```
+
+`zshrc_synology` sources `~/.nix-profile/etc/profile.d/nix.sh` when it is readable, which puts the
+Nix profile ahead of Entware and behind `~/bin`. The installer also appends that line to
+`~/.profile` and `~/.zshenv`. Both are useless here: `~/.profile` execs zsh before reaching it, and
+`~/.zshenv` is a symlink into this repo, so the line lands in tracked config. Revert it if the
+installer wrote there.
+
+> Builds are unsandboxed as a result, so a build could see the host filesystem. It still cannot use
+> host tools, because the build `PATH` contains only store paths. In practice `x86_64-linux` is
+> almost entirely cache hits, so builds are rare.
+
+## home-manager on the NAS
+
+`homeConfigurations."julio@nas"` in `nix-darwin/flake.nix`, with the profile in
+`modules/home-manager/nas.nix`. Standalone, because there is no NixOS or nix-darwin there, but it
+shares this flake and therefore `flake.lock` with the MacBook.
+
+It imports `programs/zsh.nix` unchanged, so the NAS gets the same generated `~/.zshrc` as macOS and
+with it `$DOTFILES_PLUGINS_FROM_NIX`. The zsh plugins and oh-my-zsh come from `flake.lock` rather
+than from checkouts in `$HOME`, and `home.packages` supplies the CLI tools. Apply it on the NAS:
+
+```sh
+rm ~/.zshrc ~/.zshenv    # first activation only, see below
+nix build ~/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage
+./result/activate
+```
+
+Before the first activation those two are symlinks into this repo, and home-manager will not clobber
+them. Its backup mechanism does not apply: `HOME_MANAGER_BACKUP_EXT` is checked only for regular
+files, so a symlink falls through to `Existing file ... would be clobbered` and activation aborts.
+Delete the links rather than backing them up, since the repo copies are what they pointed at.
+
+Git is configured by `programs/git.nix` too, so delete the `~/.gitconfig` and `~/.gitconfig-global`
+symlinks on activation. Both are read after `~/.config/git/config` and would win, which is how the
+NAS kept using the libsecret helper from `linux/gitconfig` that does not exist there. The module
+branches on `stdenv.isDarwin`: macOS keeps `osxkeychain`, and everything else gets git's `cache`
+helper, which holds the token in memory rather than writing it to disk.
+
+`~/.profile` should then hand over to the Nix zsh, which fixes the terminfo problem at its root:
+unlike SynoCommunity's `zsh-static` it is not built `--disable-home-terminfo`, so it reads
+`~/.terminfo` unaided. Keep the old one as a fallback for the window between a reboot and the
+Boot-up task that mounts `/nix`:
+
+```sh
+for _shell in "$HOME/.nix-profile/bin/zsh" /usr/local/bin/zsh; do
+  if [ -x "$_shell" ]; then
+    SHELL="$_shell"
+    export SHELL
+    exec "$_shell"
+  fi
+done
+```
+
+> Build it from the repo root, not from `nix-darwin/`. `programs/zsh.nix` reads `.zshrc` and
+> `.zshenv` from the repo root, which is above the flake directory, so a flake reference that copies
+> only `nix-darwin/` fails with `access to absolute path '/nix/store/.zshenv' is forbidden`. Inside
+> the git clone the whole repo is copied, so the path resolves.
+
+## Mosh on the NAS
+
+`packages.nix` installs the client on the MacBook and `nas.nix` installs the server on the NAS, so
+`just switch` and `just nas-switch` cover both halves. The client still has to be told where the
+server is:
+
+```sh
+mosh-nix nas                                          # function in .zsh/zshrc_macos
+mosh --server='~/.nix-profile/bin/mosh-server' nas    # what it runs
+```
+
+mosh starts `mosh-server` as a plain command over SSH, and that command lands in a shell that is
+neither interactive nor a login shell. DSM gives it `/usr/bin:/bin:/usr/sbin:/sbin`, which holds
+neither the Nix profile nor `/usr/local/bin`. Plain `mosh nas` therefore stops at
+`Did not find mosh server startup message`. Quote the path: the tilde has to reach the NAS
+unexpanded. mosh interpolates `--server` into the remote command line without quoting it, and the
+remote shell is what expands it.
+
+Everything past that lookup works untouched. mosh runs the login shell, so `~/.profile` hands over
+to the Nix zsh exactly as an SSH login does. The client's `LANG` and `LC_ALL` travel on the
+`mosh-server` command line rather than in the environment, so DSM's missing `AcceptEnv` costs
+nothing here. The Nix glibc reads DSM's own `/usr/lib/locale/locale-archive`, so `en_US.UTF-8`
+resolves and mosh gets the UTF-8 locale it insists on. `SSH_TTY` and `SSH_CONNECTION` are inherited
+from the SSH session that started the server, so `.zshrc` auto-attaches zellij here too.
+
+From inside a zellij pane `mosh-nix` prefixes `env DOTFILES_ZELLIJ_HOST=1` to the server path, which
+is how the nesting marker reaches the far side over mosh. See "Zellij, and nesting" above.
+
+The UDP port mosh picks, somewhere in 60000 to 61000, has to reach the NAS. Nothing had to be opened
+for the LAN.
+
+[synocommunity]: https://synocommunity.com
