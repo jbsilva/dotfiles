@@ -142,8 +142,12 @@ export DEFAULT_FOREGROUND=006 DEFAULT_BACKGROUND=235
 export DEFAULT_COLOR=$DEFAULT_FOREGROUND
 
 # Language
+#
+# LANG alone, not LC_ALL. LC_ALL overrides every LC_* category and cannot be
+# overridden per category, so with it set there is no way to ask for a German
+# LC_TIME or a C LC_COLLATE for one command. LANG is the fallback every
+# unset category already reads.
 export LANG='en_US.UTF-8'
-export LC_ALL='en_US.UTF-8'
 
 # gpg: the terminal the agent asks for a passphrase on.
 #
@@ -161,10 +165,10 @@ fi
 # (ghostty -> xterm-ghostty, wezterm -> wezterm); overwriting it costs
 # truecolor and undercurl support.
 #
-# $term_emulator used to be derived here from $TERM_PROGRAM, falling back to a
-# `ps` on the parent pid. Nothing ever read it, and the fallback forked on every
-# shell that was not started by a terminal that sets $TERM_PROGRAM. Use
-# $TERM_PROGRAM directly if it is ever needed again.
+# Read $TERM_PROGRAM directly when the terminal's identity is needed. Deriving a
+# variable for it here costs a `ps` on the parent pid in every shell started by
+# something that does not set $TERM_PROGRAM, which is the fallback such a
+# derivation needs.
 
 # Only provide a sane fallback when the terminal told us nothing useful.
 if [[ -z $TERM || $TERM == (dumb|unknown) ]]; then
@@ -204,11 +208,37 @@ fpath=($HOME/.zsh/completions $fpath)
 # measured with `zsh -i -x` and PS4 timestamps.
 #
 # Written into a directory on $fpath instead, so compinit autoloads each one
-# the first time that command is completed and startup pays nothing. The file
-# is only regenerated when the tool's binary is newer than it.
+# the first time that command is completed and startup pays nothing. Each file
+# is regenerated only when its tool changes; see cache freshness below.
 _zcompcache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions"
 [[ -d $_zcompcache ]] || mkdir -p "$_zcompcache"
 fpath=("$_zcompcache" $fpath)
+
+# --- cache freshness ---------------------------------------------------------
+#
+# What decides that a cached file is stale is the resolved path of the binary it
+# came from, not that binary's mtime.
+#
+# Do not reach for an mtime test here, natural as it looks. Everything Nix
+# installs is a symlink into /nix/store, and every file in the store carries
+# mtime 1970-01-01, so a cache file written today is forever newer than the
+# binary it came from and an upgrade is never noticed. The resolved path does
+# work: a store path carries the package hash, Homebrew's Cellar path carries
+# the version, and a self-installed binary such as uv moves on update, so `:A`
+# plus this test covers all three.
+#
+# The key is kept beside the cache rather than inside it, because line 1 of a
+# completion file is its `#compdef` tag and compinit reads it there. This
+# directory is deliberately not on $fpath: compinit stats every file it finds.
+_zcachekeys="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/cache-keys"
+[[ -d $_zcachekeys ]] || mkdir -p "$_zcachekeys"
+
+# _cache_stale <name> <key>: true when the stored key differs from <key>.
+function _cache_stale() {
+  local cached=
+  [[ -s $_zcachekeys/$1 ]] && IFS= read -r cached < "$_zcachekeys/$1"
+  [[ $cached != $2 ]]
+}
 
 # Set when a completion is (re)written, so compinit below rebuilds its dump
 # instead of reusing a cached one that predates the new file.
@@ -216,13 +246,14 @@ _zcomp_fresh=0
 function _gen_completion() {
   local name=$1 bin=$2
   shift 2
-  local out="$_zcompcache/_$name"
   (( $+commands[$bin] )) || return 0
-  [[ -s $out && $out -nt $commands[$bin] ]] && return 0
+  local out="$_zcompcache/_$name" key="${commands[$bin]:A}"
+  [[ -s $out ]] && ! _cache_stale "comp-$name" "$key" && return 0
   if "$@" >| "$out" 2>/dev/null; then
+    print -r -- "$key" >| "$_zcachekeys/comp-$name"
     _zcomp_fresh=1
   else
-    rm -f "$out"
+    rm -f "$out" "$_zcachekeys/comp-$name"
   fi
 }
 
@@ -232,6 +263,40 @@ _gen_completion pixi pixi pixi completion --shell zsh
 
 unfunction _gen_completion
 unset _zcompcache
+
+# --- cached tool init --------------------------------------------------------
+#
+# `eval "$(some-tool init zsh)"` forks the tool on every shell and then parses
+# what it printed. The output only changes when the binary does, so write it out
+# once and source the file after that. Same idea as the completion cache above,
+# and the same freshness test.
+#
+# Used by starship, zoxide and atuin further down, where each is initialised in
+# the order its keybindings need. Measured over a bare `zsh -f -c exit` of
+# 4.2 ms, for those three plus mise: 46.8 ms of evals against 27.5 ms of source.
+#
+# No zcompile: `source <path>` does not look for a .zwc. That lookup happens for
+# autoloaded functions and for files reached through $fpath, and an explicit
+# path is neither, so a .zwc beside these would never be read. The saving here
+# is the fork, not the parse.
+_zinitcache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/init"
+[[ -d $_zinitcache ]] || mkdir -p "$_zinitcache"
+
+# _cached_init <name> <bin> <command to generate the init snippet...>
+function _cached_init() {
+  local name=$1 bin=$2
+  shift 2
+  (( $+commands[$bin] )) || return 1
+  local out="$_zinitcache/$name.zsh" key="${commands[$bin]:A}"
+  if [[ ! -s $out ]] || _cache_stale "init-$name" "$key"; then
+    if ! "$@" >| "$out" 2>/dev/null; then
+      rm -f "$out" "$_zcachekeys/init-$name"
+      return 1
+    fi
+    print -r -- "$key" >| "$_zcachekeys/init-$name"
+  fi
+  source "$out"
+}
 
 # compinit is the single most expensive step in zsh startup because it stats
 # every file in $fpath. Rebuild the dump at most once a day and use the cached
@@ -573,12 +638,12 @@ zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
 # Sourced here, at file scope, which is what upstream documents. It must land
 # after compinit and before zsh-syntax-highlighting.
 #
-# It was briefly loaded from inside a ZLE widget on the first <Tab> instead, to
-# save ~115ms of startup. That is not a safe context to source it from: line 9
-# of fzf-tab.zsh runs a command substitution, which failed with "write error:
-# bad file descriptor", and the half-initialised module check then reached its
-# `read -q` rebuild prompt and sat there. Every first <Tab> in a cold terminal
-# hung for ~15s before flashing the error.
+# Do not defer it into a ZLE widget on the first <Tab>, tempting as the ~115 ms
+# of startup is. A ZLE widget is not a safe context to source it from: line 9 of
+# fzf-tab.zsh runs a command substitution, which fails there with "write error:
+# bad file descriptor", and the half-initialised module check then reaches its
+# `read -q` rebuild prompt and waits on it. The symptom is a first <Tab> in a
+# cold terminal hanging ~15 s before flashing the error.
 #
 # $DOTFILES_FZF_TAB is exported from ~/.zshenv on the Nix machines; elsewhere
 # the usual prefixes are searched.
@@ -1044,9 +1109,9 @@ alias CAT='echo "=^.^=\n"'
 ###############################################################################
 #                                Starship
 ###############################################################################
-if (( $+commands[starship] )); then
-  eval "$(starship init zsh)"
-fi
+# Sourced from the cache written by _cached_init in the Completions section,
+# rather than eval'd, so no shell forks starship to find out how to start it.
+_cached_init starship starship starship init zsh
 
 
 ###############################################################################
@@ -1054,9 +1119,7 @@ fi
 # Smarter cd that learns your habits. `z foo` jumps, `zi` picks interactively.
 # Loaded after compinit so its completions register correctly.
 ###############################################################################
-if (( $+commands[zoxide] )); then
-  eval "$(zoxide init zsh)"
-fi
+_cached_init zoxide zoxide zoxide init zsh
 
 
 ###############################################################################
@@ -1073,9 +1136,11 @@ fi
 # --disable-up-arrow keeps Up bound to zsh-history-substring-search, which
 # matches on the prefix already typed. Ctrl-R is the full search.
 ###############################################################################
-if (( $+commands[atuin] )); then
-  eval "$(atuin init zsh --disable-up-arrow)"
-fi
+_cached_init atuin atuin atuin init zsh --disable-up-arrow
+
+# The init helpers have no callers past this point.
+unfunction _cached_init _cache_stale
+unset _zinitcache _zcachekeys
 
 
 ###############################################################################
@@ -1085,7 +1150,7 @@ fi
 # onto ~400 commands, and it matches prefixes internally rather than consulting
 # zsh's matcher-list, so those commands lose the case-insensitive, partial-word
 # and substring matching configured in the completion section above --
-# `ls linux/Compose<TAB>` no longer finds XCompose. Prefix-only is the best it
+# `ls linux/Compose<TAB>` stops finding XCompose. Prefix-only is the best it
 # offers; CARAPACE_MATCH=CASE_INSENSITIVE recovers case but not substring.
 #
 # Almost everything worth completing already ships a zsh function (_ls, _git,
@@ -1176,10 +1241,25 @@ fi
 # mise is absent: running both leaves two tools fighting over the node on $PATH.
 #
 #   mise use --global node@lts      # then ~/.config/nvm can go
+#
+# Commented out while `mise ls` is empty: node comes from nodejs_24 in
+# packages.nix, so activating mise buys nothing and costs 20 ms of every
+# interactive shell. Uncomment it once mise has a toolchain to manage, and route
+# it through `_cached_init` in the Completions section at the same time.
+#
+# The cache halves that cost and cannot remove it, because defining the chpwd
+# hook is most of it. Measured against a bare `zsh -f -c exit` of 4.2 ms:
+#
+#   eval "$(mise activate zsh)"   20.1 ms   fork ~9 ms, hook definition ~11 ms
+#   source of a cached file       11.5 ms
 ###############################################################################
-if (( $+commands[mise] )); then
-  eval "$(mise activate zsh)"
-elif [[ -d "$HOME/.config/nvm" ]]; then
+# if (( $+commands[mise] )); then
+#   eval "$(mise activate zsh)"
+# fi
+
+# nvm is the fallback, and runs only while mise is off. Two of them on at once
+# leaves both fighting over the node on $PATH.
+if [[ -d "$HOME/.config/nvm" ]]; then
   export NVM_DIR="$HOME/.config/nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
