@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, gitExtraCommandsSrc, ... }:
 let
   ###########################################################################
   # unixorn/git-extra-commands
@@ -7,23 +7,26 @@ let
   # `git delete-local-merged`, `git churn`, `git forest`, `git divergence`,
   # `git fzf-log-browser`, ...
   #
-  # Not in nixpkgs, so it is pinned here by revision. Only the scripts in bin/
-  # are installed; several call each other (git-delete-local-merged uses
+  # Not in nixpkgs, so it is pinned here. Only the scripts in bin/ are
+  # installed; several call each other (git-delete-local-merged uses
   # `git origin-head`), so they are installed as a set rather than picked over.
   #
   # Complements git-extras rather than duplicating it: of 162 commands here and
   # 78 there, 5 overlap.
+  #
+  # The source is the `git-extra-commands` flake input, so the rev and its hash
+  # live in flake.lock: `just update` moves it with everything else, and
+  # `just update-input git-extra-commands` moves it alone. Keep it out of a
+  # `fetchFromGitHub` here, which would need a fixed-output hash computed by
+  # hand on every bump, because Renovate cannot work one out.
   ###########################################################################
   gitExtraCommands = pkgs.stdenvNoCC.mkDerivation {
     pname = "git-extra-commands";
-    version = "0-unstable-2026-08-14";
+    # The date is in flake.lock, and this string is not worth keeping in step
+    # with it by hand.
+    version = "0-unstable";
 
-    src = pkgs.fetchFromGitHub {
-      owner = "unixorn";
-      repo = "git-extra-commands";
-      rev = "6a83b7eb388812f5c42f22d7363a4ff77735face";
-      hash = "sha256-qHveMIMJcKISSLpgllQ9VhwsSV2dTjvpXzC62xiD5Pw=";
-    };
+    src = gitExtraCommandsSrc;
 
     dontBuild = true;
 

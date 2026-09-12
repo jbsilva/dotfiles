@@ -98,7 +98,10 @@
   // continuously. The Monday cron in ci.yml is what catches drift from upstream here.
   //
   // Not managed by anything, for the record: .config/nvim/lazy-lock.json is written by `:Lazy`
-  // commands (see AGENTS.md), and the pinned rev+hash in modules/git-extra-commands.nix has to be
-  // bumped by hand because Renovate cannot compute the new fixed-output hash.
+  // commands (see AGENTS.md).
+  //
+  // Anything pinned as a `fetchFromGitHub` rev plus hash would join it, because Renovate cannot
+  // compute a fixed-output hash. That is the reason git-extra-commands is a flake input rather than
+  // a rev in modules/git-extra-commands.nix: `just update` reaches it there.
   enabledManagers: ["github-actions", "pre-commit", "custom.regex"],
 }

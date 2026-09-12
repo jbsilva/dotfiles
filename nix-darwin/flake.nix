@@ -48,6 +48,20 @@
       url = "github:frankea/homebrew-whisky";
       flake = false;
     };
+
+    # A collection of `git-*` scripts, packaged in modules/git-extra-commands.nix.
+    #
+    # An input rather than a `fetchFromGitHub` with a rev and a hash in the
+    # module: Renovate cannot compute a fixed-output hash, so that form can only
+    # be bumped by hand. flake.lock carries both, so `just update` moves it.
+    git-extra-commands = {
+      url = "github:unixorn/git-extra-commands";
+      flake = false;
+    };
+
+    # Decrypts the sops files in ../secrets/ at activation. See secrets/README.md.
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -63,6 +77,8 @@
       homebrew-nikitabobko,
       homebrew-docker,
       homebrew-frankea,
+      git-extra-commands,
+      sops-nix,
       ...
     }:
     let
@@ -73,7 +89,22 @@
         homebrewNikitabobko = homebrew-nikitabobko;
         homebrewDocker = homebrew-docker;
         homebrewFrankea = homebrew-frankea;
+        gitExtraCommandsSrc = git-extra-commands;
       };
+
+      # A standalone home-manager configuration, for the machines that run
+      # neither NixOS nor nix-darwin. They share this flake, and so flake.lock,
+      # with the MacBook.
+      #
+      # Applied on the machine itself, or through the `just nas-switch` family:
+      #   nix build ~/dotfiles/nix-darwin#homeConfigurations.\"julio@HOST\".activationPackage
+      #   ./result/activate -b hm-bak
+      mkHome =
+        module:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages."x86_64-linux";
+          modules = [ module ];
+        };
     in
     {
       # Update:  nix flake update
@@ -86,19 +117,22 @@
           nix-homebrew.darwinModules.nix-homebrew
           home-manager.darwinModules.home-manager
           nix-index-database.darwinModules.nix-index
+          sops-nix.darwinModules.sops
         ];
       };
 
-      # The Synology, which runs single-user Nix and neither NixOS nor
-      # nix-darwin, so it gets a standalone home configuration rather than a
-      # system one. It shares this flake.lock with the MacBook.
-      #
-      # Applied on the NAS itself:
-      #   nix build ~/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage
-      #   ./result/activate -b hm-bak
-      homeConfigurations."julio@nas" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages."x86_64-linux";
-        modules = [ ./modules/home-manager/nas.nix ];
+      homeConfigurations = {
+        # The Synology. Single-user Nix, DSM rather than a distribution, and a
+        # store on a bind-mounted volume. Its module carries the shims DSM
+        # needs; see modules/home-manager/nas.nix.
+        "julio@nas" = mkHome ./modules/home-manager/nas.nix;
+
+        # Arch on the desktop and Ubuntu under WSL on the work machine. Both
+        # take the same module: they are ordinary x86_64 Linux with Nix
+        # installed, and .zshrc already tells them apart at runtime through
+        # $DOTFILES_PLATFORM. Split them when they need to differ.
+        "julio@arch" = mkHome ./modules/home-manager/linux.nix;
+        "julio@wsl" = mkHome ./modules/home-manager/linux.nix;
       };
     };
 }
