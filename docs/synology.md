@@ -88,9 +88,9 @@ just gets the doubled bar.
 
 > **Probe this box with a login shell.** `ssh nas '<cmd>'` and `ssh nas -t 'zsh -i'` both skip
 > `/etc/profile`, which is the only thing that puts `/usr/local/bin` and `/usr/syno/bin` on `$PATH`.
-> Under those, roughly 250 installed SynoCli tools look missing and `synopkg status` reports
-> packages as stopped when it merely lacked root. Use the `$SHELL -l` form above before concluding
-> anything is absent.
+> Under those, every installed SynoCli tool looks missing and `synopkg status` reports packages as
+> stopped when it merely lacked root. Use the `$SHELL -l` form above before concluding anything is
+> absent.
 
 ## Copying files
 
@@ -236,52 +236,51 @@ for d in ~/.local/share/zsh/plugins/*(/) ~/.oh-my-zsh(N/); do git -C "$d" pull -
 
 ## CLI tools
 
-Tools come from three places. Prefer them in this order, because only the first two update
-themselves.
+Tools come from four places. Prefer them in this order.
+
+**Nix.** `home.packages` in `nix-darwin/modules/home-manager/nas.nix` is where a tool goes now. The
+version is pinned in `flake.lock` and moves with the MacBook, `just nas-switch` applies it, and
+`zshrc_synology` puts the profile ahead of both package repositories. `atuin`, `delta`,
+`difftastic`, `restic`, `zellij`, `neovim`, `rustup`, `uv`, `starship`, `zoxide`, `rclone`, `pv`,
+`progress` and `exiftool` all come from there. See "home-manager on the NAS" below.
+
+Reach for one of the other three when nixpkgs has no `x86_64-linux` build, or when the tool has to
+keep working with `/nix` unmounted, which is the window between a reboot and the Boot-up task.
 
 **SynoCommunity.** Add the repository in Package Center, then install the `synocli-*` bundles. They
-put around 250 tools in `/usr/local/bin`, as symlinks into `/var/packages/synocli-*/`:
+put a few hundred tools in `/usr/local/bin`, as symlinks into `/var/packages/synocli-*/`:
 
-| Package           | Gives you                                                         |
-| ----------------- | ----------------------------------------------------------------- |
-| `synocli-file`    | `bat`, `fzf`, `fd`, `eza`, `rg`, `less`, `mc`, `nnn`, `sd`, `lsd` |
-| `synocli-disk`    | `ncdu`, `duf`, `gdu`                                              |
-| `synocli-net`     | `mtr`, `tmux`, `nmap`, `socat`                                    |
-| `synocli-monitor` | `procs`, `lsof`, `btop`                                           |
+| Package           | Gives you                                                          |
+| ----------------- | ------------------------------------------------------------------ |
+| `synocli-file`    | `bat`, `fzf`, `fd`, `eza`, `rg`, `less`, `mc`, `nnn`, `sd`, `lsd`  |
+| `synocli-disk`    | `ncdu`, `duf`, `gdu`, `smartctl`                                   |
+| `synocli-net`     | `mtr`, `tmux`, `nmap`, `socat`                                     |
+| `synocli-monitor` | `procs`, `lsof`, `btop`, `htop`                                    |
+| `synocli-devel`   | `clang`, `gdb`, `make`, `strace`, `pkg-config`, the autotools      |
+| `synocli-misc`    | `parallel`, `expect`, `bc`, `lsblk`, `lscpu`, `findmnt`, `hexdump` |
+| `synocli-kernel`  | `lsusb`, `pstree`, `fuser`, `usb-devices`                          |
 
-DSM itself already supplies `htop`, `curl`, `wget`, `jq`, `rsync`, `python3`, `vim`, `gpg`,
-`smartctl` and `tcpdump`.
+`git` and `zsh-static` come from SynoCommunity too, as packages of their own rather than as part of
+a bundle. DSM itself supplies `curl`, `wget`, `jq`, `python3`, `vim`, `gpg`, `tcpdump` and
+`/usr/bin/rsync`. That rsync is the one "Copying files" above depends on: synocli-net carries a
+second one in `/usr/local/bin`, and `/etc/profile` puts `/usr/bin` first, so DSM's wins.
 
-**Entware.** This covers what SynoCommunity does not package:
-
-```sh
-opkg install zoxide rclone pv progress perl-image-exiftool
-```
-
-`perl-image-exiftool` pulls Entware's own `perl`, so it is a heavier install than it looks. `~/bin`
-comes before `/opt/bin` on `$PATH`, so a binary you install by hand still wins over the packaged one
-of the same name.
+**Entware.** `opkg` covers what SynoCommunity does not package and nixpkgs cannot build here.
+Nothing on this box needs it for that today, so `/opt` holds its base packages and `terminfo` alone.
 
 Neither repository always carries the newest release. When the version matters, check what is
-packaged before you install, and take the tool by hand when the package is behind. `.config/nvim` is
-one such case: it guards features behind a `vim.fn.has('nvim-...')` check, including the built-in
-undotree, and those disappear without a word on an older build.
+packaged before you install, and take the tool from Nix instead when the package is behind.
 
-**By hand.** Neither repository packages these:
+**By hand.** A release binary into `~/bin`, which `.zshrc` prepends last and so outranks every other
+source. `~/bin` is empty: everything that was in it is a Nix package now. The asset names differ per
+project, `musl` or `gnu`, `x86_64` or `amd64`, `.tar.gz` or `.bz2`, so there is no common command
+and each one comes off its own releases page.
 
-| Tool                                               | Install                                                           |
-| -------------------------------------------------- | ----------------------------------------------------------------- |
-| `rustup` (and `cargo`, `rustc`, `rust-analyzer`)   | `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \| sh` |
-| `uv`                                               | `curl -LsSf https://astral.sh/uv/install.sh \| sh`                |
-| `starship`                                         | `sh -c "$(curl -fsSL https://starship.rs/install.sh)"`            |
-| `atuin`, `delta`, `difftastic`, `restic`, `zellij` | release binary into `~/bin`                                       |
-| `nvim`                                             | nightly or source build, into `~/bin`                             |
+One installed-by-hand copy is left, `/usr/local/bin/starship` from `starship.rs/install.sh`. The Nix
+one shadows it, so it is dead weight rather than a second opinion.
 
-The release binaries have no common command, because the asset names differ per project: `musl` or
-`gnu`, `x86_64` or `amd64`, `.tar.gz` or `.bz2`. Take each from its releases page.
-
-A container is the fourth option, for a tool none of the three package. It costs an image pull
-rather than a binary, but the version is pinned in the compose file.
+A container is the fifth option, for a tool none of the four package. It costs an image pull rather
+than a binary, but the version is pinned in the compose file.
 
 ## Containers
 

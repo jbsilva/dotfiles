@@ -168,6 +168,7 @@ mzgg
 atuin
 atuinsh
 autopair
+autotools
 bkspc
 btop
 cdstacks
@@ -179,12 +180,15 @@ dpst
 entware
 exiftool
 fkey
+fuser
 getconf
 ghostty
+hexdump
 infocmp
 kcbt
 libc
 libstdc
+lsusb
 mbbill
 misrender
 nast
@@ -194,6 +198,7 @@ ohmyzsh
 opkg
 prezto
 procs
+pstree
 rclone
 restic
 rootfs
