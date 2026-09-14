@@ -3,9 +3,10 @@
 # Sourced from .zshrc when /etc/synoinfo.conf exists. Loaded *before*
 # zshrc_linux, which also runs on this box.
 #
-# Packages come from two places:
-#   Entware        opkg, installs under /opt          -- CLI tools
-#   SynoCommunity  packages.synocommunity.com          -- DSM packages
+# Packages come from three places, in the order this file puts them on $PATH:
+#   Nix            home-manager, ~/.nix-profile        the CLI tools
+#   Entware        opkg, installs under /opt           terminfo
+#   SynoCommunity  packages.synocommunity.com          DSM packages
 #
 # DSM resets a lot on upgrade. Anything here must degrade gracefully: check for
 # the binary before using it, never assume a path exists.
@@ -118,11 +119,8 @@ fi
 ###############################################################################
 # Notes
 #
-# Nix on DSM: possible but awkward. There is no systemd, so the multi-user
-# daemon install does not apply, and /nix must live on a volume that survives
-# DSM upgrades (e.g. /volume1/nix bind-mounted to /nix from a boot-up task).
-# A single-user install works:
-#   sh <(curl -L https://nixos.org/nix/install) --no-daemon
-# Given most workloads here are containers, Entware plus a toolbox container is
-# usually less maintenance.
+# Everything about this box that is not shell config is a runbook rather than a
+# comment: Entware and the bind mounts, single-user Nix, terminfo over SSH,
+# which of scp and rsync reaches which path, and the container traps. It is all
+# in docs/synology.md.
 ###############################################################################
