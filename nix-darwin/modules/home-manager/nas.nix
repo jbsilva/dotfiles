@@ -11,7 +11,7 @@
 # including $DOTFILES_PLUGINS_FROM_NIX, so .zshrc takes its plugins from here
 # rather than searching the system for them.
 ###############################################################################
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ./programs/zsh.nix
@@ -24,6 +24,19 @@
   home.username = "julio";
   home.homeDirectory = "/var/services/homes/julio";
   home.stateVersion = "26.05";
+
+  # The one machine that cannot use the caddy name every other machine syncs
+  # to. caddy holds a macvlan address on the LAN, and the kernel refuses
+  # traffic between a macvlan address and its parent interface, which is this
+  # NAS. So atuin.nas.juliobs.com.br resolves here and then fails to connect,
+  # and that is true of every name caddy serves, in both directions.
+  #
+  # The atuin stack publishes 127.0.0.1:8888 for this. It is the same server
+  # the name reaches from elsewhere, one hop earlier, so the history is the
+  # same history. Plaintext costs nothing over loopback.
+  #
+  # mkForce because programs/atuin.nix sets this for everything else.
+  programs.atuin.settings.sync_address = lib.mkForce "http://127.0.0.1:8888";
 
   # zshrc_synology puts the Nix profile ahead of Entware and SynoCommunity, and
   # behind ~/bin, so anything here outranks a packaged copy of the same name.
