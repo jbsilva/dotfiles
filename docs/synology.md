@@ -424,11 +424,26 @@ Delete the links rather than backing them up, since the repo copies are what the
 rm ~/.zshrc ~/.zshenv    # first activation only
 ```
 
-Git is configured by `programs/git.nix` too, so delete the `~/.gitconfig` and `~/.gitconfig-global`
-symlinks on activation. Both are read after `~/.config/git/config` and would win, which is how the
-NAS kept using the libsecret helper from `linux/gitconfig` that does not exist there. The module
-branches on `stdenv.isDarwin`: macOS keeps `osxkeychain`, and everything else gets git's `cache`
-helper, which holds the token in memory rather than writing it to disk.
+Git is configured by `programs/git.nix` too, which writes `~/.config/git/config`. Delete any
+`~/.gitconfig` or `~/.gitconfig-global` symlink into this repo on first activation. Git reads both
+of those after `~/.config/git/config`, so a link to a per-platform file wins over the module, and
+`linux/gitconfig` names a libsecret helper that DSM does not have. The module branches on
+`stdenv.isDarwin`: macOS keeps `osxkeychain`, and everything else gets git's `cache` helper, which
+holds the token in memory rather than writing it to disk.
+
+That same ordering is then the only way to set anything machine-local, because
+`~/.config/git/config` is a read-only store path and `git config --global` follows the symlink and
+rewrites the store entry in place. So `~/.gitconfig` exists here as a plain file, holding one
+setting:
+
+```ini
+[safe]
+	directory = /volume3/docker
+```
+
+`/volume3/docker` is the working copy the compose stacks run from. The directory itself is owned by
+root while everything inside it is `julio`, so without that line a git call there from a
+non-interactive SSH session fails with `detected dubious ownership`.
 
 `~/.profile` should then hand over to the Nix zsh, which fixes the terminfo problem at its root:
 unlike SynoCommunity's `zsh-static` it is not built `--disable-home-terminfo`, so it reads
