@@ -388,18 +388,41 @@ shares this flake and therefore `flake.lock` with the MacBook.
 
 It imports `programs/zsh.nix` unchanged, so the NAS gets the same generated `~/.zshrc` as macOS and
 with it `$DOTFILES_PLUGINS_FROM_NIX`. The zsh plugins and oh-my-zsh come from `flake.lock` rather
-than from checkouts in `$HOME`, and `home.packages` supplies the CLI tools. Apply it on the NAS:
+than from checkouts in `$HOME`, and `home.packages` supplies the CLI tools. `git.nix`, `atuin.nix`,
+`direnv.nix` and `zellij.nix` are imported the same way, so those four are configured there exactly
+as they are on the MacBook.
+
+Apply it with the `nas-*` recipes, which work from either end:
 
 ```sh
-rm ~/.zshrc ~/.zshenv    # first activation only, see below
-nix build ~/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage
-./result/activate
+just nas-switch                  # from the MacBook, drives the box over SSH
+just nas-diff                    # build only, to see what a switch would change
+NAS_HOST=nast just nas-switch    # from off the LAN, over Tailscale
 ```
 
-Before the first activation those two are symlinks into this repo, and home-manager will not clobber
-them. Its backup mechanism does not apply: `HOME_MANAGER_BACKUP_EXT` is checked only for regular
+`nas-switch` pulls the repo on the NAS, then builds and activates. Three things it does that a
+hand-rolled `nix build` does not:
+
+- `TMPDIR=$HOME/.cache/nix-install`, because `/tmp` is `noexec` and a build has to run what it
+  unpacks.
+- `-o ~/.hm-generation` rather than `./result`, which keeps the GC root in `$HOME` instead of in
+  whatever directory the build ran from.
+- `HOME_MANAGER_BACKUP_EXT=hm-bak`. Standalone home-manager reads that from the environment, where
+  the MacBook gets it from `home-manager.backupFileExtension`. Without it, activation stops at the
+  first unmanaged regular file sitting where a link belongs.
+
+> A change to a recipe takes effect on the run after the one that ships it. The SSH branch sources
+> `nix.sh` to find `just`, so it reads the NAS copy of the `Justfile` as it stands before the pull
+> inside it.
+
+Before the first activation `~/.zshrc` and `~/.zshenv` are symlinks into this repo, and home-manager
+will not clobber them. The backup extension does not cover that case: it is checked only for regular
 files, so a symlink falls through to `Existing file ... would be clobbered` and activation aborts.
-Delete the links rather than backing them up, since the repo copies are what they pointed at.
+Delete the links rather than backing them up, since the repo copies are what they pointed at:
+
+```sh
+rm ~/.zshrc ~/.zshenv    # first activation only
+```
 
 Git is configured by `programs/git.nix` too, so delete the `~/.gitconfig` and `~/.gitconfig-global`
 symlinks on activation. Both are read after `~/.config/git/config` and would win, which is how the
