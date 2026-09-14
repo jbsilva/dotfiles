@@ -60,7 +60,9 @@
     # collision. Only this one has x/xterm-ghostty, which is what Ghostty sends.
     (lib.hiPrio ghostty.terminfo) # xterm-ghostty
     ncurses # tic and infocmp
-    neovim # config in .config/nvim
+    # Runs on its defaults here: xdg.nix is what links .config/nvim into the
+    # repo, and this profile does not import it.
+    neovim
     zellij # multiplexer; .zshrc auto-attaches to it on SSH
 
     # -------------------------------------------------------------------------

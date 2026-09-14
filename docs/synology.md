@@ -392,6 +392,11 @@ than from checkouts in `$HOME`, and `home.packages` supplies the CLI tools. `git
 `direnv.nix` and `zellij.nix` are imported the same way, so those four are configured there exactly
 as they are on the MacBook.
 
+`xdg.nix` is not imported, and `nas.nix` links nothing out of the repo itself, so the only
+`~/.config` entries on the box are the ones its program modules write. Neovim is the gap that
+follows from that: `.config/nvim` reaches macOS through `xdg.nix` and reaches Arch and WSL through
+`linux.nix`, so `nvim` here is the packaged binary with no config at all.
+
 Apply it with the `nas-*` recipes, which work from either end:
 
 ```sh
