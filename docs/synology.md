@@ -470,6 +470,23 @@ done
 > only `nix-darwin/` fails with `access to absolute path '/nix/store/.zshenv' is forbidden`. Inside
 > the git clone the whole repo is copied, so the path resolves.
 
+## Atuin
+
+`programs/atuin.nix` comes in with the profile, so the binary and its settings are declarative. The
+session token is not: `atuin login` writes one, which makes this one command per machine.
+
+```sh
+atuin login -u julio
+atuin import auto && atuin sync
+```
+
+Until that runs, `atuin status` answers `You are not logged in to a sync server` and Ctrl-R searches
+the local database alone. Nothing else reports it.
+
+The server is the `atuin` stack in `nas-containers`, on this same box, so sync here never leaves the
+LAN. Back up `~/.local/share/atuin/key` rather than the NAS: the server only ever holds ciphertext,
+and a lost key loses the synced history whatever the disks still hold.
+
 ## Mosh on the NAS
 
 `packages.nix` installs the client on the MacBook and `nas.nix` installs the server on the NAS, so
