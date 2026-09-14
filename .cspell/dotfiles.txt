@@ -194,6 +194,7 @@ misrender
 nast
 ncdu
 nmap
+nopasswd
 ohmyzsh
 opkg
 prezto

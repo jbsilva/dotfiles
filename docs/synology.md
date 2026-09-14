@@ -297,14 +297,19 @@ dpst          # docker ps, showing names, status and ports
 ```
 
 DSM keeps `/var/run/docker.sock` root-only, so every docker call needs `sudo`. Its docker group is
-root-equivalent, which makes joining it a worse trade than typing the password. `zshrc_synology`
-aliases `docker` to `sudo docker`, and zsh re-expands the first word of an alias body, so `dps` and
-the `dc*` aliases work too.
+root-equivalent, so joining it would hand the daemon to every process you start, permanently.
+`zshrc_synology` aliases `docker` to `sudo docker`, and zsh re-expands the first word of an alias
+body, so `dps` and the `dc*` aliases work too.
 
-> That alias covers interactive shells only. `sudo` keeps its own `secure_path`, which holds neither
-> `/usr/local/bin` nor `/usr/syno/bin`, so `sudo docker` and `sudo synopkg` both answer
+> That alias covers interactive shells only. `sudo` here passes the caller's `$PATH` straight
+> through, because `/etc/sudoers` sets no `secure_path`, and DSM gives a non-interactive shell
+> `/usr/bin:/bin:/usr/sbin:/sbin`. So `sudo docker` and `sudo synopkg` both answer
 > `command not found` inside a script or under `ssh nas '<cmd>'`. Write `/usr/local/bin/docker` and
 > `/usr/syno/bin/synopkg` there.
+
+> **`sudo` asks for no password on this box.** `/etc/sudoers.d/temp-nopasswd` holds
+> `julio ALL=(ALL) NOPASSWD:ALL`, which is a wider grant than the docker group turned down above.
+> Delete that file to get the prompt back.
 
 Two boot traps, neither of which announces itself. A container that borrows another's namespace with
 `network_mode: service:<name>` dies with exit 128 and
