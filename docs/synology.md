@@ -196,7 +196,12 @@ Ghostty's `ssh-terminfo` shell integration works on its own.
 On a DSM box with no Nix, add `zsh` and `ncurses-bin` as well. That zsh links against Entware's own
 ncurses instead of baking in a static one, which SynoCommunity's `zsh-static` does not.
 
-## zsh plugins
+## zsh plugins without Nix
+
+home-manager takes the plugins and oh-my-zsh from `flake.lock` and exports
+`DOTFILES_PLUGINS_FROM_NIX=1`, which makes `.zshrc` skip its own search. The checkouts below are
+what this box ran on before that. They are still in `$HOME` and nothing reads them. Read this
+section as the route for a DSM box with no Nix.
 
 Entware packages none of them, and [SynoCommunity]'s `zsh-static` is a lone binary. Clone them into
 the last entry of `_plug_dirs` in `.zshrc`. The upstream repository names already match the files
@@ -223,7 +228,7 @@ git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh ~/.oh-my-zsh
 ```
 
 Nothing pins any of these: Renovate cannot see a `git clone` in `$HOME`, and only the Nix machines
-get them from `flake.lock`. Update them by hand:
+get them from `flake.lock`. While a box is on the checkouts, update them by hand:
 
 ```sh
 for d in ~/.local/share/zsh/plugins/*(/) ~/.oh-my-zsh(N/); do git -C "$d" pull --ff-only; done
