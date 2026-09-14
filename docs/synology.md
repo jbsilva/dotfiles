@@ -24,8 +24,11 @@ ______________________________________________________________________
 
 `.zsh/zshrc_synology` is loaded when `/etc/synoinfo.conf` exists, which is true on every DSM install
 and on nothing else. It puts Entware's `/opt/bin` ahead of DSM's older tools and adds
-`opkg`/`synosystemctl`/compose aliases. Deploy by cloning the repo and symlinking `~/.zshenv`,
-`~/.zshrc` and `~/.zsh`; nothing else is needed.
+`opkg`/`synosystemctl`/compose aliases.
+
+home-manager owns `~/.zshrc`, `~/.zshenv` and `~/.zprofile` here, all three symlinks into the store.
+`~/.zsh` is the one link into the repo, and it is what carries this file. On a DSM box that
+home-manager has not reached, clone the repo and link all four by hand. Nothing else is needed.
 
 Entware's terminfo reaches the shell through `$TERMINFO_DIRS` in `.zshenv`, not `$TERMINFO` here.
 ncurses fixes its search path before `.zshrc` is read, so setting it at that point is already too
@@ -358,8 +361,8 @@ mount -o bind /volume2/@Nix /nix
 `zshrc_synology` sources `~/.nix-profile/etc/profile.d/nix.sh` when it is readable, which puts the
 Nix profile ahead of Entware and behind `~/bin`. The installer also appends that line to
 `~/.profile` and `~/.zshenv`. Both are useless here: `~/.profile` execs zsh before reaching it, and
-`~/.zshenv` is a symlink into this repo, so the line lands in tracked config. Revert it if the
-installer wrote there.
+`~/.zshenv` is a symlink that home-manager owns, so the line lands in the store or, before the first
+activation, in tracked config. Revert it if the installer wrote there.
 
 > Builds are unsandboxed as a result, so a build could see the host filesystem. It still cannot use
 > host tools, because the build `PATH` contains only store paths. In practice `x86_64-linux` is
