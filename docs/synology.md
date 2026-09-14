@@ -145,7 +145,8 @@ If that brings `/opt/bin/opkg` back, skip the rest of this section and go straig
 
 A fresh install follows the
 [Entware wiki](https://github.com/Entware/Entware/wiki/Install-on-Synology-NAS). `x64-k3.2` is the
-right feed for this box, since `uname -m` is `x86_64` on kernel 4.4.
+right feed for this box: `uname -m` is `x86_64`, on a kernel past the 3.2 in that name. DSM 7.4.1
+runs 4.4.302+, as of September 2026.
 
 **Every line below runs in a root shell.** Only root can write at a volume root, and `umask` is a
 shell builtin, so `sudo` per command would not carry it. DSM 7 disables direct root SSH, so:
@@ -354,7 +355,7 @@ TMPDIR=$HOME/.cache/nix-install sh <(curl -L https://nixos.org/nix/install) --no
 ```
 
 Write `~/.config/nix/nix.conf` **before** running it, or the install fails at
-`unable to load seccomp BPF program`. DSM's 4.4 kernel has neither seccomp BPF filtering nor
+`unable to load seccomp BPF program`. DSM's kernel has neither seccomp BPF filtering nor
 `CONFIG_USER_NS`, so both the syscall filter and the build sandbox have to be off:
 
 ```ini
@@ -362,6 +363,11 @@ filter-syscalls = false
 sandbox = false
 experimental-features = nix-command flakes
 ```
+
+The kernel is 4.4.302+ on DSM 7.4.1, as of September 2026. Synology chooses it, and a major DSM
+upgrade moves it, so those two lines are worth retesting after one. DSM carries no
+`/proc/config.gz`, which makes the test empirical: comment both out, then run a build that is not a
+cache hit.
 
 The bind mount does not survive a reboot. Add it to the same Boot-up task as Entware, or its own:
 

@@ -116,7 +116,9 @@
   #
   # glibc's own ldd is a shell wrapper around the dynamic loader, so this is that
   # wrapper with the two modes anything here asks for. The loader reports the
-  # glibc actually in use, 2.36, well over the 2.28 the server wants.
+  # glibc actually in use, 2.36 on DSM 7.4.1 as of Sep 2026, well over the 2.28
+  # the server wants. A DSM upgrade moves that number, so re-read it there
+  # rather than here.
   #
   # Not the ldd from glibc.bin, which is a wrapper around the *store* loader and
   # so answers for a glibc nothing outside /nix links against. It would read
@@ -161,8 +163,9 @@
   # hand every non-interactive shell the ldd, ldconfig and locale beside it.
   #
   # GNU_LIBC_VERSION is the one answer to distrust: it reports the glibc this
-  # binary was built against, 2.42, not DSM's 2.36. The installer asks only
-  # LONG_BIT, and anything asking the version question goes through ldd above.
+  # binary was built against, 2.42 at the flake.lock of the day, not the DSM one
+  # above. The installer asks only LONG_BIT, and anything asking the version
+  # question goes through ldd above.
   home.file.".local/bin/getconf".source = "${pkgs.glibc.bin}/bin/getconf";
 
   # .zshrc puts ~/.local/bin on $PATH, but .zshrc is read by interactive shells
