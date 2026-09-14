@@ -354,7 +354,7 @@ TMPDIR=$HOME/.cache/nix-install sh <(curl -L https://nixos.org/nix/install) --no
 ```
 
 Write `~/.config/nix/nix.conf` **before** running it, or the install fails at
-`unable to load seccomp BPF program`. The DSM 4.4 kernel has neither seccomp BPF filtering nor
+`unable to load seccomp BPF program`. DSM's 4.4 kernel has neither seccomp BPF filtering nor
 `CONFIG_USER_NS`, so both the syscall filter and the build sandbox have to be off:
 
 ```ini
