@@ -168,6 +168,12 @@ list, so turning it on lets a one-line change to any module pull gigabytes at a 
 Neither `just build` nor `just diff` shows a word of it beforehand. `just brew-upgrade` is the
 deliberate half.
 
+That recipe runs `brew upgrade` and nothing else. `brew update` belongs to a checkout Homebrew owns,
+and `mutableTaps = false` mounts the taps read-only out of `/nix/store`, so it stops on
+`Permission denied`; what a tap offers moves with its flake input, via `just update`. `--greedy` is
+left off because it reaches the casks that already update themselves, which means re-downloading
+whole app bundles nobody asked for.
+
 `nh` is installed as a friendlier front-end: `just nhs` wraps `nh darwin switch`, which shows a
 package diff automatically.
 

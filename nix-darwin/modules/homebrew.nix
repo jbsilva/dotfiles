@@ -38,8 +38,10 @@
     # moment nobody chose. Neither `just build` nor `just diff` shows a word of
     # it beforehand, which is what makes it worth keeping out of activation.
     #
-    # `autoUpdate` buys nothing either: the taps are pinned flake inputs and
-    # `mutableTaps` is false, so a `brew update` has nothing to fetch.
+    # `autoUpdate` has to stay off as well. It runs `brew update`, which fetches
+    # inside each tap, and `mutableTaps = false` mounts them read-only out of
+    # /nix/store, so it stops on `Permission denied`. A tap moves with its flake
+    # input instead: `just update`, then `just switch`.
     #
     # `cleanup = "uninstall"` stays on: removing a line below should uninstall.
     onActivation = {

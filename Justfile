@@ -52,10 +52,18 @@ generations:
 # so activation installs and uninstalls to match homebrew.nix and changes no
 # version. This is the deliberate half: mactex, microsoft-office and steam are
 # in the list, so it can be a long download.
+#
+# No `brew update`. nix-homebrew mounts the taps read-only out of /nix/store, so
+# it stops on `.../homebrew-core/.git: Permission denied`. What a tap offers
+# moves with its flake input, which is `just update` followed by `just switch`.
+#
+# No `--greedy` either. It reaches the casks that carry `auto_updates true`,
+# which are the apps that already update themselves, so it re-downloads whole
+# bundles nobody asked it to: adobe-creative-cloud, microsoft-office and
+# visual-studio-code among them. `brew upgrade` covers formulae and casks
+# alike; pass --greedy by hand for a cask that is genuinely stuck.
 brew-upgrade:
-    brew update
     brew upgrade
-    brew upgrade --cask --greedy
 
 # Collect garbage older than 14 days and optimise the store
 gc:
