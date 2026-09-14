@@ -470,6 +470,25 @@ done
 > only `nix-darwin/` fails with `access to absolute path '/nix/store/.zshenv' is forbidden`. Inside
 > the git clone the whole repo is copied, so the path resolves.
 
+## VS Code Remote-SSH
+
+Two shims in `~/.local/bin`, written by `nas.nix`. `home.sessionPath` puts that directory on `$PATH`
+through `hm-session-vars.sh`, because Remote-SSH runs the server CLI under `ssh -T` with no command.
+That is a non-interactive login shell, which reads `.zshenv` and `.zprofile` and never `.zshrc`.
+
+DSM has glibc but no `ldd`, and neither Entware nor SynoCommunity packages one. The CLI runs
+`ldd --version` to tell a glibc host from a musl one, gets nothing, settles on musl, looks for
+`/lib/ld-musl-x86_64.so.1` and stops at "The remote host does not meet the prerequisites for running
+VS Code Server". The shim is glibc's own wrapper around the dynamic loader, hand-written so that it
+answers for the glibc DSM links against rather than for one in the store. A packaged `ldd` cannot:
+glibc bakes its version into that script at build time.
+
+The second shim is `getconf`, linked straight from `glibc.bin`, because the same installer reads the
+word size from `getconf LONG_BIT` and DSM leaves that out too.
+
+`nas.nix` carries the reasoning in full, including the two settings that also get past the check and
+why each is worse.
+
 ## Atuin
 
 `programs/atuin.nix` comes in with the profile, so the binary and its settings are declarative. The
