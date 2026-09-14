@@ -188,10 +188,13 @@ The wiki's boot script also appends `/opt/etc/profile` to `/etc/profile`. That i
 `zshrc_synology` puts `/opt/bin` and `/opt/sbin` on `$PATH` itself, and `/etc/profile` is another
 file DSM rewrites on upgrade.
 
-Then `opkg install zsh ncurses-bin terminfo`. That zsh links against Entware's own ncurses instead
-of baking in a static one, and `ncurses-bin` supplies `tic` and `infocmp`, so a terminfo entry DSM
-lacks can be compiled in place rather than copied in, and Ghostty's `ssh-terminfo` shell integration
-starts working on its own.
+Then `opkg install terminfo`. That package and the base ones the installer pulls are the whole of
+Entware here: the shell and the CLI tools come from Nix. `ncurses` in `nas.nix` supplies `tic` and
+`infocmp`, so a terminfo entry DSM lacks can be compiled in place rather than copied in, and
+Ghostty's `ssh-terminfo` shell integration works on its own.
+
+On a DSM box with no Nix, add `zsh` and `ncurses-bin` as well. That zsh links against Entware's own
+ncurses instead of baking in a static one, which SynoCommunity's `zsh-static` does not.
 
 ## zsh plugins
 
