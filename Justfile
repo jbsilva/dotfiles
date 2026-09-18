@@ -70,6 +70,20 @@ gc:
     sudo nix-collect-garbage --delete-older-than 14d
     nix store optimise
 
+# `sudo -v` only moves the first password prompt to the front. The build that
+# follows can outlast the sudo timestamp, so `gc` may ask again.
+#
+# Every line is a recipe of its own, so run any step alone when only that step
+# is wanted. just stops at the first line that fails.
+
+# Update, activate, upgrade Homebrew and collect garbage, in that order
+up:
+    sudo -v
+    just update
+    just nhs
+    just brew-upgrade
+    just gc
+
 # ---------------------------------------------------------------------------
 # Quality
 # ---------------------------------------------------------------------------
