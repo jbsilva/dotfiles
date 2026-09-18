@@ -94,11 +94,14 @@ function M.config()
   --> Diagnostics
   ---------------------------------------------------------------------------
   vim.diagnostic.config({
-    -- Compact markers on every line with a diagnostic, and the full message
-    -- rendered underneath the line the cursor is on. virtual_lines landed in
-    -- 0.11 and is the fix for long TypeScript union errors and Rust borrow
-    -- messages, which virtual_text truncates at the window edge.
-    virtual_text = { spacing = 2, prefix = '●', current_line = false },
+    -- A sign and an underline mark every line that has a diagnostic; only the
+    -- line under the cursor spells the message out, underneath itself. This
+    -- keeps the text on screen where it belongs: a file with one shellcheck
+    -- warning per line stays readable, and long TypeScript union errors or
+    -- Rust borrow messages get as many lines as they need.
+    --   gl          the same message in a float
+    --   <leader>qd  every diagnostic in the buffer, in Trouble
+    virtual_text = false,
     virtual_lines = { current_line = true },
     signs = true,
     underline = true,
