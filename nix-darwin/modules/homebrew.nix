@@ -229,6 +229,7 @@
       # -----------------------------------------------------------------------
       # Media & entertainment
       # -----------------------------------------------------------------------
+      "mediainfo" # media file technical info; homebrew tracks newer releases than nixpkgs
       "plex" # home media player
       "roon" # music player
       "steam" # games
