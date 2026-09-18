@@ -183,6 +183,13 @@
         swda_uti "/Applications/Visual Studio Code.app" "$uti"
       done
 
+      # .nfo has no static UTI: LaunchServices falls back to a dynamic one,
+      # which never appears in `swda getUTIs` (nothing declares it), so it
+      # bypasses the known-UTI check. The name is not machine-specific; its
+      # base32 payload decodes to "?0=6:1=nfo", meaning public.data plus the
+      # extension, so it is the same wherever no app claims .nfo.
+      swda_try "VS Code <- nfo" setHandler --app "/Applications/Visual Studio Code.app" --UTI "dyn.ah62d4rv4ge8063xt"
+
       ###################################################################
       # Archives (The Unarchiver)
       ###################################################################
