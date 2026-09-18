@@ -135,7 +135,9 @@ yamlls
 direnv
 luarc
 luarocks
+appdir
 hererocks
+mediainfo
 nixfmt
 nixpkgs
 pyproject

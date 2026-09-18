@@ -229,7 +229,27 @@
       # -----------------------------------------------------------------------
       # Media & entertainment
       # -----------------------------------------------------------------------
-      "mediainfo" # media file technical info; homebrew tracks newer releases than nixpkgs
+      # `brew bundle` installs most entries with one `brew install` command
+      # that lists brews and casks together and passes no --cask. `mediainfo`
+      # is also an alias of the media-info formula, so that command takes the
+      # formula, reports success and leaves MediaInfo.app absent. `cleanup`
+      # then removes that formula, because no brews entry declares it, so the
+      # run leaves nothing behind to notice.
+      #
+      # An entry with non-empty `args` stays out of that shared command and
+      # gets a `brew install --cask` of its own. appdir is already the
+      # default, so it changes nothing else. A fully qualified name does not
+      # help: bundle reduces it back to the bare token.
+      #
+      # Homebrew issue 23860, fixed by PR 23862 in 7.0.0 (2026-09-13).
+      # nix-homebrew pins brew 6.0.22, so drop this entry for a plain
+      # "mediainfo" once that pin passes 7.0.0.
+      {
+        name = "mediainfo"; # media file technical info
+        args = {
+          appdir = "/Applications";
+        };
+      }
       "plex" # home media player
       "roon" # music player
       "steam" # games
