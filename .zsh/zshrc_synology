@@ -104,7 +104,7 @@ if (( $+commands[docker] )); then
   # dpst: the columns that matter when checking on a NAS at a glance.
   alias dpst='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
   # Compose stacks from DSM's UI. The volume is fixed when Container Manager is
-  # installed (volume3 here), so find it rather than name it.
+  # installed (volume2 here), so find it rather than name it.
   function cdstacks() {
     local d
     for d in /volume*/docker(N/); do

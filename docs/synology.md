@@ -91,6 +91,10 @@ just gets the doubled bar.
 > Under those, every installed SynoCli tool looks missing and `synopkg status` reports packages as
 > stopped when it merely lacked root. Use the `$SHELL -l` form above before concluding anything is
 > absent.
+>
+> Do not extend that form with `-c`. `$SHELL` is `/bin/sh` here, and `~/.profile` execs zsh with no
+> arguments, which drops the command and exits with no output at all. To run one command under the
+> real shell, name it: `ssh nas '~/.nix-profile/bin/zsh -l -i -c "<cmd>"'`.
 
 ## Copying files
 
@@ -101,7 +105,7 @@ from the table rather than reasoning about it:
 | ---------------------------------------- | :---: | :-----: | :------: |
 | `nas:/home/f`, `nas:/docker/f` (shares)  |  yes  |   no    |    no    |
 | `nas:/var/services/homes/julio/f` (real) |  no   |   yes   |   yes    |
-| `nas:/volume3/docker/f` (real)           |  no   |   yes   |   yes    |
+| `nas:/volume2/docker/f` (real)           |  no   |   yes   |   yes    |
 | `nas:/tmp/f` (rootfs)                    |  no   |   no    |   yes    |
 
 `scp` has spoken SFTP since OpenSSH 9.0, and DSM serves SFTP from a jailed server whose root is the
@@ -203,9 +207,8 @@ ncurses instead of baking in a static one, which SynoCommunity's `zsh-static` do
 ## zsh plugins without Nix
 
 home-manager takes the plugins and oh-my-zsh from `flake.lock` and exports
-`DOTFILES_PLUGINS_FROM_NIX=1`, which makes `.zshrc` skip its own search. The checkouts below are
-what this box ran on before that. They are still in `$HOME` and nothing reads them. Read this
-section as the route for a DSM box with no Nix.
+`DOTFILES_PLUGINS_FROM_NIX=1`, which makes `.zshrc` skip its own search. Nothing below is on this
+box. Read this section as the route for a DSM box with no Nix.
 
 Entware packages none of them, and [SynoCommunity]'s `zsh-static` is a lone binary. Clone them into
 the last entry of `_plug_dirs` in `.zshrc`. The upstream repository names already match the files
@@ -289,9 +292,9 @@ Neither repository always carries the newest release. When the version matters, 
 packaged before you install, and take the tool from Nix instead when the package is behind.
 
 **By hand.** A release binary into `~/bin`, which `.zshrc` prepends last and so outranks every other
-source. `~/bin` is empty: everything that was in it is a Nix package now. The asset names differ per
-project, `musl` or `gnu`, `x86_64` or `amd64`, `.tar.gz` or `.bz2`, so there is no common command
-and each one comes off its own releases page.
+source. `~/bin` does not exist: everything that was in it is a Nix package now. The asset names
+differ per project, `musl` or `gnu`, `x86_64` or `amd64`, `.tar.gz` or `.bz2`, so there is no common
+command and each one comes off its own releases page.
 
 One installed-by-hand copy is left, `/usr/local/bin/starship` from `starship.rs/install.sh`. The Nix
 one shadows it, so it is dead weight rather than a second opinion.
@@ -312,6 +315,12 @@ of naming it:
 cdstacks      # cd to <volume>/docker
 dpst          # docker ps, showing names, status and ports
 ```
+
+A script cannot call a shell function, so `nas.nix` names the same directory in `$DOCKER_DIR`. That
+goes through `home.sessionVariables`, so any shell that reads a profile has it, and the
+`nas-containers` READMEs write `$DOCKER_DIR/<stack>` rather than the volume. Only `cdstacks`
+searches, by globbing `/volume*/docker`. `$DOCKER_DIR` is a literal, so moving the share means
+editing `nas.nix` and running `just nas-switch`.
 
 DSM keeps `/var/run/docker.sock` root-only, so every docker call needs `sudo`. Its docker group is
 root-equivalent, so joining it would hand the daemon to every process you start, permanently.
@@ -366,9 +375,15 @@ Then as your own user. `/tmp` is `noexec` on DSM, so the installer cannot run th
 there, and `TMPDIR` has to point somewhere it can:
 
 ```sh
-mkdir -p ~/.cache/nix-install
-TMPDIR=$HOME/.cache/nix-install sh <(curl -L https://nixos.org/nix/install) --no-daemon
+export TMPDIR=$HOME/.cache/nix-install
+mkdir -p "$TMPDIR"
+curl -L -o "$TMPDIR/nix-install.sh" https://nixos.org/nix/install
+sh "$TMPDIR/nix-install.sh" --no-daemon
 ```
+
+Download first rather than piping through `sh <(...)`. Until this finishes there is no zsh on the
+box, so the shell running it is `/bin/sh`, which DSM links to bash. Bash under that name refuses
+process substitution and answers `syntax error near unexpected token '('`.
 
 Write `~/.config/nix/nix.conf` **before** running it, or the install fails at
 `unable to load seccomp BPF program`. DSM's kernel has neither seccomp BPF filtering nor
@@ -393,10 +408,11 @@ mount -o bind /volume2/@Nix /nix
 ```
 
 `zshrc_synology` sources `~/.nix-profile/etc/profile.d/nix.sh` when it is readable, which puts the
-Nix profile ahead of Entware and behind `~/bin`. The installer also appends that line to
-`~/.profile` and `~/.zshenv`. Both are useless here: `~/.profile` execs zsh before reaching it, and
-`~/.zshenv` is a symlink that home-manager owns, so the line lands in the store or, before the first
-activation, in tracked config. Revert it if the installer wrote there.
+Nix profile ahead of Entware and behind `~/bin`. The installer wants to append that line to
+`~/.profile` and `~/.zshenv` as well, and appends only to the ones that already exist, so on an
+empty home it writes neither. Both are useless here anyway: `~/.profile` execs zsh before reaching
+it, and `~/.zshenv` is a symlink that home-manager owns, so the line lands in the store or, before
+the first activation, in tracked config. Revert it if the installer wrote there.
 
 > Builds are unsandboxed as a result, so a build could see the host filesystem. It still cannot use
 > host tools, because the build `PATH` contains only store paths. In practice `x86_64-linux` is
@@ -438,6 +454,19 @@ hand-rolled `nix build` does not:
   the MacBook gets it from `home-manager.backupFileExtension`. Without it, activation stops at the
   first unmanaged regular file sitting where a link belongs.
 
+The first activation on a fresh box is the one exception, because `just` is itself a package in this
+profile. Until it exists, the SSH branch of the recipe stops at `just: command not found`. Do those
+same three things by hand that one time, on the box, and the recipes work from either end after:
+
+```sh
+ssh nas
+. ~/.nix-profile/etc/profile.d/nix.sh
+export TMPDIR=$HOME/.cache/nix-install
+nix build -o ~/.hm-generation \
+  "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
+HOME_MANAGER_BACKUP_EXT=hm-bak ~/.hm-generation/activate
+```
+
 > A change to a recipe takes effect on the run after the one that ships it. The SSH branch sources
 > `nix.sh` to find `just`, so it reads the NAS copy of the `Justfile` as it stands before the pull
 > inside it.
@@ -451,6 +480,14 @@ Delete the links rather than backing them up, since the repo copies are what the
 rm ~/.zshrc ~/.zshenv    # first activation only
 ```
 
+home-manager writes no `~/.zsh`, and the generated `~/.zshrc` sources `~/.zsh/zshrc_synology` by
+that path, so the link is yours to make. Without it activation still reports success and the shell
+still starts, and then every DSM-specific alias is missing:
+
+```sh
+ln -sfn ~/dotfiles/.zsh ~/.zsh
+```
+
 Git is configured by `programs/git.nix` too, which writes `~/.config/git/config`. Delete any
 `~/.gitconfig` or `~/.gitconfig-global` symlink into this repo on first activation. Git reads both
 of those after `~/.config/git/config`, so a link to a per-platform file wins over the module, and
@@ -461,21 +498,25 @@ holds the token in memory rather than writing it to disk.
 That same ordering is then the only way to set anything machine-local, because
 `~/.config/git/config` is a read-only store path and `git config --global` follows the symlink and
 rewrites the store entry in place. So `~/.gitconfig` exists here as a plain file, holding one
-setting:
+setting per checkout of `nas-containers`:
 
 ```ini
 [safe]
-	directory = /volume3/docker
+	directory = /volume2/docker
+	directory = /volume1/Software/docker
 ```
 
-`/volume3/docker` is the working copy the compose stacks run from. The directory itself is owned by
-root while everything inside it is `julio`, so without that line a git call there from a
-non-interactive SSH session fails with `detected dubious ownership`.
+`/volume2/docker` is the one the compose stacks run from, and the one `$DOCKER_DIR` names. A DSM
+share is owned by root while everything inside it is `julio`, so without a line here a git call in
+one fails with `detected dubious ownership` from a non-interactive SSH session. A checkout on
+another share needs its own line.
 
-`~/.profile` should then hand over to the Nix zsh, which fixes the terminfo problem at its root:
-unlike SynoCommunity's `zsh-static` it is not built `--disable-home-terminfo`, so it reads
-`~/.terminfo` unaided. Keep the old one as a fallback for the window between a reboot and the
-Boot-up task that mounts `/nix`:
+`~/.profile` then hands over to the Nix zsh, because `/etc/passwd` gives this account `/bin/sh`.
+That zsh also fixes the terminfo problem at its root: unlike SynoCommunity's `zsh-static` it is not
+built `--disable-home-terminfo`, so it reads `~/.terminfo` unaided. The second path in the loop is
+that `zsh-static`, which is not installed here. It stays as the one place a fallback could go, for
+the window between a reboot and the Boot-up task that mounts `/nix`. Today that window has no zsh at
+all, so the login lands in `/bin/sh`.
 
 ```sh
 for _shell in "$HOME/.nix-profile/bin/zsh" /usr/local/bin/zsh; do
