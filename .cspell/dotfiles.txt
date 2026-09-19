@@ -181,6 +181,7 @@ difftastic
 dpst
 entware
 exiftool
+findutils
 fkey
 fuser
 getconf

@@ -264,13 +264,26 @@ put a few hundred tools in `/usr/local/bin`, as symlinks into `/var/packages/syn
 | `synocli-misc`    | `parallel`, `expect`, `bc`, `lsblk`, `lscpu`, `findmnt`, `hexdump` |
 | `synocli-kernel`  | `lsusb`, `pstree`, `fuser`, `usb-devices`                          |
 
+**None of it is required.** nixpkgs carries every tool in that table, usually newer, and none of the
+bundles is installed here.
+
 `git` and `zsh-static` come from SynoCommunity too, as packages of their own rather than as part of
-a bundle. DSM itself supplies `curl`, `wget`, `jq`, `python3`, `vim`, `gpg`, `tcpdump` and
-`/usr/bin/rsync`. That rsync is the one "Copying files" above depends on: synocli-net carries a
-second one in `/usr/local/bin`, and `/etc/profile` puts `/usr/bin` first, so DSM's wins.
+a bundle. `git` is the one installed here, for its path and not its binary: `ssh HOST '<cmd>'` reads
+no profile, so `/usr/local/bin/git` is the only one findable by name. The `nas-containers` Justfile
+calls it there.
+
+DSM itself supplies `curl`, `wget`, `jq`, `python3`, `vim`, `gpg`, `tcpdump` and `/usr/bin/rsync`.
+That rsync is the one "Copying files" above depends on: synocli-net carries a second one in
+`/usr/local/bin`, and `/etc/profile` puts `/usr/bin` first, so DSM's wins. DSM's `python3` is too
+old for `make-env-examples.py` in `nas-containers`, which names 3.14 in its shebang;
+`uv python install 3.14` provides one without Nix.
 
 **Entware.** `opkg` covers what SynoCommunity does not package and nixpkgs cannot build here.
 Nothing on this box needs it for that today, so `/opt` holds its base packages and `terminfo` alone.
+
+`findutils` and `grep` are base dependencies rather than tools: `entware-opt` needs the first,
+`locales` the second. Removing either takes `--force-depends` and leaves an unmet dependency. Leave
+them.
 
 Neither repository always carries the newest release. When the version matters, check what is
 packaged before you install, and take the tool from Nix instead when the package is behind.
