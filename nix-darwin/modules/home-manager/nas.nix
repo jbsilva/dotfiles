@@ -187,6 +187,17 @@
   # in hm-session-vars.sh, which both of those source, so that shell finds ldd.
   home.sessionPath = [ "$HOME/.local/bin" ];
 
+  # The nas-containers stacks run from this directory, and that repository's
+  # READMEs write `$DOCKER_DIR/<stack>` rather than naming the volume again.
+  # This lands in the same hm-session-vars.sh as sessionPath above, so a shell
+  # that reads a profile has it.
+  #
+  # `ssh nas '<cmd>'` reads no profile at all: it gets /bin/sh and a PATH that
+  # carries neither /usr/local/bin nor this profile. That is the same reason
+  # those commands write /usr/local/bin/docker in full, so they spell this
+  # directory out too.
+  home.sessionVariables.DOCKER_DIR = "/volume2/docker";
+
   # gpg finds its pinentry through this file, and DSM's default path points at
   # a binary that does not exist here. loopback lets a passphrase be piped in
   # for an unattended import, which is the only way in before a pinentry is on
