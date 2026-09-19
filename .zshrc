@@ -211,7 +211,15 @@ fpath=($HOME/.zsh/completions $fpath)
 # the first time that command is completed and startup pays nothing. Each file
 # is regenerated only when its tool changes; see cache freshness below.
 _zcompcache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions"
-[[ -d $_zcompcache ]] || mkdir -p "$_zcompcache"
+# chmod because DSM gives every new directory under a home an inherited
+# Synology ACL and renders it as mode 0777, whatever the umask. compinit reads
+# those POSIX bits, finds an fpath directory the world can write and stops to
+# ask. The ACL grants everyone traverse alone, so the bits are what is wrong,
+# not the access. Both this directory and its parent are audited, and one
+# mkdir -p creates the pair. A no-op on every other machine, and on the first
+# run alone.
+[[ -d $_zcompcache ]] ||
+  { mkdir -p "$_zcompcache" && chmod go-w "$_zcompcache" "${_zcompcache:h}" }
 fpath=("$_zcompcache" $fpath)
 
 # --- cache freshness ---------------------------------------------------------

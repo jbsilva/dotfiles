@@ -30,6 +30,20 @@ home-manager owns `~/.zshrc`, `~/.zshenv` and `~/.zprofile` here, all three syml
 `~/.zsh` is the one link into the repo, and it is what carries this file. On a DSM box that
 home-manager has not reached, clone the repo and link all four by hand. Nothing else is needed.
 
+> **`zsh compinit: insecure directories` on login.** Read the ACL before believing it:
+>
+> ```sh
+> /usr/syno/bin/synoacltool -get ~/.cache/zsh
+> ```
+>
+> Every directory made under a home on the `homes` share inherits a Synology ACL, and DSM renders
+> any file that carries one as mode 0777 whatever the umask is. That ACL grants `everyone` traverse
+> alone, so nothing is readable or writable that should not be, but `compinit` reads the POSIX bits,
+> sees an `$fpath` directory the world can write and stops to ask. `compaudit` names the offenders.
+> `chmod go-w` on each makes the bits honest, and drops the ACL on that directory in the bargain,
+> which is why it belongs on a cache directory and not on the rest of the tree. `.zshrc` does this
+> at the moment it creates them, so the fix survives a wipe of `~/.cache`.
+
 Entware's terminfo reaches the shell through `$TERMINFO_DIRS` in `.zshenv`, not `$TERMINFO` here.
 ncurses fixes its search path before `.zshrc` is read, so setting it at that point is already too
 late for the shell's own lookup. Without it zellij and nvim misrender over SSH.

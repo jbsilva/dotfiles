@@ -175,6 +175,8 @@ bkspc
 btop
 cdstacks
 chroot
+compaudit
+compinit
 dandavison
 delword
 difftastic
@@ -183,6 +185,7 @@ entware
 exiftool
 findutils
 fkey
+fpath
 fuser
 getconf
 ghostty
@@ -214,6 +217,7 @@ smartctl
 sshd
 starship
 syno
+synoacltool
 synocli
 synopkg
 synosystemctl
