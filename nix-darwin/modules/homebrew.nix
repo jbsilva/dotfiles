@@ -6,6 +6,7 @@
   homebrewNikitabobko,
   homebrewDocker,
   homebrewFrankea,
+  homebrewGromgit,
   ...
 }:
 {
@@ -19,6 +20,7 @@
       "nikitabobko/homebrew-tap" = homebrewNikitabobko;
       "docker/homebrew-tap" = homebrewDocker;
       "frankea/homebrew-whisky" = homebrewFrankea;
+      "gromgit/homebrew-fuse" = homebrewGromgit;
     };
     mutableTaps = false;
   };
@@ -87,6 +89,22 @@
       # -----------------------------------------------------------------------
       "duckdb" # embedded analytical SQL
       "libpq" # psql and the client library, without a local server
+
+      # -----------------------------------------------------------------------
+      # Filesystems -- off until an NTFS disk needs writing to
+      # -----------------------------------------------------------------------
+      # Read-write NTFS, for external disks the Finder mounts read-only. The
+      # gromgit/fuse tap stays in nix-homebrew.taps above, so enabling this is
+      # three uncommented lines: here, and macfuse and mounty under casks.
+      #
+      # Do the cask by hand the first time round. The formula declares macFUSE
+      # as a Requirement rather than a dependency, so Homebrew refuses to build
+      # it until /usr/local/include/fuse.h is there and never installs the cask
+      # itself, and the Brewfile lists every brew before any cask:
+      #
+      #   brew install --cask macfuse   # then approve the kext and reboot
+      #   just switch
+      # "gromgit/fuse/ntfs-3g-mac" # read-write NTFS driver for FUSE
 
       # -----------------------------------------------------------------------
       # Media & image processing
@@ -205,6 +223,16 @@
       # -----------------------------------------------------------------------
       "daisydisk" # disk space visualiser
       "frankea/whisky/whisky" # Wine wrapper for Windows apps (maintained fork)
+
+      # -----------------------------------------------------------------------
+      # Filesystems -- off with ntfs-3g-mac under brews, which explains the set
+      # -----------------------------------------------------------------------
+      # macFUSE ships a kernel extension. Installing the cask is only half of
+      # it: macOS holds the kext until it is approved in System Settings >
+      # Privacy & Security, and Apple silicon also wants Reduced Security in
+      # recoveryOS. Both steps ask for a reboot.
+      # "macfuse" # userspace filesystems, which ntfs-3g-mac builds on
+      # "mounty" # menu bar app to remount an NTFS volume read-write
 
       # -----------------------------------------------------------------------
       # Hardware & peripherals

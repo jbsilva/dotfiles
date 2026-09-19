@@ -117,6 +117,22 @@
         "type": "github"
       }
     },
+    "homebrew-gromgit": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789452670,
+        "narHash": "sha256-GR2yQ4cPnw7K3/PloIb+XLZbQTZEu9srSsSJO0Ik+4Q=",
+        "owner": "gromgit",
+        "repo": "homebrew-fuse",
+        "rev": "4c6ca6065a41e276db36429e925f2c6139db7145",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gromgit",
+        "repo": "homebrew-fuse",
+        "type": "github"
+      }
+    },
     "homebrew-nikitabobko": {
       "flake": false,
       "locked": {
@@ -216,6 +232,7 @@
         "homebrew-core": "homebrew-core",
         "homebrew-docker": "homebrew-docker",
         "homebrew-frankea": "homebrew-frankea",
+        "homebrew-gromgit": "homebrew-gromgit",
         "homebrew-nikitabobko": "homebrew-nikitabobko",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",

@@ -48,6 +48,14 @@
       url = "github:frankea/homebrew-whisky";
       flake = false;
     };
+    # ntfs-3g-mac. homebrew-core dropped the FUSE formulae, and this tap keeps
+    # them, with bottles. The formula itself is commented out in
+    # modules/homebrew.nix; the tap stays so turning it back on is a one-file
+    # change there.
+    homebrew-gromgit = {
+      url = "github:gromgit/homebrew-fuse";
+      flake = false;
+    };
 
     # A collection of `git-*` scripts, packaged in modules/git-extra-commands.nix.
     #
@@ -77,6 +85,7 @@
       homebrew-nikitabobko,
       homebrew-docker,
       homebrew-frankea,
+      homebrew-gromgit,
       git-extra-commands,
       sops-nix,
       ...
@@ -89,6 +98,7 @@
         homebrewNikitabobko = homebrew-nikitabobko;
         homebrewDocker = homebrew-docker;
         homebrewFrankea = homebrew-frankea;
+        homebrewGromgit = homebrew-gromgit;
         gitExtraCommandsSrc = git-extra-commands;
       };
 
