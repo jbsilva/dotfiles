@@ -56,15 +56,19 @@ Building it takes one command on the NAS, and removes the question of trusting s
 binary. Match the image tag and `DSM_VER` to your DSM, and give the platform in lower case:
 
 ```sh
+sudo mkdir -p /volume1/Software/wireguard-spk
 sudo docker run --rm --privileged \
   --env PACKAGE_ARCH=v1000 \
   --env DSM_VER=7.4 \
-  -v /volume1/docker/synowirespk74:/result_spk \
+  -v /volume1/Software/wireguard-spk:/result_spk \
   blackvoidclub/synobuild74
 ```
 
-The SPK lands in the mounted directory. Take the prebuilt one from the article instead if you
-prefer, and unzip it.
+The build runs in a container, so Container Manager has to be up.
+
+The SPK lands in a version directory under the mount, in a plain and a `_debug` build. Install the
+plain one, and keep it: a reinstall needs no rebuild. Take the prebuilt one from the article instead
+if you prefer, and unzip it.
 
 ## Check it before you install it
 
@@ -86,13 +90,27 @@ install it. Build one against your own DSM.
 
 ```sh
 sudo /usr/syno/bin/synopkg install ./WireGuard-<platform>-<version>.spk
+
+# The package installs as its own user and cannot load a module that way.
+sudo sed -i 's/"run-as": "package"/"run-as": "root"/' \
+  /var/packages/WireGuard/conf/privilege
+
 sudo /usr/syno/bin/synopkg start WireGuard
 lsmod | grep wireguard
 ```
 
-The package's own `scripts/start` rewrites `conf/privilege` so the package runs as root, and then
-calls bare `synopkg`, which is not on root's `PATH`. It reports failure after it has already done
-that useful half. Call `synopkg` with the full path, as above.
+`synopkg` lives in `/usr/syno/bin`, which is not on the `PATH` a script or `ssh HOST '<cmd>'` gets.
+
+Without the `sed`, DSM answers `Failed to run script, script=[start]` and names no reason. It runs
+`scripts/start-stop-status`, which reads `/usr/syno/etc/iptables_modules_list` and calls `insmod`.
+Both want root. The package log has the error:
+
+```sh
+sudo grep start-stop-status /var/log/packages/WireGuard.log
+```
+
+The SPK ships a `scripts/start` that does the same `sed`. DSM never calls it, because that is not a
+DSM hook name.
 
 gluetun chooses its implementation at startup, so restart the containers on the tunnel and confirm
 what it took:
@@ -109,6 +127,12 @@ Anything bound to the interface keeps working.
 Choosing which Proton server gluetun connects to is a separate trap, and the list inside the image
 is not the one an account holds. That, and the stacks themselves, are in the `nas-containers`
 repository.
+
+## Putting it back
+
+gluetun returning to userspace is the sign the module is gone. Compare the kept SPK's vermagic
+against the running kernel, as above: the same means reinstall, different means rebuild with
+`DSM_VER` matched to the DSM. Then install as above.
 
 ## Weighing it
 

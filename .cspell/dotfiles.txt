@@ -188,6 +188,7 @@ getconf
 ghostty
 hexdump
 infocmp
+insmod
 kcbt
 libc
 libstdc
