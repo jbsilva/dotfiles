@@ -127,18 +127,21 @@ filenames then need careful quoting.
 
 ## Installing Entware
 
-Entware lives in `/volume1/@Entware/opt`, bind-mounted onto `/opt`. The `@` prefix makes it a DSM
+Entware lives in `/volume2/@Entware/opt`, bind-mounted onto `/opt`. The `@` prefix makes it a DSM
 system directory rather than a shared folder: invisible in File Station, never exported over
 SMB/NFS, skipped by Media Indexing, and left out of DSM's shared-folder ACL model, so the POSIX
 modes and setuid bits the packages set are the only thing governing it. DSM will not let you create
 an `@` name through the UI anyway.
 
-A DSM upgrade wipes `/opt`, which is on the rootfs, but not `/volume1/@Entware`. **So after an
+The packages live on this volume and the array carries data. The Boot-up task below names the path a
+second time, so a move changes both.
+
+A DSM upgrade wipes `/opt`, which is on the rootfs, but not `/volume2/@Entware`. **So after an
 upgrade, check whether this is only a lost bind mount before reinstalling anything:**
 
 ```sh
-sudo ls -la /volume1/@Entware/opt      # bin/ etc/ lib/ share/ still there?
-sudo mount -o bind /volume1/@Entware/opt /opt
+sudo ls -la /volume2/@Entware/opt      # bin/ etc/ lib/ share/ still there?
+sudo mount -o bind /volume2/@Entware/opt /opt
 ```
 
 If that brings `/opt/bin/opkg` back, skip the rest of this section and go straight to the boot task.
@@ -160,14 +163,14 @@ Then, as root:
 ```sh
 umask 022        # root's umask is 077; 0700 on /opt locks every other user out
 
-mkdir -p /volume1/@Entware/opt
-chmod 755 /volume1/@Entware /volume1/@Entware/opt
+mkdir -p /volume2/@Entware/opt
+chmod 755 /volume2/@Entware /volume2/@Entware/opt
 
 # Not the wiki's `rm -rf /opt`: the bind mount hides what is under it, and
 # Container Manager keeps an (empty) /opt/containerd there.
-cp -a /opt/containerd /volume1/@Entware/opt/
+cp -a /opt/containerd /volume2/@Entware/opt/
 
-mount -o bind /volume1/@Entware/opt /opt
+mount -o bind /volume2/@Entware/opt /opt
 wget -O - https://bin.entware.net/x64-k3.2/installer/generic.sh | /bin/sh
 ```
 
@@ -180,7 +183,7 @@ Re-create it from a **Triggered Task** in Control Panel → Task Scheduler (even
 
 ```sh
 mkdir -p /opt
-mount -o bind /volume1/@Entware/opt /opt
+mount -o bind /volume2/@Entware/opt /opt
 /opt/etc/init.d/rc.unslung start
 /opt/bin/opkg update
 ```
