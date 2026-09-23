@@ -128,6 +128,99 @@ Choosing which Proton server gluetun connects to is a separate trap, and the lis
 is not the one an account holds. That, and the stacks themselves, are in the `nas-containers`
 repository.
 
+## The tun module
+
+The kernel implementation never touches `/dev/net/tun`. It creates a network interface of its own
+type instead. That device still has to exist, because the compose file names it:
+
+```yaml
+devices:
+  - /dev/net/tun:/dev/net/tun
+```
+
+When Docker creates the container, it reads that line. That happens before gluetun picks an
+implementation, so the device is a condition of starting at all. Without it:
+
+```
+Error response from daemon: error gathering device information while adding custom device
+"/dev/net/tun": no such file or directory
+```
+
+Nothing here loads `tun`. `/usr/syno/etc/iptables_modules_list` carries it as
+`OPENVPN_MODULES="tun.ko"`, and the only reader of that entry is
+`/usr/syno/etc/synovpnclient/scripts/ovpnc.sh`. That script runs only for a DSM OpenVPN client
+connection. This box never makes one.
+
+The two packages that do load modules load other ones. The WireGuard SPK loads the core and NAT
+modules, then `wireguard.ko`. Container Manager loads the core, common, NAT, IPv6 and Docker
+modules. So only a manual `modprobe` loads `tun`, and a reboot clears it.
+
+The cost is a stack rather than a container. gluetun stops in `Created`, and the eleven services
+that borrow its namespace stop in `Created` behind it. `sudo docker ps -a` is what shows this, since
+`docker ps` alone hides a container that never ran.
+
+Load it from a **Triggered Task** in Control Panel → Task Scheduler (event: Boot-up, user: `root`),
+beside the Entware and Nix tasks that [synology.md](synology.md) describes:
+
+```sh
+/sbin/modprobe tun
+```
+
+`modprobe` creates `/dev/net/tun` on its own, so the task needs no second line.
+
+## The task from the CLI
+
+`synoschedtask` cannot create one. It offers `--get`, `--del`, `--run` and `--sync`, and a triggered
+task is not in what `--get` reports: that subcommand answers for the time-based tasks alone. Both
+kinds live in one SQLite database, and `--sync` is what makes DSM re-read it.
+
+> **This writes to a DSM system database, and the UI is the supported route.** Copy the file first.
+> The row has to match the columns of a bootup task that works, and `{"running":[]}` has to reach
+> sqlite intact. Send the statement on stdin. As an argument to `ssh HOST '<cmd>'` it is parsed
+> twice and the inner quotes are gone by the time sqlite sees them.
+
+```sh
+sudo cp -a /usr/syno/etc/esynoscheduler/esynoscheduler.db{,.bak}
+
+sudo sqlite3 /usr/syno/etc/esynoscheduler/esynoscheduler.db <<'SQL'
+INSERT INTO task (task_name, description, event, depend_on_task, enable, owner,
+                  run_the_same_time, notify_enable, notify_mail, notify_if_error,
+                  operation, operation_type, status, last_start_time, last_stop_time,
+                  last_exit_info, extra)
+VALUES ('TUN', '', 'bootup', '', 1, 0, 0, 0, '', 0,
+        '/sbin/modprobe tun', 'script', '{"running":[]}', 0, 0, '{}', '{}');
+SQL
+
+sudo /usr/syno/bin/synoschedtask --sync
+```
+
+`task_name` is the primary key, so the name is the handle. Read back what DSM made of it, and what
+every bootup task did on the last boot:
+
+```sh
+sudo sqlite3 /usr/syno/etc/esynoscheduler/esynoscheduler.db \
+  'select task_name, datetime(last_start_time, "unixepoch", "localtime"), last_exit_info
+     from task where event = "bootup";'
+```
+
+A task that never ran reads `1970-01-01`. The UI is the other half. If Control Panel lists `TUN`
+beside the others, the row is well-formed.
+
+## Boot order
+
+The bootup tasks run about 80 seconds after the kernel starts, which is well after Container
+Manager. That order still works here. Every service in both stacks carries
+`restart: unless-stopped`, and a clean DSM shutdown stops the containers. Docker then leaves a
+stopped container down at the next boot. So nothing wants the device before the task runs.
+
+A power loss breaks that. The containers were never stopped, so the daemon starts them itself, and
+it can win the race against the task. If gluetun is down after an unclean boot, take the stack down
+and up:
+
+```sh
+just restart qbittorrent_gluetun
+```
+
 ## Putting it back
 
 gluetun returning to userspace is the sign the module is gone. Compare the kept SPK's vermagic

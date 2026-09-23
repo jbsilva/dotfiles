@@ -368,7 +368,9 @@ creates the network, so a change here means recreating it: stop every attached c
 `compose down` the stack that defines the network, then `up -d` in dependency order.
 
 WireGuard on this box runs in the kernel rather than in userspace, which is worth about 1.5 cores:
-[docs/synology-wireguard.md](synology-wireguard.md).
+[docs/synology-wireguard.md](synology-wireguard.md). That file also carries the third Boot-up task,
+which loads `tun`. Without that module `/dev/net/tun` is absent, and then no gluetun container
+starts. Every service that borrows its namespace stays down with it.
 
 ## Nix
 
