@@ -62,8 +62,12 @@ generations:
 # bundles nobody asked it to: adobe-creative-cloud, microsoft-office and
 # visual-studio-code among them. `brew upgrade` covers formulae and casks
 # alike; pass --greedy by hand for a cask that is genuinely stuck.
-brew-upgrade:
-    brew upgrade
+#
+# --yes skips the "Do you want to proceed with the upgrade?" prompt, so `just up`
+# runs to the end unattended. `just brew-upgrade --dry-run` lists the upgrades
+# without doing them.
+brew-upgrade *ARGS:
+    brew upgrade --yes {{ ARGS }}
 
 # Collect garbage older than 14 days and optimise the store
 gc:
