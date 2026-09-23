@@ -34,13 +34,21 @@ diff:
     nix build --out-link /tmp/dotfiles-next {{ flake }}#darwinConfigurations.{{ host }}.system
     nvd diff /run/current-system /tmp/dotfiles-next
 
+# `nix flake update` asks the GitHub API for the newest commit of every input
+# and then downloads it. Without a token, GitHub allows 60 requests per hour
+# from one address, so a few updates in a row stop on "API rate limit
+# exceeded". This prefix gives Nix the token that gh keeps in the keychain,
+# through NIX_CONFIG, so the token stays out of /etc/nix/nix.conf and the
+# store. If gh has no token, the command runs without one.
+with_github_token := 'token=$(gh auth token 2>/dev/null) && export NIX_CONFIG="access-tokens = github.com=$token";'
+
 # Update every flake input
 update:
-    nix flake update --flake {{ flake }}
+    {{ with_github_token }} nix flake update --flake {{ flake }}
 
 # Update a single input, e.g. `just update-input nixpkgs`
 update-input input:
-    nix flake update {{ input }} --flake {{ flake }}
+    {{ with_github_token }} nix flake update {{ input }} --flake {{ flake }}
 
 # List the system generations
 generations:
