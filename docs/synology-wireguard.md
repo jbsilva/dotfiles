@@ -242,9 +242,12 @@ For:
 
 - About 1.5 cores back under load, and steadier throughput.
 - The vermagic check catches the dangerous case before anything reaches the kernel.
-- The failure mode is soft. With the module missing or refusing to load, gluetun returns to
-  userspace on its own: slower, still up, and it says so in the log.
+- The failure mode is soft, as long as `tun` is loaded. With the WireGuard module missing or
+  refusing to load, gluetun returns to userspace on its own: slower, still up, and it says so in the
+  log.
 
-That last point decides it. Losing the module costs throughput rather than service, so the downside
-is bounded. Check the vermagic, keep the SPK, and take the reboot while you are watching rather than
+That last point decides it, and it rests on `tun`. Losing the WireGuard module costs throughput
+rather than service, so the downside is bounded. The userspace path runs on `/dev/net/tun`, and the
+compose file names that device under either implementation. So the soft landing needs the boot task
+above. Check the vermagic, keep the SPK, and take the reboot while you are watching rather than
 meeting a boot problem months later. The package survives a reboot on its own once installed.
