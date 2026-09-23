@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Secret scan over staged changes. Run as a local hook from
-# .pre-commit-config.yaml; enable with `just hooks`.
+# prek.toml; enable with `just hooks`.
 #
 # Files linked out of this repo into ~/.config are written to by the
 # applications themselves, and .gitignore uses an allow-list to keep the rest

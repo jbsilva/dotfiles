@@ -1,0 +1,150 @@
+# Configuration file for `prek`, a git hook framework written in Rust.
+# See https://prek.j178.dev for more information.
+#:schema https://www.schemastore.org/prek.json
+#
+# Run with `just hooks` to install, `just lint` to run everything once.
+
+# Paths excluded everywhere: vendored trees and generated files. They are not
+# ours to reformat, and rewriting them would produce enormous diffs against
+# upstream.
+exclude = '''
+(?x)^(
+    linux/XCompose/.*
+  | \.zsh/completions/.*
+  | windows/.*
+)$
+'''
+
+# prek's Rust build of the pre-commit-hooks set. Naming the upstream repo
+# runs the same code, but also clones it and builds an unused Python venv.
+[[repos]]
+repo = "builtin"
+hooks = [
+  { id = "check-added-large-files" },
+  { id = "check-merge-conflict" },
+  { id = "check-toml" },
+  { id = "check-yaml" },
+  { id = "end-of-file-fixer" },
+  { id = "mixed-line-ending" },
+  { id = "trailing-whitespace" },
+  # Every shell script here is expected to be directly runnable.
+  { id = "check-executables-have-shebangs" },
+]
+
+[[repos]]
+repo = "https://github.com/hukkin/mdformat"
+rev = "1.0.0"
+hooks = [
+  # config in .mdformat.toml
+  { id = "mdformat", additional_dependencies = [
+    "mdformat-gfm", # GitHub Flavored Markdown (tables, strikethrough)
+    "mdformat-frontmatter", # Don't mess with YAML front matter blocks
+  ] },
+]
+
+[[repos]]
+repo = "https://github.com/crate-ci/typos"
+rev = "v1.50.2"
+hooks = [{ id = "typos" }] # config in typos.toml
+
+[[repos]]
+repo = "https://github.com/rhysd/actionlint"
+rev = "v1.7.12"
+hooks = [{ id = "actionlint" }]
+
+# The security half of the workflow linting: actionlint reads the YAML for
+# correctness, zizmor reads it for unpinned actions, credential persistence,
+# cache poisoning, template injection and over-broad permissions.
+# `local` because zizmor-pre-commit only tags stable releases; pinning the
+# wheel here takes prereleases too. zizmor audits .pre-commit-config.yaml but
+# not prek.toml yet (https://github.com/zizmorcore/zizmor/issues/2260). Once it
+# does, add prek.toml to `files` below.
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "zizmor"
+name = "zizmor"
+entry = "zizmor"
+language = "python"
+additional_dependencies = ["zizmor==1.30.1"]
+args = ["--no-progress"]
+require_serial = true
+types = ["yaml"]
+files = '(\.github/(workflows/.*|dependabot\.ya?ml))|(action\.ya?ml)$'
+
+# renovate.json5 is what keeps the two blocks of pins above current, so a typo
+# in it fails open: Renovate logs the error server-side and stops opening PRs,
+# with nothing visible in the repo. The upstream hook rather than a `local` one
+# because renovate's nix closure is 1.8 GiB, far too much for packages.nix and
+# the CI lint shell; this pulls just the validator through node.
+[[repos]]
+repo = "https://github.com/renovatebot/pre-commit-hooks"
+rev = "44.93.5"
+hooks = [{ id = "renovate-config-validator", args = ["--strict"] }]
+
+# Nix. These are `local` because they are already installed by
+# nix-darwin/modules/packages.nix, so there is nothing to fetch.
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "nixfmt"
+name = "nixfmt"
+entry = "nixfmt"
+language = "system"
+types = ["nix"]
+
+[[repos.hooks]]
+id = "statix"
+name = "statix"
+entry = "statix check"
+language = "system"
+pass_filenames = false
+files = '\.nix$'
+
+[[repos.hooks]]
+id = "deadnix"
+name = "deadnix"
+entry = "deadnix --fail"
+language = "system"
+types = ["nix"]
+
+[[repos.hooks]]
+id = "shellcheck"
+name = "shellcheck"
+entry = "shellcheck"
+language = "system"
+types = ["shell"]
+# shellcheck only understands sh/bash/dash/ksh. zsh files go to the
+# zsh-syntax hook below.
+exclude_types = ["zsh"]
+
+[[repos.hooks]]
+id = "zsh-syntax"
+name = "zsh -n (parse check)"
+entry = "zsh -n"
+language = "system"
+types = ["zsh"]
+# .zsh/zshrc_macos and friends have neither an extension nor a shebang,
+# so identify tags them only as "text"; match them by path as well.
+files = '(\.zsh$|^\.zshrc$|^\.zsh/zshrc_)'
+
+[[repos.hooks]]
+id = "stylua"
+name = "stylua"
+entry = "stylua"
+language = "system"
+types = ["lua"]
+
+# Secret scan. Kept as a local hook rather than the upstream gitleaks one
+# so it passes --config explicitly: gitleaks does not reliably
+# auto-discover .gitleaks.toml in `git` mode, and silently falling back to
+# the default ruleset would resurrect the known false positives.
+[[repos.hooks]]
+id = "gitleaks"
+name = "gitleaks (staged changes)"
+entry = "scripts/gitleaks-staged.sh"
+language = "script"
+pass_filenames = false
+always_run = true

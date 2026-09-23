@@ -42,7 +42,7 @@ jobs:
   # ---------------------------------------------------------------------------
   # Formatting and linting, via the same hooks that run on commit.
   #
-  # One job rather than a step per tool: prek reads .pre-commit-config.yaml, so
+  # One job rather than a step per tool: prek reads prek.toml, so
   # CI and the local hooks can never drift apart.
   # ---------------------------------------------------------------------------
   lint:
@@ -90,7 +90,7 @@ jobs:
 
       # pipx is preinstalled on the runner, and PyPI has releases ahead of the
       # community-maintained nixpkgs one. Renovate moves this pin, the one
-      # below and the one in .pre-commit-config.yaml together.
+      # below and the one in prek.toml together.
       - name: zizmor
         run: pipx run zizmor==1.30.1 --format=sarif . > results.sarif
         env:

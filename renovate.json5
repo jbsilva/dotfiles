@@ -1,5 +1,5 @@
 // Renovate configuration: automated dependency updates for the GitHub Actions SHA pins in
-// .github/workflows/ and the hook revs in .pre-commit-config.yaml.
+// .github/workflows/ and the hook revs in prek.toml.
 //
 // Setup: install the Renovate GitHub App (https://github.com/apps/renovate) and merge the one-time
 // "Configure Renovate" onboarding PR. Renovate's GitHub-sourced security PRs need the repo's
@@ -11,10 +11,11 @@
 
   // config:best-practices keeps GitHub Actions pinned to a full commit SHA with the version in the
   // trailing comment, which is the form zizmor requires and the workflows already use. It also
-  // enables the Dependency Dashboard issue. ":enablePreCommit" is separate because the pre-commit
-  // manager is off by default -- it is the reason this repo wants Renovate rather than Dependabot,
-  // whose pre-commit ecosystem is not GA.
-  extends: ["config:best-practices", ":enablePreCommit"],
+  // enables the Dependency Dashboard issue. The built-in pre-commit manager stays off: it reads only
+  // .pre-commit-config.ya?ml, and prek reads prek.toml here. A regex manager below covers the hook
+  // revs instead, which is the reason this repo wants Renovate rather than Dependabot: Dependabot
+  // has no custom managers.
+  extends: ["config:best-practices"],
 
   timezone: "Europe/Berlin",
 
@@ -49,13 +50,15 @@
       groupName: "github-actions (minor+patch)",
     },
     {
-      description: "pre-commit hooks: group minor+patch",
-      matchManagers: ["pre-commit"],
+      description: "prek hooks: group minor+patch",
+      // github-tags keeps the zizmor wheel pins (pypi, same manager type) out of this group.
+      matchManagers: ["custom.regex"],
+      matchDatasources: ["github-tags"],
       matchUpdateTypes: ["minor", "patch"],
-      groupName: "pre-commit hooks (minor+patch)",
+      groupName: "prek hooks (minor+patch)",
     },
 
-    // --- Cross-file version sync. Several tools are pinned twice: once as a pre-commit hook rev,
+    // --- Cross-file version sync. Several tools are pinned twice: once as a prek hook rev,
     //     once as a nixpkgs package that the `local` hooks and CI call off $PATH. Renovate only
     //     manages the hook side (nixpkgs versions move with flake.lock), but grouping keeps each
     //     tool's PR self-contained and named after the tool, so it is obvious when a hook has moved
@@ -66,7 +69,7 @@
       groupName: "typos",
     },
     {
-      description: "zizmor: the wheel is pinned in both .pre-commit-config.yaml and ci.yml",
+      description: "zizmor: the wheel is pinned in both prek.toml and ci.yml",
       matchPackageNames: ["zizmor"],
       groupName: "zizmor",
     },
@@ -77,15 +80,31 @@
     },
   ],
 
-  // No stock manager sees the zizmor pins: the pre-commit manager reads `rev`, not
-  // `additional_dependencies`, and nothing parses a `run:` line. The shared depName groups all of
-  // them into the one PR above. On a prerelease pin, `ignoreUnstable` follows later prereleases of
-  // that same version and then its stable release, and never jumps to the next prerelease train.
   customManagers: [
+    // Renovate has no native prek manager yet (renovatebot/renovate#41683), so this reads the
+    // repo/rev pairs out of prek.toml. It emits the same owner/repo slugs the pre-commit manager
+    // does, which the packageRules above match on. Drop it once a native manager ships.
+    {
+      customType: "regex",
+      description: "prek hook revs in prek.toml",
+      managerFilePatterns: ["/(^|/)prek\\.toml$/"],
+      // "[^\\[]*?" tolerates comments or blank lines between the two keys but never crosses into
+      // the next "[[repos]]" table, so a rev is never paired with the wrong repo. The builtin and
+      // local repos have no rev and never match.
+      matchStrings: [
+        "repo\\s*=\\s*[\"']https://github\\.com/(?<packageName>[^\"'\\s]+?)(?:\\.git)?[\"'][^\\[]*?rev\\s*=\\s*[\"'](?<currentValue>[^\"']+)[\"']",
+      ],
+      datasourceTemplate: "github-tags",
+    },
+
+    // The hook rev regex above reads `rev`, not `additional_dependencies`, and nothing parses a
+    // `run:` line, so the zizmor pins need their own. The shared depName groups all of them into the
+    // one PR above. On a prerelease pin, `ignoreUnstable` follows later prereleases of that same
+    // version and then its stable release, and never jumps to the next prerelease train.
     {
       customType: "regex",
       managerFilePatterns: [
-        ".pre-commit-config.yaml",
+        "prek.toml",
         ".github/workflows/ci.yml",
       ],
       matchStrings: ["zizmor==(?<currentValue>[0-9][^\"'\\s]*)"],
@@ -106,5 +125,5 @@
   // Anything pinned as a `fetchFromGitHub` rev plus hash would join it, because Renovate cannot
   // compute a fixed-output hash. That is the reason git-extra-commands is a flake input rather than
   // a rev in modules/git-extra-commands.nix: `just update` reaches it there.
-  enabledManagers: ["github-actions", "pre-commit", "custom.regex"],
+  enabledManagers: ["github-actions", "custom.regex"],
 }

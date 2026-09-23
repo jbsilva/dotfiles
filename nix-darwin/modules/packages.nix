@@ -95,7 +95,7 @@
     typos # source-code spell checker
     actionlint # linter for GitHub Actions workflows
     # zizmor  # `uv tool install zizmor`: PyPI ships releases nixpkgs has not packaged yet
-    prek # runs .pre-commit-config.yaml; drop-in pre-commit replacement in Rust
+    prek # runs the git hooks in prek.toml; drop-in pre-commit replacement in Rust
     ast-grep # structural search & rewrite, by syntax tree rather than regex
     tealdeer # `tldr` client: practical examples instead of full man pages
     uv # fast Python package/venv manager

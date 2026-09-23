@@ -101,18 +101,17 @@ directories for the files Nix does not place: X11, the bootloader, KDE autostart
 
 ### Repo infrastructure
 
-`Justfile` (task runner), `.pre-commit-config.yaml` (git hooks, run by [prek]), `scripts/`,
-`.github/workflows/` (CI), `renovate.json5`, `.sops.yaml` (which key `secrets/` is encrypted to),
-and the tool configs: `typos.toml`, `statix.toml`, `.gitleaks.toml`, `.mdformat.toml`,
-`.stylua.toml`, `cspell.json`.
+`Justfile` (task runner), `prek.toml` (git hooks, run by [prek]), `scripts/`, `.github/workflows/`
+(CI), `renovate.json5`, `.sops.yaml` (which key `secrets/` is encrypted to), and the tool configs:
+`typos.toml`, `statix.toml`, `.gitleaks.toml`, `.mdformat.toml`, `.stylua.toml`, `cspell.json`.
 
 `docs/` takes what is too long for this file: setups that live on a machine rather than in this
 repo, where the value is the commands and the traps. The compose stacks on the NAS are their own
 repository, `nas-containers`, since they deploy differently and carry credentials.
 
 [Renovate] keeps the two sets of pins current: the SHA-pinned actions in `.github/workflows/` and
-the hook `rev`s in `.pre-commit-config.yaml`. It is deliberately not pointed at `flake.lock`. That
-is `just update`'s job, and `nixpkgs-unstable` moves several times a day. `renovate-check` in
+the hook `rev`s in `prek.toml`. It is deliberately not pointed at `flake.lock`. That is
+`just update`'s job, and `nixpkgs-unstable` moves several times a day. `renovate-check` in
 `.zsh/renovate_check.zsh` runs the same rules locally and shows what is being held back.
 
 Two spell checkers, with different jobs: `typos` catches real misspellings anywhere and gates
@@ -409,7 +408,7 @@ ______________________________________________________________________
 
 Formatting and linting run as git hooks, managed by [prek]. It is a drop-in
 [pre-commit](https://pre-commit.com) replacement in Rust, so there is no Python environment to keep
-alive. The config is the usual `.pre-commit-config.yaml`.
+alive. The config is `prek.toml`, prek's native TOML format.
 
 ```sh
 just hooks          # install the hooks (once per clone)
@@ -430,7 +429,7 @@ just test-shell     # WSL/Synology/bare-Linux containers (needs docker)
 | `shellcheck`, `zsh -n`        | sh/bash and zsh respectively                                          |
 | `stylua`                      | Lua, config in `.stylua.toml`                                         |
 | `actionlint`                  | GitHub Actions workflows                                              |
-| `zizmor`                      | GitHub Actions workflows and `.pre-commit-config.yaml`, security side |
+| `zizmor`                      | GitHub Actions workflows, security side                               |
 | `renovate-config-validator`   | `renovate.json5`                                                      |
 | `gitleaks`                    | secrets in staged changes                                             |
 | pre-commit-hooks              | trailing whitespace, EOF, line endings, large files, YAML/TOML syntax |

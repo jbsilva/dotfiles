@@ -13,7 +13,7 @@
 #
 # The GitHub token comes from `gh auth token`, so nothing secret lands in your shell history or
 # argv. Without gh (or when logged out) it still runs, but GitHub-sourced updates (actions,
-# pre-commit repos, python-version) get rate-limited and may be missed.
+# prek hook repos, python-version) get rate-limited and may be missed.
 #
 # Env overrides:
 #   RENOVATE_VERSION   npm version of renovate to run via npx (default: latest)

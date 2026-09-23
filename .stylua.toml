@@ -1,4 +1,4 @@
-# stylua config (see the stylua hook in .pre-commit-config.yaml).
+# stylua config (see the stylua hook in prek.toml).
 #
 # Matches the style the Neovim config is already written in. stylua's defaults
 # are tabs and double quotes, which would rewrite every file here for no reason.
