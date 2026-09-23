@@ -28,7 +28,8 @@
   # Homebrew 6's HOMEBREW_REQUIRE_TAP_TRUST refuses entries from untrusted
   # third-party taps. nix-darwin emits `trusted: true` on every brew and cask it
   # generates, which covers the fully-qualified ones below, so nothing needs to
-  # write ~/.homebrew/trust.json.
+  # write ~/.homebrew/trust.json by hand. A tap that supplies no entry below is
+  # the exception, see `taps`.
   homebrew = {
     enable = true;
     # Upgrades are not part of activation. `just brew-upgrade` does them on
@@ -55,12 +56,21 @@
     # homebrew/cask force-uninstalls every cask from it -- so mirror the taps
     # above. Cleanup compares names literally against Homebrew's normalised
     # `owner/repo`, hence stripping the `homebrew-` prefix.
+    #
+    # gromgit/fuse supplies nothing while ntfs-3g-mac is off, so no entry
+    # carries trust for it, and every `brew install` and `brew upgrade` warns
+    # that the tap is untrusted. Trusting the whole tap here stops that. Its
+    # contents move only with the flake input, so the trust covers a pinned
+    # commit, not whatever the tap publishes next.
     taps = lib.mapAttrsToList (
       name: _:
       let
         parts = lib.splitString "/" name;
       in
-      "${lib.head parts}/${lib.removePrefix "homebrew-" (lib.last parts)}"
+      {
+        name = "${lib.head parts}/${lib.removePrefix "homebrew-" (lib.last parts)}";
+        trusted = name == "gromgit/homebrew-fuse";
+      }
     ) config.nix-homebrew.taps;
 
     brews = [
