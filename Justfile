@@ -224,7 +224,7 @@ profile-shell *ARGS:
 #
 # Each recipe below serves both sides. On the NAS it does the work; anywhere
 # else it drives the box over SSH. `just` reaches the NAS through
-# home-manager/nas.nix.
+# home-manager/synology.nix.
 #
 # The test is /usr/syno, DSM's own tree, rather than the platform: WSL is
 # x86_64-linux as well, so a `[linux]` attribute would send it down the local
@@ -245,25 +245,32 @@ profile-shell *ARGS:
 # link belongs, rather than moving it aside.
 # ---------------------------------------------------------------------------
 
-# `nas` is the LAN address. Set NAS_HOST=nast, the Tailscale alias, from off the LAN.
+# The argument is the SSH alias to reach: `nas` is the RS2423+ on the LAN and
+# `bkp` the DS1522+. Set NAS_HOST=nast, the Tailscale alias, from off the LAN.
+#
+# The box picks the profile, not the alias: it builds julio@<its hostname>, in
+# lower case. So an alias that reaches the other box cannot put this profile on
+# it.
 nas_host := env("NAS_HOST", "nas")
 
-# Pull and activate the home-manager profile on the Synology
-nas-switch:
+# Pull and activate the home-manager profile on a Synology: `just nas-switch bkp`
+nas-switch box=nas_host:
     if [ -d /usr/syno ]; then \
+      profile=$(hostname | tr '[:upper:]' '[:lower:]') && \
       /usr/local/bin/git -C ~/dotfiles pull --ff-only && \
       TMPDIR=$HOME/.cache/nix-install nix build -o ~/.hm-generation \
-        "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage" && \
+        "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@$profile\".activationPackage" && \
       HOME_MANAGER_BACKUP_EXT=hm-bak ~/.hm-generation/activate; \
     else \
-      ssh {{ nas_host }} '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-switch'; \
+      ssh {{ box }} '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-switch'; \
     fi
 
 # What the next nas-switch would change, without activating it
-nas-diff:
+nas-diff box=nas_host:
     if [ -d /usr/syno ]; then \
+      profile=$(hostname | tr '[:upper:]' '[:lower:]') && \
       TMPDIR=$HOME/.cache/nix-install nix build --no-link --print-out-paths \
-        "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"; \
+        "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@$profile\".activationPackage"; \
     else \
-      ssh {{ nas_host }} '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-diff'; \
+      ssh {{ box }} '. ~/.nix-profile/etc/profile.d/nix.sh && just -f ~/dotfiles/Justfile nas-diff'; \
     fi
