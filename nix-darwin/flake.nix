@@ -132,10 +132,12 @@
       };
 
       homeConfigurations = {
-        # The Synology. Single-user Nix, DSM rather than a distribution, and a
-        # store on a bind-mounted volume. Its module carries the shims DSM
-        # needs; see modules/home-manager/nas.nix.
+        # The Synology boxes, named after their hostnames: the RS2423+ and the
+        # DS1522+. Single-user Nix, DSM rather than a distribution, and a store
+        # on a bind-mounted volume. Both import modules/home-manager/synology.nix,
+        # which carries the shims DSM needs.
         "julio@nas" = mkHome ./modules/home-manager/nas.nix;
+        "julio@bkp" = mkHome ./modules/home-manager/bkp.nix;
 
         # Arch on the desktop and Ubuntu under WSL on the work machine. Both
         # take the same module: they are ordinary x86_64 Linux with Nix
