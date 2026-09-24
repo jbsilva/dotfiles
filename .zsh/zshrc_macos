@@ -40,7 +40,8 @@ alias show_Desktop='defaults write com.apple.finder CreateDesktop TRUE; killall 
 #
 # `nas` is the LAN address and `nast` the Tailscale one, both Host blocks in
 # ~/.ssh/config. Each has an SSH and a mosh spelling, and all four carry the
-# Zellij nesting marker.
+# Zellij nesting marker. `bkp` is the second DSM box, the DS1522+, and works the
+# same way.
 #
 # Zellij 0.45.0 runs a session inside a pane properly, but the inner one only
 # works out that it is nested by looking for $ZELLIJ in its own environment,
@@ -73,6 +74,7 @@ _nas_ssh() {
 
 nas() { _nas_ssh nas "$@"; }
 nast() { _nas_ssh nast "$@"; }
+bkp() { _nas_ssh bkp "$@"; }
 
 # Mosh to a host whose mosh-server comes from a Nix profile: `mosh-nix nas`.
 #
