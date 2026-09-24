@@ -4,16 +4,21 @@ RS2423+ running DSM 7.x. Not a machine this repo configures the way it configure
 is not a distribution, there is no nix-darwin, and most of what follows is about working around
 that.
 
+A DS1522+ runs the same setup, reached as `bkp`. Everything below holds for both boxes, and a
+difference is named where it exists.
+
 This is a runbook for one machine rather than a description of the repo, so it lives here next to
 [synology-wireguard.md](synology-wireguard.md) rather than in the README.
 
 What the repo itself holds for this box:
 
-| Path                                      | What                                                     |
-| ----------------------------------------- | -------------------------------------------------------- |
-| `.zsh/zshrc_synology`                     | The shell half, loaded when `/etc/synoinfo.conf` exists  |
-| `nix-darwin/modules/home-manager/nas.nix` | The home-manager profile, applied with `just nas-switch` |
-| `Justfile`                                | The `nas-*` recipes, which run here or drive it over SSH |
+| Path                                           | What                                                      |
+| ---------------------------------------------- | --------------------------------------------------------- |
+| `.zsh/zshrc_synology`                          | The shell half, loaded when `/etc/synoinfo.conf` exists   |
+| `nix-darwin/modules/home-manager/synology.nix` | The home-manager profile that both boxes share            |
+| `nix-darwin/modules/home-manager/nas.nix`      | What the RS2423+ adds, applied with `just nas-switch`     |
+| `nix-darwin/modules/home-manager/bkp.nix`      | What the DS1522+ adds, applied with `just nas-switch bkp` |
+| `Justfile`                                     | The `nas-*` recipes, which run here or drive it over SSH  |
 
 The compose stacks are their own repository, `nas-containers`, because they deploy differently and
 carry credentials.
@@ -211,8 +216,8 @@ The wiki's boot script also appends `/opt/etc/profile` to `/etc/profile`. That i
 file DSM rewrites on upgrade.
 
 Then `opkg install terminfo`. That package and the base ones the installer pulls are the whole of
-Entware here: the shell and the CLI tools come from Nix. `ncurses` in `nas.nix` supplies `tic` and
-`infocmp`, so a terminfo entry DSM lacks can be compiled in place rather than copied in, and
+Entware here: the shell and the CLI tools come from Nix. `ncurses` in `synology.nix` supplies `tic`
+and `infocmp`, so a terminfo entry DSM lacks can be compiled in place rather than copied in, and
 Ghostty's `ssh-terminfo` shell integration works on its own.
 
 On a DSM box with no Nix, add `zsh` and `ncurses-bin` as well. That zsh links against Entware's own
@@ -259,11 +264,12 @@ for d in ~/.local/share/zsh/plugins/*(/) ~/.oh-my-zsh(N/); do git -C "$d" pull -
 
 Tools come from four places. Prefer them in this order.
 
-**Nix.** `home.packages` in `nix-darwin/modules/home-manager/nas.nix` is where a tool goes now. The
-version is pinned in `flake.lock` and moves with the MacBook, `just nas-switch` applies it, and
-`zshrc_synology` puts the profile ahead of both package repositories. `atuin`, `delta`,
-`difftastic`, `restic`, `zellij`, `neovim`, `rustup`, `uv`, `starship`, `zoxide`, `rclone`, `pv`,
-`progress` and `exiftool` all come from there. See "home-manager on the NAS" below.
+**Nix.** `home.packages` in `nix-darwin/modules/home-manager/synology.nix` is where a tool goes now.
+A tool that one box needs alone goes in `nas.nix` or `bkp.nix`. The version is pinned in
+`flake.lock` and moves with the MacBook, `just nas-switch` applies it, and `zshrc_synology` puts the
+profile ahead of both package repositories. `atuin`, `delta`, `difftastic`, `restic`, `zellij`,
+`neovim`, `rustup`, `uv`, `starship`, `zoxide`, `rclone`, `pv`, `progress` and `exiftool` all come
+from there. See "home-manager on the NAS" below.
 
 Reach for one of the other three when nixpkgs has no `x86_64-linux` build, or when the tool has to
 keep working with `/nix` unmounted, which is the window between a reboot and the Boot-up task.
@@ -330,11 +336,11 @@ cdstacks      # cd to <volume>/docker
 dpst          # docker ps, showing names, status and ports
 ```
 
-A script cannot call a shell function, so `nas.nix` names the same directory in `$DOCKER_DIR`. That
-goes through `home.sessionVariables`, so any shell that reads a profile has it, and the
+A script cannot call a shell function, so `synology.nix` names the same directory in `$DOCKER_DIR`.
+That goes through `home.sessionVariables`, so any shell that reads a profile has it, and the
 `nas-containers` READMEs write `$DOCKER_DIR/<stack>` rather than the volume. Only `cdstacks`
 searches, by globbing `/volume*/docker`. `$DOCKER_DIR` is a literal, so moving the share means
-editing `nas.nix` and running `just nas-switch`.
+editing `synology.nix` and running `just nas-switch`.
 
 DSM keeps `/var/run/docker.sock` root-only, so every docker call needs `sudo`. Its docker group is
 root-equivalent, so joining it would hand the daemon to every process you start, permanently.
@@ -436,9 +442,15 @@ the first activation, in tracked config. Revert it if the installer wrote there.
 
 ## home-manager on the NAS
 
-`homeConfigurations."julio@nas"` in `nix-darwin/flake.nix`, with the profile in
-`modules/home-manager/nas.nix`. Standalone, because there is no NixOS or nix-darwin there, but it
-shares this flake and therefore `flake.lock` with the MacBook.
+`homeConfigurations."julio@nas"` and `"julio@bkp"` in `nix-darwin/flake.nix`, with the profiles in
+`modules/home-manager/nas.nix` and `bkp.nix`. Both import `synology.nix`, which holds everything the
+two boxes share. Standalone, because there is no NixOS or nix-darwin there, but they share this
+flake and therefore `flake.lock` with the MacBook.
+
+Each profile is named after its box's hostname in lower case: the RS2423+ is `NAS` and the DS1522+
+is `BKP`. The recipes below read the hostname on the box and build that profile. So the SSH alias
+only says which box to reach, and no alias can put one box's profile on the other. A box renamed in
+DSM needs its profile renamed too.
 
 It imports `programs/zsh.nix` unchanged, so the NAS gets the same generated `~/.zshrc` as macOS and
 with it `$DOTFILES_PLUGINS_FROM_NIX`. The zsh plugins and oh-my-zsh come from `flake.lock` rather
@@ -446,7 +458,7 @@ than from checkouts in `$HOME`, and `home.packages` supplies the CLI tools. `git
 `direnv.nix` and `zellij.nix` are imported the same way, so those four are configured there exactly
 as they are on the MacBook.
 
-`xdg.nix` is not imported, and `nas.nix` links nothing out of the repo itself, so the only
+`xdg.nix` is not imported, and `synology.nix` links nothing out of the repo itself, so the only
 `~/.config` entries on the box are the ones its program modules write. Neovim is the gap that
 follows from that: `.config/nvim` reaches macOS through `xdg.nix` and reaches Arch and WSL through
 `linux.nix`, so `nvim` here is the packaged binary with no config at all.
@@ -455,6 +467,7 @@ Apply it with the `nas-*` recipes, which work from either end:
 
 ```sh
 just nas-switch                  # from the MacBook, drives the box over SSH
+just nas-switch bkp              # the same, for the DS1522+
 just nas-diff                    # build only, to see what a switch would change
 NAS_HOST=nast just nas-switch    # from off the LAN, over Tailscale
 ```
@@ -482,6 +495,11 @@ nix build -o ~/.hm-generation \
   "$HOME/dotfiles/nix-darwin#homeConfigurations.\"julio@nas\".activationPackage"
 HOME_MANAGER_BACKUP_EXT=hm-bak ~/.hm-generation/activate
 ```
+
+On the DS1522+, write `julio@bkp` in that `nix build` line.
+
+The clone that this build reads comes first. The repository is public, so HTTPS needs no key on the
+box: `git clone https://github.com/jbsilva/dotfiles ~/dotfiles`.
 
 > A change to a recipe takes effect on the run after the one that ships it. The SSH branch sources
 > `nix.sh` to find `just`, so it reads the NAS copy of the `Justfile` as it stands before the pull
@@ -551,9 +569,10 @@ done
 
 ## VS Code Remote-SSH
 
-Two shims in `~/.local/bin`, written by `nas.nix`. `home.sessionPath` puts that directory on `$PATH`
-through `hm-session-vars.sh`, because Remote-SSH runs the server CLI under `ssh -T` with no command.
-That is a non-interactive login shell, which reads `.zshenv` and `.zprofile` and never `.zshrc`.
+Two shims in `~/.local/bin`, written by `synology.nix`. `home.sessionPath` puts that directory on
+`$PATH` through `hm-session-vars.sh`, because Remote-SSH runs the server CLI under `ssh -T` with no
+command. That is a non-interactive login shell, which reads `.zshenv` and `.zprofile` and never
+`.zshrc`.
 
 DSM has glibc but no `ldd`, and neither Entware nor SynoCommunity packages one. The CLI runs
 `ldd --version` to tell a glibc host from a musl one, gets nothing, settles on musl, looks for
@@ -565,8 +584,8 @@ glibc bakes its version into that script at build time.
 The second shim is `getconf`, linked straight from `glibc.bin`, because the same installer reads the
 word size from `getconf LONG_BIT` and DSM leaves that out too.
 
-`nas.nix` carries the reasoning in full, including the two settings that also get past the check and
-why each is worse.
+`synology.nix` carries the reasoning in full, including the two settings that also get past the
+check and why each is worse.
 
 ## Atuin
 
@@ -587,8 +606,8 @@ and a lost key loses the synced history whatever the disks still hold.
 
 ## Mosh on the NAS
 
-`packages.nix` installs the client on the MacBook and `nas.nix` installs the server on the NAS, so
-`just switch` and `just nas-switch` cover both halves. The client still has to be told where the
+`packages.nix` installs the client on the MacBook and `synology.nix` installs the server on the NAS,
+so `just switch` and `just nas-switch` cover both halves. The client still has to be told where the
 server is:
 
 ```sh

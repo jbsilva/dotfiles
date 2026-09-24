@@ -88,8 +88,9 @@ that is specific to one platform lives in that platform's directory and is deplo
 | `secrets/`    | sops-encrypted values, decrypted at activation. See [secrets/README.md](secrets/README.md)                                                                                                                                |
 | `docs/`       | Runbooks for a machine rather than for this repo: [Synology](docs/synology.md), [WireGuard on it](docs/synology-wireguard.md)                                                                                             |
 
-The Synology (RS2423+, DSM 7.x) has no directory of its own. Its shell half is `.zsh/zshrc_synology`
-and its packages are `nix-darwin/modules/home-manager/nas.nix`; everything else about it is in
+The Synology boxes (RS2423+ and DS1522+, DSM 7.x) have no directory of their own. Their shell half
+is `.zsh/zshrc_synology`. Their packages are `nix-darwin/modules/home-manager/synology.nix`, plus
+`nas.nix` or `bkp.nix` for what one box needs alone. Everything else about them is in
 [docs/synology.md](docs/synology.md).
 
 Arch and WSL share `nix-darwin/modules/home-manager/linux.nix`. They keep their `linux/` and `wsl/`
@@ -311,7 +312,8 @@ atuin import auto && atuin sync      # import reads the existing ~/.zsh_history
 **Synology RS2423+ (DSM 7.x)**: `.zsh/zshrc_synology`, loaded when `/etc/synoinfo.conf` exists. Puts
 Entware's `/opt/bin` ahead of DSM's older tools and adds `opkg`/`synosystemctl`/compose aliases. On
 SSH login the shell auto-attaches to a zellij session named after the host. `just nas-switch`
-applies the home-manager profile in `nix-darwin/modules/home-manager/nas.nix`.
+applies the home-manager profile in `nix-darwin/modules/home-manager/nas.nix`. The DS1522+ is the
+same kind of box with the profile in `bkp.nix`, and `just nas-switch bkp` applies it.
 
 Everything else about that box is in **[docs/synology.md](docs/synology.md)**: Entware, terminfo
 over SSH, zellij nesting, which of `scp` and `rsync` reaches which path, single-user Nix on a bind
@@ -461,13 +463,14 @@ host. It writes `~/.zshrc`, `~/.zshenv` and the `~/.config` links, exactly as on
 
 ```sh
 nix run home-manager -- switch --flake ~/dotfiles/nix-darwin#julio@arch   # or @wsl
-just nas-switch                                                          # the Synology
+just nas-switch                                                          # the RS2423+
+just nas-switch bkp                                                      # the DS1522+
 ```
 
-Arch and WSL share `nix-darwin/modules/home-manager/linux.nix`; the Synology has its own, because
-DSM needs shims that nothing else does. All three read the same `.zshrc` and the same `git/aliases`
-as the MacBook. That is the point of the profile: one alias list and one `.zshrc`, rather than a
-copy per machine that nothing keeps in step.
+Arch and WSL share `nix-darwin/modules/home-manager/linux.nix`. The Synology boxes share
+`synology.nix`, because DSM needs shims that nothing else does. All three read the same `.zshrc` and
+the same `git/aliases` as the MacBook. That is the point of the profile: one alias list and one
+`.zshrc`, rather than a copy per machine that nothing keeps in step.
 
 **A machine with no Nix at all**: link the shell paths and point git at the matching per-platform
 config. `.gitconfig-global` and `.gitignore-global` exist for this case.
