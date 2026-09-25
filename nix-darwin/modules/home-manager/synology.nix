@@ -57,6 +57,8 @@
     # through the agent, so without one a key cannot even be imported. The
     # curses build is the one that works over SSH.
     pinentry-curses
+    gnupg # the gpg that pass runs, so the shell and pass share one agent
+    pass # the password store that holds the push tokens
 
     # -------------------------------------------------------------------------
     # Editing and terminal
@@ -176,6 +178,52 @@
   # non-interactive login shell: .zshenv and .zprofile, then nothing. This lands
   # in hm-session-vars.sh, which both of those source, so that shell finds ldd.
   home.sessionPath = [ "$HOME/.local/bin" ];
+
+  # A push from a box goes over HTTPS with a fine-grained token per
+  # repository. pass keeps each token in ~/.password-store, encrypted to a gpg
+  # key of the box's own, and pass-git-helper hands git the entry that the
+  # mapping below names for the repository. One passphrase unlocks every push
+  # until gpg-agent forgets it. No token sits on disk in the clear, and none
+  # has to be pasted again before it is rotated.
+  #
+  # useHttpPath puts the repository in the request, which is what the mapping
+  # matches on. The empty helper clears the cache helper that programs/git.nix
+  # sets for every host, so github.com asks pass and nothing else.
+  #
+  # The wrapper names pass itself. pass-git-helper looks it up on $PATH, and a
+  # non-interactive shell here gets /usr/bin:/bin:/usr/sbin:/sbin, so a push
+  # from a script or a just recipe would find no pass at all.
+  programs.git.settings.credential."https://github.com" = {
+    useHttpPath = true;
+    helper = [
+      ""
+      "${pkgs.writeShellScript "pass-git-helper" ''
+        PATH=${lib.makeBinPath [ pkgs.pass ]}:$PATH
+        exec ${pkgs.pass-git-helper}/bin/pass-git-helper "$@"
+      ''}"
+    ];
+  };
+
+  # An entry holds the token on its first line and the GitHub user on its
+  # second, which is where pass-git-helper looks by default.
+  xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = ''
+    [github.com/jbsilva/nas-containers*]
+    target=github/nas-containers
+
+    [github.com/jbsilva/dotfiles*]
+    target=github/dotfiles
+  '';
+
+  # git's cache helper refuses a socket directory that anyone else can read, and
+  # gpg warns about such a home directory. A directory made in a DSM home
+  # inherits an ACL that shows as 0777 whatever the umask, and chmod drops it.
+  # This runs at every activation, so each is right before its tool makes it.
+  home.activation.privateDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    for dir in .cache/git/credential .gnupg .password-store; do
+      run mkdir -p "$HOME/$dir"
+      run chmod 0700 "$HOME/$dir"
+    done
+  '';
 
   # The nas-containers stacks run from this directory on every box, and that
   # repository's READMEs write `$DOCKER_DIR/<stack>` rather than naming the

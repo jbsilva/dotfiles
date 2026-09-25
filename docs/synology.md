@@ -458,10 +458,10 @@ than from checkouts in `$HOME`, and `home.packages` supplies the CLI tools. `git
 `direnv.nix` and `zellij.nix` are imported the same way, so those four are configured there exactly
 as they are on the MacBook.
 
-`xdg.nix` is not imported, and `synology.nix` links nothing out of the repo itself, so the only
-`~/.config` entries on the box are the ones its program modules write. Neovim is the gap that
-follows from that: `.config/nvim` reaches macOS through `xdg.nix` and reaches Arch and WSL through
-`linux.nix`, so `nvim` here is the packaged binary with no config at all.
+`xdg.nix` is not imported, and `synology.nix` links nothing out of the repo itself. The `~/.config`
+entries on the box are the ones its program modules write, and the `pass-git-helper` mapping. Neovim
+is the gap that follows from that: `.config/nvim` reaches macOS through `xdg.nix` and reaches Arch
+and WSL through `linux.nix`, so `nvim` here is the packaged binary with no config at all.
 
 Apply it with the `nas-*` recipes, which work from either end:
 
@@ -500,8 +500,9 @@ On the DS1522+, write `julio@bkp` in that `nix build` line.
 
 The clone that this build reads comes first. The repository is public, so both boxes clone and pull
 it over HTTPS, and neither holds a key for it:
-`git clone https://github.com/jbsilva/dotfiles ~/dotfiles`. A key on a NAS that can write to this
-account is a key a thief can use.
+`git clone https://github.com/jbsilva/dotfiles ~/dotfiles`. A push goes over HTTPS as well, with a
+token from `pass`: see [Pushing from a box](#pushing-from-a-box). A key on a NAS that can write to
+this account is a key a thief can use.
 
 > A change to a recipe takes effect on the run after the one that ships it. The SSH branch sources
 > `nix.sh` to find `just`, so it reads the NAS copy of the `Justfile` as it stands before the pull
@@ -568,6 +569,49 @@ done
 > `.zshenv` from the repo root, which is above the flake directory, so a flake reference that copies
 > only `nix-darwin/` fails with `access to absolute path '/nix/store/.zshenv' is forbidden`. Inside
 > the git clone the whole repo is copied, so the path resolves.
+
+## Pushing from a box
+
+A box fetches without a credential that can write: the dotfiles over HTTPS with none, and a private
+repository with a read-only deploy key. A push goes over HTTPS with a fine-grained token, one per
+repository, with Contents read and write on that repository alone.
+
+`pass` keeps the tokens in `~/.password-store`, each encrypted to a gpg key of the box's own.
+`pass-git-helper` hands git the entry that `~/.config/pass-git-helper/git-pass-mapping.ini` names
+for the repository. One gpg passphrase unlocks every push until gpg-agent forgets it, after an hour
+unused or eight hours at most. No token sits on disk in the clear, and none needs pasting again
+before it is rotated.
+
+`synology.nix` wires it:
+
+- `credential.useHttpPath` for `https://github.com` puts the repository in the request, which is
+  what the mapping matches on. Without it every repository on GitHub gets the same entry.
+- The helper list for `https://github.com` starts empty, which clears the `cache` helper that
+  `programs/git.nix` sets for every host. Other hosts keep `cache`.
+- A small wrapper puts `pass` on `$PATH` for the helper. A non-interactive shell here gets
+  `/usr/bin:/bin:/usr/sbin:/sbin`, so a push from a script would find no `pass` otherwise.
+- Activation makes `~/.gnupg`, `~/.password-store` and `~/.cache/git/credential` mode 0700. A
+  directory made in a DSM home inherits an ACL that shows as 0777. gpg warns about such a home, and
+  git's cache refuses such a socket directory.
+
+Once per box, after the first activation, make its key and its entries. The key is the box's own,
+with a passphrase from the password manager:
+
+```sh
+gpg --quick-generate-key "julio (<box> pass)" ed25519 cert,sign 0
+gpg --quick-add-key <fingerprint> cv25519 encr 0
+pass init <fingerprint>
+pass insert -m github/dotfiles          # the token, then the GitHub user on the second line
+pass insert -m github/nas-containers
+```
+
+The first line of an entry is the token and the second the user, which is where `pass-git-helper`
+looks by default. `.zshrc` exports `GPG_TTY`, so the passphrase prompt reaches the terminal of an
+interactive push. A push from a script works while gpg-agent holds the passphrase, and fails once it
+forgets.
+
+To rotate a token, make the new one on GitHub, then `pass edit github/<repository>`. To retire a
+box, revoke its tokens on GitHub. The gpg key and the store go with the box.
 
 ## VS Code Remote-SSH
 
