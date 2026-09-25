@@ -12,13 +12,13 @@ This is a runbook for one machine rather than a description of the repo, so it l
 
 What the repo itself holds for this box:
 
-| Path                                           | What                                                      |
-| ---------------------------------------------- | --------------------------------------------------------- |
-| `.zsh/zshrc_synology`                          | The shell half, loaded when `/etc/synoinfo.conf` exists   |
-| `nix-darwin/modules/home-manager/synology.nix` | The home-manager profile that both boxes share            |
-| `nix-darwin/modules/home-manager/nas.nix`      | What the RS2423+ adds, applied with `just nas-switch`     |
-| `nix-darwin/modules/home-manager/bkp.nix`      | What the DS1522+ adds, applied with `just nas-switch bkp` |
-| `Justfile`                                     | The `nas-*` recipes, which run here or drive it over SSH  |
+| Path                                           | What                                                     |
+| ---------------------------------------------- | -------------------------------------------------------- |
+| `.zsh/zshrc_synology`                          | The shell half, loaded when `/etc/synoinfo.conf` exists  |
+| `nix-darwin/modules/home-manager/synology.nix` | The home-manager profile that both boxes share           |
+| `nix-darwin/modules/home-manager/nas.nix`      | What the RS2423+ adds, applied with `just nas-switch`    |
+| `nix-darwin/modules/home-manager/bkp.nix`      | The DS1522+ profile, applied with `just nas-switch bkp`  |
+| `Justfile`                                     | The `nas-*` recipes, which run here or drive it over SSH |
 
 The compose stacks are their own repository, `nas-containers`, because they deploy differently and
 carry credentials.
