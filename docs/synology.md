@@ -498,8 +498,10 @@ HOME_MANAGER_BACKUP_EXT=hm-bak ~/.hm-generation/activate
 
 On the DS1522+, write `julio@bkp` in that `nix build` line.
 
-The clone that this build reads comes first. The repository is public, so HTTPS needs no key on the
-box: `git clone https://github.com/jbsilva/dotfiles ~/dotfiles`.
+The clone that this build reads comes first. The repository is public, so both boxes clone and pull
+it over HTTPS, and neither holds a key for it:
+`git clone https://github.com/jbsilva/dotfiles ~/dotfiles`. A key on a NAS that can write to this
+account is a key a thief can use.
 
 > A change to a recipe takes effect on the run after the one that ships it. The SSH branch sources
 > `nix.sh` to find `just`, so it reads the NAS copy of the `Justfile` as it stands before the pull
