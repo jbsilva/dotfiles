@@ -598,12 +598,16 @@ Once per box, after the first activation, make its key and its entries. The key 
 with a passphrase from the password manager:
 
 ```sh
-gpg --quick-generate-key "julio (<box> pass)" ed25519 cert,sign 0
-gpg --quick-add-key <fingerprint> cv25519 encr 0
+gpg --quick-generate-key "julio (<box> pass)" future-default default 0
 pass init <fingerprint>
 pass insert -m github/dotfiles          # the token, then the GitHub user on the second line
 pass insert -m github/nas-containers
 ```
+
+`future-default` makes an ed25519 key that signs, marked `[SC]`, and a cv25519 subkey that encrypts,
+marked `[E]`. `pass` needs the second. A key made with `ed25519 cert,sign` has no `[E]` line and
+needs `gpg --quick-add-key <fingerprint> cv25519 encr 0` before `pass init`. The fingerprint is the
+40-character line under `pub`.
 
 The first line of an entry is the token and the second the user, which is where `pass-git-helper`
 looks by default. `.zshrc` exports `GPG_TTY`, so the passphrase prompt reaches the terminal of an
