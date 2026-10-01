@@ -454,6 +454,13 @@ cd ~/dotfiles && just hooks
 per-file `~/.config` links itself; do not link anything by hand. `.zshenv` is read into
 `programs.zsh.envExtra` there, the same way `.zshrc` is read into `initContent`.
 
+**Menu bar**: after the first `just switch`, open System Settings → Menu Bar and allow each app that
+shows a menu bar icon, such as Stats. This step stays manual. macOS 26 keeps the list as a nested
+binary plist under `trackedApplications` in
+`~/Library/Group Containers/group.com.apple.controlcenter/Library/Preferences/group.com.apple.controlcenter.plist`.
+Control Center owns that file and can overwrite it while it runs. Writing to a group container also
+needs Full Disk Access, and Apple does not document the format.
+
 **Secrets**: `secrets/` is sops-encrypted and this repository is public, so a fresh clone cannot
 read it until an age key exists. Nothing else depends on that, and the flake evaluates without it.
 See [secrets/README.md](secrets/README.md).

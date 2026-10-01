@@ -148,6 +148,7 @@ venv
 virtualenv
 
 # Config file names and identifiers appearing in prose
+controlcenter
 ftplugin
 keybinds
 prek
