@@ -137,6 +137,7 @@
     # -------------------------------------------------------------------------
     awscli2 # AWS CLI
     terraform
+    opentofu # open-source Terraform fork, run as `tofu`
     terragrunt # Terraform wrapper: DRY configs and state locking
     tflint # Terraform linter
     hclfmt # formatter for HCL (Terraform, Terragrunt)
