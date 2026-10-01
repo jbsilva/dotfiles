@@ -1022,6 +1022,27 @@ alias exif_rename="exiftool -P -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDE
 alias exif_sort="exiftool -P -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN' -d '%Y/%m/%Y%m%d_%H%M%S' '-filename<%f-\${ImageSize}%-03c.%le' '-filename<\${CreateDate}%-03c.%le' '-filename<\${DateTimeOriginal}%-03c.%le' ."
 alias exif_copyright="exiftool -G1 -Artist -Copyright -IPTC:By-line -IPTC:CopyrightNotice -IPTC:Credit -XMP-dc:Creator -XMP-dc:Rights -XMP-iptcCore:CreatorWorkEmail -XMP-iptcCore:CreatorWorkURL -XMP-plus:CopyrightOwnerName -XMP-plus:CopyrightStatus -XMP-plus:ImageCreatorName -XMP-plus:LicensorName -XMP-xmpRights:Marked -XMP-xmpRights:Owner -XMP-xmpRights:UsageTerms"
 
+# Writes the copyright that exif_copyright shows. The year is the current one, or YEAR from a
+# leading -y YEAR. A bare year is not accepted, because exif_sort makes folders with that name.
+exif_copyright_set() {
+  local name='Julio Batista Silva' year=$(date +%Y)
+  if [[ $1 == -y ]]; then
+    year=$2
+    if [[ $year != <1000-9999> ]]; then
+      print -u2 "exif_copyright_set: '$year' is not a year"
+      return 1
+    fi
+    shift 2
+  fi
+  exiftool -P -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN' \
+    -Artist="$name" \
+    -Copyright="Copyright (c) $year $name, All rights reserved" \
+    -XMP-dc:Rights="© $year $name, All rights reserved" \
+    -XMP-dc:Creator="$name" \
+    -XMP-xmpRights:Marked=True \
+    "$@"
+}
+
 ###############################################################################
 # Docker
 #
