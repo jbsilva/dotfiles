@@ -178,6 +178,7 @@ cdstacks
 chroot
 compaudit
 compinit
+cxxflags
 dandavison
 delword
 difftastic

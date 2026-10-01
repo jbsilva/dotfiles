@@ -79,7 +79,15 @@
     # over SSH as a plain command, and DSM gives that shell
     # /usr/bin:/bin:/usr/sbin:/sbin only, so the client has to be told where it
     # is: `mosh --server='~/.nix-profile/bin/mosh-server' nas`. See the README.
-    mosh # SSH that survives roaming and suspend
+    #
+    # Built as C++20 to match abseil-cpp, whose headers no longer compile as
+    # C++17, which mosh's configure uses: NixOS/nixpkgs#569055. Drop the
+    # override once that closes.
+    (mosh.overrideAttrs (old: {
+      env = (old.env or { }) // {
+        CXXFLAGS = "-std=c++20";
+      };
+    })) # SSH that survives roaming and suspend
 
     # -------------------------------------------------------------------------
     # Network
