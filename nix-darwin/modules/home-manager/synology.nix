@@ -238,6 +238,18 @@
     done
   '';
 
+  # The same ACL on the clone stops compinit at login: "insecure directories".
+  # .zshrc puts ~/.zsh/completions on $fpath, and ~/.zsh links into the clone,
+  # so compaudit checks both directories there. go-w drops the ACL and leaves
+  # the clone readable. .zshrc fixes the cache directories it makes itself.
+  home.activation.fpathDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    for dir in .zsh .zsh/completions; do
+      if [ -d "$HOME/dotfiles/$dir" ]; then
+        run chmod go-w "$HOME/dotfiles/$dir"
+      fi
+    done
+  '';
+
   # The nas-containers stacks run from this directory on every box, and that
   # repository's READMEs write `$DOCKER_DIR/<stack>` rather than naming the
   # volume again. This lands in the same hm-session-vars.sh as sessionPath

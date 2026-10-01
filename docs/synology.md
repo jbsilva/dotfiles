@@ -46,8 +46,10 @@ home-manager has not reached, clone the repo and link all four by hand. Nothing 
 > alone, so nothing is readable or writable that should not be, but `compinit` reads the POSIX bits,
 > sees an `$fpath` directory the world can write and stops to ask. `compaudit` names the offenders.
 > `chmod go-w` on each makes the bits honest, and drops the ACL on that directory in the bargain,
-> which is why it belongs on a cache directory and not on the rest of the tree. `.zshrc` does this
-> at the moment it creates them, so the fix survives a wipe of `~/.cache`.
+> which is why it belongs only on the `$fpath` directories and not on the rest of the tree. `.zshrc`
+> does this to the cache directories at the moment it creates them, so the fix survives a wipe of
+> `~/.cache`. The `fpathDirs` step in `synology.nix` does it to `.zsh` and `.zsh/completions` in the
+> clone at every `just nas-switch`.
 
 Entware's terminfo reaches the shell through `$TERMINFO_DIRS` in `.zshenv`, not `$TERMINFO` here.
 ncurses fixes its search path before `.zshrc` is read, so setting it at that point is already too
