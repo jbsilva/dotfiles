@@ -201,6 +201,7 @@ lsusb
 mbbill
 misrender
 nast
+netcat
 ncdu
 nmap
 nopasswd

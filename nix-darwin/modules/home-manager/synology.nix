@@ -93,6 +93,7 @@
     # Network
     # -------------------------------------------------------------------------
     dig # DNS lookups
+    netcat-openbsd # nc, the same OpenBSD flavor macOS ships
 
     # -------------------------------------------------------------------------
     # Storage and transfer
