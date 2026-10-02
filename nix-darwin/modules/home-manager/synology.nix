@@ -94,6 +94,7 @@
     # -------------------------------------------------------------------------
     dig # DNS lookups
     netcat-openbsd # nc, the same OpenBSD flavor macOS ships
+    socat # netcat with more socket types
 
     # -------------------------------------------------------------------------
     # Storage and transfer
