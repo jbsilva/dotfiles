@@ -234,6 +234,7 @@
       # System utilities
       # -----------------------------------------------------------------------
       "daisydisk" # disk space visualiser
+      "macpacker" # archive manager, opens and extracts zip, rar, 7z and more
       "frankea/whisky/whisky" # Wine wrapper for Windows apps (maintained fork)
 
       # -----------------------------------------------------------------------
