@@ -173,7 +173,7 @@
     # Files, archives & media
     # -------------------------------------------------------------------------
     p7zip # 7z archives
-    the-unarchiver # unpacks most archive formats
+    # the-unarchiver # MacPacker (Homebrew cask) covers archives
     exiftool # photo metadata; drives the exif_* aliases in .zshrc
     file-rename # Perl `rename`: bulk renames by regex
     renameutils # qmv/qcp, behind the qmv* aliases
