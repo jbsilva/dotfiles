@@ -52,6 +52,7 @@
     git # home-manager configures it; this provides the binary
     hunk # review-first diff viewer; git's pager for diff, log and show in git.nix
     delta # syntax-highlighted blame and `git add -p`; wired up in git.nix
+    tuicr # review TUI for local changes and PRs; `git review` in git/aliases
     # lazygit     # Fork is the git UI
     # difftastic  # delta is the configured diff renderer
     git-absorb # auto-routes fixups into the right commit during rebase

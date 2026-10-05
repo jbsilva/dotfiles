@@ -31,6 +31,11 @@
 	amend = commit --amend
 	k = !gitk
 
+	# Review in tuicr: uncommitted changes with no argument, else a range such
+	# as main..HEAD. tuicr reads the repository itself, not a diff on stdin, so
+	# it cannot be git's pager or difftool. hunk does those jobs (git.nix).
+	review = "!f() { if [ $# -eq 0 ]; then tuicr -w; else tuicr -r \"$1\"; fi; }; f"
+
 	sm = submodule
 	sup = submodule update
 

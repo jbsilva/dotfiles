@@ -225,6 +225,7 @@ synocli
 synopkg
 synosystemctl
 tcpdump
+tuicr
 unsandboxed
 vicmd
 viins
