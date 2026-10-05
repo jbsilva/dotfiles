@@ -227,6 +227,7 @@
       "raycast" # launcher and command palette. The nixpkgs binary traps at launch
       "stats" # menu-bar system monitor
       "thaw" # menu bar manager
+      "vorssaint" # menu bar keep-awake, system monitor and volume mixer
       "handy" # offline speech to text
       # "voiceink" # voice control
 
