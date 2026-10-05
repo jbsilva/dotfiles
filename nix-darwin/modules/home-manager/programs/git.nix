@@ -6,14 +6,21 @@
 }:
 {
   ###########################################################################
-  # delta: syntax-highlighted diffs for terminal git.
+  # hunk and delta: diffs in terminal git.
   #
-  # delta comes from packages.nix; `enableGitIntegration` is what points git at
-  # it, by setting core.pager and interactive.diffFilter. Installing the package
-  # alone leaves `git diff` plain.
+  # hunk (https://hunk.dev) is the diff viewer: the pager for `git diff`,
+  # `git log` and `git show`, and the difftool. It reads a unified diff on
+  # stdin and opens its review UI; output that is not a diff, such as a plain
+  # `git log`, goes on to `less -R`.
   #
-  # Complementary to Fork, not competing with it: Fork is for browsing history
-  # and staging, this is for `git diff` and `git show` in the terminal.
+  # delta keeps the two jobs hunk does not do: `git blame` and the diff filter
+  # for `git add -p`. `enableGitIntegration` also sets pager.diff, pager.log
+  # and pager.show to delta, and those beat core.pager, so programs.git below
+  # overrides exactly those three with mkForce.
+  #
+  # Both packages come from packages.nix. Complementary to Fork, not competing
+  # with it: Fork is for browsing history and staging, these are for the
+  # terminal.
   ###########################################################################
   programs.delta = {
     enable = true;
@@ -28,6 +35,9 @@
 
   programs.git = {
     enable = true;
+    # On iniContent, not settings: home-manager copies settings into iniContent
+    # at normal priority, which drops the mkForce and conflicts with delta.
+    iniContent.pager = lib.genAttrs [ "diff" "log" "show" ] (_: lib.mkForce "hunk pager");
     signing = {
       key = "D1C6B63BEAE5330F";
       signByDefault = true;
@@ -120,6 +130,12 @@
         colorMoved = "plain";
         mnemonicPrefix = true;
         renames = true;
+        tool = "hunk";
+      };
+
+      difftool = {
+        prompt = false;
+        hunk.cmd = ''hunk difftool "$LOCAL" "$REMOTE" "$MERGED"'';
       };
 
       rerere = {

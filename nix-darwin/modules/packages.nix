@@ -50,7 +50,8 @@
     # Git
     # -------------------------------------------------------------------------
     git # home-manager configures it; this provides the binary
-    delta # syntax-highlighted git diffs; wired up in home-manager's git.nix
+    hunk # review-first diff viewer; git's pager for diff, log and show in git.nix
+    delta # syntax-highlighted blame and `git add -p`; wired up in git.nix
     # lazygit     # Fork is the git UI
     # difftastic  # delta is the configured diff renderer
     git-absorb # auto-routes fixups into the right commit during rebase
