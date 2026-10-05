@@ -191,7 +191,7 @@
       swda_try "VS Code <- nfo" setHandler --app "/Applications/Visual Studio Code.app" --UTI "dyn.ah62d4rv4ge8063xt"
 
       ###################################################################
-      # Archives (The Unarchiver)
+      # Archives (MacPacker)
       ###################################################################
       for uti in \
         com.microsoft.cab \
@@ -199,7 +199,7 @@
         org.gnu.gnu-zip-archive \
         public.tar-archive \
         public.zip-archive; do
-        swda_uti "The Unarchiver" "$uti"
+        swda_uti "MacPacker" "$uti"
       done
 
       ###################################################################
