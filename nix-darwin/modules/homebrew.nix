@@ -255,6 +255,7 @@
       "canon-eos-utility" # tethering and control for Canon EOS bodies
       "elgato-stream-deck" # Stream Deck key configuration
       "insta360-link-controller" # Insta360 webcam control
+      "insta360-studio" # editor for Insta360 camera footage
       "obs" # capture and streaming
       "wacom-tablet" # tablet drivers
       # "openmtp" # Android file transfer
