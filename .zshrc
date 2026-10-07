@@ -1019,10 +1019,12 @@ alias qmvor='qmv -R --format=destination-only'
 # Runs exiftool with the given arguments over the current directory. Canon writes a .CPF beside
 # each clip, which exiftool cannot read, so a CPF takes its tags from the .MP4 of the same name.
 # The CPFs go first, while that shared name still pairs them.
+# QuickTimeUTC reads QuickTime dates as UTC and gives local time. An Insta360 .lrv or .insv has no
+# other date. exiftool cannot write .insv, so a directory scan skips it unless -ext+ adds it.
 _exif_files() {
-  local -a opts=(-P -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN')
+  local -a opts=(-P -api QuickTimeUTC -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN')
   exiftool $opts -ext CPF -tagsFromFile %d%f.MP4 "$@" .
-  exiftool $opts --ext CPF "$@" .
+  exiftool $opts -ext+ INSV --ext CPF "$@" .
 }
 alias exif_move="_exif_files -d '%Y/%m' '-Directory<\${CreateDate}' '-Directory<\${DateTimeOriginal}'"
 alias exif_rename="_exif_files -d '%Y%m%d_%H%M%S' '-filename<%f-\${ImageSize}%-03c.%le' '-filename<\${CreateDate}%-03c.%le' '-filename<\${DateTimeOriginal}%-03c.%le'"
