@@ -160,6 +160,7 @@
       # -----------------------------------------------------------------------
       # Development
       # -----------------------------------------------------------------------
+      "antigravity" # Google's agent orchestration platform
       "claude" # Anthropic's desktop app
       "claude-code@latest" # terminal coding agent
       "codeql" # semantic code analysis
