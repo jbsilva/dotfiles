@@ -14,16 +14,19 @@
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    # nix-homebrew pins the brew release itself and keeps up with the floating
-    # homebrew-core/-cask snapshots, so its default is used as-is.
-    #
-    # If brew ever lags again and `brew bundle` starts reporting formulae or
-    # casks as "unreadable: undefined method ...", override the release without
-    # duplicating it in the lock:
-    #
-    #   brew-src = { url = "github:Homebrew/brew/<tag>"; flake = false; };
-    #   nix-homebrew.inputs.brew-src.follows = "brew-src";
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    # nix-homebrew pins brew to a release tag, and `nix flake update` never
+    # moves a tag. The floating core and cask taps then outrun it, and
+    # `brew bundle` fails on formulae the old brew cannot read. Following
+    # brew's main branch here lets `just update` move brew with the taps.
+    # nix-homebrew still labels the package with the tag from its own lock.
+    brew-src = {
+      url = "github:Homebrew/brew/main";
+      flake = false;
+    };
+    nix-homebrew = {
+      url = "github:zhaofengli/nix-homebrew";
+      inputs.brew-src.follows = "brew-src";
+    };
 
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
