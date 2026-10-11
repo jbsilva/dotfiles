@@ -7,6 +7,7 @@
     ./programs/zsh.nix
     ./packages.nix
     ./git-extra-commands.nix
+    ./cbz2scribecolor.nix
     ./fonts.nix
     ./homebrew.nix
     ./mas.nix

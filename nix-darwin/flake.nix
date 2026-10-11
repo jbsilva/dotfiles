@@ -70,6 +70,13 @@
       flake = false;
     };
 
+    # Converts CBZ comics to KFX, packaged in modules/cbz2scribecolor.nix. An
+    # input for the same reason as git-extra-commands above.
+    cbz2scribecolor = {
+      url = "github:vertiman/CBZ2ScribeColor";
+      flake = false;
+    };
+
     # Decrypts the sops files in ../secrets/ at activation. See secrets/README.md.
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -90,6 +97,7 @@
       homebrew-frankea,
       homebrew-gromgit,
       git-extra-commands,
+      cbz2scribecolor,
       sops-nix,
       ...
     }:
@@ -103,6 +111,7 @@
         homebrewFrankea = homebrew-frankea;
         homebrewGromgit = homebrew-gromgit;
         gitExtraCommandsSrc = git-extra-commands;
+        cbz2scribecolorSrc = cbz2scribecolor;
       };
 
       # A standalone home-manager configuration, for the machines that run

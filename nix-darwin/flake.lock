@@ -17,6 +17,22 @@
         "type": "github"
       }
     },
+    "cbz2scribecolor": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784348365,
+        "narHash": "sha256-8bBA1jBZDo5/2CBIRsuKIyTbgJNrLOyv0q9gvBx/dRE=",
+        "owner": "vertiman",
+        "repo": "CBZ2ScribeColor",
+        "rev": "a664d42c8e27cdfcc4ec9da30a68e84eea46a54d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vertiman",
+        "repo": "CBZ2ScribeColor",
+        "type": "github"
+      }
+    },
     "git-extra-commands": {
       "flake": false,
       "locked": {
@@ -229,6 +245,7 @@
     "root": {
       "inputs": {
         "brew-src": "brew-src",
+        "cbz2scribecolor": "cbz2scribecolor",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
