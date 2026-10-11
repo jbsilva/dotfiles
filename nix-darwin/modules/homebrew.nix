@@ -266,6 +266,8 @@
       # -----------------------------------------------------------------------
       # "adobe-acrobat-reader"
       "adobe-creative-cloud" # installer and launcher for the Adobe apps
+      "calibre" # e-book library manager and converter
+      "kindle-previewer" # preview and convert e-books for Kindle
       "mactex" # full TeX Live distribution
       "microsoft-office" # Office suite
       "obsidian" # Markdown knowledge base
