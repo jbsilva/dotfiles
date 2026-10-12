@@ -137,6 +137,8 @@ luarc
 luarocks
 appdir
 hererocks
+cjpegli
+jpegli
 mediainfo
 nixfmt
 nixpkgs

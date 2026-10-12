@@ -25,6 +25,15 @@ let
     npmDeps = pkgs.importNpmLock { npmRoot = cbz2scribecolorSrc; };
     inherit (pkgs.importNpmLock) npmConfigHook;
 
+    # `--jpeg-encoder jpegli` runs cjpegli, found through CJPEGLI_PATH. Only
+    # this tool needs it, so it is not on the global PATH.
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postInstall = ''
+      for bin in $out/bin/*; do
+        wrapProgram "$bin" --set-default CJPEGLI_PATH ${pkgs.lib.getExe' pkgs.jpegli.bin "cjpegli"}
+      done
+    '';
+
     meta = {
       description = "Convert CBZ comics to sideloadable KFX for Kindle Scribe Colorsoft";
       homepage = "https://github.com/vertiman/CBZ2ScribeColor";
