@@ -1,19 +1,18 @@
 # Ghostty.
 #
-# Linked to ~/.config/ghostty/config by home-manager (xdg.nix). Ghostty reads
-# that path on macOS as well as ~/Library/Application Support/com.mitchellh.ghostty/config,
-# and the XDG one wins: with window-padding-x set to 7 here and 99 there,
-# `ghostty +show-config` reports 7.
+# Linked to ~/.config/ghostty/config by home-manager (xdg.nix). Ghostty on
+# macOS also reads ~/Library/Application Support/com.mitchellh.ghostty/config,
+# after this file, so any option set there overrides the one here.
 #
 # Ghostty writes a commented-out template to the Application Support path on
-# first run, when it finds no config at all. Nothing reads it while this file
-# exists, so it is safe to delete.
+# first run, when it finds no config at all. Keep that file deleted.
 #
 # Ghostty ships sensible defaults, so only what differs from them belongs here.
 #   ghostty +show-config --default --docs     every option, with documentation
 #   https://ghostty.org/docs/config
 
-# Option sends Esc+key rather than composing a character, so Alt-S (prepend
-# sudo), Alt-C (fzf cd) and the Alt word-motions in .zshrc reach the shell.
-# The cost is the macOS Option layer: no more Option-5 for a euro sign.
-macos-option-as-alt = true
+# Left Option sends Esc+key rather than composing a character, so Alt-S
+# (prepend sudo), Alt-C (fzf cd), the Alt word-motions in .zshrc and the
+# <A-hjkl> window moves in Neovim work. Right Option keeps the macOS Option
+# layer for typing characters such as ß (Option-S).
+macos-option-as-alt = left
