@@ -18,6 +18,9 @@
           # Work around hanging test runs on Darwin during checkPhase.
           doCheck = false;
         });
+        # atuin 18.23.0: the e2e_capture and e2e_pty tests drive a shell through a
+        # pty and fail inside the darwin build sandbox.
+        atuin = prev.atuin.overrideAttrs { doCheck = false; };
       })
     ];
   };
