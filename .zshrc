@@ -1017,14 +1017,23 @@ alias qmvv='qmv --format=dc --options=spaces,width=40,autowidth'
 alias qmvo='qmv --format=destination-only'
 alias qmvor='qmv -R --format=destination-only'
 # Runs exiftool with the given arguments over the current directory. Canon writes a .CPF beside
-# each clip, which exiftool cannot read, so a CPF takes its tags from the .MP4 of the same name.
-# The CPFs go first, while that shared name still pairs them.
+# each clip and DJI writes a .SRT. exiftool cannot read either, so each takes its tags from the .MP4
+# of the same name. The CPFs and SRTs go first, while that shared name still pairs them.
+# A DJI .LRF is a low resolution copy of its clip. With EXIF_DELETE_LRF=1 each .LRF that has a .MP4
+# of the same name is deleted first.
 # QuickTimeUTC reads QuickTime dates as UTC and gives local time. An Insta360 .lrv or .insv has no
 # other date. exiftool cannot write .insv, so a directory scan skips it unless -ext+ adds it.
 _exif_files() {
   local -a opts=(-P -api QuickTimeUTC -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN')
-  exiftool $opts -ext CPF -tagsFromFile %d%f.MP4 "$@" .
-  exiftool $opts -ext+ INSV --ext CPF "$@" .
+  if [[ -n $EXIF_DELETE_LRF ]]; then
+    setopt local_options extended_glob
+    local lrf
+    for lrf in (#i)*.lrf(N.); do
+      [[ -e ${lrf:r}.MP4 || -e ${lrf:r}.mp4 ]] && rm -- $lrf
+    done
+  fi
+  exiftool $opts -ext CPF -ext+ SRT -tagsFromFile %d%f.MP4 "$@" .
+  exiftool $opts -ext+ INSV --ext CPF --ext SRT "$@" .
 }
 alias exif_move="_exif_files -d '%Y/%m' '-Directory<\${CreateDate}' '-Directory<\${DateTimeOriginal}'"
 alias exif_rename="_exif_files -d '%Y%m%d_%H%M%S' '-filename<%f-\${ImageSize}%-03c.%le' '-filename<\${CreateDate}%-03c.%le' '-filename<\${DateTimeOriginal}%-03c.%le'"
