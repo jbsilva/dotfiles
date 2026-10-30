@@ -28,8 +28,8 @@
   # Homebrew 6's HOMEBREW_REQUIRE_TAP_TRUST refuses entries from untrusted
   # third-party taps. nix-darwin emits `trusted: true` on every brew and cask it
   # generates, which covers the fully-qualified ones below, so nothing needs to
-  # write ~/.homebrew/trust.json by hand. A tap that supplies no entry below is
-  # the exception, see `taps`.
+  # write trust.json by hand. A tap that supplies no entry below is the
+  # exception, see `taps`.
   homebrew = {
     enable = true;
     # Upgrades are not part of activation. `just brew-upgrade` does them on
@@ -47,10 +47,16 @@
     # input instead: `just update`, then `just switch`.
     #
     # `cleanup = "uninstall"` stays on: removing a line below should uninstall.
+    #
+    # brew keeps trust.json under $XDG_CONFIG_HOME/homebrew, or ~/.homebrew when
+    # that is unset. Activation runs `brew bundle` through sudo, which drops the
+    # variable .zshrc sets, so without `extraEnv` the trust it records lands in
+    # a file the shell's `brew` never reads.
     onActivation = {
       autoUpdate = false;
       upgrade = false;
       cleanup = "uninstall";
+      extraEnv.XDG_CONFIG_HOME = "${config.users.users.julio.home}/.config";
     };
     # `brew bundle cleanup` untaps every tap the Brewfile omits, and untapping
     # homebrew/cask force-uninstalls every cask from it -- so mirror the taps
