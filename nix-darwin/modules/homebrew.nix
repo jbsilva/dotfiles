@@ -95,6 +95,7 @@
       # -----------------------------------------------------------------------
       "gh" # GitHub CLI
       "mise" # node/python/go versions, replacing nvm and asdf
+      "opencode" # terminal coding agent. Hydra rejects the nixpkgs build as too large
       "openjdk" # Java development kit
       "redocly-cli" # lint and bundle OpenAPI specs
       "sonar-scanner" # SonarQube analysis client
