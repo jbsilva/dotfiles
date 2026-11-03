@@ -1023,8 +1023,12 @@ alias qmvor='qmv -R --format=destination-only'
 # of the same name is deleted first.
 # QuickTimeUTC reads QuickTime dates as UTC and gives local time. An Insta360 .lrv or .insv has no
 # other date. exiftool cannot write .insv, so a directory scan skips it unless -ext+ adds it.
+# A rename to a name that is taken adds a copy number, through %c in the aliases below. A photo that
+# was sorted before then lands beside itself, so each file that gets a copy number in this run goes
+# through _exif_drop_copies.
 _exif_files() {
   local -a opts=(-P -api QuickTimeUTC -i '#recycle' -i '@eaDir' -i 'SYMLINKS' -i 'HIDDEN')
+  local -a before=(./**/*-[0-9][0-9][0-9].*(N.))
   if [[ -n $EXIF_DELETE_LRF ]]; then
     setopt local_options extended_glob
     local lrf
@@ -1034,6 +1038,37 @@ _exif_files() {
   fi
   exiftool $opts -ext CPF -ext+ SRT -tagsFromFile %d%f.MP4 "$@" .
   exiftool $opts -ext+ INSV --ext CPF --ext SRT "$@" .
+  local -a after=(./**/*-[0-9][0-9][0-9].*(N.))
+  _exif_drop_copies ${after:|before}
+}
+# Removes each given file that holds the same image as another file of its name, with any copy
+# number or none. The files go last to first, so of two new copies the lower number stays.
+# ImageDataHash leaves the metadata out, because an image tagger or Lightroom often writes into the
+# copy that was there first. A file that exiftool cannot hash, such as an .SRT, must match byte for
+# byte. Each path starts with ./, which is also how exiftool prints it.
+_exif_drop_copies() {
+  (( $# )) || return 0
+  local f g stem line
+  local -a kin
+  local -A hash
+  for f; do
+    stem=${f%-[0-9][0-9][0-9].*}
+    kin+=($stem.${f:e}(N.) $stem-[0-9][0-9][0-9].${f:e}(N.))
+  done
+  for line in ${(f)"$(exiftool -q -q -p '$ImageDataHash $Directory/$FileName' ${(u)kin})"}; do
+    hash[${line#* }]=${line%% *}
+  done
+  for f in ${(Oa)@}; do
+    stem=${f%-[0-9][0-9][0-9].*}
+    for g in $stem.${f:e}(N.) $stem-[0-9][0-9][0-9].${f:e}(N.); do
+      [[ $g == $f ]] && continue
+      if [[ -n $hash[$g] && $hash[$g] == "$hash[$f]" ]] || cmp -s -- $f $g; then
+        print -r -- "$f: a copy of $g, removed"
+        rm -- $f
+        break
+      fi
+    done
+  done
 }
 alias exif_move="_exif_files -d '%Y/%m' '-Directory<\${CreateDate}' '-Directory<\${DateTimeOriginal}'"
 alias exif_rename="_exif_files -d '%Y%m%d_%H%M%S' '-filename<%f-\${ImageSize}%-03c.%le' '-filename<\${CreateDate}%-03c.%le' '-filename<\${DateTimeOriginal}%-03c.%le'"
