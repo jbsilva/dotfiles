@@ -221,6 +221,7 @@
       "proton-mail-bridge" # local IMAP/SMTP for desktop mail clients
       "protonvpn" # VPN client
       "tailscale-app" # WireGuard mesh VPN
+      "wifiman" # Ubiquiti Wi-Fi scanner, speed test and Teleport VPN
       "yubico-authenticator" # YubiKey companion app
 
       # -----------------------------------------------------------------------
