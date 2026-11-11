@@ -253,3 +253,9 @@ wireguard
 
 # Mac apps and their makers
 blackmagic
+
+# FUSE filesystems and their API
+getattr
+gromgit
+setattr
+sshfs

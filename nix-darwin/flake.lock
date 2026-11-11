@@ -149,6 +149,22 @@
         "type": "github"
       }
     },
+    "homebrew-macos-fuse-t": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791295075,
+        "narHash": "sha256-3sP+rc7tkEUo7kfn/dCfu3Gk2hp5p6pClxYWSLWvgnM=",
+        "owner": "macos-fuse-t",
+        "repo": "homebrew-cask",
+        "rev": "934c6431d77e505e62f76919fbff93235541e85b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "macos-fuse-t",
+        "repo": "homebrew-cask",
+        "type": "github"
+      }
+    },
     "homebrew-nikitabobko": {
       "flake": false,
       "locked": {
@@ -253,6 +269,7 @@
         "homebrew-docker": "homebrew-docker",
         "homebrew-frankea": "homebrew-frankea",
         "homebrew-gromgit": "homebrew-gromgit",
+        "homebrew-macos-fuse-t": "homebrew-macos-fuse-t",
         "homebrew-nikitabobko": "homebrew-nikitabobko",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",

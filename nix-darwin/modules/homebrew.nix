@@ -7,6 +7,7 @@
   homebrewDocker,
   homebrewFrankea,
   homebrewGromgit,
+  homebrewMacosFuseT,
   ...
 }:
 {
@@ -21,6 +22,7 @@
       "docker/homebrew-tap" = homebrewDocker;
       "frankea/homebrew-whisky" = homebrewFrankea;
       "gromgit/homebrew-fuse" = homebrewGromgit;
+      "macos-fuse-t/homebrew-cask" = homebrewMacosFuseT;
     };
     mutableTaps = false;
   };
@@ -247,6 +249,21 @@
       "daisydisk" # disk space visualiser
       "macpacker" # archive manager, opens and extracts zip, rar, 7z and more
       "frankea/whisky/whisky" # Wine wrapper for Windows apps (maintained fork)
+
+      # -----------------------------------------------------------------------
+      # Remote filesystems
+      # -----------------------------------------------------------------------
+      # Use fuse-t's own sshfs. It links fuse-t's library statically. The
+      # gromgit/fuse sshfs-mac bottle and the nixpkgs sshfs are built for
+      # macFUSE, whose fuse_operations has an extra setattr slot at offset 8.
+      # fuse-t copies that table as is, so every callback after getattr is one
+      # slot off, and opening a file calls sshfs_truncate. sshfs-mac also will
+      # not install without macFUSE's /usr/local/include/fuse.h.
+      #
+      # The fuse-t-sshfs cask has no uninstall stanza. If you remove its line,
+      # /usr/local/bin/sshfs stays on disk.
+      "fuse-t" # FUSE without a kernel extension, served over a local NFS mount
+      "macos-fuse-t/cask/fuse-t-sshfs" # mount a remote directory over SSH
 
       # -----------------------------------------------------------------------
       # Filesystems -- off with ntfs-3g-mac under brews, which explains the set

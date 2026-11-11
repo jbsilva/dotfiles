@@ -59,6 +59,11 @@
       url = "github:gromgit/homebrew-fuse";
       flake = false;
     };
+    # fuse-t-sshfs. The fuse-t cask itself comes from homebrew/cask.
+    homebrew-macos-fuse-t = {
+      url = "github:macos-fuse-t/homebrew-cask";
+      flake = false;
+    };
 
     # A collection of `git-*` scripts, packaged in modules/git-extra-commands.nix.
     #
@@ -96,6 +101,7 @@
       homebrew-docker,
       homebrew-frankea,
       homebrew-gromgit,
+      homebrew-macos-fuse-t,
       git-extra-commands,
       cbz2scribecolor,
       sops-nix,
@@ -110,6 +116,7 @@
         homebrewDocker = homebrew-docker;
         homebrewFrankea = homebrew-frankea;
         homebrewGromgit = homebrew-gromgit;
+        homebrewMacosFuseT = homebrew-macos-fuse-t;
         gitExtraCommandsSrc = git-extra-commands;
         cbz2scribecolorSrc = cbz2scribecolor;
       };
