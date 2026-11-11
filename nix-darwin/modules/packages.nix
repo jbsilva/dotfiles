@@ -178,6 +178,7 @@
     exiftool # photo metadata; drives the exif_* aliases in .zshrc
     file-rename # Perl `rename`: bulk renames by regex
     renameutils # qmv/qcp, behind the qmv* aliases
+    f3 # f3write and f3read catch fake-capacity flash cards; f3probe is Linux-only
     # yt-dlp        # via Homebrew: updates far more often than nixpkgs
 
     # -------------------------------------------------------------------------
