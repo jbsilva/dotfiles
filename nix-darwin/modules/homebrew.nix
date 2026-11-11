@@ -133,6 +133,7 @@
       "imagemagick" # image conversion and manipulation
       "media-info" # MediaInfo CLI; the mediainfo cask below is the GUI
       "gphoto2" # tethered capture and camera control
+      "mpv" # video player. Uses the yt-dlp below; the nixpkgs build bundles its own
       "yt-dlp" # YouTube downloader. Homebrew updates more often than nixpkgs
 
       # -----------------------------------------------------------------------
