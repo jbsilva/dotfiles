@@ -13,6 +13,7 @@
     Amphetamine = 937984704; # keep the Mac awake, on rules and triggers
     "Blackmagic Disk Speed Test" = 425264550; # read and write speed of a disk
     "ShutterCount Pro" = 1441290690; # read the shutter count off a Canon body
+    SSHMount = 6802602881; # SFTP servers as Finder volumes, through File Provider
     WireGuard = 1451685025; # the official client; wireguard-tools is the CLI
   };
 }

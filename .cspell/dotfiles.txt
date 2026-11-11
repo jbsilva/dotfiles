@@ -253,6 +253,7 @@ wireguard
 
 # Mac apps and their makers
 blackmagic
+sshmount
 
 # FUSE filesystems and their API
 getattr
