@@ -113,6 +113,12 @@ if [[ -z "$XDG_CONFIG_HOME" ]]; then
   export XDG_CONFIG_HOME=$HOME/.config
 fi
 
+# With $XDG_CONFIG_HOME set, sops looks for its age key under ~/.config. The
+# key lives where sops-nix reads it at activation; see secrets/README.md.
+if [[ $OSTYPE == darwin* ]]; then
+  export SOPS_AGE_KEY_FILE="$HOME/Library/Application Support/sops/age/keys.txt"
+fi
+
 # Neovim exports $NVIM itself, set to its RPC socket, and that is how tools
 # detect "running inside a :terminal". So do not use NVIM as a scratch variable
 # here -- it made every shell look like a nested Neovim.

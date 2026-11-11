@@ -20,6 +20,9 @@ Run these once, on the MacBook. Nothing works until the key exists.
    age-keygen -o ~/Library/Application\ Support/sops/age/keys.txt
    ```
 
+   sops-nix reads the key from this path. When `$XDG_CONFIG_HOME` is set, the `sops` command looks
+   for the key there instead. So `.zshrc` sets `SOPS_AGE_KEY_FILE` to this path.
+
 2. Copy the `age1...` public key it prints into `keys:` in `.sops.yaml`, replacing
    `age1PUT_THE_PUBLIC_KEY_HERE`.
 
