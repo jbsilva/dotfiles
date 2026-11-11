@@ -52,10 +52,13 @@ through a shell history:
 
 ```sh
 # From the repo root, with .sops.yaml filled in.
-{ printf 'ssh_config: |\n'; sed 's/^/  /' ~/.ssh/config; } > /tmp/ssh.yaml
-sops --encrypt /tmp/ssh.yaml > secrets/secrets.yaml
-rm /tmp/ssh.yaml
+{ printf 'ssh_config: |\n'; sed 's/^/  /' ~/.ssh/config; } |
+  sops encrypt --filename-override secrets/secrets.yaml /dev/stdin > secrets/secrets.yaml
 ```
+
+sops matches the `path_regex` in `.sops.yaml` against the input file name, and the redirect does not
+count. `--filename-override` gives it the name that matches. If sops fails, the shell has already
+created an empty `secrets/secrets.yaml`, so delete it before you try again.
 
 Then check it round-trips **before** letting activation overwrite the original:
 
