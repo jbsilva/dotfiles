@@ -250,3 +250,6 @@ synoschedtask
 synovpnclient
 vermagic
 wireguard
+
+# Mac apps and their makers
+blackmagic
