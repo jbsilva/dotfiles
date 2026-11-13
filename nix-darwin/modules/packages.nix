@@ -148,6 +148,7 @@
     # -------------------------------------------------------------------------
     go
     nodejs_24
+    pnpm # Node package manager with a shared content-addressed store
 
     # rustup, not a nixpkgs toolchain: only it honours rust-toolchain.toml and
     # offers nightly and `rustup target add`. Toolchains live in ~/.rustup,
