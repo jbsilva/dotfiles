@@ -461,6 +461,10 @@ binary plist under `trackedApplications` in
 Control Center owns that file and can overwrite it while it runs. Writing to a group container also
 needs Full Disk Access, and Apple does not document the format.
 
+**Ableton Live**: `just switch` installs the app, and the licence stays in the Ableton account. Open
+Live, choose "Authorize with ableton.com" and log in. This step stays manual, and no licence file
+belongs in this repository.
+
 **Secrets**: `secrets/` is sops-encrypted and this repository is public, so a fresh clone cannot
 read it until an age key exists. Nothing else depends on that, and the flake evaluates without it.
 See [secrets/README.md](secrets/README.md).

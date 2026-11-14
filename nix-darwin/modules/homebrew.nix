@@ -299,6 +299,20 @@
       "obsidian" # Markdown knowledge base
 
       # -----------------------------------------------------------------------
+      # Music production
+      # -----------------------------------------------------------------------
+      # The cask installs the app only. The licence lives in the Ableton
+      # account: the first launch asks to authorise, and "Authorize with
+      # ableton.com" ties this Mac to it. Packs and Max for Live content
+      # download from inside Live after that.
+      #
+      # Each edition has its own cask and installer, and the licence is for
+      # Suite. It is also for Live 12, and the unversioned token follows the
+      # newest major. Once the tap carries Live 13, the cask to name here is
+      # ableton-live-suite@12, unless the licence moved up as well.
+      "ableton-live-suite" # DAW, Live 12 Suite
+
+      # -----------------------------------------------------------------------
       # Media & entertainment
       # -----------------------------------------------------------------------
       # `brew bundle` installs most entries with one `brew install` command
